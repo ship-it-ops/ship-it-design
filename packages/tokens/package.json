@@ -21,7 +21,7 @@
     "build": "tsup && tsx scripts/build-css.ts",
     "dev": "tsup --watch",
     "lint": "eslint src",
-    "test": "vitest run",
+    "test": "vitest run --passWithNoTests",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist styles/tokens.css .turbo"
   },

@@ -29,6 +29,22 @@ describe('Button', () => {
     expect(handleClick).not.toHaveBeenCalled();
   });
 
+  it('does not fire onClick while loading', async () => {
+    const handleClick = vi.fn();
+    render(
+      <Button onClick={handleClick} loading>
+        Running
+      </Button>,
+    );
+    await userEvent.click(screen.getByRole('button'));
+    expect(handleClick).not.toHaveBeenCalled();
+  });
+
+  it('marks aria-busy when loading', () => {
+    render(<Button loading>Running</Button>);
+    expect(screen.getByRole('button')).toHaveAttribute('aria-busy', 'true');
+  });
+
   it('renders the polymorphic child when asChild is set', () => {
     render(
       <Button asChild>
