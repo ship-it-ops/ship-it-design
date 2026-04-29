@@ -1,0 +1,8 @@
+{
+  "name": "@ship-it/tsconfig",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Shared TypeScript configuration presets for the Ship-It design system monorepo.",
+  "license": "MIT",
+  "files": ["base.json", "react-library.json", "react-app.json"]
+}

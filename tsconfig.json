@@ -1,0 +1,13 @@
+{
+  "extends": "@ship-it/tsconfig/base.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [],
+  "references": [
+    { "path": "./packages/tokens" },
+    { "path": "./packages/icons" },
+    { "path": "./packages/ui" },
+    { "path": "./apps/docs" }
+  ]
+}

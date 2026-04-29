@@ -1,0 +1,9 @@
+{
+  "extends": "@ship-it/tsconfig/react-app.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": ".turbo/tsconfig.tsbuildinfo"
+  },
+  "include": [".storybook/**/*", "stories/**/*"],
+  "exclude": ["node_modules", "storybook-static"],
+  "references": [{ "path": "../../packages/ui" }, { "path": "../../packages/tokens" }]
+}

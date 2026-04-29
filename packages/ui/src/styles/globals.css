@@ -1,0 +1,57 @@
+/**
+ * Global stylesheet for @ship-it/ui consumers.
+ *
+ * Pulls in design tokens (CSS variables) and bridges them into Tailwind v4 via
+ * the `@theme` directive so utility classes like `bg-background`, `text-text`,
+ * `p-4`, `rounded-md` resolve to the same tokens used by handwritten CSS.
+ *
+ * Apps consuming this library should import this file once at app entry:
+ *
+ *   import '@ship-it/ui/styles/globals.css';
+ */
+
+@import 'tailwindcss';
+@import '@ship-it/tokens/styles/tokens.css';
+
+/*
+ * `@theme inline` tells Tailwind to read these variables for utility-class
+ * generation (so `bg-brand`, `text-text`, `rounded-md` work) but NOT to redefine
+ * them in :root — tokens.css owns the actual values.
+ */
+@theme inline {
+  /* Color — semantic tokens become Tailwind color utilities */
+  --color-background: var(--color-background);
+  --color-surface: var(--color-surface);
+  --color-border: var(--color-border);
+  --color-border-strong: var(--color-border-strong);
+  --color-text: var(--color-text);
+  --color-text-muted: var(--color-text-muted);
+  --color-brand: var(--color-brand);
+  --color-brand-hover: var(--color-brand-hover);
+  --color-brand-subtle: var(--color-brand-subtle);
+  --color-on-brand: var(--color-on-brand);
+
+  /* Typography */
+  --font-sans: var(--font-family-sans);
+  --font-mono: var(--font-family-mono);
+
+  /* Radius */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-full: var(--radius-full);
+}
+
+@layer base {
+  html {
+    font-family: var(--font-family-sans);
+    color: var(--color-text);
+    background: var(--color-background);
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+}

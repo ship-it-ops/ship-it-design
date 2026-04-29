@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Foundations/Accessibility" />
+
+# Accessibility
+
+A11y is a hard requirement, not a phase 2 polish. Every component is built on top of
+[Radix UI primitives](https://www.radix-ui.com/) for behavior and tested with
+[`axe-core`](https://github.com/dequelabs/axe-core) at unit-test time.
+
+## What's enforced
+
+- **Automated checks** — every component test renders the component and asserts
+  `axe` violations === 0. CI fails on regressions.
+- **Storybook a11y addon** — the panel surfaces issues live as you build.
+- **Focus management** — keyboard navigation, `focus-visible` rings, and ARIA roles
+  come from Radix or are explicitly tested.
+- **Reduced motion** — the global stylesheet zeroes out animation durations when
+  `prefers-reduced-motion: reduce` is set.
+
+## What you (the contributor) need to do
+
+- Use semantic HTML elements — never `<div onClick>` for an interactive thing.
+- Provide `aria-label` for icon-only controls.
+- Test with the keyboard. Tab through your component. If you can't operate it
+  without a mouse, it's not ready.
+- Run the Storybook a11y addon panel before opening a PR.

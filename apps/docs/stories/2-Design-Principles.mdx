@@ -1,0 +1,35 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Foundations/Design principles" />
+
+# Design principles
+
+Principles are the tie-breakers when a design decision could go either way. They are
+**not** rules — they're priorities.
+
+## 1. Tokens before values
+
+Every visible design decision (color, spacing, type, radius) lives in `@ship-it/tokens`
+as a named token. Components consume tokens. This is the single rule that lets us reskin
+the system, ship dark mode, and stay consistent across apps.
+
+## 2. Accessible by default
+
+Components are tested against `axe` and built on Radix UI primitives. If a component
+can't pass an a11y test, it can't ship. This includes keyboard interaction,
+focus-visible styling, ARIA semantics, and color contrast.
+
+## 3. Composition over configuration
+
+A few sharp primitives that compose well beat one giant component with thirty props.
+Prefer `<Card><Card.Header /></Card>` over `<Card title="..." subtitle="..." actions={...} />`.
+
+## 4. Predictable APIs
+
+All components accept `className`, forward refs, and use `asChild` for polymorphism.
+Once you've used one component, you can guess how the next one works.
+
+## 5. Honest performance
+
+Tree-shakeable ESM, no runtime CSS-in-JS, no global side effects beyond the explicit
+`@ship-it/ui/styles/globals.css` import.

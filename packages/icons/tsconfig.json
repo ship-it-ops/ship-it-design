@@ -1,0 +1,10 @@
+{
+  "extends": "@ship-it/tsconfig/react-library.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "tsBuildInfoFile": ".turbo/tsconfig.tsbuildinfo"
+  },
+  "include": ["src", "scripts"],
+  "exclude": ["dist", "node_modules"]
+}

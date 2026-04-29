@@ -1,0 +1,36 @@
+{
+  "name": "@ship-it/tokens",
+  "version": "0.0.0",
+  "description": "Design tokens for the Ship-It design system. The single source of truth for color, type, spacing, radius, shadow, motion, breakpoints, and z-index.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./styles/tokens.css": "./styles/tokens.css"
+  },
+  "files": ["dist", "styles", "README.md"],
+  "sideEffects": ["./styles/tokens.css"],
+  "scripts": {
+    "build": "tsup && tsx scripts/build-css.ts",
+    "dev": "tsup --watch",
+    "lint": "eslint src",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist styles/tokens.css .turbo"
+  },
+  "devDependencies": {
+    "@ship-it/eslint-config": "workspace:*",
+    "@ship-it/tsconfig": "workspace:*",
+    "tsup": "^8.3.0",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.3"
+  }
+}

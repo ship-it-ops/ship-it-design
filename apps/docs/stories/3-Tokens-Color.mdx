@@ -1,0 +1,33 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Foundations/Tokens/Color" />
+
+# Color tokens
+
+Two layers:
+
+1. **Primitive** — the raw palette (`brand-500`, `neutral-100`).
+2. **Semantic** — role-based aliases (`background`, `text`, `border`, `brand`,
+   `brand-hover`, `brand-subtle`).
+
+**Components consume only semantic tokens.** This is what makes light/dark theming
+and palette swaps a one-file change.
+
+When this Storybook is run with real values from the design handoff, swatch grids will
+appear here. Until then, see `packages/tokens/src/color.ts` for the canonical list.
+
+## How to use
+
+```tsx
+// In a component (Tailwind utility):
+<div className="bg-surface text-text border border-border" />
+
+// In raw CSS:
+.my-class {
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+// In TS (rare — only for inline styles or theme objects):
+import { colorSemanticLight } from '@ship-it/tokens';
+```

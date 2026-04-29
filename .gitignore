@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+build/
+out/
+.next/
+.turbo/
+storybook-static/
+coverage/
+*.tsbuildinfo
+
+# Generated icon components (regenerated from SVG sources)
+packages/icons/src/components/*.tsx
+!packages/icons/src/components/.gitkeep
+
+# Generated token CSS (regenerated from TS sources)
+packages/tokens/styles/tokens.css
+
+# Editor / OS
+.DS_Store
+.idea/
+*.swp
+*.swo
+
+# Env / secrets
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
