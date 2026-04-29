@@ -1,7 +1,7 @@
 {
   "name": "@ship-it/icons",
   "version": "0.0.0",
-  "description": "SVG-based React icon set for the Ship-It design system. Source SVGs live in src/svg; React components are generated from them.",
+  "description": "Iconography for the Ship-It design system: glyph-first IconGlyph + SVGR pipeline for SVG icons.",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
@@ -20,6 +20,8 @@
     "build": "tsx scripts/build.ts && tsup",
     "dev": "tsup --watch",
     "lint": "eslint src",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist src/components/*.tsx .turbo"
   },
@@ -32,10 +34,16 @@
     "@svgr/core": "^8.1.0",
     "@svgr/plugin-jsx": "^8.1.0",
     "@svgr/plugin-svgo": "^8.1.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.0.1",
     "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "jsdom": "^25.0.1",
     "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "tsup": "^8.3.0",
     "tsx": "^4.19.1",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.3"
   }
 }

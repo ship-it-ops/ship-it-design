@@ -1,21 +1,19 @@
 /**
- * Spacing scale — 4px base unit. Used for padding, margin, gap, and any layout space.
+ * Spacing scale — 4px base with an irregular ramp.
+ *
+ * The handoff explicitly skips `7` (28px → step 6) to discourage hand-tuned 7px values.
+ * Every layout decision must pick a token from this list; arbitrary values are a smell.
  */
 
 export const spacing = {
-  0: '0',
-  1: '0.25rem', //  4px
-  2: '0.5rem', //   8px
-  3: '0.75rem', // 12px
-  4: '1rem', //    16px
-  5: '1.25rem', // 20px
-  6: '1.5rem', //  24px
-  8: '2rem', //    32px
-  10: '2.5rem', // 40px
-  12: '3rem', //   48px
-  16: '4rem', //   64px
-  20: '5rem', //   80px
-  24: '6rem', //   96px
+  1: '4px',
+  2: '8px',
+  3: '12px',
+  4: '16px',
+  5: '22px',
+  6: '28px',
+  // intentionally no 7
+  8: '40px',
 } as const;
 
 export type SpacingToken = keyof typeof spacing;

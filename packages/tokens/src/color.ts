@@ -1,70 +1,84 @@
 /**
  * Color tokens.
  *
- * Two layers:
- *   1. `colorPrimitive` — raw palette ("brand-500", "neutral-100"). Never used
- *      directly in components.
- *   2. `colorSemantic` — role-based aliases ("background", "text", "border-strong").
- *      Components MUST consume these so themes can swap palettes without changes
- *      to component code.
+ * Two layers + a master hue knob:
  *
- * Values below are placeholders. Replace with the design handoff palette.
+ *   1. `accentH` — the OKLCH hue that drives every accent shade (default 200, cyan-blue).
+ *      Override at runtime via the CSS variable `--accent-h: 280` to reskin the whole UI
+ *      to purple in one declaration. No component code changes.
+ *
+ *   2. `colorPrimitive` — raw OKLCH ramps for the companion palette: ok / warn / err /
+ *      purple / pink. Never used directly in components.
+ *
+ *   3. `colorSemanticDark` (default) and `colorSemanticLight` — role-based aliases that
+ *      components actually consume: `bg`, `panel`, `panel2`, `border`, `borderStrong`,
+ *      `text`, `textMuted`, `textDim`, `accent`, `accentText`, `accentDim`, `accentGlow`,
+ *      `ok`, `warn`, `err`, `purple`, `pink`.
+ *
+ * The accent CSS variable references `var(--accent-h)` directly, so swapping the hue
+ * propagates harmonically across `accent`, `accentText`, `accentDim`, and `accentGlow`.
  */
 
+/** Master hue for the OKLCH accent. Override via `--accent-h` CSS variable at runtime. */
+export const accentH = 200;
+
+/**
+ * Companion palette — OKLCH ramps for non-accent semantic states. These are NOT consumed
+ * directly by components; the semantic maps below alias them.
+ */
 export const colorPrimitive = {
-  neutral: {
-    0: '#ffffff',
-    50: '#fafafa',
-    100: '#f4f4f5',
-    200: '#e4e4e7',
-    300: '#d4d4d8',
-    400: '#a1a1aa',
-    500: '#71717a',
-    600: '#52525b',
-    700: '#3f3f46',
-    800: '#27272a',
-    900: '#18181b',
-    1000: '#000000',
-  },
-  brand: {
-    50: '#eef2ff',
-    100: '#e0e7ff',
-    200: '#c7d2fe',
-    300: '#a5b4fc',
-    400: '#818cf8',
-    500: '#6366f1',
-    600: '#4f46e5',
-    700: '#4338ca',
-    800: '#3730a3',
-    900: '#312e81',
-  },
+  ok: 'oklch(0.82 0.17 150)',
+  warn: 'oklch(0.82 0.16 75)',
+  err: 'oklch(0.72 0.19 25)',
+  purple: 'oklch(0.78 0.14 300)',
+  pink: 'oklch(0.78 0.15 0)',
 } as const;
 
-export const colorSemanticLight = {
-  background: colorPrimitive.neutral[0],
-  surface: colorPrimitive.neutral[50],
-  border: colorPrimitive.neutral[200],
-  borderStrong: colorPrimitive.neutral[300],
-  textMuted: colorPrimitive.neutral[500],
-  text: colorPrimitive.neutral[900],
-  brand: colorPrimitive.brand[600],
-  brandHover: colorPrimitive.brand[700],
-  brandSubtle: colorPrimitive.brand[50],
-  onBrand: colorPrimitive.neutral[0],
-} as const;
-
+/** Dark theme — the default. Lives in `:root`. */
 export const colorSemanticDark = {
-  background: colorPrimitive.neutral[900],
-  surface: colorPrimitive.neutral[800],
-  border: colorPrimitive.neutral[700],
-  borderStrong: colorPrimitive.neutral[600],
-  textMuted: colorPrimitive.neutral[400],
-  text: colorPrimitive.neutral[50],
-  brand: colorPrimitive.brand[400],
-  brandHover: colorPrimitive.brand[300],
-  brandSubtle: colorPrimitive.neutral[800],
-  onBrand: colorPrimitive.neutral[900],
+  bg: '#0a0a0b',
+  panel: '#111113',
+  /** Second-tier panel (slightly lighter). Hyphenated key matches the handoff CSS var name. */
+  'panel-2': '#16161a',
+  border: '#1f1f24',
+  borderStrong: '#2a2a31',
+
+  text: '#ededef',
+  textMuted: '#8a8a94',
+  textDim: '#55555d',
+
+  // Accents reference the runtime `--accent-h` knob.
+  accent: 'oklch(0.82 0.12 var(--accent-h))',
+  accentText: 'oklch(0.9 0.1 var(--accent-h))',
+  accentDim: 'oklch(0.82 0.12 var(--accent-h) / 0.12)',
+  accentGlow: 'oklch(0.82 0.12 var(--accent-h) / 0.4)',
+
+  ok: colorPrimitive.ok,
+  warn: colorPrimitive.warn,
+  err: colorPrimitive.err,
+  purple: colorPrimitive.purple,
+  pink: colorPrimitive.pink,
 } as const;
 
-export type ColorSemantic = typeof colorSemanticLight;
+/** Light theme — applied via `[data-theme="light"]`. Overrides only what changes. */
+export const colorSemanticLight = {
+  bg: '#fbfbfa',
+  panel: '#ffffff',
+  'panel-2': '#f5f5f3',
+  border: '#e8e8e4',
+  borderStrong: '#d6d6d0',
+
+  text: '#0e0e10',
+  textMuted: '#5a5a63',
+  textDim: '#8e8e96',
+
+  accent: 'oklch(0.72 0.13 var(--accent-h))',
+  accentText: 'oklch(0.38 0.13 var(--accent-h))',
+  accentDim: 'oklch(0.72 0.13 var(--accent-h) / 0.10)',
+  accentGlow: 'oklch(0.72 0.13 var(--accent-h) / 0.25)',
+
+  // Companion palette is theme-invariant — same OKLCH values look right in both themes.
+} as const;
+
+export type ColorSemantic = typeof colorSemanticDark;
 export type ColorSemanticToken = keyof ColorSemantic;

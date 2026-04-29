@@ -1,24 +1,21 @@
 /**
  * Elevation / shadow tokens.
  *
- * Light and dark themes need different shadow recipes — dark surfaces typically
- * use lighter, more diffuse shadows so they remain visible.
+ * Dark and light themes need different shadow recipes. Dark surfaces need denser,
+ * blacker shadows or they vanish into the panel; light surfaces need very subtle
+ * tints to avoid muddying the page.
  */
 
-export const shadowLight = {
-  none: 'none',
-  sm: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
-  md: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
-  lg: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
-  xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
-} as const;
-
 export const shadowDark = {
-  none: 'none',
-  sm: '0 1px 2px 0 rgb(0 0 0 / 0.5)',
-  md: '0 4px 6px -1px rgb(0 0 0 / 0.6), 0 2px 4px -2px rgb(0 0 0 / 0.6)',
-  lg: '0 10px 15px -3px rgb(0 0 0 / 0.7), 0 4px 6px -4px rgb(0 0 0 / 0.7)',
-  xl: '0 20px 25px -5px rgb(0 0 0 / 0.8), 0 8px 10px -6px rgb(0 0 0 / 0.8)',
+  sm: '0 1px 2px rgba(0,0,0,0.3)',
+  base: '0 4px 24px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3)',
+  lg: '0 40px 120px -20px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.2)',
 } as const;
 
-export type ShadowToken = keyof typeof shadowLight;
+export const shadowLight = {
+  sm: '0 1px 2px rgba(0,0,0,0.04)',
+  base: '0 1px 3px rgba(0,0,0,0.04), 0 2px 12px rgba(0,0,0,0.03)',
+  lg: '0 8px 40px rgba(0,0,0,0.08)',
+} as const;
+
+export type ShadowToken = keyof typeof shadowDark;

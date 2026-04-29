@@ -5,23 +5,28 @@ import { forwardRef, type ButtonHTMLAttributes } from 'react';
 import { cn } from '../../utils/cn';
 
 /**
- * Variant + size styles. All classes use semantic tokens (bg-brand, text-on-brand)
- * so swapping the palette via @ship-it/tokens automatically reflows the Button.
+ * Variant + size styles. All classes use semantic tokens from @ship-it/tokens, so
+ * swapping the palette (or shifting `--accent-h`) automatically reflows the Button.
+ *
+ * Note: Phase 2 rewrites this with the full 7-variant matrix from the handoff
+ * (primary / secondary / ghost / outline / destructive / success / link). For now
+ * this preserves the scaffold's three variants against the new token names so
+ * Phase 1 verification works.
  */
 const buttonStyles = cva(
   [
     'inline-flex items-center justify-center gap-2',
     'font-medium whitespace-nowrap rounded-md',
     'transition-colors',
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
     'disabled:pointer-events-none disabled:opacity-50',
   ],
   {
     variants: {
       variant: {
-        primary: 'bg-brand text-on-brand hover:bg-brand-hover',
-        secondary: 'bg-surface text-text border border-border hover:bg-brand-subtle',
-        ghost: 'bg-transparent text-text hover:bg-brand-subtle',
+        primary: 'bg-accent text-on-accent hover:brightness-110',
+        secondary: 'bg-panel-2 text-text border border-border hover:bg-accent-dim',
+        ghost: 'bg-transparent text-text hover:bg-accent-dim',
       },
       size: {
         sm: 'h-8 px-3 text-sm',
