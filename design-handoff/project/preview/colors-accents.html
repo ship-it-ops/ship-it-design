@@ -1,0 +1,25 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font-sans);height:100%}
+  .card{padding:22px 26px;height:100%;box-sizing:border-box}
+  .row{display:flex;gap:14px;align-items:center}
+  .swatch{display:flex;flex-direction:column;gap:6px}
+  .chip{width:80px;height:56px;border-radius:8px;border:1px solid var(--border-strong);position:relative}
+  .chip.sm{width:58px;height:40px}
+  .tok{font-family:var(--font-mono);font-size:10px;color:var(--text-dim)}
+  .name{font-size:11px;color:var(--text);font-weight:500}
+  .hex{font-family:var(--font-mono);font-size:10px;color:var(--text-muted)}
+</style></head><body><div class="card">
+  <div class="row">
+    <div class="swatch"><div class="chip" style="background:var(--accent)"></div><span class="name">accent</span><span class="hex">oklch 0.82 0.12 200</span></div>
+    <div class="swatch"><div class="chip" style="background:var(--accent-dim);border:1px solid var(--accent)"></div><span class="name">accent-dim</span><span class="hex">/ 0.12</span></div>
+    <div class="swatch"><div class="chip" style="background:var(--accent-glow)"></div><span class="name">accent-glow</span><span class="hex">/ 0.40</span></div>
+    <div class="swatch"><div class="chip" style="background:var(--purple)"></div><span class="name">purple</span><span class="hex">h 300</span></div>
+    <div class="swatch"><div class="chip" style="background:var(--pink)"></div><span class="name">pink</span><span class="hex">h 0</span></div>
+    <div class="swatch"><div class="chip" style="background:var(--ok)"></div><span class="name">ok</span><span class="hex">h 150</span></div>
+    <div class="swatch"><div class="chip" style="background:var(--warn)"></div><span class="name">warn</span><span class="hex">h 75</span></div>
+    <div class="swatch"><div class="chip" style="background:var(--err)"></div><span class="name">err</span><span class="hex">h 25</span></div>
+  </div>
+</div></body></html>
