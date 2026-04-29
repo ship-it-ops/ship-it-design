@@ -41,3 +41,27 @@ export * from './components/HoverCard';
 export * from './components/Popover';
 export * from './components/Toast';
 export * from './components/Tooltip';
+
+// Components — patterns
+export * from './patterns/Alert';
+export * from './patterns/Banner';
+export * from './patterns/Breadcrumbs';
+export * from './patterns/Combobox';
+export * from './patterns/CommandPalette';
+export * from './patterns/DataTable';
+export * from './patterns/DatePicker';
+export * from './patterns/Dots';
+export * from './patterns/EmptyState';
+export * from './patterns/FileChip';
+export * from './patterns/Menubar';
+export * from './patterns/Pagination';
+export * from './patterns/Progress';
+export * from './patterns/RadialProgress';
+export * from './patterns/Sidebar';
+export * from './patterns/Sparkline';
+export * from './patterns/Spinner';
+export * from './patterns/Stepper';
+export * from './patterns/Tabs';
+export * from './patterns/Timeline';
+export * from './patterns/Topbar';
+export * from './patterns/Tree';
