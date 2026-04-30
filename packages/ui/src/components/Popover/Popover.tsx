@@ -11,10 +11,7 @@ export const PopoverClose = RadixPopover.Close;
 export const PopoverArrow = RadixPopover.Arrow;
 
 export const PopoverContent = forwardRef<HTMLDivElement, RadixPopover.PopoverContentProps>(
-  function PopoverContent(
-    { className, align = 'start', sideOffset = 6, ...props },
-    ref,
-  ) {
+  function PopoverContent({ className, align = 'start', sideOffset = 6, ...props }, ref) {
     return (
       <RadixPopover.Portal>
         <RadixPopover.Content
@@ -22,7 +19,7 @@ export const PopoverContent = forwardRef<HTMLDivElement, RadixPopover.PopoverCon
           align={align}
           sideOffset={sideOffset}
           className={cn(
-            'z-40 rounded-md p-[6px] bg-panel border border-border-strong shadow-lg outline-none',
+            'bg-panel border-border-strong z-40 rounded-md border p-[6px] shadow-lg outline-none',
             'data-[state=open]:animate-[ship-pop-in_140ms_var(--easing-out)]',
             className,
           )}

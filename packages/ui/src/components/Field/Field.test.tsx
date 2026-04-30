@@ -6,11 +6,7 @@ import { Field } from './Field';
 
 describe('Field', () => {
   it('associates label with the control', () => {
-    render(
-      <Field label="Email">
-        {(p) => <input placeholder="email" {...p} />}
-      </Field>,
-    );
+    render(<Field label="Email">{(p) => <input placeholder="email" {...p} />}</Field>);
     const input = screen.getByLabelText('Email');
     expect(input).toBeInTheDocument();
   });

@@ -15,7 +15,7 @@ export const HoverCardContent = forwardRef<HTMLDivElement, RadixHoverCard.HoverC
           ref={ref}
           sideOffset={sideOffset}
           className={cn(
-            'z-40 rounded-base p-[14px] bg-panel border border-border-strong shadow-lg outline-none',
+            'rounded-base bg-panel border-border-strong z-40 border p-[14px] shadow-lg outline-none',
             'data-[state=open]:animate-[ship-pop-in_140ms_var(--easing-out)]',
             className,
           )}

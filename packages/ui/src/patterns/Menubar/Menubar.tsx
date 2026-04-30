@@ -20,7 +20,7 @@ export const Menubar = forwardRef<HTMLDivElement, RadixMenubar.MenubarProps>(fun
     <RadixMenubar.Root
       ref={ref}
       className={cn(
-        'flex h-[30px] items-center gap-[2px] border-b border-border bg-panel px-3',
+        'border-border bg-panel flex h-[30px] items-center gap-[2px] border-b px-3',
         className,
       )}
       {...props}
@@ -36,10 +36,10 @@ export const MenubarTrigger = forwardRef<HTMLButtonElement, RadixMenubar.Menubar
       <RadixMenubar.Trigger
         ref={ref}
         className={cn(
-          'cursor-pointer rounded-xs border-0 bg-transparent px-[10px] py-1 text-[12px] text-text outline-none',
+          'text-text cursor-pointer rounded-xs border-0 bg-transparent px-[10px] py-1 text-[12px] outline-none',
           'transition-colors duration-(--duration-micro)',
           'data-[state=open]:bg-panel-2 hover:bg-panel-2',
-          'focus-visible:ring-[3px] focus-visible:ring-accent-dim',
+          'focus-visible:ring-accent-dim focus-visible:ring-[3px]',
           className,
         )}
         {...props}
@@ -57,7 +57,7 @@ export const MenubarContent = forwardRef<HTMLDivElement, RadixMenubar.MenubarCon
           sideOffset={sideOffset}
           align={align}
           className={cn(
-            'z-40 min-w-[180px] rounded-md border border-border-strong bg-panel p-1 shadow-lg outline-none',
+            'border-border-strong bg-panel z-40 min-w-[180px] rounded-md border p-1 shadow-lg outline-none',
             'data-[state=open]:animate-[ship-pop-in_140ms_var(--easing-out)]',
             className,
           )}
@@ -92,7 +92,7 @@ export const MenubarItem = forwardRef<HTMLDivElement, MenubarItemProps>(function
       {...props}
     >
       <span className="flex-1">{children}</span>
-      {trailing && <span className="font-mono text-[10px] text-text-dim">{trailing}</span>}
+      {trailing && <span className="text-text-dim font-mono text-[10px]">{trailing}</span>}
     </RadixMenubar.Item>
   );
 });
@@ -102,7 +102,7 @@ export const MenubarSeparator = forwardRef<HTMLDivElement, RadixMenubar.MenubarS
     return (
       <RadixMenubar.Separator
         ref={ref}
-        className={cn('my-1 h-px bg-border', className)}
+        className={cn('bg-border my-1 h-px', className)}
         {...props}
       />
     );

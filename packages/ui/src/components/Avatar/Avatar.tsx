@@ -64,16 +64,10 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
       {...props}
     >
       <RadixAvatar.Root
-        className="relative inline-flex h-full w-full shrink-0 overflow-hidden rounded-full border border-border"
+        className="border-border relative inline-flex h-full w-full shrink-0 overflow-hidden rounded-full border"
         style={{ background: src ? undefined : `oklch(0.4 0.1 ${hue})` }}
       >
-        {src && (
-          <RadixAvatar.Image
-            src={src}
-            alt={name}
-            className="h-full w-full object-cover"
-          />
-        )}
+        {src && <RadixAvatar.Image src={src} alt={name} className="h-full w-full object-cover" />}
         <RadixAvatar.Fallback
           className="flex h-full w-full items-center justify-center font-sans font-semibold text-white"
           style={{ fontSize: dim * 0.38 }}
@@ -86,7 +80,7 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
           role="img"
           aria-label={`status: ${status}`}
           className={cn(
-            'absolute bottom-0 right-0 rounded-full border-[2px] border-bg',
+            'border-bg absolute right-0 bottom-0 rounded-full border-[2px]',
             statusBg[status],
           )}
           style={{ width: dim * 0.3, height: dim * 0.3 }}

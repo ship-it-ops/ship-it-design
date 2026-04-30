@@ -24,20 +24,20 @@ export const Chip = forwardRef<HTMLSpanElement, ChipProps>(function Chip(
     <span
       ref={ref}
       className={cn(
-        'inline-flex items-center gap-[6px] pl-[10px] pr-1 py-[4px] h-[26px] font-sans text-[12px]',
-        'bg-panel-2 text-text border border-border rounded-full',
+        'inline-flex h-[26px] items-center gap-[6px] py-[4px] pr-1 pl-[10px] font-sans text-[12px]',
+        'bg-panel-2 text-text border-border rounded-full border',
         className,
       )}
       {...props}
     >
-      {icon && <span className="inline-flex text-text-dim text-[10px]">{icon}</span>}
+      {icon && <span className="text-text-dim inline-flex text-[10px]">{icon}</span>}
       {children}
       {removable && (
         <button
           type="button"
           onClick={onRemove}
           aria-label="Remove"
-          className="grid place-items-center h-[18px] w-[18px] rounded-full bg-panel text-text-dim hover:text-text text-[10px] leading-none"
+          className="bg-panel text-text-dim hover:text-text grid h-[18px] w-[18px] place-items-center rounded-full text-[10px] leading-none"
         >
           ×
         </button>

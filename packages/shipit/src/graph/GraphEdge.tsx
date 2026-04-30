@@ -60,13 +60,6 @@ export const GraphEdge = forwardRef<SVGElement, GraphEdgeProps>(function GraphEd
     );
   }
   return (
-    <line
-      ref={ref as React.Ref<SVGLineElement>}
-      x1={x1}
-      y1={y1}
-      x2={x2}
-      y2={y2}
-      {...sharedProps}
-    />
+    <line ref={ref as React.Ref<SVGLineElement>} x1={x1} y1={y1} x2={x2} y2={y2} {...sharedProps} />
   );
 });

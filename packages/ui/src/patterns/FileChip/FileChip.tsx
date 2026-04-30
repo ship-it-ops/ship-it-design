@@ -26,7 +26,10 @@ export interface FileChipProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chi
 function deriveExt(name: string) {
   const dot = name.lastIndexOf('.');
   if (dot < 0) return 'FILE';
-  return name.slice(dot + 1).slice(0, 4).toUpperCase();
+  return name
+    .slice(dot + 1)
+    .slice(0, 4)
+    .toUpperCase();
 }
 
 export const FileChip = forwardRef<HTMLDivElement, FileChipProps>(function FileChip(
@@ -41,14 +44,14 @@ export const FileChip = forwardRef<HTMLDivElement, FileChipProps>(function FileC
     <div
       ref={ref}
       className={cn(
-        'flex max-w-[320px] items-center gap-[10px] rounded-md border border-border bg-panel-2 px-3 py-2',
+        'border-border bg-panel-2 flex max-w-[320px] items-center gap-[10px] rounded-md border px-3 py-2',
         className,
       )}
       {...props}
     >
       <span
         aria-hidden
-        className="grid h-6 w-6 shrink-0 place-items-center rounded-xs border border-border bg-panel font-mono text-[9px] text-text-dim"
+        className="border-border bg-panel text-text-dim grid h-6 w-6 shrink-0 place-items-center rounded-xs border font-mono text-[9px]"
       >
         {icon ?? ext}
       </span>
@@ -56,14 +59,15 @@ export const FileChip = forwardRef<HTMLDivElement, FileChipProps>(function FileC
         <div className="truncate text-[12px] font-medium">{name}</div>
         <div className={cn('font-mono text-[10px]', failed ? 'text-err' : 'text-text-dim')}>
           {size}
-          {showProgress && !isComplete && (
-            <span> · {Math.round(progress)}%</span>
-          )}
+          {showProgress && !isComplete && <span> · {Math.round(progress)}%</span>}
         </div>
         {showProgress && !isComplete && (
-          <div className="mt-1 h-[2px] overflow-hidden rounded-full bg-panel">
+          <div className="bg-panel mt-1 h-[2px] overflow-hidden rounded-full">
             <div
-              className={cn('h-full transition-[width] duration-(--duration-step)', failed ? 'bg-err' : 'bg-accent')}
+              className={cn(
+                'h-full transition-[width] duration-(--duration-step)',
+                failed ? 'bg-err' : 'bg-accent',
+              )}
               style={{ width: `${Math.max(0, Math.min(100, progress))}%` }}
             />
           </div>
@@ -75,8 +79,8 @@ export const FileChip = forwardRef<HTMLDivElement, FileChipProps>(function FileC
           aria-label={`Remove ${name}`}
           onClick={onRemove}
           className={cn(
-            'cursor-pointer border-0 bg-transparent p-0 text-[14px] leading-none text-text-dim',
-            'hover:text-text outline-none focus-visible:ring-[3px] focus-visible:ring-accent-dim rounded-xs',
+            'text-text-dim cursor-pointer border-0 bg-transparent p-0 text-[14px] leading-none',
+            'hover:text-text focus-visible:ring-accent-dim rounded-xs outline-none focus-visible:ring-[3px]',
           )}
         >
           ×

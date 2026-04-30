@@ -18,7 +18,9 @@ describe('Citation', () => {
   });
 
   it('has no a11y violations', async () => {
-    const { container } = render(<Citation index={1} source="team-roster.md" meta="notion · 2d ago" />);
+    const { container } = render(
+      <Citation index={1} source="team-roster.md" meta="notion · 2d ago" />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });

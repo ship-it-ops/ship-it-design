@@ -17,8 +17,7 @@ const inputWrapperStyles = cva(
         lg: 'h-10 px-3 text-[14px] rounded-md',
       },
       tone: {
-        default:
-          'bg-panel border-border focus-within:border-accent focus-within:ring-accent-dim',
+        default: 'bg-panel border-border focus-within:border-accent focus-within:ring-accent-dim',
         error:
           'bg-panel border-err focus-within:border-err focus-within:ring-[oklch(0.55_0.18_30/0.18)]',
       },
@@ -28,7 +27,8 @@ const inputWrapperStyles = cva(
 );
 
 export interface InputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>,
+  extends
+    Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>,
     VariantProps<typeof inputWrapperStyles> {
   /** Element rendered to the left of the input (an `IconGlyph`, `@`, etc.). */
   icon?: ReactNode;
@@ -56,7 +56,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         disabled={disabled}
         aria-invalid={error || undefined}
         className={cn(
-          'flex-1 min-w-0 bg-transparent border-none outline-none font-sans text-text',
+          'text-text min-w-0 flex-1 border-none bg-transparent font-sans outline-none',
           'placeholder:text-text-dim',
           'disabled:cursor-not-allowed',
         )}

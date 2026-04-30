@@ -3,13 +3,7 @@
  * graph cares about — anything else is rendered as `service` by default.
  */
 
-export type EntityType =
-  | 'service'
-  | 'person'
-  | 'document'
-  | 'deployment'
-  | 'incident'
-  | 'ticket';
+export type EntityType = 'service' | 'person' | 'document' | 'deployment' | 'incident' | 'ticket';
 
 export const ENTITY_GLYPH: Record<EntityType, string> = {
   service: '◇',

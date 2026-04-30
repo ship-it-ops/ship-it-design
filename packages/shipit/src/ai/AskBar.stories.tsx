@@ -21,7 +21,7 @@ export const Default: Story = {
     return (
       <div className="flex w-full max-w-[620px] flex-col gap-3">
         <AskBar {...args} onSubmit={setLast} />
-        {last && <div className="text-[12px] text-text-dim">submitted: {last}</div>}
+        {last && <div className="text-text-dim text-[12px]">submitted: {last}</div>}
       </div>
     );
   },

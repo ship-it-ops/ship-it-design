@@ -43,34 +43,30 @@ export const ReasoningBlock = forwardRef<HTMLDivElement, ReasoningBlockProps>(
     });
 
     const inferredCount = stepCount ?? Children.count(children);
-    const heading =
-      label ?? `Reasoning · ${inferredCount} step${inferredCount === 1 ? '' : 's'}`;
+    const heading = label ?? `Reasoning · ${inferredCount} step${inferredCount === 1 ? '' : 's'}`;
 
     return (
       <div
         ref={ref}
-        className={cn(
-          'overflow-hidden rounded-md border border-border bg-panel-2',
-          className,
-        )}
+        className={cn('border-border bg-panel-2 overflow-hidden rounded-md border', className)}
         {...props}
       >
         <button
           type="button"
           aria-expanded={open}
           onClick={() => setOpen(!open)}
-          className="flex w-full cursor-pointer items-center gap-[10px] border-0 bg-transparent px-[14px] py-[10px] text-left outline-none focus-visible:ring-[3px] focus-visible:ring-accent-dim"
+          className="focus-visible:ring-accent-dim flex w-full cursor-pointer items-center gap-[10px] border-0 bg-transparent px-[14px] py-[10px] text-left outline-none focus-visible:ring-[3px]"
         >
-          <span aria-hidden className="font-mono text-[11px] text-text-dim">
+          <span aria-hidden className="text-text-dim font-mono text-[11px]">
             {open ? '▾' : '▸'}
           </span>
           <span className="text-[12px] font-medium">{heading}</span>
           {duration != null && (
-            <span className="ml-auto font-mono text-[10px] text-text-dim">{duration}</span>
+            <span className="text-text-dim ml-auto font-mono text-[10px]">{duration}</span>
           )}
         </button>
         {open && (
-          <div className="border-t border-border px-[14px] py-[10px] pl-9 text-[11px] leading-[1.7] text-text-muted">
+          <div className="border-border text-text-muted border-t px-[14px] py-[10px] pl-9 text-[11px] leading-[1.7]">
             {children}
           </div>
         )}
@@ -84,13 +80,14 @@ export interface ReasoningStepProps extends HTMLAttributes<HTMLDivElement> {
   step: number;
 }
 
-export const ReasoningStep = forwardRef<HTMLDivElement, ReasoningStepProps>(
-  function ReasoningStep({ step, className, children, ...props }, ref) {
-    return (
-      <div ref={ref} className={cn('mb-[2px] last:mb-0', className)} {...props}>
-        <span className="mr-[6px] font-mono text-accent">{step}.</span>
-        {children}
-      </div>
-    );
-  },
-);
+export const ReasoningStep = forwardRef<HTMLDivElement, ReasoningStepProps>(function ReasoningStep(
+  { step, className, children, ...props },
+  ref,
+) {
+  return (
+    <div ref={ref} className={cn('mb-[2px] last:mb-0', className)} {...props}>
+      <span className="text-accent mr-[6px] font-mono">{step}.</span>
+      {children}
+    </div>
+  );
+});

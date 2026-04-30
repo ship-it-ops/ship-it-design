@@ -1,5 +1,12 @@
 import { Button, useControllableState } from '@ship-it/ui';
-import { forwardRef, useRef, type FormEvent, type HTMLAttributes, type KeyboardEvent, type ReactNode } from 'react';
+import {
+  forwardRef,
+  useRef,
+  type FormEvent,
+  type HTMLAttributes,
+  type KeyboardEvent,
+  type ReactNode,
+} from 'react';
 
 import { cn } from '../utils/cn';
 
@@ -13,7 +20,10 @@ import { cn } from '../utils/cn';
  * the "scopes" row — leave empty for an unscoped bar.
  */
 
-export interface AskBarProps extends Omit<HTMLAttributes<HTMLFormElement>, 'onSubmit' | 'onChange'> {
+export interface AskBarProps extends Omit<
+  HTMLAttributes<HTMLFormElement>,
+  'onSubmit' | 'onChange'
+> {
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
@@ -79,14 +89,14 @@ export const AskBar = forwardRef<HTMLFormElement, AskBarProps>(function AskBar(
       onSubmit={handleSubmit}
       style={{ maxWidth }}
       className={cn(
-        'w-full rounded-xl border border-border-strong bg-panel p-[14px] shadow',
-        'focus-within:border-accent focus-within:ring-[3px] focus-within:ring-accent-dim',
+        'border-border-strong bg-panel w-full rounded-xl border p-[14px] shadow',
+        'focus-within:border-accent focus-within:ring-accent-dim focus-within:ring-[3px]',
         className,
       )}
       {...props}
     >
       <div className="mb-[10px] flex items-start gap-[10px]">
-        <span aria-hidden className="text-[16px] text-accent">
+        <span aria-hidden className="text-accent text-[16px]">
           ✦
         </span>
         <textarea
@@ -98,24 +108,29 @@ export const AskBar = forwardRef<HTMLFormElement, AskBarProps>(function AskBar(
           aria-label={placeholder}
           rows={1}
           className={cn(
-            'flex-1 resize-none border-0 bg-transparent text-[14px] leading-[1.5] text-text outline-none',
+            'text-text flex-1 resize-none border-0 bg-transparent text-[14px] leading-[1.5] outline-none',
             'placeholder:text-text-dim',
           )}
         />
         {streaming && (
           <span
             aria-hidden
-            className="mt-[3px] inline-block h-4 w-px bg-accent animate-[ship-pulse_1s_infinite]"
+            className="bg-accent mt-[3px] inline-block h-4 w-px animate-[ship-pulse_1s_infinite]"
           />
         )}
       </div>
       <div className="flex flex-wrap items-center gap-[6px]">
         {children}
         <div className="ml-auto flex items-center gap-2">
-          <span aria-hidden className="font-mono text-[11px] text-text-dim">
+          <span aria-hidden className="text-text-dim font-mono text-[11px]">
             ⌘↵
           </span>
-          <Button type="submit" size="sm" variant="primary" disabled={disabled || !(value ?? '').trim()}>
+          <Button
+            type="submit"
+            size="sm"
+            variant="primary"
+            disabled={disabled || !(value ?? '').trim()}
+          >
             {submitLabel}
           </Button>
         </div>

@@ -2,7 +2,7 @@
 
 ShipIt-AI domain composites — built on `@ship-it/ui`.
 
-This package houses the components that are *specific* to ShipIt's product
+This package houses the components that are _specific_ to ShipIt's product
 surface: the AI conversation primitives (AskBar, CopilotMessage,
 ReasoningBlock, …), knowledge-graph chrome (GraphNode, GraphEdge, …), entity
 displays (EntityBadge, EntityCard, …), and the marketing sections. The

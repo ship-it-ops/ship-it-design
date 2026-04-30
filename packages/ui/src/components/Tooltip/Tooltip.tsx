@@ -24,7 +24,7 @@ export const TooltipContent = forwardRef<HTMLDivElement, RadixTooltip.TooltipCon
           ref={ref}
           sideOffset={sideOffset}
           className={cn(
-            'z-[60] px-2 py-[5px] text-[11px] rounded-sm whitespace-nowrap pointer-events-none',
+            'pointer-events-none z-[60] rounded-sm px-2 py-[5px] text-[11px] whitespace-nowrap',
             'bg-text text-bg',
             'data-[state=delayed-open]:animate-[ship-pop-in_120ms_var(--easing-out)]',
             className,

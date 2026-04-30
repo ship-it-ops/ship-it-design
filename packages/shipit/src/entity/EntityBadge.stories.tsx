@@ -24,9 +24,11 @@ export const Default: Story = {};
 export const AllTypes: Story = {
   render: () => (
     <div className="flex flex-wrap gap-2">
-      {(['service', 'person', 'document', 'deployment', 'incident', 'ticket'] as EntityType[]).map((t) => (
-        <EntityBadge key={t} type={t} />
-      ))}
+      {(['service', 'person', 'document', 'deployment', 'incident', 'ticket'] as EntityType[]).map(
+        (t) => (
+          <EntityBadge key={t} type={t} />
+        ),
+      )}
     </div>
   ),
 };

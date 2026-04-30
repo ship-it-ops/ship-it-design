@@ -33,7 +33,7 @@ export const CopilotMessage = forwardRef<HTMLDivElement, CopilotMessageProps>(
         {isAssistant ? (
           <span
             aria-hidden
-            className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-accent-dim text-[11px] font-semibold text-accent"
+            className="bg-accent-dim text-accent grid h-6 w-6 shrink-0 place-items-center rounded-full text-[11px] font-semibold"
           >
             ✦
           </span>
@@ -44,15 +44,15 @@ export const CopilotMessage = forwardRef<HTMLDivElement, CopilotMessageProps>(
         )}
         <div
           className={cn(
-            'min-w-0 flex-1 rounded-base px-[14px] py-3 text-[13px] leading-[1.6]',
-            isAssistant ? 'bg-panel border border-border' : 'bg-panel-2',
+            'rounded-base min-w-0 flex-1 px-[14px] py-3 text-[13px] leading-[1.6]',
+            isAssistant ? 'bg-panel border-border border' : 'bg-panel-2',
           )}
         >
           {children}
           {streaming && (
             <span
               aria-hidden
-              className="ml-[2px] inline-block h-[14px] w-px bg-accent align-middle animate-[ship-pulse_1s_infinite]"
+              className="bg-accent ml-[2px] inline-block h-[14px] w-px animate-[ship-pulse_1s_infinite] align-middle"
             />
           )}
         </div>

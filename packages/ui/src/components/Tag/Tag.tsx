@@ -25,20 +25,20 @@ export const Tag = forwardRef<HTMLSpanElement, TagProps>(function Tag(
       ref={ref}
       className={cn(
         'inline-flex items-center gap-[6px] px-2 py-[3px] font-sans text-[11px]',
-        'bg-panel-2 text-text border border-border rounded-xs',
+        'bg-panel-2 text-text border-border rounded-xs border',
         className,
       )}
       style={{ height: size }}
       {...props}
     >
-      {icon && <span className="inline-flex text-text-dim">{icon}</span>}
+      {icon && <span className="text-text-dim inline-flex">{icon}</span>}
       {children}
       {onRemove && (
         <button
           type="button"
           onClick={onRemove}
           aria-label="Remove"
-          className="text-text-dim hover:text-text leading-none px-[2px]"
+          className="text-text-dim hover:text-text px-[2px] leading-none"
         >
           ×
         </button>

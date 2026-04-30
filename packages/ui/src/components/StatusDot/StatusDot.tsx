@@ -54,7 +54,7 @@ export const StatusDot = forwardRef<HTMLSpanElement, StatusDotProps>(function St
         )}
         style={{ width: size, height: size }}
       />
-      {label && <span className="text-[12px] text-text-muted">{label}</span>}
+      {label && <span className="text-text-muted text-[12px]">{label}</span>}
     </span>
   );
 });

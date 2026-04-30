@@ -35,7 +35,8 @@ const fillStyles = cva('h-full rounded-full transition-[width] duration-(--durat
 });
 
 export interface ProgressProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'role'>,
+  extends
+    Omit<HTMLAttributes<HTMLDivElement>, 'role'>,
     VariantProps<typeof trackStyles>,
     VariantProps<typeof fillStyles> {
   /** Numeric progress, 0..max. Ignored when `indeterminate`. */
@@ -74,7 +75,7 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(function Progr
         <div className="flex text-[12px]">
           <span className="text-text-muted">{label}</span>
           {showValue && !indeterminate && (
-            <span className="ml-auto font-mono tabular-nums text-text">{display}%</span>
+            <span className="text-text ml-auto font-mono tabular-nums">{display}%</span>
           )}
         </div>
       )}

@@ -14,23 +14,14 @@ describe('EmptyState', () => {
 
   it('renders chips and fires their handlers', async () => {
     const onClick = vi.fn();
-    render(
-      <EmptyState
-        title="Ask anything"
-        chips={[{ label: 'Who owns checkout?', onClick }]}
-      />,
-    );
+    render(<EmptyState title="Ask anything" chips={[{ label: 'Who owns checkout?', onClick }]} />);
     await userEvent.click(screen.getByRole('button', { name: 'Who owns checkout?' }));
     expect(onClick).toHaveBeenCalled();
   });
 
   it('has no a11y violations', async () => {
     const { container } = render(
-      <EmptyState
-        title="No results"
-        description="Try a broader search."
-        icon="⌕"
-      />,
+      <EmptyState title="No results" description="Try a broader search." icon="⌕" />,
     );
     expect(await axe(container)).toHaveNoViolations();
   });

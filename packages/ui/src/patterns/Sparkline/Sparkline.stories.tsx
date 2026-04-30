@@ -29,8 +29,8 @@ export const StatTiles: Story = {
         { label: 'Error rate', value: '0.2%', color: 'var(--color-warn)' },
         { label: 'Entities / day', value: '284', color: 'var(--color-purple)' },
       ].map((s) => (
-        <div key={s.label} className="rounded-base border border-border bg-panel p-3">
-          <div className="font-mono text-[10px] uppercase tracking-[1.2px] text-text-dim">
+        <div key={s.label} className="rounded-base border-border bg-panel border p-3">
+          <div className="text-text-dim font-mono text-[10px] tracking-[1.2px] uppercase">
             {s.label}
           </div>
           <div className="my-1 font-mono text-[20px] font-medium tabular-nums">{s.value}</div>

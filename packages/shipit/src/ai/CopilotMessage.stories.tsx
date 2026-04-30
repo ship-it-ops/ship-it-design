@@ -14,7 +14,11 @@ export default meta;
 type Story = StoryObj<typeof CopilotMessage>;
 
 export const User: Story = {
-  args: { role: 'user', avatar: 'MT', children: "Who owns payment-webhook and what's the rollback plan?" },
+  args: {
+    role: 'user',
+    avatar: 'MT',
+    children: "Who owns payment-webhook and what's the rollback plan?",
+  },
 };
 
 export const Assistant: Story = {
@@ -41,17 +45,19 @@ export const Conversation: Story = {
       </CopilotMessage>
       <CopilotMessage role="assistant">
         <p className="m-0">
-          <strong className="font-medium">Priya Khanna</strong> owns
-          {' '}
-          <code className="rounded-xs bg-panel-2 px-[4px] py-px font-mono text-[11px]">payment-webhook-v2</code>,
-          currently on-call through Friday.
+          <strong className="font-medium">Priya Khanna</strong> owns{' '}
+          <code className="bg-panel-2 rounded-xs px-[4px] py-px font-mono text-[11px]">
+            payment-webhook-v2
+          </code>
+          , currently on-call through Friday.
           <Citation inline index={1} source="team-roster.md" />
         </p>
-        <p className="mt-2 m-0">
-          Rollback is automated — the
-          {' '}
-          <code className="rounded-xs bg-panel-2 px-[4px] py-px font-mono text-[11px]">rollback.yml</code>
-          {' '}runbook reverts to the previous tag and re-queues the last 50 events.
+        <p className="m-0 mt-2">
+          Rollback is automated — the{' '}
+          <code className="bg-panel-2 rounded-xs px-[4px] py-px font-mono text-[11px]">
+            rollback.yml
+          </code>{' '}
+          runbook reverts to the previous tag and re-queues the last 50 events.
           <Citation inline index={2} source="runbook-oncall.md:L42" />
         </p>
       </CopilotMessage>

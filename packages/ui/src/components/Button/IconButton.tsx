@@ -13,9 +13,12 @@ const iconButtonStyles = cva(
     variants: {
       variant: {
         primary: 'bg-accent text-on-accent border border-accent hover:brightness-110',
-        secondary: 'bg-panel-2 text-text-muted border border-border hover:bg-[color-mix(in_oklab,var(--color-panel-2),white_4%)]',
-        ghost: 'bg-transparent text-text-muted border border-transparent hover:bg-panel-2 hover:text-text',
-        outline: 'bg-transparent text-text-muted border border-border-strong hover:bg-panel-2 hover:text-text',
+        secondary:
+          'bg-panel-2 text-text-muted border border-border hover:bg-[color-mix(in_oklab,var(--color-panel-2),white_4%)]',
+        ghost:
+          'bg-transparent text-text-muted border border-transparent hover:bg-panel-2 hover:text-text',
+        outline:
+          'bg-transparent text-text-muted border border-border-strong hover:bg-panel-2 hover:text-text',
       },
       size: {
         sm: 'h-[26px] w-[26px] text-[12px] rounded-[5px]',
@@ -28,7 +31,8 @@ const iconButtonStyles = cva(
 );
 
 export interface IconButtonProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'>,
+  extends
+    Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'>,
     VariantProps<typeof iconButtonStyles> {
   /** The glyph or icon node to render. Pure decoration — set `aria-label` for screen readers. */
   icon: ReactNode;

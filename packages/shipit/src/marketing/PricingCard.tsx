@@ -33,7 +33,7 @@ export const PricingCard = forwardRef<HTMLDivElement, PricingCardProps>(function
     <div
       ref={ref}
       className={cn(
-        'flex flex-col gap-5 rounded-lg border bg-panel p-6',
+        'bg-panel flex flex-col gap-5 rounded-lg border p-6',
         featured ? 'border-accent shadow-lg' : 'border-border',
         className,
       )}
@@ -43,18 +43,20 @@ export const PricingCard = forwardRef<HTMLDivElement, PricingCardProps>(function
         <div className="mb-1 flex items-center gap-2">
           <span className="text-[14px] font-medium">{tier}</span>
           {featured && (
-            <span className="rounded-full bg-accent-dim px-[6px] py-[1px] font-mono text-[10px] text-accent">
+            <span className="bg-accent-dim text-accent rounded-full px-[6px] py-[1px] font-mono text-[10px]">
               recommended
             </span>
           )}
         </div>
-        {description && <div className="text-[12px] text-text-muted">{description}</div>}
+        {description && <div className="text-text-muted text-[12px]">{description}</div>}
       </div>
       <div className="font-mono text-[28px] font-medium tracking-[-0.5px]">{price}</div>
-      <ul className="flex flex-col gap-2 m-0 p-0 list-none">
+      <ul className="m-0 flex list-none flex-col gap-2 p-0">
         {features.map((f, i) => (
           <li key={i} className="flex items-start gap-2 text-[13px]">
-            <span aria-hidden className="text-accent">✓</span>
+            <span aria-hidden className="text-accent">
+              ✓
+            </span>
             <span>{f}</span>
           </li>
         ))}

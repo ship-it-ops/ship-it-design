@@ -29,7 +29,7 @@ fonts/                        ← (Geist is loaded from Google Fonts CDN)
 
 ## CONTENT FUNDAMENTALS
 
-**Voice.** Confident, a little cheeky, never corporate. First-person plural for ShipIt itself (*"We poked around while you weren't watching."*). Second-person for the user (*"Your graph is alive."*). Short sentences. Active verbs.
+**Voice.** Confident, a little cheeky, never corporate. First-person plural for ShipIt itself (_"We poked around while you weren't watching."_). Second-person for the user (_"Your graph is alive."_). Short sentences. Active verbs.
 
 **Casing.** Sentence case for headlines, titles, buttons. UPPERCASE (with letter-spacing) for eyebrow labels and section headers ("STEP ONE · WORKSPACE"). All-lowercase for UI chrome: `⌘K`, `skip setup →`, `02 / 08`, `fix →`. Never title case.
 
@@ -38,6 +38,7 @@ fonts/                        ← (Geist is loaded from Google Fonts CDN)
 **Punctuation.** Em-dashes welcome. Middle dot (·) as a separator. Arrows (→ ↗ ←) as affordances and links. Periods at the end of full sentences, not fragments.
 
 **What we don't say.**
+
 - ❌ "Get started" → ✅ "Let's go."
 - ❌ "Welcome to ShipIt!" → ✅ "Let's build your graph."
 - ❌ "Something went wrong." → ✅ "We lost the thread. Retry?"
@@ -46,11 +47,12 @@ fonts/                        ← (Geist is loaded from Google Fonts CDN)
 **Emoji.** None. We use unicode glyphs (◆ ✦ ◎ ⌁ → ↗) as a visual system. One exception: the brand mark itself is the diamond `◆`.
 
 **Examples from the prototype.**
-- *"Let's give your graph a home."*
-- *"Plug in what you have. All of it."*
-- *"Eight seconds. Your team couldn't have done this by hand in a month."*
-- *"3 things your team didn't know."*
-- *"That's it. Go look."*
+
+- _"Let's give your graph a home."_
+- _"Plug in what you have. All of it."_
+- _"Eight seconds. Your team couldn't have done this by hand in a month."_
+- _"3 things your team didn't know."_
+- _"That's it. Go look."_
 
 ---
 

@@ -27,8 +27,11 @@ export const Stack: Story = {
 
 export const Inline: Story = {
   render: () => (
-    <p className="text-[13px] text-text">
-      Priya owns <code className="rounded-xs bg-panel-2 px-[4px] py-px font-mono text-[11px]">payment-webhook-v2</code>
+    <p className="text-text text-[13px]">
+      Priya owns{' '}
+      <code className="bg-panel-2 rounded-xs px-[4px] py-px font-mono text-[11px]">
+        payment-webhook-v2
+      </code>
       <Citation inline index={1} source="team-roster.md" />, currently on-call through Friday
       <Citation inline index={2} source="pagerduty.schedules" />.
     </p>

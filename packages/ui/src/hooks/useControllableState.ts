@@ -22,7 +22,10 @@ export function useControllableState<T>({
   value: controlledValue,
   defaultValue,
   onChange,
-}: UseControllableStateProps<T>): [T | undefined, (next: T | ((prev: T | undefined) => T)) => void] {
+}: UseControllableStateProps<T>): [
+  T | undefined,
+  (next: T | ((prev: T | undefined) => T)) => void,
+] {
   const [uncontrolledValue, setUncontrolledValue] = useState<T | undefined>(defaultValue);
   const isControlled = controlledValue !== undefined;
   const value = isControlled ? controlledValue : uncontrolledValue;

@@ -7,7 +7,13 @@ describe('PathOverlay', () => {
   it('renders a polyline for valid paths', () => {
     const { container } = render(
       <svg>
-        <PathOverlay points={[{ x: 0, y: 0 }, { x: 10, y: 10 }, { x: 20, y: 5 }]} />
+        <PathOverlay
+          points={[
+            { x: 0, y: 0 },
+            { x: 10, y: 10 },
+            { x: 20, y: 5 },
+          ]}
+        />
       </svg>,
     );
     const lines = container.querySelectorAll('polyline');
@@ -26,7 +32,13 @@ describe('PathOverlay', () => {
   it('skips the halo when halo=false', () => {
     const { container } = render(
       <svg>
-        <PathOverlay points={[{ x: 0, y: 0 }, { x: 10, y: 10 }]} halo={false} />
+        <PathOverlay
+          points={[
+            { x: 0, y: 0 },
+            { x: 10, y: 10 },
+          ]}
+          halo={false}
+        />
       </svg>,
     );
     expect(container.querySelectorAll('polyline').length).toBe(1);

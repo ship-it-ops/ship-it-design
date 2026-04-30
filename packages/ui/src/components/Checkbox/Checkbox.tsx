@@ -3,8 +3,7 @@ import { forwardRef, useId, type ReactNode } from 'react';
 
 import { cn } from '../../utils/cn';
 
-export interface CheckboxProps
-  extends Omit<RadixCheckbox.CheckboxProps, 'asChild' | 'children'> {
+export interface CheckboxProps extends Omit<RadixCheckbox.CheckboxProps, 'asChild' | 'children'> {
   /** Optional inline label rendered to the right of the box. */
   label?: ReactNode;
 }
@@ -24,7 +23,7 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(function Ch
     <span
       className={cn(
         'inline-flex items-center gap-2 select-none',
-        props.disabled && 'opacity-40 cursor-not-allowed',
+        props.disabled && 'cursor-not-allowed opacity-40',
         className,
       )}
     >
@@ -32,12 +31,12 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(function Ch
         ref={ref}
         id={id}
         className={cn(
-          'h-4 w-4 grid place-items-center rounded-xs',
-          'bg-panel border border-border-strong',
+          'grid h-4 w-4 place-items-center rounded-xs',
+          'bg-panel border-border-strong border',
           'data-[state=checked]:bg-accent data-[state=checked]:border-accent',
           'data-[state=indeterminate]:bg-accent data-[state=indeterminate]:border-accent',
           'transition-[background,border-color] duration-(--duration-micro)',
-          'outline-none focus-visible:ring-[3px] focus-visible:ring-accent-dim',
+          'focus-visible:ring-accent-dim outline-none focus-visible:ring-[3px]',
         )}
         {...props}
       >
@@ -46,7 +45,7 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(function Ch
         </RadixCheckbox.Indicator>
       </RadixCheckbox.Root>
       {label && (
-        <label htmlFor={id} className="text-[13px] cursor-pointer">
+        <label htmlFor={id} className="cursor-pointer text-[13px]">
           {label}
         </label>
       )}

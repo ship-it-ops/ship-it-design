@@ -54,7 +54,7 @@ export const GraphNode = forwardRef<HTMLDivElement, GraphNodeProps>(function Gra
       {...props}
     >
       <div
-        className="grid place-items-center rounded-[14px] border-[1.5px] bg-panel transition-all duration-(--duration-micro)"
+        className="bg-panel grid place-items-center rounded-[14px] border-[1.5px] transition-all duration-(--duration-micro)"
         style={{
           width: size,
           height: size,
@@ -69,7 +69,7 @@ export const GraphNode = forwardRef<HTMLDivElement, GraphNodeProps>(function Gra
       >
         {glyph ?? ENTITY_GLYPH[type]}
       </div>
-      {label && <span className="font-mono text-[10px] text-text-dim">{label}</span>}
+      {label && <span className="text-text-dim font-mono text-[10px]">{label}</span>}
     </div>
   );
 });

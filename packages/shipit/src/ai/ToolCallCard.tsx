@@ -30,10 +30,7 @@ export const ToolCallCard = forwardRef<HTMLDivElement, ToolCallCardProps>(functi
   return (
     <div
       ref={ref}
-      className={cn(
-        'rounded-md border border-border bg-panel px-[14px] py-[10px]',
-        className,
-      )}
+      className={cn('border-border bg-panel rounded-md border px-[14px] py-[10px]', className)}
       {...props}
     >
       <div className="flex items-center gap-[10px]">
@@ -41,13 +38,13 @@ export const ToolCallCard = forwardRef<HTMLDivElement, ToolCallCardProps>(functi
           TOOL
         </Badge>
         <span className="font-mono text-[12px] font-medium">{name}</span>
-        <span className="ml-auto inline-flex items-center font-mono text-[10px] text-text-dim">
+        <span className="text-text-dim ml-auto inline-flex items-center font-mono text-[10px]">
           {running ? (
             <>
               running
               <span
                 aria-hidden
-                className="ml-1 inline-block h-3 w-px bg-accent align-middle animate-[ship-pulse_1s_infinite]"
+                className="bg-accent ml-1 inline-block h-3 w-px animate-[ship-pulse_1s_infinite] align-middle"
               />
             </>
           ) : (
@@ -56,7 +53,7 @@ export const ToolCallCard = forwardRef<HTMLDivElement, ToolCallCardProps>(functi
         </span>
       </div>
       {children && (
-        <pre className="mt-[6px] m-0 whitespace-pre-wrap break-words font-mono text-[11px] leading-[1.6] text-text-muted">
+        <pre className="text-text-muted m-0 mt-[6px] font-mono text-[11px] leading-[1.6] break-words whitespace-pre-wrap">
           {children}
         </pre>
       )}

@@ -47,7 +47,7 @@ export const GraphMinimap = forwardRef<HTMLDivElement, GraphMinimapProps>(functi
       role="img"
       aria-label="Graph minimap"
       className={cn(
-        'relative rounded-md border border-border bg-panel/85 backdrop-blur-[8px] p-1',
+        'border-border bg-panel/85 relative rounded-md border p-1 backdrop-blur-[8px]',
         className,
       )}
       style={{ width, height }}
@@ -69,7 +69,7 @@ export const GraphMinimap = forwardRef<HTMLDivElement, GraphMinimapProps>(functi
         {viewport && (
           <span
             aria-hidden
-            className="absolute rounded-[2px] border border-accent"
+            className="border-accent absolute rounded-[2px] border"
             style={{
               left: `${viewport.x * 100}%`,
               top: `${viewport.y * 100}%`,

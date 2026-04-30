@@ -5,7 +5,13 @@ import { describe, expect, it } from 'vitest';
 import { Footer } from './Footer';
 
 const columns = [
-  { heading: 'Product', links: [{ label: 'Graph', href: '/graph' }, { label: 'Ask', href: '/ask' }] },
+  {
+    heading: 'Product',
+    links: [
+      { label: 'Graph', href: '/graph' },
+      { label: 'Ask', href: '/ask' },
+    ],
+  },
   { heading: 'Company', links: [{ label: 'About', href: '/about' }] },
 ];
 

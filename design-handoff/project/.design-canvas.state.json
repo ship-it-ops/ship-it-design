@@ -1,1 +1,6 @@
-{"sections":{"joiner":{"title":"Invited teammate · onboarding"},"admin":{"title":"First-time admin · onboarding"}}}
+{
+  "sections": {
+    "joiner": { "title": "Invited teammate · onboarding" },
+    "admin": { "title": "First-time admin · onboarding" }
+  }
+}

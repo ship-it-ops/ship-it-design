@@ -19,8 +19,12 @@ export const Default: Story = {
     description: 'Free for 14 days · no credit card · 5-minute setup.',
     actions: (
       <>
-        <Button variant="primary" size="lg">Start free</Button>
-        <Button variant="ghost" size="lg" trailing="→">Read the docs</Button>
+        <Button variant="primary" size="lg">
+          Start free
+        </Button>
+        <Button variant="ghost" size="lg" trailing="→">
+          Read the docs
+        </Button>
       </>
     ),
   },

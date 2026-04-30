@@ -6,31 +6,59 @@ on:
     branches: [main]
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# Granted to all jobs; some pipelines (snapshot, release, attestations) need
+# `id-token: write` and `contents: read` is the minimum for checkout.
+permissions:
+  contents: read
+
+env:
+  # Tell turbo to write its local cache somewhere actions/cache can pick up.
+  TURBO_TELEMETRY_DISABLED: '1'
+
 jobs:
-  verify:
-    name: Lint, typecheck, test, build
+  # ── Stage 1: linters that don't need a build ──────────────────────────────
+  format:
+    name: Format
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: pnpm format:check
 
-      - uses: pnpm/action-setup@v4
-
-      - uses: actions/setup-node@v4
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - uses: actions/cache@v4
         with:
-          node-version-file: .nvmrc
-          cache: pnpm
+          path: .turbo
+          key: turbo-lint-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-lint-${{ runner.os }}-
+      - run: pnpm lint
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+  # ── Stage 2: workspace verification (typecheck + test + build) ────────────
+  # Single job because turbo already parallelizes within a job and the
+  # tasks share `^build` dependencies; splitting would force re-installs
+  # and thrash the dependency cache.
+  verify:
+    name: Typecheck · Test · Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
 
-      - name: Format check
-        run: pnpm format:check
-
-      - name: Lint
-        run: pnpm lint
+      - uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: turbo-verify-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-verify-${{ runner.os }}-
 
       - name: Typecheck
         run: pnpm typecheck
@@ -40,3 +68,25 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+      # Surface the static Storybook from CI so the docs are inspectable on a PR.
+      - name: Upload Storybook artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: storybook-static
+          path: apps/docs/storybook-static
+          retention-days: 14
+          if-no-files-found: error
+
+      # Ship the built lib bundles too — handy when reviewing dist-shape diffs.
+      - name: Upload package dist artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-dists
+          path: |
+            packages/tokens/dist
+            packages/icons/dist
+            packages/ui/dist
+            packages/shipit/dist
+          retention-days: 14
+          if-no-files-found: error

@@ -71,18 +71,17 @@ export const ConfidenceIndicator = forwardRef<HTMLDivElement, ConfidenceIndicato
         className={cn('inline-flex items-center gap-[10px] text-[11px]', className)}
         {...props}
       >
-        <span
-          aria-hidden
-          style={{ width }}
-          className="h-1 overflow-hidden rounded-full bg-panel-2"
-        >
+        <span aria-hidden style={{ width }} className="bg-panel-2 h-1 overflow-hidden rounded-full">
           <span
-            className={cn('block h-full rounded-full transition-[width] duration-(--duration-step)', tierBarClass[tier])}
+            className={cn(
+              'block h-full rounded-full transition-[width] duration-(--duration-step)',
+              tierBarClass[tier],
+            )}
             style={{ width: `${pct}%` }}
           />
         </span>
         {!hideValue && (
-          <span className="min-w-[44px] font-mono tabular-nums text-text">{pct.toFixed(1)}%</span>
+          <span className="text-text min-w-[44px] font-mono tabular-nums">{pct.toFixed(1)}%</span>
         )}
         <span className={tierTextClass[tier]}>{display}</span>
       </div>

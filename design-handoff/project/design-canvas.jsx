@@ -1,4 +1,3 @@
-
 // DesignCanvas.jsx — Figma-ish design canvas wrapper
 // Warm gray grid bg + Sections + Artboards + PostIt notes.
 // No assets, no deps.
@@ -44,7 +43,8 @@ function DesignCanvas({ children, minScale = 0.1, maxScale = 8, style = {} }) {
 
     const zoomAt = (cx, cy, factor) => {
       const r = vp.getBoundingClientRect();
-      const px = cx - r.left, py = cy - r.top;
+      const px = cx - r.left,
+        py = cy - r.top;
       const t = tf.current;
       const next = Math.min(maxScale, Math.max(minScale, t.scale * factor));
       const k = next / t.scale;
@@ -88,12 +88,19 @@ function DesignCanvas({ children, minScale = 0.1, maxScale = 8, style = {} }) {
     // onWheel drop those entirely so they neither zoom nor pan.
     let gsBase = 1;
     let isGesturing = false;
-    const onGestureStart = (e) => { e.preventDefault(); isGesturing = true; gsBase = tf.current.scale; };
+    const onGestureStart = (e) => {
+      e.preventDefault();
+      isGesturing = true;
+      gsBase = tf.current.scale;
+    };
     const onGestureChange = (e) => {
       e.preventDefault();
       zoomAt(e.clientX, e.clientY, (gsBase * e.scale) / tf.current.scale);
     };
-    const onGestureEnd = (e) => { e.preventDefault(); isGesturing = false; };
+    const onGestureEnd = (e) => {
+      e.preventDefault();
+      isGesturing = false;
+    };
 
     // Drag-pan: middle button anywhere, or primary button starting on the
     // canvas background (not inside an artboard).
@@ -110,7 +117,8 @@ function DesignCanvas({ children, minScale = 0.1, maxScale = 8, style = {} }) {
       if (!drag || e.pointerId !== drag.id) return;
       tf.current.x += e.clientX - drag.lx;
       tf.current.y += e.clientY - drag.ly;
-      drag.lx = e.clientX; drag.ly = e.clientY;
+      drag.lx = e.clientX;
+      drag.ly = e.clientY;
       apply();
     };
     const onPointerUp = (e) => {
@@ -146,7 +154,8 @@ function DesignCanvas({ children, minScale = 0.1, maxScale = 8, style = {} }) {
       ref={vpRef}
       className="design-canvas"
       style={{
-        height: '100vh', width: '100vw',
+        height: '100vh',
+        width: '100vw',
         background: DC.bg,
         overflow: 'hidden',
         overscrollBehavior: 'none',
@@ -160,10 +169,13 @@ function DesignCanvas({ children, minScale = 0.1, maxScale = 8, style = {} }) {
       <div
         ref={worldRef}
         style={{
-          position: 'absolute', top: 0, left: 0,
+          position: 'absolute',
+          top: 0,
+          left: 0,
           transformOrigin: '0 0',
           willChange: 'transform',
-          width: 'max-content', minWidth: '100%',
+          width: 'max-content',
+          minWidth: '100%',
           minHeight: '100%',
           padding: '60px 0 80px',
           backgroundImage: gridSvg,
@@ -183,21 +195,39 @@ function DCSection({ title, subtitle, children, gap = 48 }) {
   return (
     <div style={{ marginBottom: 80, position: 'relative' }}>
       <div style={{ padding: '0 60px 36px' }}>
-        <div style={{
-          fontSize: 22, fontWeight: 600, color: DC.title,
-          letterSpacing: -0.3, marginBottom: 4,
-        }}>{title}</div>
+        <div
+          style={{
+            fontSize: 22,
+            fontWeight: 600,
+            color: DC.title,
+            letterSpacing: -0.3,
+            marginBottom: 4,
+          }}
+        >
+          {title}
+        </div>
         {subtitle && (
-          <div style={{
-            fontSize: 14, fontWeight: 400, color: DC.subtitle,
-          }}>{subtitle}</div>
+          <div
+            style={{
+              fontSize: 14,
+              fontWeight: 400,
+              color: DC.subtitle,
+            }}
+          >
+            {subtitle}
+          </div>
         )}
       </div>
       {/* h-stack — clips offscreen, never wraps */}
-      <div style={{
-        display: 'flex', gap, padding: '0 60px',
-        alignItems: 'flex-start', width: 'max-content',
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          gap,
+          padding: '0 60px',
+          alignItems: 'flex-start',
+          width: 'max-content',
+        }}
+      >
         {children}
       </div>
     </div>
@@ -211,21 +241,32 @@ function DCArtboard({ label, children, width, height, style = {} }) {
   return (
     <div style={{ position: 'relative', flexShrink: 0 }}>
       {label && (
-        <div style={{
-          position: 'absolute', bottom: '100%', left: 0,
-          paddingBottom: 8,
-          fontSize: 12, fontWeight: 500, color: DC.label,
-          whiteSpace: 'nowrap',
-        }}>{label}</div>
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '100%',
+            left: 0,
+            paddingBottom: 8,
+            fontSize: 12,
+            fontWeight: 500,
+            color: DC.label,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {label}
+        </div>
       )}
-      <div style={{
-        borderRadius: 2,
-        boxShadow: '0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06)',
-        overflow: 'hidden',
-        width, height,
-        background: '#fff',
-        ...style,
-      }}>
+      <div
+        style={{
+          borderRadius: 2,
+          boxShadow: '0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06)',
+          overflow: 'hidden',
+          width,
+          height,
+          background: '#fff',
+          ...style,
+        }}
+      >
         {children}
       </div>
     </div>
@@ -237,17 +278,28 @@ function DCArtboard({ label, children, width, height, style = {} }) {
 // ─────────────────────────────────────────────────────────────
 function DCPostIt({ children, top, left, right, bottom, rotate = -2, width = 180 }) {
   return (
-    <div style={{
-      position: 'absolute', top, left, right, bottom, width,
-      background: DC.postitBg, padding: '14px 16px',
-      fontFamily: '"Comic Sans MS", "Marker Felt", "Segoe Print", cursive',
-      fontSize: 14, lineHeight: 1.4, color: DC.postitText,
-      boxShadow: '0 2px 8px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08)',
-      transform: `rotate(${rotate}deg)`,
-      zIndex: 5,
-    }}>{children}</div>
+    <div
+      style={{
+        position: 'absolute',
+        top,
+        left,
+        right,
+        bottom,
+        width,
+        background: DC.postitBg,
+        padding: '14px 16px',
+        fontFamily: '"Comic Sans MS", "Marker Felt", "Segoe Print", cursive',
+        fontSize: 14,
+        lineHeight: 1.4,
+        color: DC.postitText,
+        boxShadow: '0 2px 8px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08)',
+        transform: `rotate(${rotate}deg)`,
+        zIndex: 5,
+      }}
+    >
+      {children}
+    </div>
   );
 }
 
 Object.assign(window, { DesignCanvas, DCSection, DCArtboard, DCPostIt });
-

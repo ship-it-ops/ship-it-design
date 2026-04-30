@@ -52,10 +52,24 @@ export const Warn: Story = {
 export const Stack: Story = {
   render: () => (
     <div>
-      <Banner variant="warn" action={<a href="#" className="underline">Upgrade →</a>}>
+      <Banner
+        variant="warn"
+        action={
+          <a href="#" className="underline">
+            Upgrade →
+          </a>
+        }
+      >
         Trial expires in <strong>4 days</strong>.
       </Banner>
-      <Banner variant="info" action={<a href="#" className="underline">What&apos;s new →</a>}>
+      <Banner
+        variant="info"
+        action={
+          <a href="#" className="underline">
+            What&apos;s new →
+          </a>
+        }
+      >
         New: <strong>incident pinning</strong> in the graph.
       </Banner>
     </div>

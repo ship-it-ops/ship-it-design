@@ -27,10 +27,18 @@ export const Default: Story = {
         ]}
       />
       <g fill="var(--color-text-muted)" fontFamily="var(--font-mono)" fontSize={10}>
-        <text x={20} y={170}>api-gw</text>
-        <text x={140} y={80}>payment-wh</text>
-        <text x={280} y={160}>ledger</text>
-        <text x={440} y={50}>notify</text>
+        <text x={20} y={170}>
+          api-gw
+        </text>
+        <text x={140} y={80}>
+          payment-wh
+        </text>
+        <text x={280} y={160}>
+          ledger
+        </text>
+        <text x={440} y={50}>
+          notify
+        </text>
       </g>
     </svg>
   ),

@@ -30,15 +30,7 @@ export interface FieldProps extends Omit<HTMLAttributes<HTMLDivElement>, 'childr
  *     {(p) => <Input type="email" placeholder="me@org.com" {...p} />}
  *   </Field>
  */
-export function Field({
-  label,
-  hint,
-  error,
-  required,
-  className,
-  children,
-  ...props
-}: FieldProps) {
+export function Field({ label, hint, error, required, className, children, ...props }: FieldProps) {
   const reactId = useId();
   const id = `field-${reactId}`;
   const hintId = hint && !error ? `${id}-hint` : undefined;
@@ -48,9 +40,9 @@ export function Field({
   return (
     <div className={cn('flex flex-col gap-[6px]', className)} {...props}>
       {label && (
-        <label htmlFor={id} className="text-[11px] font-medium text-text-muted">
+        <label htmlFor={id} className="text-text-muted text-[11px] font-medium">
           {label}
-          {required && <span className="ml-1 text-err">*</span>}
+          {required && <span className="text-err ml-1">*</span>}
         </label>
       )}
       {children({
@@ -59,12 +51,12 @@ export function Field({
         'aria-invalid': error ? true : undefined,
       })}
       {hint && !error && (
-        <div id={hintId} className="text-[11px] text-text-dim">
+        <div id={hintId} className="text-text-dim text-[11px]">
           {hint}
         </div>
       )}
       {error && (
-        <div id={errorId} className="text-[11px] text-err">
+        <div id={errorId} className="text-err text-[11px]">
           {error}
         </div>
       )}

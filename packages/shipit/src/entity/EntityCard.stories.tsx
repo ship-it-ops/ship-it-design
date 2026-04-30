@@ -26,7 +26,11 @@ export const Service: Story = {
       { label: 'sla', value: '99.9%' },
       { label: 'p99', value: '94ms' },
     ],
-    actions: <Button size="sm" variant="primary">Ask about this ✦</Button>,
+    actions: (
+      <Button size="sm" variant="primary">
+        Ask about this ✦
+      </Button>
+    ),
   },
 };
 

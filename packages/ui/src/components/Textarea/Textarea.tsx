@@ -23,8 +23,7 @@ const textareaStyles = cva(
 );
 
 export interface TextareaProps
-  extends TextareaHTMLAttributes<HTMLTextAreaElement>,
-    VariantProps<typeof textareaStyles> {
+  extends TextareaHTMLAttributes<HTMLTextAreaElement>, VariantProps<typeof textareaStyles> {
   /** Error tone shortcut. Sets `aria-invalid` and the error border. */
   error?: boolean;
 }

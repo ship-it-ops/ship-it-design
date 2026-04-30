@@ -5,8 +5,18 @@ import { describe, expect, it } from 'vitest';
 import { Timeline, TimelineItem } from './Timeline';
 
 const events = [
-  { title: 'Connector added', description: 'github · 4 repos', time: 'just now', tone: 'accent' as const },
-  { title: 'Schema extracted', description: '142 entity types', time: '4m ago', tone: 'ok' as const },
+  {
+    title: 'Connector added',
+    description: 'github · 4 repos',
+    time: 'just now',
+    tone: 'accent' as const,
+  },
+  {
+    title: 'Schema extracted',
+    description: '142 entity types',
+    time: '4m ago',
+    tone: 'ok' as const,
+  },
 ];
 
 describe('Timeline', () => {

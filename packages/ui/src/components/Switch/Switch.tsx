@@ -31,7 +31,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(function Switch
     <span
       className={cn(
         'inline-flex items-center gap-2 select-none',
-        props.disabled && 'opacity-40 cursor-not-allowed',
+        props.disabled && 'cursor-not-allowed opacity-40',
         className,
       )}
     >
@@ -39,9 +39,9 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(function Switch
         ref={ref}
         id={id}
         className={cn(
-          'relative inline-flex shrink-0 rounded-full border transition-colors duration-(--duration-micro) cursor-pointer',
+          'relative inline-flex shrink-0 cursor-pointer rounded-full border transition-colors duration-(--duration-micro)',
           'bg-panel-2 border-border data-[state=checked]:bg-accent data-[state=checked]:border-accent',
-          'outline-none focus-visible:ring-[3px] focus-visible:ring-accent-dim',
+          'focus-visible:ring-accent-dim outline-none focus-visible:ring-[3px]',
           'disabled:cursor-not-allowed',
           trackClasses[size],
         )}
@@ -49,14 +49,14 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(function Switch
       >
         <RadixSwitch.Thumb
           className={cn(
-            'absolute left-[1px] top-1/2 -translate-y-1/2 rounded-full bg-text shadow-sm',
+            'bg-text absolute top-1/2 left-[1px] -translate-y-1/2 rounded-full shadow-sm',
             'data-[state=checked]:bg-on-accent transition-transform duration-(--duration-micro)',
             thumbClasses[size],
           )}
         />
       </RadixSwitch.Root>
       {label && (
-        <label htmlFor={id} className="text-[13px] cursor-pointer">
+        <label htmlFor={id} className="cursor-pointer text-[13px]">
           {label}
         </label>
       )}

@@ -1,4 +1,14 @@
-import { forwardRef, useEffect, useId, useMemo, useRef, useState, type FocusEvent, type KeyboardEvent, type ReactNode } from 'react';
+import {
+  forwardRef,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  type FocusEvent,
+  type KeyboardEvent,
+  type ReactNode,
+} from 'react';
 
 import { useControllableState } from '../../hooks/useControllableState';
 import { useKeyboardList } from '../../hooks/useKeyboardList';
@@ -189,7 +199,9 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(function Com
         aria-autocomplete="list"
         aria-expanded={open}
         aria-controls={listboxId}
-        aria-activedescendant={open && filtered.length > 0 ? `${listboxId}-option-${cursor}` : undefined}
+        aria-activedescendant={
+          open && filtered.length > 0 ? `${listboxId}-option-${cursor}` : undefined
+        }
         aria-label={ariaLabel}
         disabled={disabled}
         placeholder={placeholder}
@@ -203,10 +215,10 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(function Com
         onBlur={handleBlur}
         onKeyDown={handleKey}
         className={cn(
-          'block w-full rounded-md border border-border bg-panel px-3 py-2 text-[13px] text-text outline-none',
+          'border-border bg-panel text-text block w-full rounded-md border px-3 py-2 text-[13px] outline-none',
           'transition-[border,box-shadow] duration-(--duration-micro)',
           'placeholder:text-text-dim',
-          'focus-visible:border-accent focus-visible:ring-[3px] focus-visible:ring-accent-dim',
+          'focus-visible:border-accent focus-visible:ring-accent-dim focus-visible:ring-[3px]',
           'disabled:cursor-not-allowed disabled:opacity-40',
         )}
       />
@@ -216,12 +228,12 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(function Com
           role="listbox"
           aria-label={ariaLabel ?? 'Suggestions'}
           className={cn(
-            'absolute left-0 right-0 top-full z-30 mt-1 max-h-[220px] overflow-auto',
-            'rounded-md border border-border bg-panel p-1 shadow-lg',
+            'absolute top-full right-0 left-0 z-30 mt-1 max-h-[220px] overflow-auto',
+            'border-border bg-panel rounded-md border p-1 shadow-lg',
           )}
         >
           {filtered.length === 0 ? (
-            <li className="px-2 py-3 text-center text-[12px] text-text-dim" role="presentation">
+            <li className="text-text-dim px-2 py-3 text-center text-[12px]" role="presentation">
               {emptyState ?? 'No matches'}
             </li>
           ) : (
@@ -240,14 +252,14 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(function Com
                     if (!option.disabled) commit(option);
                   }}
                   className={cn(
-                    'cursor-pointer rounded-sm px-[10px] py-2 text-[12px] text-text',
+                    'text-text cursor-pointer rounded-sm px-[10px] py-2 text-[12px]',
                     isActive && 'bg-accent-dim text-accent',
-                    option.disabled && 'opacity-40 pointer-events-none',
+                    option.disabled && 'pointer-events-none opacity-40',
                   )}
                 >
                   <div>{option.label}</div>
                   {option.description && (
-                    <div className="text-[11px] text-text-dim">{option.description}</div>
+                    <div className="text-text-dim text-[11px]">{option.description}</div>
                   )}
                 </li>
               );

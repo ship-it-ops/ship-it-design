@@ -20,6 +20,10 @@
     "src/styles",
     "README.md"
   ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "sideEffects": [
     "**/*.css"
   ],

@@ -37,7 +37,7 @@ export const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(function
       {rest > 0 && (
         <span
           aria-label={`+${rest} more`}
-          className="grid place-items-center rounded-full bg-panel-2 border border-border text-text-muted font-mono"
+          className="bg-panel-2 border-border text-text-muted grid place-items-center rounded-full border font-mono"
           style={{
             width: dim,
             height: dim,

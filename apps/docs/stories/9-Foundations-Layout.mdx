@@ -8,15 +8,15 @@ A few opinionated defaults plus the spacing scale carry most layouts.
 
 ## Container widths
 
-| Surface | Max width |
-|---|---|
-| Marketing hero | 680px |
-| Marketing content section | 1080px |
-| App body, single column | 720px (reading) / 1080px (data) |
-| App body, split pane | 100% (driven by sidebar / detail ratios) |
-| Modal / Dialog | 460px (default) — adjustable via `width` prop |
-| CommandPalette | 540px |
-| Drawer / Sheet | per-context, default 420px right or 100% bottom |
+| Surface                   | Max width                                       |
+| ------------------------- | ----------------------------------------------- |
+| Marketing hero            | 680px                                           |
+| Marketing content section | 1080px                                          |
+| App body, single column   | 720px (reading) / 1080px (data)                 |
+| App body, split pane      | 100% (driven by sidebar / detail ratios)        |
+| Modal / Dialog            | 460px (default) — adjustable via `width` prop   |
+| CommandPalette            | 540px                                           |
+| Drawer / Sheet            | per-context, default 420px right or 100% bottom |
 
 ## 12-column grid (when needed)
 
@@ -46,7 +46,7 @@ Optional Inspector dock on the right.
     <Topbar />
     <main className="flex-1 overflow-auto">…</main>
   </div>
-  <Inspector />  {/* optional */}
+  <Inspector /> {/* optional */}
 </div>
 ```
 
@@ -63,18 +63,18 @@ the section root and component-level CSS hooks.
 quiet rule; `border-border-strong` is the rule that's earned a moment of
 emphasis (selection, primary action, focused panel). Outline rings — the
 selected state on cards, the focus ring on inputs — use 2–3px and live
-*outside* the border via `outline` or `box-shadow`.
+_outside_ the border via `outline` or `box-shadow`.
 
 ## Z-index
 
 The system reserves a tight ladder so consumers can layer reliably:
 
-| Layer | z |
-|---|---|
-| Sticky banner / topbar | 30 |
-| Drawer overlay | 40 |
-| Popover / DropdownMenu / Tooltip | 40 |
-| Dialog / AlertDialog overlay | 50 |
-| Dialog content | 51 |
-| Tooltip on top of dialog | 60 |
-| Toast viewport | 70 |
+| Layer                            | z   |
+| -------------------------------- | --- |
+| Sticky banner / topbar           | 30  |
+| Drawer overlay                   | 40  |
+| Popover / DropdownMenu / Tooltip | 40  |
+| Dialog / AlertDialog overlay     | 50  |
+| Dialog content                   | 51  |
+| Tooltip on top of dialog         | 60  |
+| Toast viewport                   | 70  |

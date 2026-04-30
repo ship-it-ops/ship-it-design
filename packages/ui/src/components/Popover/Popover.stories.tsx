@@ -17,9 +17,9 @@ export const Basic: Story = {
         </Button>
       </PopoverTrigger>
       <PopoverContent>
-        <div className="p-2 max-w-[260px]">
-          <div className="text-[13px] font-medium mb-1">Service · payment-webhook</div>
-          <div className="text-[12px] text-text-muted leading-[1.5]">
+        <div className="max-w-[260px] p-2">
+          <div className="mb-1 text-[13px] font-medium">Service · payment-webhook</div>
+          <div className="text-text-muted text-[12px] leading-[1.5]">
             Owned by Payments. Last deployed 2h ago. 142 dependents.
           </div>
         </div>

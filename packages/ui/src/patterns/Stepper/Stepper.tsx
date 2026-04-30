@@ -54,7 +54,11 @@ export const Stepper = forwardRef<HTMLDivElement, StepperProps>(function Stepper
         const connectorActive = i < current;
         return (
           <Fragment key={label}>
-            <div role="listitem" aria-current={state === 'current' ? 'step' : undefined} className="flex items-center gap-2">
+            <div
+              role="listitem"
+              aria-current={state === 'current' ? 'step' : undefined}
+              className="flex items-center gap-2"
+            >
               <span aria-hidden className={cn(dotBase, dotStateClass[state])}>
                 {state === 'done' ? '✓' : i + 1}
               </span>

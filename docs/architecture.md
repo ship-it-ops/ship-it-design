@@ -50,12 +50,14 @@ The chain:
    `@theme` directive to expose the CSS variables as Tailwind utilities. Now
    `bg-brand` and `text-text` resolve to the right token at runtime.
 4. Apps consuming `@ship-it/ui` `import '@ship-it/ui/styles/globals.css'` once at
-   their entrypoint. That single import brings tokens *and* Tailwind utilities.
+   their entrypoint. That single import brings tokens _and_ Tailwind utilities.
 
 Light/dark theming is a class toggle:
 
 ```html
-<html class="dark">  <!-- swaps semantic tokens; no component re-render needed -->
+<html class="dark">
+  <!-- swaps semantic tokens; no component re-render needed -->
+</html>
 ```
 
 ## Build pipeline

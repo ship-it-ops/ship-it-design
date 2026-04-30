@@ -74,17 +74,26 @@ export const TabsList = forwardRef<HTMLDivElement, RadixTabs.TabsListProps>(func
   ref,
 ) {
   const variant = useContext(TabsVariantContext);
-  return <RadixTabs.List ref={ref} className={cn(tabsListStyles({ variant }), className)} {...props} />;
+  return (
+    <RadixTabs.List ref={ref} className={cn(tabsListStyles({ variant }), className)} {...props} />
+  );
 });
 
 export interface TabProps extends RadixTabs.TabsTriggerProps {
   children?: ReactNode;
 }
 
-export const Tab = forwardRef<HTMLButtonElement, TabProps>(function Tab({ className, ...props }, ref) {
+export const Tab = forwardRef<HTMLButtonElement, TabProps>(function Tab(
+  { className, ...props },
+  ref,
+) {
   const variant = useContext(TabsVariantContext);
   return (
-    <RadixTabs.Trigger ref={ref} className={cn(tabsTriggerStyles({ variant }), className)} {...props} />
+    <RadixTabs.Trigger
+      ref={ref}
+      className={cn(tabsTriggerStyles({ variant }), className)}
+      {...props}
+    />
   );
 });
 
@@ -93,7 +102,10 @@ export const TabsContent = forwardRef<HTMLDivElement, RadixTabs.TabsContentProps
     return (
       <RadixTabs.Content
         ref={ref}
-        className={cn('outline-none focus-visible:ring-[3px] focus-visible:ring-accent-dim', className)}
+        className={cn(
+          'focus-visible:ring-accent-dim outline-none focus-visible:ring-[3px]',
+          className,
+        )}
         {...props}
       />
     );

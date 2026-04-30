@@ -39,8 +39,10 @@ export const Citation = forwardRef<HTMLSpanElement, CitationProps>(function Cita
     return (
       <sup
         ref={ref as never}
-        aria-label={typeof source === 'string' ? `Citation ${index}: ${source}` : `Citation ${index}`}
-        className={cn('ml-[2px] font-mono text-[10px] text-accent', className)}
+        aria-label={
+          typeof source === 'string' ? `Citation ${index}: ${source}` : `Citation ${index}`
+        }
+        className={cn('text-accent ml-[2px] font-mono text-[10px]', className)}
         {...props}
       >
         {toSuperscript(index)}
@@ -51,11 +53,11 @@ export const Citation = forwardRef<HTMLSpanElement, CitationProps>(function Cita
     <span ref={ref} className={cn('inline-flex items-center gap-2', className)} {...props}>
       <span
         aria-hidden
-        className="rounded-xs bg-accent-dim px-[6px] py-[2px] font-mono text-[10px] text-accent"
+        className="bg-accent-dim text-accent rounded-xs px-[6px] py-[2px] font-mono text-[10px]"
       >
         {toSuperscript(index)}
       </span>
-      <span className="text-[12px] text-text-muted">
+      <span className="text-text-muted text-[12px]">
         {source != null && <>from {source}</>}
         {source != null && meta != null && <span className="text-text-dim"> · </span>}
         {meta}

@@ -22,12 +22,12 @@ export const FAB = forwardRef<HTMLButtonElement, FABProps>(function FAB(
       ref={ref}
       type={type ?? 'button'}
       className={cn(
-        'h-12 w-12 grid place-items-center rounded-full',
+        'grid h-12 w-12 place-items-center rounded-full',
         'bg-accent text-on-accent text-lg font-semibold',
         'shadow-[0_10px_30px_var(--color-accent-glow),0_2px_6px_rgba(0,0,0,0.4)]',
         'transition-[transform,box-shadow] duration-200',
         'hover:-translate-y-px hover:shadow-[0_14px_36px_var(--color-accent-glow),0_4px_10px_rgba(0,0,0,0.45)]',
-        'outline-none focus-visible:ring-[3px] focus-visible:ring-accent-dim',
+        'focus-visible:ring-accent-dim outline-none focus-visible:ring-[3px]',
         'disabled:cursor-not-allowed disabled:opacity-40',
         className,
       )}

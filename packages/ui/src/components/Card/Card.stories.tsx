@@ -16,7 +16,7 @@ export const Default: Story = {
   args: {
     title: 'Service overview',
     description: 'A quick summary of the payment-webhook service.',
-    children: <div className="text-[12px] text-text-muted">Service body content goes here.</div>,
+    children: <div className="text-text-muted text-[12px]">Service body content goes here.</div>,
     footer: 'updated 4m ago',
   },
 };
@@ -31,7 +31,7 @@ export const Interactive: Story = {
 
 export const Stats: Story = {
   render: () => (
-    <div className="grid grid-cols-4 gap-3 max-w-[860px]">
+    <div className="grid max-w-[860px] grid-cols-4 gap-3">
       <StatCard label="Entities" value="12,408" delta="+284 today" trend="up" />
       <StatCard label="Relations" value="28,104" delta="+812 today" trend="up" />
       <StatCard label="Sources live" value="4 / 6" delta="2 pending" trend="flat" />

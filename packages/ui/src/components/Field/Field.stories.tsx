@@ -14,9 +14,7 @@ type Story = StoryObj<typeof Field>;
 
 export const WithLabel: Story = {
   render: () => (
-    <Field label="Workspace name">
-      {(p) => <Input placeholder="acme-payments" {...p} />}
-    </Field>
+    <Field label="Workspace name">{(p) => <Input placeholder="acme-payments" {...p} />}</Field>
   ),
 };
 

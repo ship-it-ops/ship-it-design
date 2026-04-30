@@ -54,15 +54,15 @@ import '@ship-it/tokens/styles/tokens.css';
 
 ## Files
 
-| File                   | Purpose                                                   |
-| ---------------------- | --------------------------------------------------------- |
-| `src/color.ts`         | Primitive palette + light/dark semantic color aliases     |
-| `src/typography.ts`    | Font families, sizes, weights, line-heights, tracking     |
-| `src/spacing.ts`       | 4px-based spacing scale                                   |
-| `src/radius.ts`        | Border-radius tokens                                      |
-| `src/shadow.ts`        | Light + dark elevation shadows                            |
-| `src/motion.ts`        | Durations + easing curves                                 |
-| `src/breakpoint.ts`    | Responsive breakpoints                                    |
-| `src/z-index.ts`       | Named stacking layers                                     |
-| `scripts/build-css.ts` | Emits `styles/tokens.css` from TS sources                 |
+| File                   | Purpose                                                     |
+| ---------------------- | ----------------------------------------------------------- |
+| `src/color.ts`         | Primitive palette + light/dark semantic color aliases       |
+| `src/typography.ts`    | Font families, sizes, weights, line-heights, tracking       |
+| `src/spacing.ts`       | 4px-based spacing scale                                     |
+| `src/radius.ts`        | Border-radius tokens                                        |
+| `src/shadow.ts`        | Light + dark elevation shadows                              |
+| `src/motion.ts`        | Durations + easing curves                                   |
+| `src/breakpoint.ts`    | Responsive breakpoints                                      |
+| `src/z-index.ts`       | Named stacking layers                                       |
+| `scripts/build-css.ts` | Emits `styles/tokens.css` from TS sources                   |
 | `styles/tokens.css`    | **Generated.** Imported by `@ship-it/ui/styles/globals.css` |

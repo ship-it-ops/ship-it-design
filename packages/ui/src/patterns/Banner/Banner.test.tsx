@@ -16,9 +16,7 @@ describe('Banner', () => {
   });
 
   it('renders trailing action', () => {
-    render(
-      <Banner action={<a href="/upgrade">Upgrade</a>}>Trial</Banner>,
-    );
+    render(<Banner action={<a href="/upgrade">Upgrade</a>}>Trial</Banner>);
     expect(screen.getByRole('link', { name: 'Upgrade' })).toBeInTheDocument();
   });
 

@@ -8,20 +8,48 @@ const _btnSizes = {
 };
 
 const _btnVariants = {
-  primary:     { bg: tokens.accent,      color: '#0a0a0b', border: tokens.accent,       hoverFilter: 'brightness(1.08)' },
-  secondary:   { bg: tokens.panel2,      color: tokens.text, border: tokens.border,     hoverBg: 'color-mix(in oklab, var(--panel-2), white 4%)' },
-  ghost:       { bg: 'transparent',      color: tokens.text, border: 'transparent',     hoverBg: tokens.panel2 },
-  outline:     { bg: 'transparent',      color: tokens.text, border: tokens.borderStrong, hoverBg: tokens.panel2 },
-  destructive: { bg: tokens.err,         color: '#0a0a0b', border: tokens.err,          hoverFilter: 'brightness(1.08)' },
-  link:        { bg: 'transparent',      color: tokens.accent, border: 'transparent',   underline: true },
-  success:     { bg: tokens.ok,          color: '#0a0a0b', border: tokens.ok,           hoverFilter: 'brightness(1.08)' },
+  primary: {
+    bg: tokens.accent,
+    color: '#0a0a0b',
+    border: tokens.accent,
+    hoverFilter: 'brightness(1.08)',
+  },
+  secondary: {
+    bg: tokens.panel2,
+    color: tokens.text,
+    border: tokens.border,
+    hoverBg: 'color-mix(in oklab, var(--panel-2), white 4%)',
+  },
+  ghost: { bg: 'transparent', color: tokens.text, border: 'transparent', hoverBg: tokens.panel2 },
+  outline: {
+    bg: 'transparent',
+    color: tokens.text,
+    border: tokens.borderStrong,
+    hoverBg: tokens.panel2,
+  },
+  destructive: {
+    bg: tokens.err,
+    color: '#0a0a0b',
+    border: tokens.err,
+    hoverFilter: 'brightness(1.08)',
+  },
+  link: { bg: 'transparent', color: tokens.accent, border: 'transparent', underline: true },
+  success: { bg: tokens.ok, color: '#0a0a0b', border: tokens.ok, hoverFilter: 'brightness(1.08)' },
 };
 
 function Button({
-  variant = 'primary', size = 'md',
-  icon, trailing, loading, disabled,
-  children, onClick, type = 'button',
-  fullWidth, style = {}, ...rest
+  variant = 'primary',
+  size = 'md',
+  icon,
+  trailing,
+  loading,
+  disabled,
+  children,
+  onClick,
+  type = 'button',
+  fullWidth,
+  style = {},
+  ...rest
 }) {
   const [hover, setHover] = React.useState(false);
   const [focus, setFocus] = React.useState(false);
@@ -39,13 +67,19 @@ function Button({
       onFocus={() => setFocus(true)}
       onBlur={() => setFocus(false)}
       style={{
-        display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: s.gap,
-        padding: s.padding, fontSize: s.fontSize, height: s.height,
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: s.gap,
+        padding: s.padding,
+        fontSize: s.fontSize,
+        height: s.height,
         background: hover && !isDisabled && v.hoverBg ? v.hoverBg : v.bg,
         color: v.color,
         border: `1px solid ${v.border}`,
         borderRadius: s.radius,
-        fontWeight: 500, fontFamily: tokens.fontSans,
+        fontWeight: 500,
+        fontFamily: tokens.fontSans,
         cursor: isDisabled ? 'not-allowed' : 'pointer',
         opacity: isDisabled && !loading ? 0.4 : 1,
         textDecoration: v.underline ? 'underline' : 'none',
@@ -60,20 +94,37 @@ function Button({
       {...rest}
     >
       {loading && (
-        <span style={{
-          width: s.iconSize, height: s.iconSize,
-          border: `1.5px solid ${v.color}`, borderTopColor: 'transparent',
-          borderRadius: 999, animation: 'spin 0.7s linear infinite',
-        }}/>
+        <span
+          style={{
+            width: s.iconSize,
+            height: s.iconSize,
+            border: `1.5px solid ${v.color}`,
+            borderTopColor: 'transparent',
+            borderRadius: 999,
+            animation: 'spin 0.7s linear infinite',
+          }}
+        />
       )}
-      {!loading && icon && <span style={{ fontSize: s.iconSize, opacity: 0.9, lineHeight: 1 }}>{icon}</span>}
+      {!loading && icon && (
+        <span style={{ fontSize: s.iconSize, opacity: 0.9, lineHeight: 1 }}>{icon}</span>
+      )}
       {children}
-      {trailing && <span style={{ fontSize: s.iconSize, opacity: 0.6, lineHeight: 1 }}>{trailing}</span>}
+      {trailing && (
+        <span style={{ fontSize: s.iconSize, opacity: 0.6, lineHeight: 1 }}>{trailing}</span>
+      )}
     </button>
   );
 }
 
-function IconButton({ icon, size = 'md', variant = 'secondary', onClick, title, disabled, style = {} }) {
+function IconButton({
+  icon,
+  size = 'md',
+  variant = 'secondary',
+  onClick,
+  title,
+  disabled,
+  style = {},
+}) {
   const [hover, setHover] = React.useState(false);
   const [focus, setFocus] = React.useState(false);
   const dim = { sm: 26, md: 32, lg: 38 }[size];
@@ -89,8 +140,10 @@ function IconButton({ icon, size = 'md', variant = 'secondary', onClick, title, 
       onFocus={() => setFocus(true)}
       onBlur={() => setFocus(false)}
       style={{
-        width: dim, height: dim,
-        display: 'grid', placeItems: 'center',
+        width: dim,
+        height: dim,
+        display: 'grid',
+        placeItems: 'center',
         background: hover && !disabled && v.hoverBg ? v.hoverBg : v.bg,
         color: v.color === '#0a0a0b' ? '#0a0a0b' : tokens.textMuted,
         border: `1px solid ${v.border}`,
@@ -99,28 +152,40 @@ function IconButton({ icon, size = 'md', variant = 'secondary', onClick, title, 
         fontSize: size === 'sm' ? 12 : size === 'lg' ? 15 : 13,
         filter: hover && !disabled && v.hoverFilter ? v.hoverFilter : 'none',
         boxShadow: focus && !disabled ? `0 0 0 3px ${tokens.accentDim}` : 'none',
-        outline: 'none', opacity: disabled ? 0.4 : 1,
+        outline: 'none',
+        opacity: disabled ? 0.4 : 1,
         transition: 'all 120ms',
         ...style,
       }}
-    >{icon}</button>
+    >
+      {icon}
+    </button>
   );
 }
 
 function ButtonGroup({ children }) {
   const arr = React.Children.toArray(children);
   return (
-    <div style={{ display: 'inline-flex', borderRadius: 6, overflow: 'hidden', border: `1px solid ${tokens.border}` }}>
+    <div
+      style={{
+        display: 'inline-flex',
+        borderRadius: 6,
+        overflow: 'hidden',
+        border: `1px solid ${tokens.border}`,
+      }}
+    >
       {arr.map((c, i) =>
         React.cloneElement(c, {
           key: i,
           style: {
             borderRadius: 0,
             borderLeft: i === 0 ? 'none' : `1px solid ${tokens.border}`,
-            borderTop: 'none', borderRight: 'none', borderBottom: 'none',
+            borderTop: 'none',
+            borderRight: 'none',
+            borderBottom: 'none',
             ...(c.props.style || {}),
           },
-        })
+        }),
       )}
     </div>
   );
@@ -129,13 +194,28 @@ function ButtonGroup({ children }) {
 function SplitButton({ children, onClick, onMenu, variant = 'primary' }) {
   return (
     <div style={{ display: 'inline-flex' }}>
-      <Button variant={variant} onClick={onClick} style={{
-        borderTopRightRadius: 0, borderBottomRightRadius: 0,
-        borderRight: '1px solid rgba(0,0,0,0.2)',
-      }}>{children}</Button>
-      <Button variant={variant} onClick={onMenu} style={{
-        borderTopLeftRadius: 0, borderBottomLeftRadius: 0, padding: '0 8px',
-      }}>▾</Button>
+      <Button
+        variant={variant}
+        onClick={onClick}
+        style={{
+          borderTopRightRadius: 0,
+          borderBottomRightRadius: 0,
+          borderRight: '1px solid rgba(0,0,0,0.2)',
+        }}
+      >
+        {children}
+      </Button>
+      <Button
+        variant={variant}
+        onClick={onMenu}
+        style={{
+          borderTopLeftRadius: 0,
+          borderBottomLeftRadius: 0,
+          padding: '0 8px',
+        }}
+      >
+        ▾
+      </Button>
     </div>
   );
 }
@@ -149,11 +229,17 @@ function FAB({ icon = '✦', onClick, style = {} }) {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
-        width: 48, height: 48, borderRadius: 999,
-        background: tokens.accent, color: '#0a0a0b',
-        display: 'grid', placeItems: 'center',
-        fontSize: 18, fontWeight: 600,
-        border: 'none', cursor: 'pointer',
+        width: 48,
+        height: 48,
+        borderRadius: 999,
+        background: tokens.accent,
+        color: '#0a0a0b',
+        display: 'grid',
+        placeItems: 'center',
+        fontSize: 18,
+        fontWeight: 600,
+        border: 'none',
+        cursor: 'pointer',
         boxShadow: hover
           ? `0 14px 36px ${tokens.accentGlow}, 0 4px 10px rgba(0,0,0,0.45)`
           : `0 10px 30px ${tokens.accentGlow}, 0 2px 6px rgba(0,0,0,0.4)`,
@@ -161,7 +247,9 @@ function FAB({ icon = '✦', onClick, style = {} }) {
         transition: 'all 180ms',
         ...style,
       }}
-    >{icon}</button>
+    >
+      {icon}
+    </button>
   );
 }
 

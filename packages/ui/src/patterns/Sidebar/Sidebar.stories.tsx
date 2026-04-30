@@ -40,8 +40,11 @@ export const Default: Story = {
           </NavSection>
           <NavSection label="Sources" action={<span className="cursor-pointer">+</span>}>
             {['github · 4 repos', 'notion · 182 docs', 'linear · 34 issues'].map((s) => (
-              <div key={s} className="flex items-center gap-2 px-2 py-[6px] text-[12px] text-text-muted">
-                <span className="h-[6px] w-[6px] rounded-full bg-ok" />
+              <div
+                key={s}
+                className="text-text-muted flex items-center gap-2 px-2 py-[6px] text-[12px]"
+              >
+                <span className="bg-ok h-[6px] w-[6px] rounded-full" />
                 {s}
               </div>
             ))}

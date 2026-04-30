@@ -11,7 +11,11 @@ describe('Chip', () => {
   });
 
   it('has no a11y violations', async () => {
-    const { container } = render(<Chip removable onRemove={() => {}}>tag</Chip>);
+    const { container } = render(
+      <Chip removable onRemove={() => {}}>
+        tag
+      </Chip>,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });

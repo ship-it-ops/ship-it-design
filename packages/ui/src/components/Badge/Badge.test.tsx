@@ -11,7 +11,11 @@ describe('Badge', () => {
   });
 
   it('has no a11y violations', async () => {
-    const { container } = render(<Badge variant="ok" dot>synced</Badge>);
+    const { container } = render(
+      <Badge variant="ok" dot>
+        synced
+      </Badge>,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });

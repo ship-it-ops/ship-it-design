@@ -18,12 +18,16 @@ export const Single: Story = {
     tier: 'Pro',
     price: (
       <>
-        $29 <span className="text-[14px] font-normal text-text-dim">/ user / mo</span>
+        $29 <span className="text-text-dim text-[14px] font-normal">/ user / mo</span>
       </>
     ),
     description: 'For growing teams that need to graph their stack.',
     features: ['Unlimited repos', 'SSO + SCIM', 'Audit log', '7-day query history'],
-    action: <Button variant="primary" fullWidth>Start free</Button>,
+    action: (
+      <Button variant="primary" fullWidth>
+        Start free
+      </Button>
+    ),
     featured: true,
   },
 };
@@ -36,18 +40,26 @@ export const Grid: Story = {
         price="$0"
         description="For small teams kicking the tires."
         features={['1 repo', '14-day history', 'Community support']}
-        action={<Button variant="secondary" fullWidth>Get started</Button>}
+        action={
+          <Button variant="secondary" fullWidth>
+            Get started
+          </Button>
+        }
       />
       <PricingCard
         tier="Pro"
         price={
           <>
-            $29 <span className="text-[14px] font-normal text-text-dim">/ user / mo</span>
+            $29 <span className="text-text-dim text-[14px] font-normal">/ user / mo</span>
           </>
         }
         description="For growing teams."
         features={['Unlimited repos', 'SSO + SCIM', 'Audit log']}
-        action={<Button variant="primary" fullWidth>Start free</Button>}
+        action={
+          <Button variant="primary" fullWidth>
+            Start free
+          </Button>
+        }
         featured
       />
       <PricingCard
@@ -55,7 +67,11 @@ export const Grid: Story = {
         price="Talk to us"
         description="VPC, custom retention, on-call SLO."
         features={['VPC deploy', 'Custom retention', 'On-call SLO']}
-        action={<Button variant="secondary" fullWidth>Book a call</Button>}
+        action={
+          <Button variant="secondary" fullWidth>
+            Book a call
+          </Button>
+        }
       />
     </div>
   ),

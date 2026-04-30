@@ -1,4 +1,11 @@
-import { Children, cloneElement, forwardRef, isValidElement, type HTMLAttributes, type ReactElement } from 'react';
+import {
+  Children,
+  cloneElement,
+  forwardRef,
+  isValidElement,
+  type HTMLAttributes,
+  type ReactElement,
+} from 'react';
 
 import { cn } from '../../utils/cn';
 
@@ -30,7 +37,7 @@ export const ButtonGroup = forwardRef<HTMLDivElement, ButtonGroupProps>(function
       ref={ref}
       role="group"
       className={cn(
-        'inline-flex overflow-hidden rounded-md border border-border',
+        'border-border inline-flex overflow-hidden rounded-md border',
         orientation === 'vertical' ? 'flex-col' : 'flex-row',
         className,
       )}

@@ -15,9 +15,15 @@ type Story = StoryObj<typeof ReasoningBlock>;
 export const Default: Story = {
   render: () => (
     <ReasoningBlock duration="1.8s">
-      <ReasoningStep step={1}>Found service payment-webhook-v2 — 1 match, high confidence.</ReasoningStep>
-      <ReasoningStep step={2}>Traversed OWNED_BY edge → Priya K. (person, staff-eng).</ReasoningStep>
-      <ReasoningStep step={3}>Traversed DOCUMENTED_IN → runbook-oncall.md § Rollback.</ReasoningStep>
+      <ReasoningStep step={1}>
+        Found service payment-webhook-v2 — 1 match, high confidence.
+      </ReasoningStep>
+      <ReasoningStep step={2}>
+        Traversed OWNED_BY edge → Priya K. (person, staff-eng).
+      </ReasoningStep>
+      <ReasoningStep step={3}>
+        Traversed DOCUMENTED_IN → runbook-oncall.md § Rollback.
+      </ReasoningStep>
     </ReasoningBlock>
   ),
 };
@@ -25,9 +31,15 @@ export const Default: Story = {
 export const Expanded: Story = {
   render: () => (
     <ReasoningBlock defaultOpen duration="1.8s">
-      <ReasoningStep step={1}>Found service payment-webhook-v2 — 1 match, high confidence.</ReasoningStep>
-      <ReasoningStep step={2}>Traversed OWNED_BY edge → Priya K. (person, staff-eng).</ReasoningStep>
-      <ReasoningStep step={3}>Traversed DOCUMENTED_IN → runbook-oncall.md § Rollback.</ReasoningStep>
+      <ReasoningStep step={1}>
+        Found service payment-webhook-v2 — 1 match, high confidence.
+      </ReasoningStep>
+      <ReasoningStep step={2}>
+        Traversed OWNED_BY edge → Priya K. (person, staff-eng).
+      </ReasoningStep>
+      <ReasoningStep step={3}>
+        Traversed DOCUMENTED_IN → runbook-oncall.md § Rollback.
+      </ReasoningStep>
     </ReasoningBlock>
   ),
 };

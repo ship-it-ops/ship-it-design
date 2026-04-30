@@ -10,7 +10,12 @@ const groups: CommandPaletteGroup[] = [
   {
     label: 'Entities',
     items: [
-      { id: 'a', label: 'payment-webhook-v2', description: 'service · owned by Payments', glyph: '◇' },
+      {
+        id: 'a',
+        label: 'payment-webhook-v2',
+        description: 'service · owned by Payments',
+        glyph: '◇',
+      },
       { id: 'b', label: 'payment-webhook-legacy', description: 'service · deprecated', glyph: '◇' },
       { id: 'c', label: 'webhook.ts', description: 'file · 312 LOC', glyph: '▢' },
       { id: 'd', label: 'billing-service', description: 'service · owned by Finance', glyph: '◎' },

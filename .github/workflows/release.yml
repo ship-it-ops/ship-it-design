@@ -8,39 +8,53 @@ concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: false
 
+# Read for checkout, write to land the "Version Packages" PR + git tags,
+# pull-requests:write to open/update that PR, id-token:write to attach
+# npm provenance signatures (proves the package was built by this workflow).
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
 jobs:
   release:
     name: Version or publish
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      id-token: write
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: pnpm/action-setup@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - uses: ./.github/actions/setup
 
       - name: Build packages
         run: pnpm build --filter='./packages/*'
 
       - name: Create release PR or publish
+        id: changesets
         uses: changesets/action@v1
         with:
+          # When there are pending changesets on `main`, opens / updates the
+          # version PR. When the version PR is merged, runs `pnpm release`,
+          # which publishes every bumped package to npm (with provenance) and
+          # pushes the corresponding git tags.
           publish: pnpm release
           version: pnpm version-packages
           commit: 'chore(release): version packages'
           title: 'chore(release): version packages'
+          # Attach a GitHub release per published package — pulls the body
+          # from the matching CHANGELOG.md entry. Requires `contents: write`.
+          createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # Force npm provenance on the publish step so each tarball is
+          # signed by this workflow's OIDC token.
+          NPM_CONFIG_PROVENANCE: 'true'
+
+      - name: Summarize release
+        if: ${{ steps.changesets.outputs.published == 'true' }}
+        run: |
+          echo "### 📦 Released the following packages" >> "$GITHUB_STEP_SUMMARY"
+          echo '${{ steps.changesets.outputs.publishedPackages }}' \
+            | jq -r '.[] | "- `\(.name)@\(.version)`"' >> "$GITHUB_STEP_SUMMARY"

@@ -5,12 +5,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { Combobox } from './Combobox';
 
-const repos = [
-  'repo:shipit-api',
-  'repo:shipit-web',
-  'repo:shipit-ingest',
-  'repo:shipit-graph',
-];
+const repos = ['repo:shipit-api', 'repo:shipit-web', 'repo:shipit-ingest', 'repo:shipit-graph'];
 
 describe('Combobox', () => {
   it('opens the listbox on focus and shows all options', async () => {

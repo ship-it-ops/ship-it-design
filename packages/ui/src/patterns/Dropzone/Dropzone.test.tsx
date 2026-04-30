@@ -40,7 +40,9 @@ describe('Dropzone', () => {
   });
 
   it('has no a11y violations', async () => {
-    const { container } = render(<Dropzone title="Drop files to ingest" description=".pdf, .md up to 50MB" />);
+    const { container } = render(
+      <Dropzone title="Drop files to ingest" description=".pdf, .md up to 50MB" />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });

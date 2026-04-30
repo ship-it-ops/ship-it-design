@@ -19,13 +19,7 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(function R
   { className, ...props },
   ref,
 ) {
-  return (
-    <RadixRadio.Root
-      ref={ref}
-      className={cn('flex flex-col gap-2', className)}
-      {...props}
-    />
-  );
+  return <RadixRadio.Root ref={ref} className={cn('flex flex-col gap-2', className)} {...props} />;
 });
 
 /* ───── Radio ───── */
@@ -46,7 +40,7 @@ export const Radio = forwardRef<HTMLButtonElement, RadioProps>(function Radio(
     <span
       className={cn(
         'inline-flex items-center gap-2 select-none',
-        props.disabled && 'opacity-40 cursor-not-allowed',
+        props.disabled && 'cursor-not-allowed opacity-40',
         className,
       )}
     >
@@ -54,18 +48,18 @@ export const Radio = forwardRef<HTMLButtonElement, RadioProps>(function Radio(
         ref={ref}
         id={id}
         className={cn(
-          'h-4 w-4 grid place-items-center rounded-full',
-          'bg-panel border border-border-strong',
+          'grid h-4 w-4 place-items-center rounded-full',
+          'bg-panel border-border-strong border',
           'data-[state=checked]:border-accent',
           'transition-[border-color] duration-(--duration-micro)',
-          'outline-none focus-visible:ring-[3px] focus-visible:ring-accent-dim',
+          'focus-visible:ring-accent-dim outline-none focus-visible:ring-[3px]',
         )}
         {...props}
       >
-        <RadixRadio.Indicator className="block h-[7px] w-[7px] rounded-full bg-accent" />
+        <RadixRadio.Indicator className="bg-accent block h-[7px] w-[7px] rounded-full" />
       </RadixRadio.Item>
       {label && (
-        <label htmlFor={id} className="text-[13px] cursor-pointer">
+        <label htmlFor={id} className="cursor-pointer text-[13px]">
           {label}
         </label>
       )}

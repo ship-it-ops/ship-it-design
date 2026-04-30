@@ -19,7 +19,7 @@ export const DropdownMenuContent = forwardRef<HTMLDivElement, RadixMenu.Dropdown
           sideOffset={sideOffset}
           align={align}
           className={cn(
-            'z-40 min-w-[180px] rounded-md p-1 bg-panel border border-border-strong shadow-lg outline-none',
+            'bg-panel border-border-strong z-40 min-w-[180px] rounded-md border p-1 shadow-lg outline-none',
             'data-[state=open]:animate-[ship-pop-in_140ms_var(--easing-out)]',
             className,
           )}
@@ -55,9 +55,9 @@ export const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(function MenuI
       className={cn(itemBase, destructive ? 'text-err' : 'text-text', className)}
       {...props}
     >
-      {icon && <span className="w-[14px] opacity-70 text-[12px]">{icon}</span>}
+      {icon && <span className="w-[14px] text-[12px] opacity-70">{icon}</span>}
       <span className="flex-1">{children}</span>
-      {trailing && <span className="font-mono text-[10px] text-text-dim">{trailing}</span>}
+      {trailing && <span className="text-text-dim font-mono text-[10px]">{trailing}</span>}
     </RadixMenu.Item>
   );
 });
@@ -65,8 +65,12 @@ export const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(function MenuI
 export const MenuCheckboxItem = forwardRef<HTMLDivElement, RadixMenu.DropdownMenuCheckboxItemProps>(
   function MenuCheckboxItem({ className, children, ...props }, ref) {
     return (
-      <RadixMenu.CheckboxItem ref={ref} className={cn(itemBase, 'text-text pl-[26px] relative', className)} {...props}>
-        <RadixMenu.ItemIndicator className="absolute left-2 top-1/2 -translate-y-1/2 text-accent text-[10px]">
+      <RadixMenu.CheckboxItem
+        ref={ref}
+        className={cn(itemBase, 'text-text relative pl-[26px]', className)}
+        {...props}
+      >
+        <RadixMenu.ItemIndicator className="text-accent absolute top-1/2 left-2 -translate-y-1/2 text-[10px]">
           ✓
         </RadixMenu.ItemIndicator>
         {children}
@@ -80,7 +84,7 @@ export const MenuSeparator = forwardRef<HTMLDivElement, RadixMenu.DropdownMenuSe
     return (
       <RadixMenu.Separator
         ref={ref}
-        className={cn('h-[1px] bg-border my-1', className)}
+        className={cn('bg-border my-1 h-[1px]', className)}
         {...props}
       />
     );

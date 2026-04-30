@@ -68,11 +68,7 @@ const block = (prefix: string, obj: Record<string, TokenValue>): string =>
  * `--shadow-sm` and `--shadow-lg`. So we emit them explicitly rather than via block().
  */
 const shadowBlock = (s: typeof shadowDark): string =>
-  [
-    `  --shadow-sm: ${s.sm};`,
-    `  --shadow: ${s.base};`,
-    `  --shadow-lg: ${s.lg};`,
-  ].join('\n');
+  [`  --shadow-sm: ${s.sm};`, `  --shadow: ${s.base};`, `  --shadow-lg: ${s.lg};`].join('\n');
 
 const root = [
   '  /* Master accent hue — override at runtime to reskin */',

@@ -9,7 +9,13 @@ import globals from 'globals';
  */
 export default tseslint.config(
   {
-    ignores: ['**/dist/**', '**/build/**', '**/storybook-static/**', '**/coverage/**', '**/.turbo/**'],
+    ignores: [
+      '**/dist/**',
+      '**/build/**',
+      '**/storybook-static/**',
+      '**/coverage/**',
+      '**/.turbo/**',
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

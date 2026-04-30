@@ -10,8 +10,26 @@ visual rhythm. If you want something in-between, pick the nearer real token.
 
 export const Bar = ({ token, value }) => (
   <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '6px 0' }}>
-    <code style={{ fontFamily: 'var(--font-family-mono)', fontSize: 11, color: 'var(--color-text-dim)', minWidth: 70 }}>space-{token}</code>
-    <code style={{ fontFamily: 'var(--font-family-mono)', fontSize: 11, color: 'var(--color-text)', minWidth: 50 }}>{value}</code>
+    <code
+      style={{
+        fontFamily: 'var(--font-family-mono)',
+        fontSize: 11,
+        color: 'var(--color-text-dim)',
+        minWidth: 70,
+      }}
+    >
+      space-{token}
+    </code>
+    <code
+      style={{
+        fontFamily: 'var(--font-family-mono)',
+        fontSize: 11,
+        color: 'var(--color-text)',
+        minWidth: 50,
+      }}
+    >
+      {value}
+    </code>
     <div style={{ height: 12, width: value, background: 'var(--color-accent)', borderRadius: 2 }} />
   </div>
 );
@@ -26,15 +44,15 @@ export const Bar = ({ token, value }) => (
 
 ## Radius
 
-| Token | Value | When |
-|---|---|---|
-| `xs` | 4px | tag / kbd |
-| `sm` | 6px | small button, badge |
-| `md` | 8px | input, card cell |
-| `base` | 10px | card, panel |
-| `lg` | 14px | sheet / drawer |
-| `xl` | 18px | hero plates |
-| `full` | 9999px | pills, dots |
+| Token  | Value  | When                |
+| ------ | ------ | ------------------- |
+| `xs`   | 4px    | tag / kbd           |
+| `sm`   | 6px    | small button, badge |
+| `md`   | 8px    | input, card cell    |
+| `base` | 10px   | card, panel         |
+| `lg`   | 14px   | sheet / drawer      |
+| `xl`   | 18px   | hero plates         |
+| `full` | 9999px | pills, dots         |
 
 ## Usage
 

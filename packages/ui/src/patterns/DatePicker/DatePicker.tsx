@@ -65,15 +65,17 @@ export const DatePicker = forwardRef<HTMLButtonElement, DatePickerProps>(functio
           disabled={disabled}
           aria-label={ariaLabel ?? placeholder}
           className={cn(
-            'flex items-center gap-2 rounded-md border border-border bg-panel px-3 py-2 text-left text-[13px] text-text outline-none cursor-pointer',
+            'border-border bg-panel text-text flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2 text-left text-[13px] outline-none',
             'transition-[border,box-shadow] duration-(--duration-micro)',
             'hover:bg-panel-2',
-            'focus-visible:border-accent focus-visible:ring-[3px] focus-visible:ring-accent-dim',
+            'focus-visible:border-accent focus-visible:ring-accent-dim focus-visible:ring-[3px]',
             'disabled:cursor-not-allowed disabled:opacity-40',
           )}
           style={{ width }}
         >
-          <span aria-hidden className="text-text-dim">▢</span>
+          <span aria-hidden className="text-text-dim">
+            ▢
+          </span>
           <span className={cn('flex-1 truncate', !value && 'text-text-dim')}>
             {value ? format(value) : (emptyLabel ?? placeholder)}
           </span>
@@ -97,7 +99,9 @@ export const DatePicker = forwardRef<HTMLButtonElement, DatePickerProps>(functio
           />
         </RadixPopover.Content>
       </RadixPopover.Portal>
-      {name && <input type="hidden" name={name} value={value ? value.toISOString() : ''} readOnly />}
+      {name && (
+        <input type="hidden" name={name} value={value ? value.toISOString() : ''} readOnly />
+      )}
     </RadixPopover.Root>
   );
 });

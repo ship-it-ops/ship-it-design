@@ -59,93 +59,102 @@ function flatItems(groups: ReadonlyArray<CommandPaletteGroup>): CommandPaletteIt
   return groups.flatMap((g) => g.items as CommandPaletteItem[]);
 }
 
-export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(function CommandPalette(
-  {
-    open,
-    onOpenChange,
-    query,
-    onQueryChange,
-    groups,
-    onSelect,
-    placeholder = 'Search…',
-    footer,
-    emptyState,
-    width = 540,
-  },
-  ref,
-) {
-  const flat = useMemo(() => flatItems(groups), [groups]);
-  const { cursor, setCursor, onKeyDown } = useKeyboardList({
-    count: flat.length,
-    defaultCursor: 0,
-    onSelect: (i) => {
-      const item = flat[i];
-      if (item) onSelect(item.id);
+export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
+  function CommandPalette(
+    {
+      open,
+      onOpenChange,
+      query,
+      onQueryChange,
+      groups,
+      onSelect,
+      placeholder = 'Search…',
+      footer,
+      emptyState,
+      width = 540,
     },
-  });
+    ref,
+  ) {
+    const flat = useMemo(() => flatItems(groups), [groups]);
+    const { cursor, setCursor, onKeyDown } = useKeyboardList({
+      count: flat.length,
+      defaultCursor: 0,
+      onSelect: (i) => {
+        const item = flat[i];
+        if (item) onSelect(item.id);
+      },
+    });
 
-  // Reset the cursor whenever the query or groups shape changes.
-  useEffect(() => {
-    setCursor(0);
-  }, [query, groups, setCursor]);
+    // Reset the cursor whenever the query or groups shape changes.
+    useEffect(() => {
+      setCursor(0);
+    }, [query, groups, setCursor]);
 
-  return (
-    <RadixDialog.Root open={open} onOpenChange={onOpenChange}>
-      <RadixDialog.Portal>
-        <RadixDialog.Overlay
-          className={cn(
-            'fixed inset-0 z-50 bg-black/55 backdrop-blur-[4px]',
-            'data-[state=open]:animate-[ship-fade-in_150ms_ease]',
-          )}
-        />
-        <RadixDialog.Content
-          ref={ref}
-          aria-label="Command palette"
-          aria-describedby={undefined}
-          style={{ width }}
-          className={cn(
-            'fixed left-1/2 top-[20%] z-[51] -translate-x-1/2 max-w-[calc(100%-40px)]',
-            'overflow-hidden rounded-xl border border-border-strong bg-panel shadow-lg',
-            'data-[state=open]:animate-[ship-dialog-in_180ms_var(--easing-out)] outline-none',
-          )}
-          onKeyDown={onKeyDown}
-        >
-          <RadixDialog.Title className="sr-only">Command palette</RadixDialog.Title>
-          <div className="flex items-center gap-[10px] border-b border-border px-4 py-[14px]">
-            <span aria-hidden className="text-text-dim">⌕</span>
-            <input
-              autoFocus
-              type="text"
-              value={query}
-              onChange={(e) => onQueryChange(e.target.value)}
-              placeholder={placeholder}
-              aria-label="Search"
-              aria-autocomplete="list"
-              className="flex-1 border-0 bg-transparent text-[14px] text-text outline-none placeholder:text-text-dim"
-            />
-            <span className="rounded-xs border border-border px-[6px] py-[2px] font-mono text-[10px] text-text-dim">
-              ESC
-            </span>
-          </div>
-          <div className="min-h-[220px] p-2" role="listbox" aria-label="Results">
-            {flat.length === 0 ? (
-              emptyState ?? (
-                <div className="px-3 py-5 text-center text-[12px] text-text-dim">No matches</div>
-              )
-            ) : (
-              <CommandGroups groups={groups} cursor={cursor} setCursor={setCursor} onSelect={onSelect} />
+    return (
+      <RadixDialog.Root open={open} onOpenChange={onOpenChange}>
+        <RadixDialog.Portal>
+          <RadixDialog.Overlay
+            className={cn(
+              'fixed inset-0 z-50 bg-black/55 backdrop-blur-[4px]',
+              'data-[state=open]:animate-[ship-fade-in_150ms_ease]',
             )}
-          </div>
-          {footer && (
-            <div className="flex gap-4 border-t border-border px-[14px] py-[10px] font-mono text-[10px] text-text-dim">
-              {footer}
+          />
+          <RadixDialog.Content
+            ref={ref}
+            aria-label="Command palette"
+            aria-describedby={undefined}
+            style={{ width }}
+            className={cn(
+              'fixed top-[20%] left-1/2 z-[51] max-w-[calc(100%-40px)] -translate-x-1/2',
+              'border-border-strong bg-panel overflow-hidden rounded-xl border shadow-lg',
+              'outline-none data-[state=open]:animate-[ship-dialog-in_180ms_var(--easing-out)]',
+            )}
+            onKeyDown={onKeyDown}
+          >
+            <RadixDialog.Title className="sr-only">Command palette</RadixDialog.Title>
+            <div className="border-border flex items-center gap-[10px] border-b px-4 py-[14px]">
+              <span aria-hidden className="text-text-dim">
+                ⌕
+              </span>
+              <input
+                autoFocus
+                type="text"
+                value={query}
+                onChange={(e) => onQueryChange(e.target.value)}
+                placeholder={placeholder}
+                aria-label="Search"
+                aria-autocomplete="list"
+                className="text-text placeholder:text-text-dim flex-1 border-0 bg-transparent text-[14px] outline-none"
+              />
+              <span className="border-border text-text-dim rounded-xs border px-[6px] py-[2px] font-mono text-[10px]">
+                ESC
+              </span>
             </div>
-          )}
-        </RadixDialog.Content>
-      </RadixDialog.Portal>
-    </RadixDialog.Root>
-  );
-});
+            <div className="min-h-[220px] p-2" role="listbox" aria-label="Results">
+              {flat.length === 0 ? (
+                (emptyState ?? (
+                  <div className="text-text-dim px-3 py-5 text-center text-[12px]">No matches</div>
+                ))
+              ) : (
+                <CommandGroups
+                  groups={groups}
+                  cursor={cursor}
+                  setCursor={setCursor}
+                  onSelect={onSelect}
+                />
+              )}
+            </div>
+            {footer && (
+              <div className="border-border text-text-dim flex gap-4 border-t px-[14px] py-[10px] font-mono text-[10px]">
+                {footer}
+              </div>
+            )}
+          </RadixDialog.Content>
+        </RadixDialog.Portal>
+      </RadixDialog.Root>
+    );
+  },
+);
 
 interface CommandGroupsProps {
   groups: ReadonlyArray<CommandPaletteGroup>;
@@ -163,7 +172,7 @@ function CommandGroups({ groups, cursor, setCursor, onSelect }: CommandGroupsPro
         return (
           <div key={gIdx}>
             {group.label && (
-              <div className="px-2 pt-2 pb-1 font-mono text-[9px] uppercase tracking-[1.4px] text-text-dim">
+              <div className="text-text-dim px-2 pt-2 pb-1 font-mono text-[9px] tracking-[1.4px] uppercase">
                 {group.label} · {group.items.length}
               </div>
             )}
@@ -179,25 +188,31 @@ function CommandGroups({ groups, cursor, setCursor, onSelect }: CommandGroupsPro
                   onClick={() => onSelect(item.id)}
                   onMouseEnter={() => setCursor(myIndex)}
                   className={cn(
-                    'flex w-full cursor-pointer items-center gap-[10px] rounded-md px-[10px] py-2 text-left outline-none border-0 bg-transparent',
+                    'flex w-full cursor-pointer items-center gap-[10px] rounded-md border-0 bg-transparent px-[10px] py-2 text-left outline-none',
                     isActive ? 'bg-accent-dim text-accent' : 'text-text hover:bg-panel-2',
                   )}
                 >
                   {item.glyph != null && (
-                    <span aria-hidden className={cn('font-mono text-[12px]', isActive ? 'text-accent' : 'text-text-muted')}>
+                    <span
+                      aria-hidden
+                      className={cn(
+                        'font-mono text-[12px]',
+                        isActive ? 'text-accent' : 'text-text-muted',
+                      )}
+                    >
                       {item.glyph}
                     </span>
                   )}
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-[13px]">{item.label}</span>
                     {item.description && (
-                      <span className="block truncate text-[11px] text-text-dim">
+                      <span className="text-text-dim block truncate text-[11px]">
                         {item.description}
                       </span>
                     )}
                   </span>
                   {item.trailing && (
-                    <span className="font-mono text-[10px] text-text-dim">{item.trailing}</span>
+                    <span className="text-text-dim font-mono text-[10px]">{item.trailing}</span>
                   )}
                 </button>
               );

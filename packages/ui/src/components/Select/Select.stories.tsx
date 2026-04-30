@@ -18,7 +18,7 @@ export const Default: Story = {};
 export const Preselected: Story = { args: { defaultValue: 'Staging' } };
 export const Sizes: Story = {
   render: () => (
-    <div className="flex flex-col gap-2 w-56">
+    <div className="flex w-56 flex-col gap-2">
       <Select size="sm" options={['Small', 'Medium', 'Large']} />
       <Select size="md" options={['Small', 'Medium', 'Large']} />
       <Select size="lg" options={['Small', 'Medium', 'Large']} />

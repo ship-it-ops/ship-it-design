@@ -21,23 +21,13 @@ const rows: TestEntity[] = [
 
 describe('EntityTable', () => {
   it('renders rows using the entity column', () => {
-    render(
-      <EntityTable
-        data={rows}
-        columns={[entityColumn(), entityTypeColumn()]}
-      />,
-    );
+    render(<EntityTable data={rows} columns={[entityColumn(), entityTypeColumn()]} />);
     expect(screen.getByText('payment-webhook-v2')).toBeInTheDocument();
     expect(screen.getByText('Service')).toBeInTheDocument();
   });
 
   it('sorts on the entity name column', async () => {
-    render(
-      <EntityTable
-        data={rows}
-        columns={[entityColumn()]}
-      />,
-    );
+    render(<EntityTable data={rows} columns={[entityColumn()]} />);
     await userEvent.click(screen.getByRole('columnheader', { name: /Name/ }));
     const header = screen.getByRole('columnheader', { name: /Name/ });
     expect(header).toHaveAttribute('aria-sort', 'ascending');
@@ -51,15 +41,10 @@ describe('EntityTable', () => {
   });
 
   it('uses the row id by default', () => {
-    const { container } = render(
-      <EntityTable
-        data={rows}
-        columns={[entityColumn()]}
-        selectable
-      />,
-    );
-    expect(container.querySelectorAll('input[type="checkbox"][aria-label^="Select row"]'))
-      .toHaveLength(rows.length);
+    const { container } = render(<EntityTable data={rows} columns={[entityColumn()]} selectable />);
+    expect(
+      container.querySelectorAll('input[type="checkbox"][aria-label^="Select row"]'),
+    ).toHaveLength(rows.length);
   });
 
   it('has no a11y violations', async () => {

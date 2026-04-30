@@ -35,17 +35,14 @@ export const StatCard = forwardRef<HTMLDivElement, StatCardProps>(function StatC
   return (
     <div
       ref={ref}
-      className={cn(
-        'block bg-panel border border-border rounded-base p-[18px]',
-        className,
-      )}
+      className={cn('bg-panel border-border rounded-base block border p-[18px]', className)}
       {...props}
     >
-      <div className="flex items-center justify-between mb-[10px]">
-        <div className="font-mono text-[10px] uppercase tracking-wide text-text-dim">{label}</div>
+      <div className="mb-[10px] flex items-center justify-between">
+        <div className="text-text-dim font-mono text-[10px] tracking-wide uppercase">{label}</div>
         {icon && <div className="text-text-dim text-[14px]">{icon}</div>}
       </div>
-      <div className="font-mono text-[26px] font-medium tracking-tight text-text leading-none">
+      <div className="text-text font-mono text-[26px] leading-none font-medium tracking-tight">
         {value}
       </div>
       {delta !== undefined && (

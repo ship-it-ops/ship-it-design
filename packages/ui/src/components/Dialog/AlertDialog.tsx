@@ -38,8 +38,8 @@ export const AlertDialog = forwardRef<HTMLDivElement, AlertDialogProps>(function
           ref={ref}
           style={{ maxWidth: width }}
           className={cn(
-            'fixed left-1/2 top-1/2 z-[51] -translate-x-1/2 -translate-y-1/2 w-[calc(100%-40px)] p-6',
-            'bg-panel border border-border-strong rounded-lg shadow-lg outline-none',
+            'fixed top-1/2 left-1/2 z-[51] w-[calc(100%-40px)] -translate-x-1/2 -translate-y-1/2 p-6',
+            'bg-panel border-border-strong rounded-lg border shadow-lg outline-none',
             'data-[state=open]:animate-[ship-dialog-in_180ms_var(--easing-out)]',
           )}
         >
@@ -49,12 +49,12 @@ export const AlertDialog = forwardRef<HTMLDivElement, AlertDialogProps>(function
             {title}
           </RadixAlert.Title>
           {description && (
-            <RadixAlert.Description className="text-[13px] text-text-muted leading-[1.55] mb-[18px]">
+            <RadixAlert.Description className="text-text-muted mb-[18px] text-[13px] leading-[1.55]">
               {description}
             </RadixAlert.Description>
           )}
           {children}
-          {footer && <div className="mt-5 flex gap-2 justify-end">{footer}</div>}
+          {footer && <div className="mt-5 flex justify-end gap-2">{footer}</div>}
         </RadixAlert.Content>
       </RadixAlert.Portal>
     </AlertDialogRoot>

@@ -1,4 +1,11 @@
-import { forwardRef, useId, useImperativeHandle, useRef, useState, type KeyboardEvent } from 'react';
+import {
+  forwardRef,
+  useId,
+  useImperativeHandle,
+  useRef,
+  useState,
+  type KeyboardEvent,
+} from 'react';
 
 import { cn } from '../../utils/cn';
 
@@ -99,9 +106,9 @@ export const OTP = forwardRef<OTPHandle, OTPProps>(function OTP(
           onFocus={(e) => e.target.select()}
           onPaste={i === 0 ? onPaste : undefined}
           className={cn(
-            'h-12 w-10 text-center font-mono text-[20px] font-medium text-text bg-panel rounded-md',
-            'border border-border outline-none transition-[border-color,box-shadow] duration-(--duration-micro)',
-            'focus:border-accent focus:ring-[3px] focus:ring-accent-dim',
+            'text-text bg-panel h-12 w-10 rounded-md text-center font-mono text-[20px] font-medium',
+            'border-border border transition-[border-color,box-shadow] duration-(--duration-micro) outline-none',
+            'focus:border-accent focus:ring-accent-dim focus:ring-[3px]',
             'disabled:cursor-not-allowed disabled:opacity-50',
           )}
         />

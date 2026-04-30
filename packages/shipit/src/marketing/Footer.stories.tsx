@@ -18,8 +18,10 @@ export const Default: Story = {
       <span className="inline-flex items-center gap-[10px]">
         <span
           aria-hidden
-          className="grid h-6 w-6 place-items-center rounded-md text-[13px] text-on-accent"
-          style={{ background: 'linear-gradient(135deg, oklch(0.82 0.12 200), oklch(0.78 0.14 300))' }}
+          className="text-on-accent grid h-6 w-6 place-items-center rounded-md text-[13px]"
+          style={{
+            background: 'linear-gradient(135deg, oklch(0.82 0.12 200), oklch(0.78 0.14 300))',
+          }}
         >
           ◆
         </span>

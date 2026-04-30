@@ -23,7 +23,14 @@ type Story = StoryObj<typeof EmptyState>;
 export const Default: Story = {
   render: (args) => (
     <div className="w-[280px]">
-      <EmptyState {...args} action={<Button size="sm" variant="primary">Connect GitHub</Button>} />
+      <EmptyState
+        {...args}
+        action={
+          <Button size="sm" variant="primary">
+            Connect GitHub
+          </Button>
+        }
+      />
     </div>
   ),
 };
@@ -35,7 +42,11 @@ export const NoResults: Story = {
         icon="⌕"
         title="No results"
         description="Try a broader search. We looked across services, people, and docs."
-        action={<Button size="sm" variant="ghost">Clear filters</Button>}
+        action={
+          <Button size="sm" variant="ghost">
+            Clear filters
+          </Button>
+        }
       />
     </div>
   ),
@@ -66,7 +77,11 @@ export const Danger: Story = {
         icon="!"
         title="Sync failed"
         description="GitHub returned a 401. Your token may have expired."
-        action={<Button size="sm" variant="destructive">Re-authorize</Button>}
+        action={
+          <Button size="sm" variant="destructive">
+            Re-authorize
+          </Button>
+        }
       />
     </div>
   ),

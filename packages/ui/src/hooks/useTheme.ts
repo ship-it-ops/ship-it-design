@@ -41,7 +41,10 @@ export function useTheme(): {
       const attr = document.documentElement.getAttribute('data-theme');
       setThemeState(attr === 'light' ? 'light' : 'dark');
     });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
     return () => observer.disconnect();
   }, []);
 

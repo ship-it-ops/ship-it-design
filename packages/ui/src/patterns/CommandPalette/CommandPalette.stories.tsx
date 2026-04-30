@@ -2,11 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
 import { Button } from '../../components/Button/Button';
-import {
-  CommandPalette,
-  filterCommandItems,
-  type CommandPaletteGroup,
-} from './CommandPalette';
+import { CommandPalette, filterCommandItems, type CommandPaletteGroup } from './CommandPalette';
 
 const meta: Meta<typeof CommandPalette> = {
   title: 'Patterns/Navigation/CommandPalette',
@@ -21,7 +17,12 @@ const groups: CommandPaletteGroup[] = [
   {
     label: 'Entities',
     items: [
-      { id: 'a', label: 'payment-webhook-v2', description: 'service · owned by Payments', glyph: '◇' },
+      {
+        id: 'a',
+        label: 'payment-webhook-v2',
+        description: 'service · owned by Payments',
+        glyph: '◇',
+      },
       { id: 'b', label: 'payment-webhook-legacy', description: 'service · deprecated', glyph: '◇' },
       { id: 'c', label: 'webhook.ts', description: 'file · 312 LOC', glyph: '▢' },
       { id: 'd', label: 'billing-service', description: 'service · owned by Finance', glyph: '◎' },
@@ -30,8 +31,20 @@ const groups: CommandPaletteGroup[] = [
   {
     label: 'Actions',
     items: [
-      { id: 'open-graph', label: 'Open Graph', description: 'Jump to graph view', glyph: '◇', trailing: '⌘G' },
-      { id: 'new-incident', label: 'Create incident', description: 'Triage a new incident', glyph: '!', trailing: '⌘I' },
+      {
+        id: 'open-graph',
+        label: 'Open Graph',
+        description: 'Jump to graph view',
+        glyph: '◇',
+        trailing: '⌘G',
+      },
+      {
+        id: 'new-incident',
+        label: 'Create incident',
+        description: 'Triage a new incident',
+        glyph: '!',
+        trailing: '⌘I',
+      },
     ],
   },
 ];

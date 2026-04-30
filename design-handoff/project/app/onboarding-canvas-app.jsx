@@ -4,13 +4,12 @@
 function OnboardingCanvas() {
   const t = useTheme();
   const [personaA, setPersonaA] = React.useState('admin');
-  const W = 1280, H = 800;
+  const W = 1280,
+    H = 800;
 
   // Wrap variants in a fixed-size container with theme provided.
   const Frame = ({ children }) => (
-    <div style={{ width: W, height: H, background: t.bg, overflow: 'hidden' }}>
-      {children}
-    </div>
+    <div style={{ width: W, height: H, background: t.bg, overflow: 'hidden' }}>{children}</div>
   );
 
   return (
@@ -21,16 +20,24 @@ function OnboardingCanvas() {
         subtitle="8 steps · workspace → connect → schema → build → ask → aha → invite → tour"
       >
         <DCArtboard id="a" label="A · Modal · Conventional" width={W} height={H}>
-          <Frame><OnboardingVariantA persona="admin"/></Frame>
+          <Frame>
+            <OnboardingVariantA persona="admin" />
+          </Frame>
         </DCArtboard>
         <DCArtboard id="b" label="B · Transforming canvas · Conventional" width={W} height={H}>
-          <Frame><OnboardingVariantB persona="admin"/></Frame>
+          <Frame>
+            <OnboardingVariantB persona="admin" />
+          </Frame>
         </DCArtboard>
         <DCArtboard id="c" label="C · Modal · Bold editorial" width={W} height={H}>
-          <Frame><OnboardingVariantC persona="admin"/></Frame>
+          <Frame>
+            <OnboardingVariantC persona="admin" />
+          </Frame>
         </DCArtboard>
         <DCArtboard id="d" label="D · Canvas · Narrated build" width={W} height={H}>
-          <Frame><OnboardingVariantD persona="admin"/></Frame>
+          <Frame>
+            <OnboardingVariantD persona="admin" />
+          </Frame>
         </DCArtboard>
       </DCSection>
 
@@ -40,12 +47,15 @@ function OnboardingCanvas() {
         subtitle="Shortcut path — no connector setup, graph already exists"
       >
         <DCArtboard id="join-a" label="A · Join modal" width={W} height={H}>
-          <Frame><OnboardingVariantA persona="joiner"/></Frame>
+          <Frame>
+            <OnboardingVariantA persona="joiner" />
+          </Frame>
         </DCArtboard>
       </DCSection>
 
       <DCPostIt top={40} right={40} rotate={3} width={220}>
-        Open any artboard fullscreen to actually click through it. Each variant is a real flow with state.
+        Open any artboard fullscreen to actually click through it. Each variant is a real flow with
+        state.
       </DCPostIt>
     </DesignCanvas>
   );
@@ -53,6 +63,6 @@ function OnboardingCanvas() {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <ThemeCtx.Provider value={makeTheme('dark', 200)}>
-    <OnboardingCanvas/>
-  </ThemeCtx.Provider>
+    <OnboardingCanvas />
+  </ThemeCtx.Provider>,
 );

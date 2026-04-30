@@ -24,7 +24,7 @@ export const Error: Story = { args: { error: true, defaultValue: 'acme' } };
 export const Disabled: Story = { args: { disabled: true, defaultValue: 'Read-only value' } };
 export const Sizes: Story = {
   render: () => (
-    <div className="flex flex-col gap-3 w-72">
+    <div className="flex w-72 flex-col gap-3">
       <Input size="sm" placeholder="Small" />
       <Input size="md" placeholder="Medium" />
       <Input size="lg" placeholder="Large" />

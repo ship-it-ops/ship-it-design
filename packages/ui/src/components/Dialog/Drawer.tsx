@@ -18,16 +18,17 @@ export interface DrawerProps extends RadixDialog.DialogProps {
 
 const sideClasses: Record<DrawerSide, string> = {
   left: 'left-0 border-r border-border-strong data-[state=open]:animate-[ship-slide-in-left_220ms_var(--easing-out)]',
-  right: 'right-0 border-l border-border-strong data-[state=open]:animate-[ship-slide-in-right_220ms_var(--easing-out)]',
+  right:
+    'right-0 border-l border-border-strong data-[state=open]:animate-[ship-slide-in-right_220ms_var(--easing-out)]',
 };
 
 const DrawerHeader = ({ title, onClose }: { title: ReactNode; onClose?: () => void }) => (
-  <div className="flex items-center justify-between p-[16px] px-5 border-b border-border">
+  <div className="border-border flex items-center justify-between border-b p-[16px] px-5">
     <span className="text-[14px] font-medium">{title}</span>
     <RadixDialog.Close
       onClick={onClose}
       aria-label="Close"
-      className="text-text-dim hover:text-text text-[18px] leading-none p-1"
+      className="text-text-dim hover:text-text p-1 text-[18px] leading-none"
     >
       ×
     </RadixDialog.Close>
@@ -49,7 +50,7 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(function Drawer(
         <RadixDialog.Content
           ref={ref}
           className={cn(
-            'fixed top-0 bottom-0 z-[51] flex flex-col bg-panel shadow-lg outline-none',
+            'bg-panel fixed top-0 bottom-0 z-[51] flex flex-col shadow-lg outline-none',
             sideClasses[side],
           )}
           style={{ width }}

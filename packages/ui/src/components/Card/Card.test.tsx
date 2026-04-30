@@ -26,7 +26,11 @@ describe('Card', () => {
   });
 
   it('has no a11y violations', async () => {
-    const { container } = render(<Card title="x" description="y">body</Card>);
+    const { container } = render(
+      <Card title="x" description="y">
+        body
+      </Card>,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });

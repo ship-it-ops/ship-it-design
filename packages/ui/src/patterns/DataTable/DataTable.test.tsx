@@ -101,18 +101,15 @@ describe('DataTable', () => {
         defaultSelected={['1']}
       />,
     );
-    const allCheckbox = screen.getByRole('checkbox', { name: 'Select all rows' }) as HTMLInputElement;
+    const allCheckbox = screen.getByRole('checkbox', {
+      name: 'Select all rows',
+    }) as HTMLInputElement;
     expect(allCheckbox.indeterminate).toBe(true);
   });
 
   it('renders the empty state when data is empty', () => {
     render(
-      <DataTable
-        data={[]}
-        columns={columns}
-        rowKey={(r: Row) => r.id}
-        emptyState="No services"
-      />,
+      <DataTable data={[]} columns={columns} rowKey={(r: Row) => r.id} emptyState="No services" />,
     );
     expect(screen.getByText('No services')).toBeInTheDocument();
   });

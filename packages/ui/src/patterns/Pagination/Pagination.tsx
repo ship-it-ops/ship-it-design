@@ -63,7 +63,7 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>(function Pagi
             <span
               key={`ellipsis-${i}`}
               aria-hidden
-              className="grid h-[26px] min-w-[26px] place-items-center px-2 text-[12px] text-text-dim font-mono"
+              className="text-text-dim grid h-[26px] min-w-[26px] place-items-center px-2 font-mono text-[12px]"
             >
               …
             </span>
@@ -78,12 +78,12 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>(function Pagi
             aria-current={isActive ? 'page' : undefined}
             onClick={() => onPageChange(item)}
             className={cn(
-              'h-[26px] min-w-[26px] px-2 rounded-[5px] text-[12px] font-mono outline-none',
-              'transition-colors duration-(--duration-micro) cursor-pointer',
-              'focus-visible:ring-[3px] focus-visible:ring-accent-dim',
+              'h-[26px] min-w-[26px] rounded-[5px] px-2 font-mono text-[12px] outline-none',
+              'cursor-pointer transition-colors duration-(--duration-micro)',
+              'focus-visible:ring-accent-dim focus-visible:ring-[3px]',
               isActive
-                ? 'bg-accent-dim text-accent border border-accent'
-                : 'border border-transparent text-text-muted hover:bg-panel-2 hover:text-text',
+                ? 'bg-accent-dim text-accent border-accent border'
+                : 'text-text-muted hover:bg-panel-2 hover:text-text border border-transparent',
             )}
           >
             {item}

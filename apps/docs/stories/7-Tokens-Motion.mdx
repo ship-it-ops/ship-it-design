@@ -9,10 +9,10 @@ reduced-motion override that's enforced globally.
 
 ## Durations
 
-| Token | Value | When |
-|---|---|---|
+| Token            | Value | When                                             |
+| ---------------- | ----- | ------------------------------------------------ |
 | `duration.micro` | 150ms | hover, press, color, switch toggles, focus rings |
-| `duration.step` | 360ms | dialog / drawer / sheet entrances, toast in/out |
+| `duration.step`  | 360ms | dialog / drawer / sheet entrances, toast in/out  |
 
 Hand-rolled values are not allowed. If you reach for 200ms or 300ms, use
 `micro` (150ms) or `step` (360ms) and the system stays consistent.
@@ -20,8 +20,8 @@ Hand-rolled values are not allowed. If you reach for 200ms or 300ms, use
 ## Easings
 
 ```ts
-easing.out = 'cubic-bezier(.2, .7, .2, 1)';   // entrances — fast settle
-easing.in  = 'cubic-bezier(.4, .1, .8, .3)';  // exits — linger then fall
+easing.out = 'cubic-bezier(.2, .7, .2, 1)'; // entrances — fast settle
+easing.in = 'cubic-bezier(.4, .1, .8, .3)'; // exits — linger then fall
 ```
 
 ## Reduced motion
@@ -30,7 +30,10 @@ easing.in  = 'cubic-bezier(.4, .1, .8, .3)';  // exits — linger then fall
 
 ```css
 @media (prefers-reduced-motion: reduce) {
-  :root { --duration-micro: 0ms; --duration-step: 0ms; }
+  :root {
+    --duration-micro: 0ms;
+    --duration-step: 0ms;
+  }
 }
 ```
 
@@ -43,18 +46,18 @@ component will animate even when the user has asked it not to.
 Keyframes live in `packages/ui/src/styles/animations.css` and are bundled
 through `@ship-it/ui/styles/globals.css`:
 
-| Keyframe | When |
-|---|---|
-| `ship-spin` | Spinner |
-| `ship-pulse` | streaming caret, pulsing dot |
-| `ship-pulse-ring` | live indicator (radiating ring) |
-| `ship-indeterminate` | indeterminate Progress |
-| `ship-skeleton` | Skeleton |
-| `ship-fade-in` | overlays |
-| `ship-pop-in` | tooltips, popovers, dropdown content |
-| `ship-dialog-in` | Dialog content |
-| `ship-slide-in-{right,left,bottom}` | Drawer, Sheet |
-| `ship-toast-in` | Toast |
+| Keyframe                            | When                                 |
+| ----------------------------------- | ------------------------------------ |
+| `ship-spin`                         | Spinner                              |
+| `ship-pulse`                        | streaming caret, pulsing dot         |
+| `ship-pulse-ring`                   | live indicator (radiating ring)      |
+| `ship-indeterminate`                | indeterminate Progress               |
+| `ship-skeleton`                     | Skeleton                             |
+| `ship-fade-in`                      | overlays                             |
+| `ship-pop-in`                       | tooltips, popovers, dropdown content |
+| `ship-dialog-in`                    | Dialog content                       |
+| `ship-slide-in-{right,left,bottom}` | Drawer, Sheet                        |
+| `ship-toast-in`                     | Toast                                |
 
 Compose with the Tailwind arbitrary-property syntax:
 

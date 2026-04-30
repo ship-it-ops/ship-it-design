@@ -38,8 +38,7 @@ const defaultGlyph: Record<BannerVariant, string> = {
 };
 
 export interface BannerProps
-  extends HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof bannerStyles> {
+  extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof bannerStyles> {
   /** Override the leading glyph. */
   icon?: ReactNode;
   /** Optional trailing action (e.g., a link). Rendered with `ml-auto`. */
@@ -60,7 +59,7 @@ export const Banner = forwardRef<HTMLDivElement, BannerProps>(function Banner(
       <span aria-hidden className="leading-none">
         {icon ?? defaultGlyph[variant!]}
       </span>
-      <div className="flex-1 min-w-0">{children}</div>
+      <div className="min-w-0 flex-1">{children}</div>
       {action && <div className="ml-auto">{action}</div>}
     </div>
   );

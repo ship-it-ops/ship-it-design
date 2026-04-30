@@ -41,7 +41,7 @@ other projects"; we may "add anything missing." User decisions captured via AskU
   - `@ship-it/tokens` — design tokens (rewritten to handoff values)
   - `@ship-it/icons` — `IconGlyph` map + SVGR pipeline (kept; for future SVG icons)
   - `@ship-it/ui` — generic primitives + patterns (the bulk of the work)
-  - `@ship-it/shipit` *(new)* — ShipIt-AI domain composites built on `@ship-it/ui`
+  - `@ship-it/shipit` _(new)_ — ShipIt-AI domain composites built on `@ship-it/ui`
   - `tsconfig` / `eslint-config` (unchanged from scaffold)
 
 ---
@@ -50,20 +50,21 @@ other projects"; we may "add anything missing." User decisions captured via AskU
 
 Replace every existing token module with handoff-faithful values:
 
-| File              | Replaces                                                                       |
-| ----------------- | ------------------------------------------------------------------------------ |
-| `src/color.ts`    | OKLCH primitives + `accentH` knob; semantic `dark` (default) and `light` maps. Adds `ok/warn/err/purple/pink` companion palette + `accentDim`/`accentGlow`/`accentText`. |
-| `src/typography.ts` | Geist + Geist Mono families; sizes `eyebrow/mono/body/body-lg/h4/h3/h2/h1/display`; tracking `wide/xwide/tight/xtight`; weights 300–700. |
-| `src/spacing.ts`  | 4pt scale with the handoff's irregular ramp: 1=4 / 2=8 / 3=12 / 4=16 / 5=22 / 6=28 / 8=40. |
-| `src/radius.ts`   | xs=4, sm=6, md=8, base=10, lg=14, xl=18.                                       |
-| `src/shadow.ts`   | Light + dark recipes (handoff's `--shadow-sm/--shadow/--shadow-lg`).           |
-| `src/motion.ts`   | `duration.micro=150ms`, `duration.step=360ms`; `easing.out`, `easing.in` curves. |
-| `src/elevation.ts` *(new)* | Combines shadow + inset highlight (e.g. `inset 0 1px 0 rgba(255,255,255,0.02)`) for elevated dark surfaces. |
-| `src/breakpoint.ts` | (Keep current generic scale.)                                                |
-| `src/z-index.ts`  | (Keep.)                                                                        |
-| `src/index.ts`    | Barrel + re-export `accentH`.                                                  |
+| File                       | Replaces                                                                                                                                                                 |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `src/color.ts`             | OKLCH primitives + `accentH` knob; semantic `dark` (default) and `light` maps. Adds `ok/warn/err/purple/pink` companion palette + `accentDim`/`accentGlow`/`accentText`. |
+| `src/typography.ts`        | Geist + Geist Mono families; sizes `eyebrow/mono/body/body-lg/h4/h3/h2/h1/display`; tracking `wide/xwide/tight/xtight`; weights 300–700.                                 |
+| `src/spacing.ts`           | 4pt scale with the handoff's irregular ramp: 1=4 / 2=8 / 3=12 / 4=16 / 5=22 / 6=28 / 8=40.                                                                               |
+| `src/radius.ts`            | xs=4, sm=6, md=8, base=10, lg=14, xl=18.                                                                                                                                 |
+| `src/shadow.ts`            | Light + dark recipes (handoff's `--shadow-sm/--shadow/--shadow-lg`).                                                                                                     |
+| `src/motion.ts`            | `duration.micro=150ms`, `duration.step=360ms`; `easing.out`, `easing.in` curves.                                                                                         |
+| `src/elevation.ts` _(new)_ | Combines shadow + inset highlight (e.g. `inset 0 1px 0 rgba(255,255,255,0.02)`) for elevated dark surfaces.                                                              |
+| `src/breakpoint.ts`        | (Keep current generic scale.)                                                                                                                                            |
+| `src/z-index.ts`           | (Keep.)                                                                                                                                                                  |
+| `src/index.ts`             | Barrel + re-export `accentH`.                                                                                                                                            |
 
 `scripts/build-css.ts` is rewritten to:
+
 - Emit `:root { … }` (dark theme, default) and `[data-theme="light"] { … }` (light overrides only).
 - Preserve `--accent-h` so `oklch(0.82 0.12 var(--accent-h))` works unmodified.
 - Keep `@media (prefers-reduced-motion: reduce)` motion-zero block.
@@ -176,6 +177,7 @@ packages/ui/src/
   Radix owns the behavior + ARIA. Keeps it bullet-proof.
 
 **Tests required per component**:
+
 - Render happy path
 - One test per interactive behavior (`userEvent` only)
 - `axe` violations === 0
@@ -183,7 +185,7 @@ packages/ui/src/
 
 ---
 
-## `@ship-it/shipit` *(new package)* — domain composites
+## `@ship-it/shipit` _(new package)_ — domain composites
 
 Built on `@ship-it/ui` + `@ship-it/icons`. Lives at `packages/shipit/`.
 
@@ -250,7 +252,7 @@ Per user choice: Storybook's sidebar IS the TOC.
 ## Files to add / modify (summary)
 
 - **Modify ~12** existing scaffold files (token modules, build-css, globals.css,
-  Button.*, README.md, MDX foundations, theme decorator, ui package.json deps)
+  Button.\*, README.md, MDX foundations, theme decorator, ui package.json deps)
 - **Add ~200 new files** across the four packages — components, stories, tests, MDX,
   the new `shipit` package scaffolding (its own `package.json`, `tsconfig.json`,
   `tsup.config.ts`, `README.md`)
@@ -302,6 +304,7 @@ pnpm --filter docs build              # static Storybook builds clean
 ```
 
 **Manual visual QA** (mandatory):
+
 - Open Storybook, check Buttons section — every variant × size matches Library.html
 - Check Forms — Input states, Select, Switch, OTP look identical to the handoff
 - Check Overlays — Dialog opens/dismisses with ESC + backdrop click; focus trap works

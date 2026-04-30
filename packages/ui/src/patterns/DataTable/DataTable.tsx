@@ -156,18 +156,12 @@ export function DataTable<T>(props: DataTableProps<T> & { ref?: Ref<HTMLTableEle
   };
 
   return (
-    <table
-      ref={ref}
-      className={cn(
-        'w-full border-collapse text-[12px]',
-        className,
-      )}
-    >
+    <table ref={ref} className={cn('w-full border-collapse text-[12px]', className)}>
       {caption && <caption className="sr-only">{caption}</caption>}
       <thead className={cn('bg-panel-2', stickyHeader && 'sticky top-0 z-10')}>
         <tr>
           {selectable && (
-            <th scope="col" className="w-8 border-b border-border px-3 py-2 text-left">
+            <th scope="col" className="border-border w-8 border-b px-3 py-2 text-left">
               <input
                 ref={headerCheckRef}
                 type="checkbox"
@@ -197,7 +191,7 @@ export function DataTable<T>(props: DataTableProps<T> & { ref?: Ref<HTMLTableEle
                 onClick={sortable ? () => toggleSort(col.key) : undefined}
                 style={col.width != null ? { width: col.width } : undefined}
                 className={cn(
-                  'select-none border-b border-border px-3 py-2 font-mono text-[10px] font-medium uppercase tracking-[1.4px]',
+                  'border-border border-b px-3 py-2 font-mono text-[10px] font-medium tracking-[1.4px] uppercase select-none',
                   alignClass[align],
                   sortable && 'cursor-pointer',
                   isSorted ? 'text-accent' : 'text-text-dim',
@@ -219,7 +213,7 @@ export function DataTable<T>(props: DataTableProps<T> & { ref?: Ref<HTMLTableEle
           <tr>
             <td
               colSpan={columns.length + (selectable ? 1 : 0)}
-              className="px-3 py-8 text-center text-text-dim"
+              className="text-text-dim px-3 py-8 text-center"
             >
               {emptyState ?? 'No data'}
             </td>
@@ -233,7 +227,7 @@ export function DataTable<T>(props: DataTableProps<T> & { ref?: Ref<HTMLTableEle
               key={id}
               data-state={isSelected ? 'selected' : undefined}
               className={cn(
-                'border-b border-border last:border-0 transition-colors duration-(--duration-micro)',
+                'border-border border-b transition-colors duration-(--duration-micro) last:border-0',
                 isSelected ? 'bg-accent-dim/50' : 'hover:bg-panel-2',
               )}
             >
@@ -249,10 +243,7 @@ export function DataTable<T>(props: DataTableProps<T> & { ref?: Ref<HTMLTableEle
                 </td>
               )}
               {columns.map((col) => (
-                <td
-                  key={col.key}
-                  className={cn('px-3 py-[10px]', alignClass[col.align ?? 'left'])}
-                >
+                <td key={col.key} className={cn('px-3 py-[10px]', alignClass[col.align ?? 'left'])}>
                   {col.cell ? col.cell(row) : col.accessor ? String(col.accessor(row)) : null}
                 </td>
               ))}

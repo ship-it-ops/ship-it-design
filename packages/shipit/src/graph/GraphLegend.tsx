@@ -45,13 +45,13 @@ export const GraphLegend = forwardRef<HTMLDivElement, GraphLegendProps>(function
     <div
       ref={ref}
       className={cn(
-        'inline-flex flex-col gap-[6px] rounded-base border border-border bg-panel/85 backdrop-blur-[8px] p-[10px] text-[11px]',
+        'rounded-base border-border bg-panel/85 inline-flex flex-col gap-[6px] border p-[10px] text-[11px] backdrop-blur-[8px]',
         className,
       )}
       {...props}
     >
       {heading && (
-        <div className="font-mono text-[9px] uppercase tracking-[1.4px] text-text-dim">
+        <div className="text-text-dim font-mono text-[9px] tracking-[1.4px] uppercase">
           {heading}
         </div>
       )}
@@ -60,11 +60,7 @@ export const GraphLegend = forwardRef<HTMLDivElement, GraphLegendProps>(function
           const color = entry.color ?? (entry.type ? typeColorVar[entry.type] : 'currentColor');
           return (
             <div key={i} className="flex items-center gap-[6px]">
-              <span
-                aria-hidden
-                className="h-2 w-2 rounded-full"
-                style={{ background: color }}
-              />
+              <span aria-hidden className="h-2 w-2 rounded-full" style={{ background: color }} />
               <span>{entry.label}</span>
             </div>
           );

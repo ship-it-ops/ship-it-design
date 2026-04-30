@@ -38,9 +38,7 @@ describe('GraphInspector', () => {
   });
 
   it('has no a11y violations', async () => {
-    const { container } = render(
-      <GraphInspector type="service" title="x" description="desc" />,
-    );
+    const { container } = render(<GraphInspector type="service" title="x" description="desc" />);
     expect(await axe(container)).toHaveNoViolations();
   });
 });

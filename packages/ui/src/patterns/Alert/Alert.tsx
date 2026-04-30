@@ -13,20 +13,17 @@ import { cn } from '../../utils/cn';
 
 export type AlertVariant = 'info' | 'ok' | 'warn' | 'err';
 
-const alertStyles = cva(
-  'flex items-start gap-3 rounded-base border bg-panel p-3 text-[13px]',
-  {
-    variants: {
-      variant: {
-        info: 'border-border border-l-2 border-l-accent',
-        ok: 'border-border border-l-2 border-l-ok',
-        warn: 'border-border border-l-2 border-l-warn',
-        err: 'border-border border-l-2 border-l-err',
-      },
+const alertStyles = cva('flex items-start gap-3 rounded-base border bg-panel p-3 text-[13px]', {
+  variants: {
+    variant: {
+      info: 'border-border border-l-2 border-l-accent',
+      ok: 'border-border border-l-2 border-l-ok',
+      warn: 'border-border border-l-2 border-l-warn',
+      err: 'border-border border-l-2 border-l-err',
     },
-    defaultVariants: { variant: 'info' },
   },
-);
+  defaultVariants: { variant: 'info' },
+});
 
 const iconColorClass: Record<AlertVariant, string> = {
   info: 'text-accent',
@@ -43,8 +40,7 @@ const defaultGlyph: Record<AlertVariant, string> = {
 };
 
 export interface AlertProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'title'>,
-    VariantProps<typeof alertStyles> {
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'title'>, VariantProps<typeof alertStyles> {
   /** Bold title text. */
   title?: ReactNode;
   /** Body description. */
@@ -66,12 +62,15 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
       className={cn(alertStyles({ variant }), className)}
       {...props}
     >
-      <span aria-hidden className={cn('mt-[1px] text-[14px] leading-none', iconColorClass[variant!])}>
+      <span
+        aria-hidden
+        className={cn('mt-[1px] text-[14px] leading-none', iconColorClass[variant!])}
+      >
         {icon ?? defaultGlyph[variant!]}
       </span>
-      <div className="flex-1 min-w-0">
+      <div className="min-w-0 flex-1">
         {title && <div className="font-medium">{title}</div>}
-        {description && <div className="mt-[2px] text-text-muted text-[12px]">{description}</div>}
+        {description && <div className="text-text-muted mt-[2px] text-[12px]">{description}</div>}
         {children}
       </div>
       {action && <div className="ml-1 shrink-0">{action}</div>}

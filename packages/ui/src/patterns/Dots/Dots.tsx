@@ -47,7 +47,7 @@ export const Dots = forwardRef<HTMLElement, DotsProps>(function Dots(
               className={cn(
                 sharedClass,
                 'cursor-pointer outline-none',
-                'focus-visible:ring-[3px] focus-visible:ring-accent-dim',
+                'focus-visible:ring-accent-dim focus-visible:ring-[3px]',
                 !isActive && 'hover:bg-border-strong',
               )}
             />

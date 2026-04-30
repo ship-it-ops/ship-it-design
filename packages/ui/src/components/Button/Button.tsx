@@ -23,16 +23,12 @@ const buttonStyles = cva(
           'bg-accent text-on-accent border border-accent hover:brightness-110 active:brightness-95',
         secondary:
           'bg-panel-2 text-text border border-border hover:bg-[color-mix(in_oklab,var(--color-panel-2),white_4%)]',
-        ghost:
-          'bg-transparent text-text border border-transparent hover:bg-panel-2',
-        outline:
-          'bg-transparent text-text border border-border-strong hover:bg-panel-2',
+        ghost: 'bg-transparent text-text border border-transparent hover:bg-panel-2',
+        outline: 'bg-transparent text-text border border-border-strong hover:bg-panel-2',
         destructive:
           'bg-err text-on-accent border border-err hover:brightness-110 active:brightness-95',
-        success:
-          'bg-ok text-on-accent border border-ok hover:brightness-110 active:brightness-95',
-        link:
-          'bg-transparent text-accent border border-transparent underline underline-offset-[3px] hover:brightness-110',
+        success: 'bg-ok text-on-accent border border-ok hover:brightness-110 active:brightness-95',
+        link: 'bg-transparent text-accent border border-transparent underline underline-offset-[3px] hover:brightness-110',
       },
       size: {
         sm: 'h-[26px] px-[10px] text-[11px] gap-[5px] rounded-[5px]',
@@ -57,15 +53,14 @@ function Spinner({ size }: { size: number }) {
   return (
     <span
       aria-hidden
-      className="inline-block rounded-full border-[1.5px] border-current border-t-transparent animate-[ship-spin_0.7s_linear_infinite]"
+      className="inline-block animate-[ship-spin_0.7s_linear_infinite] rounded-full border-[1.5px] border-current border-t-transparent"
       style={{ width: size, height: size }}
     />
   );
 }
 
 export interface ButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonStyles> {
+  extends ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonStyles> {
   /** Icon shown to the left of the label (or replacing the spinner when `loading`). */
   icon?: ReactNode;
   /** Icon/text shown to the right of the label. Often a chevron, kbd hint, or arrow. */
@@ -130,7 +125,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       className={composedClassName}
       {...props}
     >
-      {loading ? <Spinner size={iconPx} /> : icon ? <span className="inline-flex">{icon}</span> : null}
+      {loading ? (
+        <Spinner size={iconPx} />
+      ) : icon ? (
+        <span className="inline-flex">{icon}</span>
+      ) : null}
       {children}
       {trailing && <span className="inline-flex opacity-60">{trailing}</span>}
     </button>

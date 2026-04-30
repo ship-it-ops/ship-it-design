@@ -39,7 +39,17 @@ export interface GraphInspectorProps extends Omit<HTMLAttributes<HTMLDivElement>
 
 export const GraphInspector = forwardRef<HTMLDivElement, GraphInspectorProps>(
   function GraphInspector(
-    { type, entityId, title, description, properties, relations, relationCount, className, ...props },
+    {
+      type,
+      entityId,
+      title,
+      description,
+      properties,
+      relations,
+      relationCount,
+      className,
+      ...props
+    },
     ref,
   ) {
     const total = relationCount ?? relations?.length ?? 0;
@@ -48,7 +58,7 @@ export const GraphInspector = forwardRef<HTMLDivElement, GraphInspectorProps>(
         ref={ref}
         aria-label={typeof title === 'string' ? `${title} inspector` : 'Node inspector'}
         className={cn(
-          'flex w-[340px] flex-col gap-3 rounded-base border border-border bg-panel p-4',
+          'rounded-base border-border bg-panel flex w-[340px] flex-col gap-3 border p-4',
           className,
         )}
         {...props}
@@ -56,30 +66,25 @@ export const GraphInspector = forwardRef<HTMLDivElement, GraphInspectorProps>(
         <div className="flex items-center">
           <EntityBadge type={type} size="sm" />
           {entityId && (
-            <span className="ml-auto font-mono text-[10px] text-text-dim">{entityId}</span>
+            <span className="text-text-dim ml-auto font-mono text-[10px]">{entityId}</span>
           )}
         </div>
         <div>
           <div className="text-[17px] font-medium">{title}</div>
-          {description && (
-            <div className="mt-[2px] text-[12px] text-text-muted">{description}</div>
-          )}
+          {description && <div className="text-text-muted mt-[2px] text-[12px]">{description}</div>}
         </div>
         {properties && properties.length > 0 && (
           <section>
-            <div className="mb-2 font-mono text-[9px] uppercase tracking-[1.4px] text-text-dim">
+            <div className="text-text-dim mb-2 font-mono text-[9px] tracking-[1.4px] uppercase">
               Properties
             </div>
-            <dl className="flex flex-col gap-1 m-0 text-[11px] font-mono">
+            <dl className="m-0 flex flex-col gap-1 font-mono text-[11px]">
               {properties.map((p, i) => (
                 <div
                   key={i}
-                  className={cn(
-                    'flex border-border py-1',
-                    i < properties.length - 1 && 'border-b',
-                  )}
+                  className={cn('border-border flex py-1', i < properties.length - 1 && 'border-b')}
                 >
-                  <dt className="w-[70px] text-text-dim">{p.key}</dt>
+                  <dt className="text-text-dim w-[70px]">{p.key}</dt>
                   <dd className="m-0 flex-1">{p.value}</dd>
                 </div>
               ))}
@@ -88,13 +93,13 @@ export const GraphInspector = forwardRef<HTMLDivElement, GraphInspectorProps>(
         )}
         {relations && relations.length > 0 && (
           <section>
-            <div className="mb-2 font-mono text-[9px] uppercase tracking-[1.4px] text-text-dim">
+            <div className="text-text-dim mb-2 font-mono text-[9px] tracking-[1.4px] uppercase">
               Relations · {total}
             </div>
-            <ul className="flex flex-col gap-1 m-0 p-0 text-[11px] list-none">
+            <ul className="m-0 flex list-none flex-col gap-1 p-0 text-[11px]">
               {relations.map((r, i) => (
                 <li key={i} className="flex gap-2">
-                  <span className="w-[100px] font-mono text-text-dim">{r.relation}</span>
+                  <span className="text-text-dim w-[100px] font-mono">{r.relation}</span>
                   <span>{r.entity}</span>
                 </li>
               ))}

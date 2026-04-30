@@ -1,4 +1,12 @@
-import { Children, forwardRef, isValidElement, type AnchorHTMLAttributes, type HTMLAttributes, type ReactElement, type ReactNode } from 'react';
+import {
+  Children,
+  forwardRef,
+  isValidElement,
+  type AnchorHTMLAttributes,
+  type HTMLAttributes,
+  type ReactElement,
+  type ReactNode,
+} from 'react';
 
 import { cn } from '../../utils/cn';
 
@@ -22,7 +30,7 @@ export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(function Br
   const last = crumbs.length - 1;
   return (
     <nav ref={ref} aria-label="Breadcrumb" className={cn('text-[13px]', className)} {...props}>
-      <ol className="flex flex-wrap items-center gap-[6px] text-text-muted">
+      <ol className="text-text-muted flex flex-wrap items-center gap-[6px]">
         {crumbs.map((crumb, i) => {
           const isCurrent = i === last;
           return (

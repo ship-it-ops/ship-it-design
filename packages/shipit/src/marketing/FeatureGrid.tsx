@@ -30,14 +30,18 @@ export const FeatureGrid = forwardRef<HTMLDivElement, FeatureGridProps>(function
   ref,
 ) {
   return (
-    <div ref={ref} className={cn('grid grid-cols-1 gap-3', colsClass[columns], className)} {...props}>
+    <div
+      ref={ref}
+      className={cn('grid grid-cols-1 gap-3', colsClass[columns], className)}
+      {...props}
+    >
       {features.map((f, i) => (
-        <div key={i} className="rounded-base border border-border bg-panel p-5">
-          <div aria-hidden className="mb-3 text-[22px] text-accent">
+        <div key={i} className="rounded-base border-border bg-panel border p-5">
+          <div aria-hidden className="text-accent mb-3 text-[22px]">
             {f.glyph}
           </div>
           <div className="mb-[6px] text-[14px] font-medium">{f.title}</div>
-          <div className="text-[12px] leading-[1.55] text-text-muted">{f.description}</div>
+          <div className="text-text-muted text-[12px] leading-[1.55]">{f.description}</div>
         </div>
       ))}
     </div>

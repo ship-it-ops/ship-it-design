@@ -12,23 +12,23 @@ Workspace is green: 9/9 typecheck, 8/8 test runs (264 tests across `ui` +
 
 ## Where you are
 
-| | |
-|---|---|
-| Repo | `/Users/mohamede/Repos/Ship-It-Ops/ship-it-design` |
-| Branch | `initial-design` |
-| Plan | `cozy-doodling-scott.md` at repo root (the Ultraplan-refined 5-phase plan) |
+|               |                                                                                 |
+| ------------- | ------------------------------------------------------------------------------- |
+| Repo          | `/Users/mohamede/Repos/Ship-It-Ops/ship-it-design`                              |
+| Branch        | `initial-design`                                                                |
+| Plan          | `cozy-doodling-scott.md` at repo root (the Ultraplan-refined 5-phase plan)      |
 | Design source | `design-handoff/project/...` (read-only — handoff bundle from claude.ai/design) |
-| Storybook | `apps/docs/` (Storybook 8.6 with vite) |
+| Storybook     | `apps/docs/` (Storybook 8.6 with vite)                                          |
 
 ## Phase status
 
-| Phase | Status | Commit |
-|---|---|---|
-| 1. Foundation (tokens, icons, fonts) | ✅ done | `2e95cf1 Foundation` |
-| 2. UI primitives (35 components) | ✅ done | `5dcbfe2 UI Primitives` |
-| 3. UI patterns (23 patterns + 2 hooks) | ✅ done | `d160e0a UI Patterns` |
+| Phase                                       | Status  | Commit                      |
+| ------------------------------------------- | ------- | --------------------------- |
+| 1. Foundation (tokens, icons, fonts)        | ✅ done | `2e95cf1 Foundation`        |
+| 2. UI primitives (35 components)            | ✅ done | `5dcbfe2 UI Primitives`     |
+| 3. UI patterns (23 patterns + 2 hooks)      | ✅ done | `d160e0a UI Patterns`       |
 | 4. `@ship-it/shipit` (22 domain composites) | ✅ done | `0db4754 ShipIt Composites` |
-| 5. Storybook docs polish | ✅ done | `b3aca4b Storybook Polish` |
+| 5. Storybook docs polish                    | ✅ done | `b3aca4b Storybook Polish`  |
 
 ## Verify current state
 
@@ -178,15 +178,18 @@ and the foundation pages need to be rewritten with real handoff values.
 ### 1. Wire `@ship-it/shipit` into the docs app
 
 Add the workspace dep to `apps/docs/package.json`:
+
 ```json
 "dependencies": {
   "@ship-it/shipit": "workspace:*",
   ...
 }
 ```
+
 Then `pnpm install`.
 
 Update `apps/docs/.storybook/main.ts` to discover shipit stories:
+
 ```ts
 stories: [
   '../stories/**/*.mdx',
@@ -201,6 +204,7 @@ stories: [
 
 `packages/shipit/src/{ai,entity,graph,marketing,data}/<Component>.stories.tsx` —
 one per composite. Title prefixes:
+
 - `ShipIt/AI/AskBar`, `ShipIt/AI/CopilotMessage`, ...
 - `ShipIt/Entity/EntityBadge`, ...
 - `ShipIt/Graph/GraphNode`, ...
@@ -215,12 +219,13 @@ and `design-handoff/project/app/page-{ask,graph,entity,home}.jsx`.
 
 Update `apps/docs/.storybook/preview.ts`: replace `withThemeByClassName` (the
 scaffold default) with `withThemeByDataAttribute`:
+
 ```ts
 withThemeByDataAttribute({
   themes: { dark: '', light: 'light' },
   defaultTheme: 'dark',
   attributeName: 'data-theme',
-})
+});
 ```
 
 ### 4. Rewrite the 6 existing MDX foundation pages
@@ -228,6 +233,7 @@ withThemeByDataAttribute({
 `apps/docs/stories/{1-Introduction,2-Foundations-Color,3-Foundations-Typography,
 4-Foundations-Spacing,5-Foundations-Motion,6-Accessibility}.mdx` — currently
 scaffold placeholders. Rewrite with the real handoff values:
+
 - Color: OKLCH swatches for the dark + light maps, `--accent-h` knob demo
 - Typography: Geist sample + the named ramp (eyebrow → display)
 - Spacing: the irregular 4pt scale
@@ -266,19 +272,19 @@ After Phase 5, this handoff doc can be archived or deleted.
 
 ## Tech stack
 
-| Concern | Choice |
-|---|---|
-| Framework | React 18+, TypeScript 5.9 |
-| Styling | Tailwind v4 beta (`@theme inline` directive) + CSS variables |
-| Variants | `class-variance-authority` + `clsx` + `tailwind-merge` |
-| Headless | Radix UI primitives |
-| Library build | tsup (esm + cjs + dts) |
-| Tests | Vitest + @testing-library/react + @testing-library/user-event + vitest-axe |
-| Docs | Storybook 8.6 + @storybook/react-vite |
-| Versioning | Changesets (wired but no publishes yet) |
-| Orchestration | Turborepo |
-| Package mgr | pnpm 9 |
-| Node | 20 LTS (`.nvmrc`) |
+| Concern       | Choice                                                                     |
+| ------------- | -------------------------------------------------------------------------- |
+| Framework     | React 18+, TypeScript 5.9                                                  |
+| Styling       | Tailwind v4 beta (`@theme inline` directive) + CSS variables               |
+| Variants      | `class-variance-authority` + `clsx` + `tailwind-merge`                     |
+| Headless      | Radix UI primitives                                                        |
+| Library build | tsup (esm + cjs + dts)                                                     |
+| Tests         | Vitest + @testing-library/react + @testing-library/user-event + vitest-axe |
+| Docs          | Storybook 8.6 + @storybook/react-vite                                      |
+| Versioning    | Changesets (wired but no publishes yet)                                    |
+| Orchestration | Turborepo                                                                  |
+| Package mgr   | pnpm 9                                                                     |
+| Node          | 20 LTS (`.nvmrc`)                                                          |
 
 ## External state worth knowing
 

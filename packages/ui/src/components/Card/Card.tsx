@@ -22,8 +22,7 @@ const cardStyles = cva(
 );
 
 export interface CardProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'title'>,
-    VariantProps<typeof cardStyles> {
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'title'>, VariantProps<typeof cardStyles> {
   /** Render a header row with this title (and optional `actions`). */
   title?: ReactNode;
   /** Description shown under the title (or above children when no title). */
@@ -66,18 +65,20 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
     >
       {(title || actions) && (
         <div className={cn('flex items-start gap-3', (description || children) && 'mb-[10px]')}>
-          {title && <div className="text-[14px] font-medium flex-1">{title}</div>}
+          {title && <div className="flex-1 text-[14px] font-medium">{title}</div>}
           {actions && <div className="flex gap-1">{actions}</div>}
         </div>
       )}
       {description && (
-        <div className={cn('text-[12px] text-text-muted leading-[1.55]', children && 'mb-[14px]')}>
+        <div className={cn('text-text-muted text-[12px] leading-[1.55]', children && 'mb-[14px]')}>
           {description}
         </div>
       )}
       {children}
       {footer && (
-        <div className="mt-[14px] pt-3 border-t border-border text-[11px] text-text-dim">{footer}</div>
+        <div className="border-border text-text-dim mt-[14px] border-t pt-3 text-[11px]">
+          {footer}
+        </div>
       )}
     </div>
   );

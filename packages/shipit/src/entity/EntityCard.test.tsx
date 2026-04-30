@@ -6,13 +6,7 @@ import { EntityCard } from './EntityCard';
 
 describe('EntityCard', () => {
   it('renders the title and subtitle', () => {
-    render(
-      <EntityCard
-        type="service"
-        title="payment-webhook-v2"
-        subtitle="owned by Payments"
-      />,
-    );
+    render(<EntityCard type="service" title="payment-webhook-v2" subtitle="owned by Payments" />);
     expect(screen.getByText('payment-webhook-v2')).toBeInTheDocument();
     expect(screen.getByText('owned by Payments')).toBeInTheDocument();
   });

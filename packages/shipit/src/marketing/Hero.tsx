@@ -42,17 +42,19 @@ export const Hero = forwardRef<HTMLElement, HeroProps>(function Hero(
         {eyebrow}
         <h1
           className={cn(
-            'mb-4 text-[44px] font-medium leading-[1.05] tracking-[-1.6px] md:text-[56px]',
+            'mb-4 text-[44px] leading-[1.05] font-medium tracking-[-1.6px] md:text-[56px]',
             eyebrow && 'mt-5',
           )}
         >
           {title}
         </h1>
         {description && (
-          <p className="mb-7 text-[17px] leading-[1.6] text-text-muted">{description}</p>
+          <p className="text-text-muted mb-7 text-[17px] leading-[1.6]">{description}</p>
         )}
         {actions && (
-          <div className={cn('flex flex-wrap gap-2', !hasVisual && 'justify-center')}>{actions}</div>
+          <div className={cn('flex flex-wrap gap-2', !hasVisual && 'justify-center')}>
+            {actions}
+          </div>
         )}
       </div>
       {visual && <div className="flex-1">{visual}</div>}

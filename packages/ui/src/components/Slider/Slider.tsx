@@ -19,7 +19,11 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
   ref,
 ) {
   // Radix Slider's value is always an array; we accept either form for ergonomics.
-  const arrValue = Array.isArray(value) ? value : value !== undefined ? [value as unknown as number] : undefined;
+  const arrValue = Array.isArray(value)
+    ? value
+    : value !== undefined
+      ? [value as unknown as number]
+      : undefined;
   const arrDefault = Array.isArray(defaultValue)
     ? defaultValue
     : defaultValue !== undefined
@@ -36,23 +40,25 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
       <RadixSlider.Root
         value={arrValue}
         defaultValue={arrDefault}
-        className="relative flex-1 flex items-center select-none touch-none h-4"
+        className="relative flex h-4 flex-1 touch-none items-center select-none"
         {...props}
       >
-        <RadixSlider.Track className="relative grow h-1 rounded-full bg-panel-2">
-          <RadixSlider.Range className="absolute h-full rounded-full bg-accent" />
+        <RadixSlider.Track className="bg-panel-2 relative h-1 grow rounded-full">
+          <RadixSlider.Range className="bg-accent absolute h-full rounded-full" />
         </RadixSlider.Track>
         <RadixSlider.Thumb
           className={cn(
-            'block h-[14px] w-[14px] rounded-full bg-text border-2 border-accent shadow',
-            'outline-none focus-visible:ring-[3px] focus-visible:ring-accent-dim',
+            'bg-text border-accent block h-[14px] w-[14px] rounded-full border-2 shadow',
+            'focus-visible:ring-accent-dim outline-none focus-visible:ring-[3px]',
             'cursor-grab active:cursor-grabbing',
           )}
           aria-label="Value"
         />
       </RadixSlider.Root>
       {showValue && (
-        <span className="font-mono text-[11px] text-text-muted min-w-[28px] text-right">{display}</span>
+        <span className="text-text-muted min-w-[28px] text-right font-mono text-[11px]">
+          {display}
+        </span>
       )}
     </span>
   );

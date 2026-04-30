@@ -16,7 +16,11 @@ describe('RadialProgress', () => {
   });
 
   it('honours custom children for the label', () => {
-    render(<RadialProgress value={3} max={5}>3/5</RadialProgress>);
+    render(
+      <RadialProgress value={3} max={5}>
+        3/5
+      </RadialProgress>,
+    );
     expect(screen.getByText('3/5')).toBeInTheDocument();
   });
 

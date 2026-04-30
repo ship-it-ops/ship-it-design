@@ -19,10 +19,10 @@ export const SuggestionChip = forwardRef<HTMLButtonElement, SuggestionChipProps>
         ref={ref}
         type={type ?? 'button'}
         className={cn(
-          'inline-flex cursor-pointer items-center gap-[6px] rounded-full border border-border bg-panel px-[10px] py-[6px] text-[12px] text-text outline-none',
+          'border-border bg-panel text-text inline-flex cursor-pointer items-center gap-[6px] rounded-full border px-[10px] py-[6px] text-[12px] outline-none',
           'transition-colors duration-(--duration-micro)',
           'hover:border-border-strong hover:bg-panel-2',
-          'focus-visible:ring-[3px] focus-visible:ring-accent-dim',
+          'focus-visible:ring-accent-dim focus-visible:ring-[3px]',
           className,
         )}
         {...props}

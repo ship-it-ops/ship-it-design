@@ -13,10 +13,45 @@ Both are self-hosted via `@fontsource-variable` and imported from
 Sizes are named, not numeric, so utilities stay semantic.
 
 export const Sample = ({ token, size, weight = 500, tracking = 'normal' }) => (
-  <div style={{ display: 'flex', alignItems: 'baseline', gap: 24, padding: '10px 0', borderBottom: '1px solid var(--color-border)' }}>
-    <code style={{ fontFamily: 'var(--font-family-mono)', fontSize: 11, color: 'var(--color-text-dim)', minWidth: 80 }}>{token}</code>
-    <code style={{ fontFamily: 'var(--font-family-mono)', fontSize: 11, color: 'var(--color-text-dim)', minWidth: 60 }}>{size}</code>
-    <span style={{ fontFamily: 'var(--font-family-sans)', fontSize: size, fontWeight: weight, letterSpacing: tracking }}>The graph stays quiet.</span>
+  <div
+    style={{
+      display: 'flex',
+      alignItems: 'baseline',
+      gap: 24,
+      padding: '10px 0',
+      borderBottom: '1px solid var(--color-border)',
+    }}
+  >
+    <code
+      style={{
+        fontFamily: 'var(--font-family-mono)',
+        fontSize: 11,
+        color: 'var(--color-text-dim)',
+        minWidth: 80,
+      }}
+    >
+      {token}
+    </code>
+    <code
+      style={{
+        fontFamily: 'var(--font-family-mono)',
+        fontSize: 11,
+        color: 'var(--color-text-dim)',
+        minWidth: 60,
+      }}
+    >
+      {size}
+    </code>
+    <span
+      style={{
+        fontFamily: 'var(--font-family-sans)',
+        fontSize: size,
+        fontWeight: weight,
+        letterSpacing: tracking,
+      }}
+    >
+      The graph stays quiet.
+    </span>
   </div>
 );
 
@@ -38,13 +73,13 @@ quiet backgrounds.
 
 ## Tracking
 
-| Token | Value | When |
-|---|---|---|
-| `xtight` | -0.9px | display sizes |
-| `tight` | -0.3px | h1 / h2 |
-| `normal` | 0 | body |
-| `wide` | 1.4px | eyebrow / mono labels |
-| `xwide` | 1.8px | uppercase section headers |
+| Token    | Value  | When                      |
+| -------- | ------ | ------------------------- |
+| `xtight` | -0.9px | display sizes             |
+| `tight`  | -0.3px | h1 / h2                   |
+| `normal` | 0      | body                      |
+| `wide`   | 1.4px  | eyebrow / mono labels     |
+| `xwide`  | 1.8px  | uppercase section headers |
 
 ## Tabular numerals
 

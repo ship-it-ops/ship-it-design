@@ -35,7 +35,7 @@ export const Spinner = forwardRef<HTMLSpanElement, SpinnerProps>(function Spinne
       <span
         aria-hidden
         className={cn(
-          'block rounded-full border-panel-2 border-t-accent animate-[ship-spin_0.7s_linear_infinite]',
+          'border-panel-2 border-t-accent block animate-[ship-spin_0.7s_linear_infinite] rounded-full',
           s.box,
           s.border,
         )}

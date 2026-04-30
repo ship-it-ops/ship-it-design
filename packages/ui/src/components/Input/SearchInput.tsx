@@ -21,9 +21,9 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(functi
   return (
     <div
       className={cn(
-        'flex items-center gap-2 h-9 px-3 rounded-base font-sans',
-        'bg-panel-2 border border-border',
-        'focus-within:border-accent focus-within:ring-[3px] focus-within:ring-accent-dim',
+        'rounded-base flex h-9 items-center gap-2 px-3 font-sans',
+        'bg-panel-2 border-border border',
+        'focus-within:border-accent focus-within:ring-accent-dim focus-within:ring-[3px]',
         'transition-[border-color,box-shadow] duration-(--duration-micro)',
         className,
       )}
@@ -34,11 +34,11 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(functi
         ref={ref}
         type="search"
         placeholder={placeholder}
-        className="flex-1 min-w-0 bg-transparent border-none outline-none text-[13px] text-text placeholder:text-text-dim"
+        className="text-text placeholder:text-text-dim min-w-0 flex-1 border-none bg-transparent text-[13px] outline-none"
         {...props}
       />
       {shortcut && (
-        <kbd className="font-mono text-[10px] text-text-dim px-[6px] py-[2px] border border-border rounded-xs">
+        <kbd className="text-text-dim border-border rounded-xs border px-[6px] py-[2px] font-mono text-[10px]">
           {shortcut}
         </kbd>
       )}

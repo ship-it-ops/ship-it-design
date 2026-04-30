@@ -32,9 +32,9 @@
  *   ../../../shipit/src/**     = packages/shipit/src/**
  *   ../../../../apps/docs/**   = apps/docs/**
  */
-@source "../**/*.{ts,tsx,mdx}";
-@source "../../../shipit/src/**/*.{ts,tsx,mdx}";
-@source "../../../../apps/docs/**/*.{ts,tsx,mdx}";
+@source '../**/*.{ts,tsx,mdx}';
+@source '../../../shipit/src/**/*.{ts,tsx,mdx}';
+@source '../../../../apps/docs/**/*.{ts,tsx,mdx}';
 
 /*
  * `@theme inline` tells Tailwind to read these variables for utility-class

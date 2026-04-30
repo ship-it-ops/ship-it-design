@@ -55,7 +55,7 @@ export const DrawerStory: Story = {
             Open drawer
           </Button>
           <Drawer open={open} onOpenChange={setOpen} title="Filters">
-            <div className="text-[13px] text-text-muted">Filter controls go here.</div>
+            <div className="text-text-muted text-[13px]">Filter controls go here.</div>
           </Drawer>
         </>
       );
@@ -75,7 +75,7 @@ export const SheetStory: Story = {
             Open sheet
           </Button>
           <Sheet open={open} onOpenChange={setOpen} title="Quick actions">
-            <div className="text-[12px] text-text-muted">Press a key to run.</div>
+            <div className="text-text-muted text-[12px]">Press a key to run.</div>
           </Sheet>
         </>
       );

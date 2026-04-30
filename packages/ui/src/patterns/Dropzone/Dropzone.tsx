@@ -1,4 +1,10 @@
-import { forwardRef, useState, type DragEvent, type LabelHTMLAttributes, type ReactNode } from 'react';
+import {
+  forwardRef,
+  useState,
+  type DragEvent,
+  type LabelHTMLAttributes,
+  type ReactNode,
+} from 'react';
 
 import { cn } from '../../utils/cn';
 
@@ -8,7 +14,10 @@ import { cn } from '../../utils/cn';
  * `onFiles`. Native `<input type="file">` covers keyboard / a11y.
  */
 
-export interface DropzoneProps extends Omit<LabelHTMLAttributes<HTMLLabelElement>, 'onDrop' | 'onDragOver' | 'onDragLeave' | 'title'> {
+export interface DropzoneProps extends Omit<
+  LabelHTMLAttributes<HTMLLabelElement>,
+  'onDrop' | 'onDragOver' | 'onDragLeave' | 'title'
+> {
   /** Fired with the dropped or selected files. */
   onFiles?: (files: File[]) => void;
   /** Limit accepted MIME types or extensions. Forwarded to the hidden input + filtered on drop. */
@@ -66,13 +75,13 @@ export const Dropzone = forwardRef<HTMLLabelElement, DropzoneProps>(function Dro
       onDragLeave={onDragLeave}
       onDrop={onDrop}
       className={cn(
-        'flex max-w-[420px] cursor-pointer flex-col items-center rounded-base border-[1.5px] border-dashed p-8 text-center',
+        'rounded-base flex max-w-[420px] cursor-pointer flex-col items-center border-[1.5px] border-dashed p-8 text-center',
         'transition-[background,border] duration-(--duration-micro)',
-        'focus-within:ring-[3px] focus-within:ring-accent-dim',
+        'focus-within:ring-accent-dim focus-within:ring-[3px]',
         isDragging
           ? 'border-accent bg-accent-dim'
           : 'border-border-strong bg-panel hover:bg-panel-2',
-        disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
+        disabled && 'pointer-events-none cursor-not-allowed opacity-50',
         className,
       )}
       {...props}
@@ -92,15 +101,12 @@ export const Dropzone = forwardRef<HTMLLabelElement, DropzoneProps>(function Dro
       />
       <div
         aria-hidden
-        className={cn(
-          'mb-2 text-[28px]',
-          isDragging ? 'text-accent' : 'text-text-dim',
-        )}
+        className={cn('mb-2 text-[28px]', isDragging ? 'text-accent' : 'text-text-dim')}
       >
         {icon}
       </div>
       <div className="mb-1 text-[13px] font-medium">{title}</div>
-      {description && <div className="text-[11px] text-text-dim">{description}</div>}
+      {description && <div className="text-text-dim text-[11px]">{description}</div>}
     </label>
   );
 });

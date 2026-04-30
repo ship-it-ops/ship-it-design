@@ -15,24 +15,76 @@ chrome.
 ## Full inventory
 
 export const glyphs = [
-  { g: '◆', n: 'brand' }, { g: '◇', n: 'service' }, { g: '○', n: 'person' }, { g: '▤', n: 'document' },
-  { g: '▢', n: 'file' }, { g: '↑', n: 'deploy' }, { g: '↓', n: 'download' }, { g: '→', n: 'next' },
-  { g: '←', n: 'prev' }, { g: '✦', n: 'ask / ai' }, { g: '✓', n: 'confirm' }, { g: '×', n: 'close' },
-  { g: '+', n: 'add' }, { g: '−', n: 'remove' }, { g: '⌕', n: 'search' }, { g: '⌘', n: 'cmd' },
-  { g: '⚙', n: 'settings' }, { g: '⋯', n: 'more' }, { g: '!', n: 'warn / incident' }, { g: '?', n: 'help' },
-  { g: '⌂', n: 'home' }, { g: '◱', n: 'fit-view' }, { g: '▸', n: 'expand' }, { g: '▾', n: 'collapse' },
-  { g: '↗', n: 'external' }, { g: '@', n: 'mention' }, { g: '#', n: 'tag' }, { g: '~', n: 'approx' },
-  { g: '↵', n: 'enter' }, { g: '⇧', n: 'shift' }, { g: '⌥', n: 'option' }, { g: '⎋', n: 'escape' },
-  { g: '⏻', n: 'power' }, { g: '◉', n: 'live / record' }, { g: '◐', n: 'half' }, { g: '▪', n: 'dot' },
-  { g: '≡', n: 'menu' }, { g: '⇅', n: 'sort' }, { g: '∞', n: 'infinite' }, { g: '§', n: 'section' },
-  { g: '‹', n: 'left' }, { g: '›', n: 'right' },
+  { g: '◆', n: 'brand' },
+  { g: '◇', n: 'service' },
+  { g: '○', n: 'person' },
+  { g: '▤', n: 'document' },
+  { g: '▢', n: 'file' },
+  { g: '↑', n: 'deploy' },
+  { g: '↓', n: 'download' },
+  { g: '→', n: 'next' },
+  { g: '←', n: 'prev' },
+  { g: '✦', n: 'ask / ai' },
+  { g: '✓', n: 'confirm' },
+  { g: '×', n: 'close' },
+  { g: '+', n: 'add' },
+  { g: '−', n: 'remove' },
+  { g: '⌕', n: 'search' },
+  { g: '⌘', n: 'cmd' },
+  { g: '⚙', n: 'settings' },
+  { g: '⋯', n: 'more' },
+  { g: '!', n: 'warn / incident' },
+  { g: '?', n: 'help' },
+  { g: '⌂', n: 'home' },
+  { g: '◱', n: 'fit-view' },
+  { g: '▸', n: 'expand' },
+  { g: '▾', n: 'collapse' },
+  { g: '↗', n: 'external' },
+  { g: '@', n: 'mention' },
+  { g: '#', n: 'tag' },
+  { g: '~', n: 'approx' },
+  { g: '↵', n: 'enter' },
+  { g: '⇧', n: 'shift' },
+  { g: '⌥', n: 'option' },
+  { g: '⎋', n: 'escape' },
+  { g: '⏻', n: 'power' },
+  { g: '◉', n: 'live / record' },
+  { g: '◐', n: 'half' },
+  { g: '▪', n: 'dot' },
+  { g: '≡', n: 'menu' },
+  { g: '⇅', n: 'sort' },
+  { g: '∞', n: 'infinite' },
+  { g: '§', n: 'section' },
+  { g: '‹', n: 'left' },
+  { g: '›', n: 'right' },
 ];
 
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(8, 1fr)', gap: 8 }}>
   {glyphs.map((x) => (
-    <div key={x.g + x.n} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, padding: '10px 6px', background: 'var(--color-panel-2)', border: '1px solid var(--color-border)', borderRadius: 8 }}>
+    <div
+      key={x.g + x.n}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 4,
+        padding: '10px 6px',
+        background: 'var(--color-panel-2)',
+        border: '1px solid var(--color-border)',
+        borderRadius: 8,
+      }}
+    >
       <div style={{ fontSize: 22, color: 'var(--color-text)', lineHeight: 1 }}>{x.g}</div>
-      <div style={{ fontSize: 9, color: 'var(--color-text-dim)', fontFamily: 'var(--font-family-mono)', textAlign: 'center' }}>{x.n}</div>
+      <div
+        style={{
+          fontSize: 9,
+          color: 'var(--color-text-dim)',
+          fontFamily: 'var(--font-family-mono)',
+          textAlign: 'center',
+        }}
+      >
+        {x.n}
+      </div>
     </div>
   ))}
 </div>
@@ -43,7 +95,15 @@ export const glyphs = [
   {[12, 14, 16, 20, 24, 32, 48].map((s) => (
     <div key={s} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
       <div style={{ fontSize: s, color: 'var(--color-text)' }}>✦</div>
-      <span style={{ fontSize: 9, color: 'var(--color-text-dim)', fontFamily: 'var(--font-family-mono)' }}>{s}px</span>
+      <span
+        style={{
+          fontSize: 9,
+          color: 'var(--color-text-dim)',
+          fontFamily: 'var(--font-family-mono)',
+        }}
+      >
+        {s}px
+      </span>
     </div>
   ))}
 </div>
@@ -53,27 +113,115 @@ export const glyphs = [
 <div style={{ display: 'flex', gap: 14, alignItems: 'flex-end' }}>
   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
     <span style={{ fontSize: 20 }}>✦</span>
-    <span style={{ fontSize: 10, color: 'var(--color-text-dim)', fontFamily: 'var(--font-family-mono)' }}>plain</span>
+    <span
+      style={{
+        fontSize: 10,
+        color: 'var(--color-text-dim)',
+        fontFamily: 'var(--font-family-mono)',
+      }}
+    >
+      plain
+    </span>
   </div>
   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
     <span style={{ fontSize: 20, color: 'var(--color-text-dim)' }}>✦</span>
-    <span style={{ fontSize: 10, color: 'var(--color-text-dim)', fontFamily: 'var(--font-family-mono)' }}>muted</span>
+    <span
+      style={{
+        fontSize: 10,
+        color: 'var(--color-text-dim)',
+        fontFamily: 'var(--font-family-mono)',
+      }}
+    >
+      muted
+    </span>
   </div>
   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
     <span style={{ fontSize: 20, color: 'var(--color-accent)' }}>✦</span>
-    <span style={{ fontSize: 10, color: 'var(--color-text-dim)', fontFamily: 'var(--font-family-mono)' }}>accent</span>
+    <span
+      style={{
+        fontSize: 10,
+        color: 'var(--color-text-dim)',
+        fontFamily: 'var(--font-family-mono)',
+      }}
+    >
+      accent
+    </span>
   </div>
   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-    <div style={{ width: 28, height: 28, borderRadius: 6, background: 'var(--color-panel-2)', border: '1px solid var(--color-border)', display: 'grid', placeItems: 'center', color: 'var(--color-accent)' }}>✦</div>
-    <span style={{ fontSize: 10, color: 'var(--color-text-dim)', fontFamily: 'var(--font-family-mono)' }}>in chip</span>
+    <div
+      style={{
+        width: 28,
+        height: 28,
+        borderRadius: 6,
+        background: 'var(--color-panel-2)',
+        border: '1px solid var(--color-border)',
+        display: 'grid',
+        placeItems: 'center',
+        color: 'var(--color-accent)',
+      }}
+    >
+      ✦
+    </div>
+    <span
+      style={{
+        fontSize: 10,
+        color: 'var(--color-text-dim)',
+        fontFamily: 'var(--font-family-mono)',
+      }}
+    >
+      in chip
+    </span>
   </div>
   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-    <div style={{ width: 28, height: 28, borderRadius: 999, background: 'var(--color-accent-dim)', color: 'var(--color-accent)', display: 'grid', placeItems: 'center' }}>✦</div>
-    <span style={{ fontSize: 10, color: 'var(--color-text-dim)', fontFamily: 'var(--font-family-mono)' }}>in circle</span>
+    <div
+      style={{
+        width: 28,
+        height: 28,
+        borderRadius: 999,
+        background: 'var(--color-accent-dim)',
+        color: 'var(--color-accent)',
+        display: 'grid',
+        placeItems: 'center',
+      }}
+    >
+      ✦
+    </div>
+    <span
+      style={{
+        fontSize: 10,
+        color: 'var(--color-text-dim)',
+        fontFamily: 'var(--font-family-mono)',
+      }}
+    >
+      in circle
+    </span>
   </div>
   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-    <div style={{ width: 32, height: 32, borderRadius: 10, background: 'var(--color-panel)', border: '1.5px solid var(--color-accent)', boxShadow: '0 0 20px var(--color-accent-glow)', color: 'var(--color-accent)', display: 'grid', placeItems: 'center', fontSize: 16 }}>✦</div>
-    <span style={{ fontSize: 10, color: 'var(--color-text-dim)', fontFamily: 'var(--font-family-mono)' }}>glowing</span>
+    <div
+      style={{
+        width: 32,
+        height: 32,
+        borderRadius: 10,
+        background: 'var(--color-panel)',
+        border: '1.5px solid var(--color-accent)',
+        boxShadow: '0 0 20px var(--color-accent-glow)',
+        color: 'var(--color-accent)',
+        display: 'grid',
+        placeItems: 'center',
+        fontSize: 16,
+      }}
+    >
+      ✦
+    </div>
+    <span
+      style={{
+        fontSize: 10,
+        color: 'var(--color-text-dim)',
+        fontFamily: 'var(--font-family-mono)',
+      }}
+    >
+      glowing
+    </span>
   </div>
 </div>
 

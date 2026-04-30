@@ -50,7 +50,7 @@ export const EntityCard = forwardRef<HTMLDivElement, EntityCardProps>(function E
     <div
       ref={ref}
       className={cn(
-        'flex flex-col gap-3 rounded-base border border-border bg-panel p-5',
+        'rounded-base border-border bg-panel flex flex-col gap-3 border p-5',
         className,
       )}
       {...props}
@@ -59,7 +59,7 @@ export const EntityCard = forwardRef<HTMLDivElement, EntityCardProps>(function E
         <span
           aria-hidden
           className={cn(
-            'grid h-12 w-12 shrink-0 place-items-center rounded-base text-[20px]',
+            'rounded-base grid h-12 w-12 shrink-0 place-items-center text-[20px]',
             ENTITY_TONE_BG[type],
             ENTITY_TONE_CLASS[type],
           )}
@@ -69,27 +69,25 @@ export const EntityCard = forwardRef<HTMLDivElement, EntityCardProps>(function E
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <EntityBadge type={type} size="sm" />
-            {subtitle && (
-              <span className="font-mono text-[11px] text-text-dim">{subtitle}</span>
-            )}
+            {subtitle && <span className="text-text-dim font-mono text-[11px]">{subtitle}</span>}
           </div>
           <div className="mt-1 truncate font-mono text-[18px] font-medium tracking-tight">
             {title}
           </div>
           {description && (
-            <div className="mt-1 text-[13px] leading-[1.5] text-text-muted">{description}</div>
+            <div className="text-text-muted mt-1 text-[13px] leading-[1.5]">{description}</div>
           )}
         </div>
         {actions && <div className="shrink-0">{actions}</div>}
       </div>
       {stats && stats.length > 0 && (
         <div
-          className="grid divide-x divide-border rounded-md border border-border bg-panel-2"
+          className="divide-border border-border bg-panel-2 grid divide-x rounded-md border"
           style={{ gridTemplateColumns: `repeat(${Math.min(stats.length, 6)}, 1fr)` }}
         >
           {stats.map((stat, i) => (
             <div key={i} className="px-4 py-3">
-              <div className="font-mono text-[10px] uppercase tracking-[1.3px] text-text-dim">
+              <div className="text-text-dim font-mono text-[10px] tracking-[1.3px] uppercase">
                 {stat.label}
               </div>
               <div

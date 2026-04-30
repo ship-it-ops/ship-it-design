@@ -14,7 +14,20 @@ import { cn } from '../../utils/cn';
  * leading-/trailing-month grays).
  */
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const MONTHS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'April',
+  'May',
+  'June',
+  'July',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
 const DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
 export interface CalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelect'> {
@@ -38,7 +51,11 @@ export interface CalendarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onS
 
 function isSameDay(a: Date | undefined, b: Date) {
   if (!a) return false;
-  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+  return (
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate()
+  );
 }
 
 export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(function Calendar(
@@ -102,7 +119,7 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(function Calen
       role="group"
       aria-label={`${MONTHS[month]} ${year}`}
       className={cn(
-        'w-[280px] rounded-base border border-border bg-panel p-4 shadow-lg',
+        'rounded-base border-border bg-panel w-[280px] border p-4 shadow-lg',
         className,
       )}
       {...props}
@@ -112,17 +129,19 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(function Calen
           {MONTHS[month]} {year}
         </span>
         <div className="flex gap-1">
-          <IconButton size="sm" variant="ghost" icon="‹" aria-label="Previous month" onClick={goPrev} />
+          <IconButton
+            size="sm"
+            variant="ghost"
+            icon="‹"
+            aria-label="Previous month"
+            onClick={goPrev}
+          />
           <IconButton size="sm" variant="ghost" icon="›" aria-label="Next month" onClick={goNext} />
         </div>
       </div>
       <div className="grid grid-cols-7 gap-[2px]">
         {DAYS.map((d, i) => (
-          <div
-            key={i}
-            aria-hidden
-            className="p-1 text-center font-mono text-[10px] text-text-dim"
-          >
+          <div key={i} aria-hidden className="text-text-dim p-1 text-center font-mono text-[10px]">
             {d}
           </div>
         ))}
@@ -146,11 +165,11 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(function Calen
               onClick={() => setSelectedDate(date)}
               className={cn(
                 'cursor-pointer rounded-xs border-0 bg-transparent py-[6px] text-center text-[12px] outline-none',
-                'focus-visible:ring-[3px] focus-visible:ring-accent-dim',
+                'focus-visible:ring-accent-dim focus-visible:ring-[3px]',
                 'disabled:cursor-not-allowed disabled:opacity-30',
                 !isSelected && !disabled && 'text-text hover:bg-panel-2',
                 isSelected && 'bg-accent text-on-accent font-semibold',
-                !isSelected && isToday && 'border border-border-strong',
+                !isSelected && isToday && 'border-border-strong border',
               )}
             >
               {d}

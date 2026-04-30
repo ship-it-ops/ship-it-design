@@ -28,9 +28,7 @@ export const CTAStrip = forwardRef<HTMLElement, CTAStripProps>(function CTAStrip
       {...props}
     >
       <h2 className="m-0 mb-[10px] text-[28px] font-medium tracking-[-0.4px]">{title}</h2>
-      {description && (
-        <p className="m-0 mb-5 text-[13px] text-text-muted">{description}</p>
-      )}
+      {description && <p className="text-text-muted m-0 mb-5 text-[13px]">{description}</p>}
       {actions && <div className="flex flex-wrap justify-center gap-2">{actions}</div>}
     </section>
   );

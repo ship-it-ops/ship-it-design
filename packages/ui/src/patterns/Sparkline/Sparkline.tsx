@@ -11,7 +11,10 @@ import { cn } from '../../utils/cn';
  * need anything more than a quiet trend cue.
  */
 
-export interface SparklineProps extends Omit<SVGAttributes<SVGSVGElement>, 'children' | 'fill' | 'values'> {
+export interface SparklineProps extends Omit<
+  SVGAttributes<SVGSVGElement>,
+  'children' | 'fill' | 'values'
+> {
   /** Numeric series. Drawn at uniform horizontal spacing. */
   values: ReadonlyArray<number>;
   /** Pixel width. Default 160. */

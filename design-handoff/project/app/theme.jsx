@@ -1,11 +1,11 @@
 // Theme tokens for ShipIt. Dark-first with light toggle applied via data-theme.
 
-const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "accentHue": 200,
-  "density": "comfortable",
-  "showCopilot": true,
-  "graphLayout": "radial"
-}/*EDITMODE-END*/;
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/ {
+  accentHue: 200,
+  density: 'comfortable',
+  showCopilot: true,
+  graphLayout: 'radial',
+}; /*EDITMODE-END*/
 
 function makeTheme(mode, accentHue) {
   const h = accentHue ?? 200;

@@ -17,7 +17,7 @@ export const Basic: Story = {
   render: () => (
     <ContextMenu>
       <ContextMenuTrigger asChild>
-        <div className="grid place-items-center w-[320px] h-[90px] p-4 bg-panel border border-dashed border-border rounded-base text-[12px] text-text-muted cursor-context-menu">
+        <div className="bg-panel border-border rounded-base text-text-muted grid h-[90px] w-[320px] cursor-context-menu place-items-center border border-dashed p-4 text-[12px]">
           Right-click anywhere in this card
         </div>
       </ContextMenuTrigger>

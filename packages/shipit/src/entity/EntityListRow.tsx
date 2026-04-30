@@ -41,17 +41,20 @@ export const EntityListRow = forwardRef<HTMLElement, EntityListRowProps>(functio
   const inner = (
     <>
       {!hideGlyph && (
-        <span aria-hidden className={cn('font-mono text-[14px] leading-none', ENTITY_TONE_CLASS[type])}>
+        <span
+          aria-hidden
+          className={cn('font-mono text-[14px] leading-none', ENTITY_TONE_CLASS[type])}
+        >
           {ENTITY_GLYPH[type]}
         </span>
       )}
-      <span className="min-w-0 flex-1 truncate font-mono text-[12px] text-text">{name}</span>
+      <span className="text-text min-w-0 flex-1 truncate font-mono text-[12px]">{name}</span>
       {relation && (
-        <span className="rounded-full border border-border bg-panel-2 px-2 py-[2px] font-mono text-[10px] text-text-muted">
+        <span className="border-border bg-panel-2 text-text-muted rounded-full border px-2 py-[2px] font-mono text-[10px]">
           {relation}
         </span>
       )}
-      {meta && <span className="font-mono text-[10px] text-text-dim">{meta}</span>}
+      {meta && <span className="text-text-dim font-mono text-[10px]">{meta}</span>}
     </>
   );
 

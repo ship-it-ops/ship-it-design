@@ -25,19 +25,19 @@ export const Underline: Story = {
         <Tab value="history">History</Tab>
         <Tab value="code">Code</Tab>
       </TabsList>
-      <TabsContent value="overview" className="pt-3 text-[13px] text-text-muted">
+      <TabsContent value="overview" className="text-text-muted pt-3 text-[13px]">
         Overview content.
       </TabsContent>
-      <TabsContent value="properties" className="pt-3 text-[13px] text-text-muted">
+      <TabsContent value="properties" className="text-text-muted pt-3 text-[13px]">
         Properties content.
       </TabsContent>
-      <TabsContent value="relations" className="pt-3 text-[13px] text-text-muted">
+      <TabsContent value="relations" className="text-text-muted pt-3 text-[13px]">
         Relations content.
       </TabsContent>
-      <TabsContent value="history" className="pt-3 text-[13px] text-text-muted">
+      <TabsContent value="history" className="text-text-muted pt-3 text-[13px]">
         History content.
       </TabsContent>
-      <TabsContent value="code" className="pt-3 text-[13px] text-text-muted">
+      <TabsContent value="code" className="text-text-muted pt-3 text-[13px]">
         Code content.
       </TabsContent>
     </Tabs>
@@ -53,13 +53,13 @@ export const Pill: Story = {
         <Tab value="list">List</Tab>
         <Tab value="table">Table</Tab>
       </TabsList>
-      <TabsContent value="graph" className="pt-3 text-[13px] text-text-muted">
+      <TabsContent value="graph" className="text-text-muted pt-3 text-[13px]">
         Graph view.
       </TabsContent>
-      <TabsContent value="list" className="pt-3 text-[13px] text-text-muted">
+      <TabsContent value="list" className="text-text-muted pt-3 text-[13px]">
         List view.
       </TabsContent>
-      <TabsContent value="table" className="pt-3 text-[13px] text-text-muted">
+      <TabsContent value="table" className="text-text-muted pt-3 text-[13px]">
         Table view.
       </TabsContent>
     </Tabs>

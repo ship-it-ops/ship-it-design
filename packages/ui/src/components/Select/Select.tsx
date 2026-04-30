@@ -24,10 +24,10 @@ export const SelectTrigger = forwardRef<
     <RadixSelect.Trigger
       ref={ref}
       className={cn(
-        'inline-flex items-center justify-between gap-2 rounded-md font-sans text-text bg-panel border border-border',
+        'text-text bg-panel border-border inline-flex items-center justify-between gap-2 rounded-md border font-sans',
         'data-[state=open]:border-accent',
-        'outline-none focus-visible:ring-[3px] focus-visible:ring-accent-dim',
-        'data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[disabled]:bg-panel-2',
+        'focus-visible:ring-accent-dim outline-none focus-visible:ring-[3px]',
+        'data-[disabled]:bg-panel-2 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50',
         'transition-[border-color,box-shadow] duration-(--duration-micro)',
         triggerClasses[size],
         className,
@@ -41,7 +41,10 @@ export const SelectTrigger = forwardRef<
 });
 
 export const SelectContent = forwardRef<HTMLDivElement, RadixSelect.SelectContentProps>(
-  function SelectContent({ className, children, position = 'popper', sideOffset = 6, ...props }, ref) {
+  function SelectContent(
+    { className, children, position = 'popper', sideOffset = 6, ...props },
+    ref,
+  ) {
     return (
       <RadixSelect.Portal>
         <RadixSelect.Content
@@ -49,7 +52,7 @@ export const SelectContent = forwardRef<HTMLDivElement, RadixSelect.SelectConten
           position={position}
           sideOffset={sideOffset}
           className={cn(
-            'z-50 min-w-[var(--radix-select-trigger-width)] rounded-md p-1 bg-panel border border-border shadow',
+            'bg-panel border-border z-50 min-w-[var(--radix-select-trigger-width)] rounded-md border p-1 shadow',
             'data-[state=open]:animate-[ship-pop-in_140ms_var(--easing-out)]',
             className,
           )}
@@ -68,10 +71,10 @@ export const SelectItem = forwardRef<HTMLDivElement, RadixSelect.SelectItemProps
       <RadixSelect.Item
         ref={ref}
         className={cn(
-          'relative flex items-center px-2 py-[6px] rounded-sm text-[13px] cursor-pointer outline-none',
+          'relative flex cursor-pointer items-center rounded-sm px-2 py-[6px] text-[13px] outline-none',
           'data-[highlighted]:bg-accent-dim data-[highlighted]:text-accent',
           'data-[state=checked]:font-medium',
-          'data-[disabled]:opacity-40 data-[disabled]:cursor-not-allowed',
+          'data-[disabled]:cursor-not-allowed data-[disabled]:opacity-40',
           className,
         )}
         {...props}

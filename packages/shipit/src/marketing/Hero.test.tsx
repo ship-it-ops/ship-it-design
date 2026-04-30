@@ -6,7 +6,12 @@ import { Hero } from './Hero';
 
 describe('Hero', () => {
   it('renders title and description', () => {
-    render(<Hero title="Your knowledge, as a graph." description="ShipIt turns repos into a queryable graph." />);
+    render(
+      <Hero
+        title="Your knowledge, as a graph."
+        description="ShipIt turns repos into a queryable graph."
+      />,
+    );
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Your knowledge');
     expect(screen.getByText(/queryable graph/)).toBeInTheDocument();
   });

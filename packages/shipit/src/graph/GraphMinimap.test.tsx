@@ -4,7 +4,10 @@ import { describe, expect, it } from 'vitest';
 
 import { GraphMinimap } from './GraphMinimap';
 
-const points = Array.from({ length: 8 }).map((_, i) => ({ x: (i % 4) / 4, y: Math.floor(i / 4) / 2 }));
+const points = Array.from({ length: 8 }).map((_, i) => ({
+  x: (i % 4) / 4,
+  y: Math.floor(i / 4) / 2,
+}));
 
 describe('GraphMinimap', () => {
   it('renders the minimap as an image role', () => {

@@ -39,17 +39,16 @@ export const Timeline = forwardRef<HTMLOListElement, TimelineProps>(function Tim
   return (
     <ol
       ref={ref}
-      className={cn('relative pl-6', 'before:absolute before:left-[7px] before:top-[6px] before:bottom-[6px] before:w-px before:bg-border', className)}
+      className={cn(
+        'relative pl-6',
+        'before:bg-border before:absolute before:top-[6px] before:bottom-[6px] before:left-[7px] before:w-px',
+        className,
+      )}
       {...props}
     >
       {events
         ? events.map((e, i) => (
-            <TimelineItem
-              key={i}
-              tone={e.tone}
-              time={e.time}
-              description={e.description}
-            >
+            <TimelineItem key={i} tone={e.tone} time={e.time} description={e.description}>
               {e.title}
             </TimelineItem>
           ))
@@ -73,13 +72,13 @@ export const TimelineItem = forwardRef<HTMLLIElement, TimelineItemProps>(functio
       <span
         aria-hidden
         className={cn(
-          'absolute -left-6 top-[4px] h-[14px] w-[14px] rounded-full bg-bg border-2',
+          'bg-bg absolute top-[4px] -left-6 h-[14px] w-[14px] rounded-full border-2',
           ringClass[tone],
         )}
       />
       <div className="text-[13px] font-medium">{children}</div>
-      {description && <div className="text-[12px] text-text-muted">{description}</div>}
-      {time && <div className="mt-[2px] font-mono text-[10px] text-text-dim">{time}</div>}
+      {description && <div className="text-text-muted text-[12px]">{description}</div>}
+      {time && <div className="text-text-dim mt-[2px] font-mono text-[10px]">{time}</div>}
     </li>
   );
 });

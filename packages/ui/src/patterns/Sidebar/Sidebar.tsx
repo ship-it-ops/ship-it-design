@@ -22,7 +22,7 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>(function Sidebar(
       ref={ref}
       style={{ width, ...style }}
       className={cn(
-        'flex h-full flex-col gap-2 border-r border-border bg-panel p-[14px]',
+        'border-border bg-panel flex h-full flex-col gap-2 border-r p-[14px]',
         className,
       )}
       {...props}
@@ -51,7 +51,11 @@ export const NavItem = forwardRef<HTMLAnchorElement, NavItemProps>(function NavI
 ) {
   const inner = (
     <>
-      {icon && <span aria-hidden className="w-[14px] text-center opacity-80">{icon}</span>}
+      {icon && (
+        <span aria-hidden className="w-[14px] text-center opacity-80">
+          {icon}
+        </span>
+      )}
       <span className="flex-1 truncate">{label}</span>
       {badge != null && (
         <span
@@ -123,7 +127,7 @@ export const NavSection = forwardRef<HTMLDivElement, NavSectionProps>(function N
 ) {
   return (
     <div ref={ref} className={cn('flex flex-col gap-1', className)} {...props}>
-      <div className="flex items-center px-2 pt-2 font-mono text-[9px] uppercase tracking-[1.4px] text-text-dim">
+      <div className="text-text-dim flex items-center px-2 pt-2 font-mono text-[9px] tracking-[1.4px] uppercase">
         <span className="flex-1">{label}</span>
         {action}
       </div>

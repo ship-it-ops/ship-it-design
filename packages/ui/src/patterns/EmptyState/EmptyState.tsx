@@ -9,23 +9,19 @@ import { cn } from '../../utils/cn';
  * optional action area (button or chip stack).
  */
 
-const plateStyles = cva(
-  'grid h-12 w-12 place-items-center rounded-base text-[22px]',
-  {
-    variants: {
-      tone: {
-        accent: 'bg-accent-dim text-accent',
-        danger: 'bg-[color-mix(in_oklab,var(--color-err),transparent_85%)] text-err',
-        muted: 'bg-panel-2 text-text-muted',
-      },
+const plateStyles = cva('grid h-12 w-12 place-items-center rounded-base text-[22px]', {
+  variants: {
+    tone: {
+      accent: 'bg-accent-dim text-accent',
+      danger: 'bg-[color-mix(in_oklab,var(--color-err),transparent_85%)] text-err',
+      muted: 'bg-panel-2 text-text-muted',
     },
-    defaultVariants: { tone: 'accent' },
   },
-);
+  defaultVariants: { tone: 'accent' },
+});
 
 export interface EmptyStateProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'title'>,
-    VariantProps<typeof plateStyles> {
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'title'>, VariantProps<typeof plateStyles> {
   /** Glyph or icon node shown in the rounded plate. */
   icon?: ReactNode;
   /** Title heading. */
@@ -46,7 +42,7 @@ export const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(function E
     <div
       ref={ref}
       className={cn(
-        'flex flex-col items-center gap-[10px] rounded-base border border-dashed border-border bg-panel p-6 text-center',
+        'rounded-base border-border bg-panel flex flex-col items-center gap-[10px] border border-dashed p-6 text-center',
         className,
       )}
       {...props}
@@ -58,7 +54,7 @@ export const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(function E
       )}
       <div className="text-[14px] font-medium">{title}</div>
       {description && (
-        <div className="max-w-[260px] text-[12px] leading-[1.5] text-text-muted">{description}</div>
+        <div className="text-text-muted max-w-[260px] text-[12px] leading-[1.5]">{description}</div>
       )}
       {chips && chips.length > 0 && (
         <div className="flex w-full flex-col gap-1">
@@ -68,9 +64,9 @@ export const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(function E
               type="button"
               onClick={c.onClick}
               className={cn(
-                'cursor-pointer rounded-md border border-border bg-panel-2 px-[10px] py-[6px] text-[11px] text-text-muted',
+                'border-border bg-panel-2 text-text-muted cursor-pointer rounded-md border px-[10px] py-[6px] text-[11px]',
                 'hover:border-border-strong hover:text-text outline-none',
-                'focus-visible:ring-[3px] focus-visible:ring-accent-dim',
+                'focus-visible:ring-accent-dim focus-visible:ring-[3px]',
               )}
             >
               {c.label}

@@ -9,12 +9,14 @@
 function UIBtn({ leading, variant = 'primary', children, ...rest }) {
   const v = variant === 'danger' ? 'destructive' : variant;
   return (
-    <Button variant={v} icon={leading || rest.icon} {...rest}>{children}</Button>
+    <Button variant={v} icon={leading || rest.icon} {...rest}>
+      {children}
+    </Button>
   );
 }
 
 function IconBtn(props) {
-  return <IconButton {...props}/>;
+  return <IconButton {...props} />;
 }
 
 Object.assign(window, { UIBtn, IconBtn });

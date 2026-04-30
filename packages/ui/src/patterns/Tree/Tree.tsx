@@ -142,11 +142,11 @@ function TreeItemRow({ item, level, expanded, selected, onToggle, onSelect }: Tr
         style={{ paddingLeft: 4 + (level - 1) * 16 }}
         className={cn(
           'flex cursor-pointer items-center gap-[6px] rounded-xs py-[5px] pr-2 outline-none',
-          'focus-visible:ring-[3px] focus-visible:ring-accent-dim',
+          'focus-visible:ring-accent-dim focus-visible:ring-[3px]',
           isSelected ? 'bg-accent-dim text-accent' : 'text-text hover:bg-panel-2',
         )}
       >
-        <span aria-hidden className="grid w-3 place-items-center text-[10px] text-text-dim">
+        <span aria-hidden className="text-text-dim grid w-3 place-items-center text-[10px]">
           {hasChildren ? (isExpanded ? '▾' : '▸') : ''}
         </span>
         {item.icon && (

@@ -18,7 +18,7 @@ export const Combo: Story = {
       <Kbd>⌘</Kbd>
       <Kbd>⇧</Kbd>
       <Kbd>K</Kbd>
-      <span className="ml-3 text-[12px] text-text-muted">Command palette</span>
+      <span className="text-text-muted ml-3 text-[12px]">Command palette</span>
     </div>
   ),
 };

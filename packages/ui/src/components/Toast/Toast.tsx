@@ -1,5 +1,13 @@
 import * as RadixToast from '@radix-ui/react-toast';
-import { createContext, forwardRef, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
+import {
+  createContext,
+  forwardRef,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react';
 
 import { cn } from '../../utils/cn';
 
@@ -78,7 +86,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         {toasts.map((t) => (
           <ToastCard key={t.id} toast={t} onDismiss={() => dismiss(t.id)} />
         ))}
-        <RadixToast.Viewport className="fixed bottom-5 right-5 z-[70] flex flex-col gap-2 w-[380px] max-w-[calc(100vw-40px)] outline-none" />
+        <RadixToast.Viewport className="fixed right-5 bottom-5 z-[70] flex w-[380px] max-w-[calc(100vw-40px)] flex-col gap-2 outline-none" />
       </RadixToast.Provider>
     </ToastContext.Provider>
   );
@@ -108,8 +116,8 @@ export const ToastCard = forwardRef<HTMLLIElement, ToastCardProps>(function Toas
         if (!open) onDismiss();
       }}
       className={cn(
-        'pointer-events-auto p-3 bg-panel border border-border border-l-[2px] rounded-md shadow-lg',
-        'flex gap-[10px] items-start',
+        'bg-panel border-border pointer-events-auto rounded-md border border-l-[2px] p-3 shadow-lg',
+        'flex items-start gap-[10px]',
         'data-[state=open]:animate-[ship-toast-in_220ms_var(--easing-out)]',
         variantBorderLeft[variant],
       )}
@@ -117,12 +125,12 @@ export const ToastCard = forwardRef<HTMLLIElement, ToastCardProps>(function Toas
       <span className={cn('mt-px text-[14px] leading-none', variantTextColor[variant])}>
         {variantIcon[variant]}
       </span>
-      <div className="flex-1 min-w-0">
-        <RadixToast.Title className="text-[13px] font-medium text-text">
+      <div className="min-w-0 flex-1">
+        <RadixToast.Title className="text-text text-[13px] font-medium">
           {toast.title}
         </RadixToast.Title>
         {toast.description && (
-          <RadixToast.Description className="text-[12px] text-text-muted mt-[2px] leading-[1.5]">
+          <RadixToast.Description className="text-text-muted mt-[2px] text-[12px] leading-[1.5]">
             {toast.description}
           </RadixToast.Description>
         )}
@@ -130,7 +138,7 @@ export const ToastCard = forwardRef<HTMLLIElement, ToastCardProps>(function Toas
       </div>
       <RadixToast.Close
         aria-label="Dismiss"
-        className="text-text-dim hover:text-text text-[15px] leading-none -mt-px"
+        className="text-text-dim hover:text-text -mt-px text-[15px] leading-none"
       >
         ×
       </RadixToast.Close>

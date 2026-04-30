@@ -27,15 +27,15 @@ export const Sheet = forwardRef<HTMLDivElement, SheetProps>(function Sheet(
         <RadixDialog.Content
           ref={ref}
           className={cn(
-            'fixed left-1/2 bottom-0 z-[51] -translate-x-1/2 p-5',
-            'bg-panel border-t border-border-strong rounded-tl-lg rounded-tr-lg shadow-lg outline-none',
+            'fixed bottom-0 left-1/2 z-[51] -translate-x-1/2 p-5',
+            'bg-panel border-border-strong rounded-tl-lg rounded-tr-lg border-t shadow-lg outline-none',
             'data-[state=open]:animate-[ship-slide-in-bottom_220ms_var(--easing-out)]',
           )}
           style={{ width }}
         >
-          <div className="mx-auto mb-[14px] h-1 w-9 rounded-full bg-border" aria-hidden />
+          <div className="bg-border mx-auto mb-[14px] h-1 w-9 rounded-full" aria-hidden />
           {title && (
-            <RadixDialog.Title className="text-[15px] font-medium mb-1">{title}</RadixDialog.Title>
+            <RadixDialog.Title className="mb-1 text-[15px] font-medium">{title}</RadixDialog.Title>
           )}
           {children}
         </RadixDialog.Content>
