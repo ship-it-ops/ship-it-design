@@ -8,9 +8,12 @@
  * (Switch to `rem` later if we want user-zoom scaling.)
  */
 
+// Note: `@fontsource-variable/geist` registers the family as `Geist Variable`
+// (and `Geist Mono Variable`). The non-`Variable` aliases are kept as a fallback
+// in case a consumer self-hosts the static Geist alongside.
 export const fontFamily = {
-  sans: '"Geist", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif',
-  mono: '"Geist Mono", "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace',
+  sans: '"Geist Variable", "Geist", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif',
+  mono: '"Geist Mono Variable", "Geist Mono", "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace',
 } as const;
 
 export const fontSize = {
