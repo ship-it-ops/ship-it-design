@@ -13,6 +13,8 @@
     "clean": "rm -rf storybook-static .turbo"
   },
   "dependencies": {
+    "@ship-it/icons": "workspace:*",
+    "@ship-it/shipit": "workspace:*",
     "@ship-it/tokens": "workspace:*",
     "@ship-it/ui": "workspace:*",
     "react": "^18.3.1",

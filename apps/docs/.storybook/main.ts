@@ -9,6 +9,8 @@ const config: StorybookConfig = {
     '../stories/**/*.mdx',
     '../../../packages/ui/src/**/*.mdx',
     '../../../packages/ui/src/**/*.stories.@(ts|tsx)',
+    '../../../packages/shipit/src/**/*.mdx',
+    '../../../packages/shipit/src/**/*.stories.@(ts|tsx)',
   ],
   addons: [
     '@storybook/addon-essentials',

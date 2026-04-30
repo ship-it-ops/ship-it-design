@@ -32,6 +32,12 @@ importers:
 
   apps/docs:
     dependencies:
+      '@ship-it/icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@ship-it/shipit':
+        specifier: workspace:*
+        version: link:../../packages/shipit
       '@ship-it/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
