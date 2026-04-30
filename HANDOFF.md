@@ -1,17 +1,14 @@
 # Handoff — ShipIt Design System Implementation
 
-> **For the next Claude Code session.** Read this top to bottom, then
-> `cozy-doodling-scott.md` (the plan), then start with Phase 5 below.
+> **All 5 phases shipped.** Implementation is complete on `initial-design`.
+> This file is kept as a reference; future work starts from `git log` and the
+> plan in `cozy-doodling-scott.md`.
 
 ## TL;DR
 
-Working through a 5-phase implementation of the ShipIt-AI design system.
-**Phases 1, 2, 3, and 4 are done and committed.** All workspace checks are
-green: 8/8 typecheck, 7/7 tests (264 tests across `ui` + `shipit` + `icons`),
-5/5 builds.
-
-**Up next: Phase 5 (Storybook docs polish).** Wire `@ship-it/shipit` into the
-docs app and rewrite the foundation MDX pages. Details below.
+5-phase implementation of the ShipIt-AI design system, **all phases done**.
+Workspace is green: 9/9 typecheck, 8/8 test runs (264 tests across `ui` +
+`shipit` + `icons`), 5/5 builds. Storybook static build is clean.
 
 ## Where you are
 
@@ -31,7 +28,7 @@ docs app and rewrite the foundation MDX pages. Details below.
 | 2. UI primitives (35 components) | ✅ done | `5dcbfe2 UI Primitives` |
 | 3. UI patterns (23 patterns + 2 hooks) | ✅ done | `d160e0a UI Patterns` |
 | 4. `@ship-it/shipit` (22 domain composites) | ✅ done | `0db4754 ShipIt Composites` |
-| 5. Storybook docs polish | ⏳ pending | Start here |
+| 5. Storybook docs polish | ✅ done | `b3aca4b Storybook Polish` |
 
 ## Verify current state
 
