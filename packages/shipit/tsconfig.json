@@ -1,0 +1,11 @@
+{
+  "extends": "@ship-it/tsconfig/react-library.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "tsBuildInfoFile": ".turbo/tsconfig.tsbuildinfo"
+  },
+  "include": ["src"],
+  "exclude": ["dist", "node_modules", "**/*.test.ts", "**/*.test.tsx", "**/*.stories.tsx"],
+  "references": [{ "path": "../tokens" }, { "path": "../icons" }, { "path": "../ui" }]
+}
