@@ -23,6 +23,18 @@ describe('Input', () => {
     expect(screen.getByPlaceholderText('x')).toHaveAttribute('aria-invalid', 'true');
   });
 
+  it('renders icon and trailing slots', () => {
+    render(
+      <Input
+        placeholder="x"
+        icon={<span data-testid="lead">@</span>}
+        trailing={<span data-testid="trail">.com</span>}
+      />,
+    );
+    expect(screen.getByTestId('lead')).toBeInTheDocument();
+    expect(screen.getByTestId('trail')).toBeInTheDocument();
+  });
+
   it('blocks typing when disabled', async () => {
     render(<Input placeholder="x" disabled />);
     const input = screen.getByPlaceholderText('x');

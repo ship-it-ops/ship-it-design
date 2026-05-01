@@ -18,6 +18,17 @@ describe('Radio', () => {
     expect(handle).toHaveBeenCalledWith('b');
   });
 
+  it('does not select when disabled', async () => {
+    const handle = vi.fn();
+    render(
+      <RadioGroup onValueChange={handle}>
+        <Radio value="a" label="A" disabled />
+      </RadioGroup>,
+    );
+    await userEvent.click(screen.getByLabelText('A'));
+    expect(handle).not.toHaveBeenCalled();
+  });
+
   it('has no a11y violations', async () => {
     const { container } = render(
       <RadioGroup defaultValue="a">

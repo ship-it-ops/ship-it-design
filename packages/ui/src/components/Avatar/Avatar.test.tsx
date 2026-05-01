@@ -21,6 +21,19 @@ describe('Avatar', () => {
     expect(screen.getByLabelText('status: ok')).toBeInTheDocument();
   });
 
+  it('falls back to ? when name is empty', () => {
+    render(<Avatar name="" />);
+    expect(screen.getByText('?')).toBeInTheDocument();
+  });
+
+  it('renders without crashing when src is provided', () => {
+    // Radix Avatar's <img> only mounts after a successful load event, which
+    // jsdom never fires. We just exercise the `src` branch and ensure the
+    // root still renders.
+    const { container } = render(<Avatar name="Priya Khanna" src="https://example.com/p.png" />);
+    expect(container.firstChild).not.toBeNull();
+  });
+
   it('has no a11y violations', async () => {
     const { container } = render(<Avatar name="Priya Khanna" status="ok" />);
     expect(await axe(container)).toHaveNoViolations();

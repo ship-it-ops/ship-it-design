@@ -25,6 +25,16 @@ describe('Card', () => {
     expect(handle).toHaveBeenCalled();
   });
 
+  it('renders an actions slot in the header', () => {
+    render(<Card title="x" actions={<button>Edit</button>} />);
+    expect(screen.getByRole('button', { name: 'Edit' })).toBeInTheDocument();
+  });
+
+  it('renders a footer slot', () => {
+    render(<Card title="x" footer="updated 2m ago" />);
+    expect(screen.getByText('updated 2m ago')).toBeInTheDocument();
+  });
+
   it('has no a11y violations', async () => {
     const { container } = render(
       <Card title="x" description="y">
@@ -41,5 +51,10 @@ describe('StatCard', () => {
     expect(screen.getByText('Entities')).toBeInTheDocument();
     expect(screen.getByText('12,408')).toBeInTheDocument();
     expect(screen.getByText('↑ +284 today')).toBeInTheDocument();
+  });
+
+  it('renders the icon slot when provided', () => {
+    render(<StatCard label="x" value="0" icon={<span>📊</span>} />);
+    expect(screen.getByText('📊')).toBeInTheDocument();
   });
 });

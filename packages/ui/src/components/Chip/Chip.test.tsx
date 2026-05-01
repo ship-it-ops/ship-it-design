@@ -10,6 +10,11 @@ describe('Chip', () => {
     expect(screen.getByText('filter')).toBeInTheDocument();
   });
 
+  it('renders the leading icon slot', () => {
+    render(<Chip icon={<span data-testid="cicon">@</span>}>username</Chip>);
+    expect(screen.getByTestId('cicon')).toBeInTheDocument();
+  });
+
   it('has no a11y violations', async () => {
     const { container } = render(
       <Chip removable onRemove={() => {}}>

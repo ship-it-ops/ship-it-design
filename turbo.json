@@ -18,7 +18,7 @@
     },
     "test": {
       "dependsOn": ["^build"],
-      "outputs": ["coverage/**"]
+      "outputs": ["coverage/**", "storybook-static/**"]
     },
     "clean": {
       "cache": false

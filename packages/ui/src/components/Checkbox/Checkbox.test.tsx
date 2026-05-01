@@ -25,6 +25,11 @@ describe('Checkbox', () => {
     expect(handle).not.toHaveBeenCalled();
   });
 
+  it('renders the indeterminate dash when checked="indeterminate"', () => {
+    render(<Checkbox label="x" checked="indeterminate" />);
+    expect(screen.getByText('−')).toBeInTheDocument();
+  });
+
   it('has no a11y violations', async () => {
     const { container } = render(<Checkbox label="Accept" />);
     expect(await axe(container)).toHaveNoViolations();

@@ -11,6 +11,11 @@ describe('Tag', () => {
     expect(screen.getByText('backend')).toBeInTheDocument();
   });
 
+  it('renders the leading icon slot', () => {
+    render(<Tag icon={<span data-testid="ticon">#</span>}>backend</Tag>);
+    expect(screen.getByTestId('ticon')).toBeInTheDocument();
+  });
+
   it('calls onRemove when × is clicked', async () => {
     const handle = vi.fn();
     render(<Tag onRemove={handle}>x</Tag>);

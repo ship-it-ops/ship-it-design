@@ -10,6 +10,11 @@ describe('Badge', () => {
     expect(screen.getByText('Active')).toBeInTheDocument();
   });
 
+  it('renders a leading icon slot', () => {
+    render(<Badge icon={<span data-testid="bicon">★</span>}>Featured</Badge>);
+    expect(screen.getByTestId('bicon')).toBeInTheDocument();
+  });
+
   it('has no a11y violations', async () => {
     const { container } = render(
       <Badge variant="ok" dot>
