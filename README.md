@@ -25,19 +25,19 @@ Each package has its own `README.md` describing how to add to or change it.
 
 ## Tech stack
 
-| Concern               | Choice                                                 |
-| --------------------- | ------------------------------------------------------ |
-| Framework             | React 18+ with TypeScript                              |
-| Styling               | Tailwind v4 (`@theme` directive) + CSS variable tokens |
-| Headless behavior     | Radix UI primitives                                    |
-| Variant API           | `class-variance-authority` + `tailwind-merge`          |
-| Library build         | `tsup` (ESM + CJS + types)                             |
-| Docs / playground     | Storybook 8                                            |
-| Testing               | Vitest, @testing-library/react, axe-core               |
-| Versioning & release  | Changesets                                             |
-| Task orchestration    | Turborepo                                              |
-| Package manager       | pnpm 9                                                 |
-| Node                  | 20 LTS (see `.nvmrc`)                                  |
+| Concern              | Choice                                                 |
+| -------------------- | ------------------------------------------------------ |
+| Framework            | React 18+ with TypeScript                              |
+| Styling              | Tailwind v4 (`@theme` directive) + CSS variable tokens |
+| Headless behavior    | Radix UI primitives                                    |
+| Variant API          | `class-variance-authority` + `tailwind-merge`          |
+| Library build        | `tsup` (ESM + CJS + types)                             |
+| Docs / playground    | Storybook 8                                            |
+| Testing              | Vitest, @testing-library/react, axe-core               |
+| Versioning & release | Changesets                                             |
+| Task orchestration   | Turborepo                                              |
+| Package manager      | pnpm 9                                                 |
+| Node                 | 20 LTS (see `.nvmrc`)                                  |
 
 ## Getting started
 

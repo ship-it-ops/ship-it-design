@@ -32,10 +32,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: write   # comment back, propose changes
-      issues: write          # respond on issues
-      id-token: write        # required by the Anthropic action's OIDC handshake
-      actions: read          # read previous run logs when asked
+      pull-requests: write # comment back, propose changes
+      issues: write # respond on issues
+      id-token: write # required by the Anthropic action's OIDC handshake
+      actions: read # read previous run logs when asked
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

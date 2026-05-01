@@ -27,12 +27,12 @@ src/
 
 Every component follows the same shape — open `Button/` to see the canonical example:
 
-| File             | What it contains                                                |
-| ---------------- | --------------------------------------------------------------- |
-| `Component.tsx`  | The implementation. Variants via `cva`. Tokens via Tailwind.   |
-| `*.stories.tsx`  | One story per variant + a "Sizes" / "States" composite story.   |
-| `*.test.tsx`     | Render, interaction, and `axe` a11y tests.                      |
-| `index.ts`       | Re-exports the component and any related types.                 |
+| File            | What it contains                                              |
+| --------------- | ------------------------------------------------------------- |
+| `Component.tsx` | The implementation. Variants via `cva`. Tokens via Tailwind.  |
+| `*.stories.tsx` | One story per variant + a "Sizes" / "States" composite story. |
+| `*.test.tsx`    | Render, interaction, and `axe` a11y tests.                    |
+| `index.ts`      | Re-exports the component and any related types.               |
 
 ## Adding a new component
 

@@ -10,7 +10,10 @@
     ".": "./index.js",
     "./react": "./react.js"
   },
-  "files": ["index.js", "react.js"],
+  "files": [
+    "index.js",
+    "react.js"
+  ],
   "peerDependencies": {
     "eslint": "^9.13.0"
   },

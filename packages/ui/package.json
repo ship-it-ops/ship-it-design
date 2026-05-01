@@ -15,8 +15,14 @@
     },
     "./styles/globals.css": "./src/styles/globals.css"
   },
-  "files": ["dist", "src/styles", "README.md"],
-  "sideEffects": ["**/*.css"],
+  "files": [
+    "dist",
+    "src/styles",
+    "README.md"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
@@ -44,6 +50,7 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",
+    "@types/jest-axe": "^3.5.9",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "axe-core": "^4.10.2",

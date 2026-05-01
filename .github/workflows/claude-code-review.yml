@@ -18,10 +18,10 @@ concurrency:
 
 permissions:
   contents: read
-  pull-requests: write   # post inline + summary review comments
-  issues: read           # read linked issues for context
-  id-token: write        # OIDC handshake with the Anthropic action
-  actions: read          # read prior CI runs to ground review feedback
+  pull-requests: write # post inline + summary review comments
+  issues: read # read linked issues for context
+  id-token: write # OIDC handshake with the Anthropic action
+  actions: read # read prior CI runs to ground review feedback
 
 jobs:
   review:

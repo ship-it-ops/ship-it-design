@@ -10,15 +10,15 @@ system.
 
 Before any component work, audit the design for token-level decisions:
 
-| Design layer       | Lands in                                      |
-| ------------------ | --------------------------------------------- |
-| Color styles       | `packages/tokens/src/color.ts`                |
-| Type styles        | `packages/tokens/src/typography.ts`           |
-| Spacing scale      | `packages/tokens/src/spacing.ts`              |
-| Corner radii       | `packages/tokens/src/radius.ts`               |
-| Shadow / elevation | `packages/tokens/src/shadow.ts`               |
-| Motion             | `packages/tokens/src/motion.ts`               |
-| Breakpoints        | `packages/tokens/src/breakpoint.ts`           |
+| Design layer       | Lands in                            |
+| ------------------ | ----------------------------------- |
+| Color styles       | `packages/tokens/src/color.ts`      |
+| Type styles        | `packages/tokens/src/typography.ts` |
+| Spacing scale      | `packages/tokens/src/spacing.ts`    |
+| Corner radii       | `packages/tokens/src/radius.ts`     |
+| Shadow / elevation | `packages/tokens/src/shadow.ts`     |
+| Motion             | `packages/tokens/src/motion.ts`     |
+| Breakpoints        | `packages/tokens/src/breakpoint.ts` |
 
 For colors, decide:
 
