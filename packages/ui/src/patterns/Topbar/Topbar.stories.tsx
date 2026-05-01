@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Avatar } from '../../components/Avatar';
 import { IconButton } from '../../components/Button/IconButton';
 import { SearchInput } from '../../components/Input';
+
 import { Topbar } from './Topbar';
 
 const meta: Meta<typeof Topbar> = {

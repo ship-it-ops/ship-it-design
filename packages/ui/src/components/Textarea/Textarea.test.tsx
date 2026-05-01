@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { axe } from 'vitest-axe';
 import { describe, expect, it } from 'vitest';
+import { axe } from 'vitest-axe';
 
 import { Textarea } from './Textarea';
 
@@ -20,10 +20,10 @@ describe('Textarea', () => {
 
   it('has no a11y violations', async () => {
     const { container } = render(
-      <label>
-        Description
-        <Textarea placeholder="…" />
-      </label>,
+      <>
+        <label htmlFor="desc">Description</label>
+        <Textarea id="desc" placeholder="…" />
+      </>,
     );
     expect(await axe(container)).toHaveNoViolations();
   });

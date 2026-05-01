@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { GraphNode } from './GraphNode';
 import { type EntityType } from '../entity/types';
+
+import { GraphNode } from './GraphNode';
 
 const meta: Meta<typeof GraphNode> = {
   title: 'ShipIt/Graph/GraphNode',

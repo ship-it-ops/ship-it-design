@@ -98,6 +98,10 @@ export interface SelectProps extends Omit<RadixSelect.SelectProps, 'children'> {
   size?: keyof typeof triggerClasses;
   /** Optional className for the trigger. */
   className?: string;
+  /** Accessible label forwarded to the trigger button. */
+  'aria-label'?: string;
+  /** ID of an element labelling the trigger. */
+  'aria-labelledby'?: string;
 }
 
 /**
@@ -109,11 +113,18 @@ export function Select({
   placeholder = 'Select…',
   size,
   className,
+  'aria-label': ariaLabel,
+  'aria-labelledby': ariaLabelledBy,
   ...rootProps
 }: SelectProps) {
   return (
     <RadixSelect.Root {...rootProps}>
-      <SelectTrigger size={size} className={className}>
+      <SelectTrigger
+        size={size}
+        className={className}
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledBy}
+      >
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>

@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '@ship-it/ui';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { EntityCard } from './EntityCard';
 

@@ -5,7 +5,7 @@ import { cn } from '../../utils/cn';
 
 /* ───── RadioGroup ───── */
 
-export interface RadioGroupProps extends Omit<RadixRadio.RadioGroupProps, 'asChild'> {}
+export type RadioGroupProps = Omit<RadixRadio.RadioGroupProps, 'asChild'>;
 
 /**
  * Container for radio items. Wires up roving focus + arrow-key navigation.

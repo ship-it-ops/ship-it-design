@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { axe } from 'vitest-axe';
 import { describe, expect, it } from 'vitest';
+import { axe } from 'vitest-axe';
 
 import { HoverCard } from './HoverCard';
 
@@ -11,7 +11,9 @@ describe('HoverCard', () => {
   });
 
   it('has no a11y violations', async () => {
-    const { container } = render(<HoverCard trigger={<a href="#">x</a>} content="hi" />);
+    const { container } = render(
+      <HoverCard trigger={<a href="https://example.com">x</a>} content="hi" />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });

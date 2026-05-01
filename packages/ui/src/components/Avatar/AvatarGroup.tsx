@@ -1,6 +1,7 @@
 import { forwardRef, type HTMLAttributes } from 'react';
 
 import { cn } from '../../utils/cn';
+
 import { Avatar, type AvatarSize } from './Avatar';
 
 const sizePx: Record<AvatarSize, number> = { xs: 20, sm: 24, md: 32, lg: 40, xl: 56 };

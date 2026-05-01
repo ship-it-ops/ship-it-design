@@ -2,7 +2,7 @@ import { forwardRef, type HTMLAttributes } from 'react';
 
 import { cn } from '../../utils/cn';
 
-export interface KbdProps extends HTMLAttributes<HTMLElement> {}
+export type KbdProps = HTMLAttributes<HTMLElement>;
 
 /**
  * Keyboard shortcut display — `<Kbd>⌘</Kbd><Kbd>K</Kbd>`. Uses `<kbd>` semantics

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { StatusDot } from '../../components/StatusDot';
+
 import { DataTable, type DataTableColumn } from './DataTable';
 
 interface Service {

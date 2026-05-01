@@ -1,6 +1,7 @@
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 import { cn } from '../utils/cn';
+
 import { ENTITY_GLYPH, ENTITY_TONE_CLASS, type EntityType } from './types';
 
 /**

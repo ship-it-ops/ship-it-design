@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { Badge, Button } from '@ship-it/ui';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { Hero } from './Hero';
 

@@ -117,6 +117,9 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
                 ⌕
               </span>
               <input
+                // Command palettes are launched via keyboard (⌘K); autofocusing
+                // the search input is the entire point of the pattern.
+                // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus
                 type="text"
                 value={query}

@@ -1,8 +1,11 @@
 import { render, screen } from '@testing-library/react';
-import { axe } from 'vitest-axe';
 import { describe, expect, it } from 'vitest';
+import { axe } from 'vitest-axe';
 
 import { CopilotMessage } from './CopilotMessage';
+
+// `role` is a React prop on CopilotMessage (the chat speaker), not an ARIA role.
+/* eslint-disable jsx-a11y/aria-role */
 
 describe('CopilotMessage', () => {
   it('renders user message content', () => {

@@ -13,11 +13,13 @@ export default meta;
 
 type Story = StoryObj<typeof DatePicker>;
 
+function DatePickerDemo() {
+  const [value, setValue] = useState<Date | undefined>(new Date(2026, 3, 23));
+  return <DatePicker value={value} onValueChange={setValue} />;
+}
+
 export const Default: Story = {
-  render: () => {
-    const [value, setValue] = useState<Date | undefined>(new Date(2026, 3, 23));
-    return <DatePicker value={value} onValueChange={setValue} />;
-  },
+  render: () => <DatePickerDemo />,
 };
 
 export const StandaloneCalendar: Story = {

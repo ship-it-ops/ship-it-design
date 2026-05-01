@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
+
 import { ToastProvider, useToast } from './Toast';
 
 const meta: Meta = { title: 'Components/Overlays/Toast' };

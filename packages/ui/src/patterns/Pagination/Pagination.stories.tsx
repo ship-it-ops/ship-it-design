@@ -12,23 +12,27 @@ export default meta;
 
 type Story = StoryObj<typeof Pagination>;
 
+function PaginationDemo({
+  initial,
+  total,
+  siblings,
+}: {
+  initial: number;
+  total: number;
+  siblings?: number;
+}) {
+  const [page, setPage] = useState(initial);
+  return <Pagination page={page} total={total} onPageChange={setPage} siblings={siblings} />;
+}
+
 export const Default: Story = {
-  render: () => {
-    const [page, setPage] = useState(3);
-    return <Pagination page={page} total={42} onPageChange={setPage} />;
-  },
+  render: () => <PaginationDemo initial={3} total={42} />,
 };
 
 export const FewPages: Story = {
-  render: () => {
-    const [page, setPage] = useState(2);
-    return <Pagination page={page} total={5} onPageChange={setPage} />;
-  },
+  render: () => <PaginationDemo initial={2} total={5} />,
 };
 
 export const ManyPages: Story = {
-  render: () => {
-    const [page, setPage] = useState(50);
-    return <Pagination page={page} total={100} onPageChange={setPage} siblings={2} />;
-  },
+  render: () => <PaginationDemo initial={50} total={100} siblings={2} />,
 };

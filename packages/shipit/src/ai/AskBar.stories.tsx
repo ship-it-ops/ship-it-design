@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { Chip } from '@ship-it/ui';
+import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
-import { AskBar } from './AskBar';
+import { AskBar, type AskBarProps } from './AskBar';
 
 const meta: Meta<typeof AskBar> = {
   title: 'ShipIt/AI/AskBar',
@@ -15,16 +15,18 @@ export default meta;
 
 type Story = StoryObj<typeof AskBar>;
 
+function AskBarDemo(args: AskBarProps) {
+  const [last, setLast] = useState<string | null>(null);
+  return (
+    <div className="flex w-full max-w-[620px] flex-col gap-3">
+      <AskBar {...args} onSubmit={setLast} />
+      {last && <div className="text-text-dim text-[12px]">submitted: {last}</div>}
+    </div>
+  );
+}
+
 export const Default: Story = {
-  render: (args) => {
-    const [last, setLast] = useState<string | null>(null);
-    return (
-      <div className="flex w-full max-w-[620px] flex-col gap-3">
-        <AskBar {...args} onSubmit={setLast} />
-        {last && <div className="text-text-dim text-[12px]">submitted: {last}</div>}
-      </div>
-    );
-  },
+  render: (args) => <AskBarDemo {...args} />,
 };
 
 export const Streaming: Story = {

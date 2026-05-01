@@ -1,8 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { type DataTableColumn, StatusDot } from '@ship-it/ui';
+import type { Meta, StoryObj } from '@storybook/react';
+
+import { type EntityType } from '../entity/types';
 
 import { EntityTable, entityColumn, entityTypeColumn } from './EntityTable';
-import { type EntityType } from '../entity/types';
 
 interface Service {
   id: string;

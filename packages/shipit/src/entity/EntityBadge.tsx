@@ -2,6 +2,7 @@ import { Badge, type BadgeProps } from '@ship-it/ui';
 import { forwardRef, type ReactNode } from 'react';
 
 import { cn } from '../utils/cn';
+
 import { ENTITY_GLYPH, ENTITY_LABEL, type EntityType } from './types';
 
 /**

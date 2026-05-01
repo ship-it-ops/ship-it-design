@@ -1,6 +1,7 @@
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 import { cn } from '../../utils/cn';
+
 import { Button, type ButtonProps } from './Button';
 
 export interface SplitButtonProps extends HTMLAttributes<HTMLDivElement> {

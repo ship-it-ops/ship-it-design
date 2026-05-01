@@ -17,9 +17,11 @@ export const Static: Story = {
   args: { total: 5, current: 1 },
 };
 
+function DotsInteractiveDemo() {
+  const [current, setCurrent] = useState(0);
+  return <Dots total={6} current={current} onChange={setCurrent} />;
+}
+
 export const Interactive: Story = {
-  render: () => {
-    const [current, setCurrent] = useState(0);
-    return <Dots total={6} current={current} onChange={setCurrent} />;
-  },
+  render: () => <DotsInteractiveDemo />,
 };

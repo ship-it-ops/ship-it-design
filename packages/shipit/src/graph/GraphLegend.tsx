@@ -1,7 +1,7 @@
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-import { cn } from '../utils/cn';
 import { ENTITY_LABEL, type EntityType } from '../entity/types';
+import { cn } from '../utils/cn';
 
 /**
  * GraphLegend — translucent floating legend panel for the graph viewport.

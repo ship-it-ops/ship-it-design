@@ -3,6 +3,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Citation } from './Citation';
 import { CopilotMessage } from './CopilotMessage';
 
+// `role` is a React prop on CopilotMessage (the chat speaker), not an ARIA role.
+/* eslint-disable jsx-a11y/aria-role */
+
 const meta: Meta<typeof CopilotMessage> = {
   title: 'ShipIt/AI/CopilotMessage',
   component: CopilotMessage,

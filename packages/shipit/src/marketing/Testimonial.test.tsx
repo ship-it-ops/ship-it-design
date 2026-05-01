@@ -1,8 +1,11 @@
 import { render, screen } from '@testing-library/react';
-import { axe } from 'vitest-axe';
 import { describe, expect, it } from 'vitest';
+import { axe } from 'vitest-axe';
 
 import { Testimonial } from './Testimonial';
+
+// `role` is a React prop on Testimonial (the author's job title), not an ARIA role.
+/* eslint-disable jsx-a11y/aria-role */
 
 describe('Testimonial', () => {
   it('renders the quote and author', () => {

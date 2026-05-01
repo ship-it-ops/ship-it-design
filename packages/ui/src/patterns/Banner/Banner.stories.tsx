@@ -23,7 +23,7 @@ export const Info: Story = {
     <Banner
       {...args}
       action={
-        <a href="#" className="underline">
+        <a href="https://example.com/changelog" className="underline">
           What&apos;s new →
         </a>
       }
@@ -39,7 +39,7 @@ export const Warn: Story = {
     <Banner
       {...args}
       action={
-        <a href="#" className="underline">
+        <a href="https://example.com/billing" className="underline">
           Upgrade →
         </a>
       }
@@ -55,7 +55,7 @@ export const Stack: Story = {
       <Banner
         variant="warn"
         action={
-          <a href="#" className="underline">
+          <a href="https://example.com/billing" className="underline">
             Upgrade →
           </a>
         }
@@ -65,7 +65,7 @@ export const Stack: Story = {
       <Banner
         variant="info"
         action={
-          <a href="#" className="underline">
+          <a href="https://example.com/changelog" className="underline">
             What&apos;s new →
           </a>
         }

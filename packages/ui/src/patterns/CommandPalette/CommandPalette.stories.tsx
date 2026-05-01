@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
 import { Button } from '../../components/Button/Button';
+
 import { CommandPalette, filterCommandItems, type CommandPaletteGroup } from './CommandPalette';
 
 const meta: Meta<typeof CommandPalette> = {
@@ -49,33 +50,35 @@ const groups: CommandPaletteGroup[] = [
   },
 ];
 
+function CommandPaletteDemo() {
+  const [open, setOpen] = useState(true);
+  const [query, setQuery] = useState('payment');
+  return (
+    <div className="p-10">
+      <Button onClick={() => setOpen(true)}>Open palette ⌘K</Button>
+      <CommandPalette
+        open={open}
+        onOpenChange={setOpen}
+        query={query}
+        onQueryChange={setQuery}
+        groups={filterCommandItems(query, groups)}
+        onSelect={(id) => {
+          console.log('selected', id);
+          setOpen(false);
+        }}
+        placeholder="Search entities, docs, actions…"
+        footer={
+          <>
+            <span>↑↓ navigate</span>
+            <span>↵ open</span>
+            <span>⌘↵ ask about</span>
+          </>
+        }
+      />
+    </div>
+  );
+}
+
 export const Default: Story = {
-  render: () => {
-    const [open, setOpen] = useState(true);
-    const [query, setQuery] = useState('payment');
-    return (
-      <div className="p-10">
-        <Button onClick={() => setOpen(true)}>Open palette ⌘K</Button>
-        <CommandPalette
-          open={open}
-          onOpenChange={setOpen}
-          query={query}
-          onQueryChange={setQuery}
-          groups={filterCommandItems(query, groups)}
-          onSelect={(id) => {
-            console.log('selected', id);
-            setOpen(false);
-          }}
-          placeholder="Search entities, docs, actions…"
-          footer={
-            <>
-              <span>↑↓ navigate</span>
-              <span>↵ open</span>
-              <span>⌘↵ ask about</span>
-            </>
-          }
-        />
-      </div>
-    );
-  },
+  render: () => <CommandPaletteDemo />,
 };

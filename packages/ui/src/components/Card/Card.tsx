@@ -60,6 +60,18 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
     <div
       ref={ref}
       onClick={onClick}
+      onKeyDown={
+        isInteractive && onClick
+          ? (e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onClick(e as unknown as React.MouseEvent<HTMLDivElement>);
+              }
+            }
+          : undefined
+      }
+      role={isInteractive ? 'button' : undefined}
+      tabIndex={isInteractive ? 0 : undefined}
       className={cn(cardStyles({ variant, interactive: isInteractive }), 'p-[18px]', className)}
       {...props}
     >

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { axe } from 'vitest-axe';
 import { describe, expect, it, vi } from 'vitest';
+import { axe } from 'vitest-axe';
 
 import { Input } from './Input';
 
@@ -44,9 +44,10 @@ describe('Input', () => {
 
   it('has no a11y violations', async () => {
     const { container } = render(
-      <label>
-        Email <Input placeholder="me@org.com" />
-      </label>,
+      <>
+        <label htmlFor="email">Email</label>
+        <Input id="email" placeholder="me@org.com" />
+      </>,
     );
     expect(await axe(container)).toHaveNoViolations();
   });
