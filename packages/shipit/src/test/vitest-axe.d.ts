@@ -5,8 +5,8 @@
 import 'vitest';
 
 declare module 'vitest' {
-  interface Assertion<T = unknown> {
-    toHaveNoViolations(): T;
+  interface Assertion {
+    toHaveNoViolations(): void;
   }
   interface AsymmetricMatchersContaining {
     toHaveNoViolations(): unknown;

@@ -16,8 +16,8 @@ describe('Calendar', () => {
     const onSelect = vi.fn();
     render(<Calendar defaultMonth={3} defaultYear={2026} onSelect={onSelect} />);
     await userEvent.click(screen.getByRole('button', { name: /Apr 15 2026/ }));
-    expect(onSelect).toHaveBeenCalled();
-    const arg = onSelect.mock.calls[0]?.[0] as Date;
+    expect(onSelect).toHaveBeenCalledTimes(1);
+    const arg = onSelect.mock.calls[0]![0] as Date;
     expect(arg.getDate()).toBe(15);
     expect(arg.getMonth()).toBe(3);
     expect(arg.getFullYear()).toBe(2026);
@@ -46,8 +46,8 @@ describe('DatePicker', () => {
     render(<DatePicker defaultValue={new Date(2026, 3, 1)} onValueChange={onValueChange} />);
     await userEvent.click(screen.getByRole('button'));
     await userEvent.click(await screen.findByRole('button', { name: /Apr 15 2026/ }));
-    expect(onValueChange).toHaveBeenCalled();
-    const arg = onValueChange.mock.calls[0]?.[0] as Date;
+    expect(onValueChange).toHaveBeenCalledTimes(1);
+    const arg = onValueChange.mock.calls[0]![0] as Date;
     expect(arg.getDate()).toBe(15);
   });
 
