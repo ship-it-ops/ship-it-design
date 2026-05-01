@@ -30,8 +30,7 @@ permissions:
 # builds use a separate group keyed by the PR number so they can cancel
 # in-flight on new pushes without blocking the live deploy lane.
 concurrency:
-  group: ${{ github.event_name == 'pull_request' && format('pages-pr-{0}',
-    github.event.pull_request.number) || 'pages' }}
+  group: ${{ github.event_name == 'pull_request' && format('pages-pr-{0}', github.event.pull_request.number) || 'pages' }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
