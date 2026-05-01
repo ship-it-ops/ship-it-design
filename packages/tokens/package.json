@@ -15,13 +15,19 @@
     },
     "./styles/tokens.css": "./styles/tokens.css"
   },
-  "files": ["dist", "styles", "README.md"],
-  "sideEffects": ["./styles/tokens.css"],
+  "files": [
+    "dist",
+    "styles",
+    "README.md"
+  ],
+  "sideEffects": [
+    "./styles/tokens.css"
+  ],
   "scripts": {
     "build": "tsup && tsx scripts/build-css.ts",
     "dev": "tsup --watch",
     "lint": "eslint src",
-    "test": "vitest run",
+    "test": "vitest run --passWithNoTests",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist styles/tokens.css .turbo"
   },

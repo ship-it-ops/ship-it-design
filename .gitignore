@@ -11,6 +11,8 @@ out/
 storybook-static/
 coverage/
 *.tsbuildinfo
+# tsup writes a transient bundled config alongside tsup.config.ts during DTS
+tsup.config.bundled_*.mjs
 
 # Generated icon components (regenerated from SVG sources)
 packages/icons/src/components/*.tsx
