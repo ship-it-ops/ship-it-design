@@ -12,7 +12,7 @@ import { ENTITY_GLYPH, ENTITY_TONE_CLASS, type EntityType } from './types';
  * Renders as a button when `onClick` is supplied; otherwise a plain row.
  */
 
-export interface EntityListRowProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
+export interface EntityListRowProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   type: EntityType;
   /** Entity name / id. Rendered in mono. */
   name: ReactNode;
@@ -70,8 +70,6 @@ export const EntityListRow = forwardRef<HTMLElement, EntityListRowProps>(functio
       >
         {inner}
       </button>
-    );
-  }
     );
   }
 
