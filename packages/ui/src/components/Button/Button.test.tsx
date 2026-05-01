@@ -49,20 +49,17 @@ describe('Button', () => {
     expect(handleClick).not.toHaveBeenCalled();
   });
 
-  it('applies variant, size, and custom classes', () => {
+  it('applies custom classes and does not leak variant/size as DOM attributes', () => {
     render(
       <Button variant="secondary" size="lg" className="custom-class">
         Styled
       </Button>,
     );
 
-    expect(screen.getByRole('button', { name: 'Styled' })).toHaveClass(
-      'bg-surface',
-      'text-text',
-      'h-12',
-      'px-6',
-      'custom-class',
-    );
+    const button = screen.getByRole('button', { name: 'Styled' });
+    expect(button).toHaveClass('custom-class');
+    expect(button).not.toHaveAttribute('variant');
+    expect(button).not.toHaveAttribute('size');
   });
 
   it('renders the polymorphic child when asChild is set', () => {

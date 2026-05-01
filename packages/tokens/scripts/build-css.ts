@@ -122,6 +122,7 @@ export const writeTokenCss = (outputPath = OUTPUT_PATH): void => {
   console.log(`✓ tokens.css written → ${outputPath}`);
 };
 
+/* v8 ignore next 3 */
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   writeTokenCss();
 }

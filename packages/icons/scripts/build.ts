@@ -82,6 +82,7 @@ export const buildIcons = async ({
   return svgFiles.length;
 };
 
+/* v8 ignore next 3 */
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   await buildIcons();
 }
