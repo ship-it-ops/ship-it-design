@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
+import { createRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 
 import { Button } from './Button';
@@ -9,6 +10,25 @@ describe('Button', () => {
   it('renders its children', () => {
     render(<Button>Save</Button>);
     expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument();
+  });
+
+  it('uses type="button" by default and allows explicit type overrides', () => {
+    render(
+      <>
+        <Button>Default</Button>
+        <Button type="submit">Submit</Button>
+      </>,
+    );
+
+    expect(screen.getByRole('button', { name: 'Default' })).toHaveAttribute('type', 'button');
+    expect(screen.getByRole('button', { name: 'Submit' })).toHaveAttribute('type', 'submit');
+  });
+
+  it('forwards refs to the rendered button element', () => {
+    const ref = createRef<HTMLButtonElement>();
+    render(<Button ref={ref}>Focusable</Button>);
+
+    expect(ref.current).toBe(screen.getByRole('button', { name: 'Focusable' }));
   });
 
   it('fires onClick when clicked', async () => {
@@ -29,6 +49,22 @@ describe('Button', () => {
     expect(handleClick).not.toHaveBeenCalled();
   });
 
+  it('applies variant, size, and custom classes', () => {
+    render(
+      <Button variant="secondary" size="lg" className="custom-class">
+        Styled
+      </Button>,
+    );
+
+    expect(screen.getByRole('button', { name: 'Styled' })).toHaveClass(
+      'bg-surface',
+      'text-text',
+      'h-12',
+      'px-6',
+      'custom-class',
+    );
+  });
+
   it('renders the polymorphic child when asChild is set', () => {
     render(
       <Button asChild>
@@ -37,10 +73,18 @@ describe('Button', () => {
     );
     const link = screen.getByRole('link', { name: 'Home' });
     expect(link).toHaveAttribute('href', '/home');
+    expect(link).not.toHaveAttribute('type');
   });
 
-  it('has no accessibility violations', async () => {
-    const { container } = render(<Button>Accessible</Button>);
+  it('has no accessibility violations for button and asChild link variants', async () => {
+    const { container } = render(
+      <>
+        <Button>Accessible</Button>
+        <Button asChild>
+          <a href="/docs">Docs</a>
+        </Button>
+      </>,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });
