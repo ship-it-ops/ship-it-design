@@ -66,9 +66,12 @@ export const EntityListRow = forwardRef<HTMLElement, EntityListRowProps>(functio
         type="button"
         onClick={onClick}
         className={baseClass}
+        {...props}
       >
         {inner}
       </button>
+    );
+  }
     );
   }
 
