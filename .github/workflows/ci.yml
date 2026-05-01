@@ -90,3 +90,112 @@ jobs:
             packages/shipit/dist
           retention-days: 14
           if-no-files-found: error
+
+  # ── Stage 3: Claude PR review (only after format + lint + verify pass) ────
+  # Pairs with `claude.yml` (the reactive `@claude` mention handler).
+  # Apply the `skip-claude` label to opt out of a specific PR.
+  claude-review:
+    name: Review with Claude
+    needs: [format, lint, verify]
+    runs-on: ubuntu-latest
+    # Skip pushes to main, drafts, the auto-generated "Version Packages" PR,
+    # dependabot/renovate mechanical bumps, and anything labelled `skip-claude`.
+    if: |
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.draft == false &&
+      !contains(github.event.pull_request.labels.*.name, 'skip-claude') &&
+      !startsWith(github.event.pull_request.title, 'chore(release): version packages') &&
+      github.event.pull_request.user.login != 'dependabot[bot]' &&
+      github.event.pull_request.user.login != 'renovate[bot]'
+    permissions:
+      contents: read
+      pull-requests: write # post inline + summary review comments
+      issues: read # read linked issues for context
+      id-token: write # OIDC handshake with the Anthropic action
+      actions: read # read prior CI runs to ground review feedback
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Full history so the action can compute a clean diff against the
+          # base branch instead of a shallow shadow.
+          fetch-depth: 0
+
+      - name: Claude Code Review
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          # Use sticky_comment so subsequent pushes update the same review
+          # summary thread instead of spamming a new top-level comment per
+          # commit. Inline comments are landed via the github_inline_comment
+          # MCP tool, which is allow-listed below.
+          use_sticky_comment: true
+          claude_args: |
+            --allowed-tools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr comment:*),Bash(gh pr list:*),Bash(gh run view:*),Bash(gh run list:*)"
+          prompt: |
+            Review this pull request as if you were the most senior engineer on
+            the ShipIt design-system team. Use the GitHub MCP server's
+            `create_inline_comment` tool to leave inline notes on specific
+            lines; use a single sticky summary comment for high-level remarks.
+
+            ## What this repo is
+
+            A pnpm + turbo monorepo shipping four npm packages under
+            `@ship-it/*` (tokens, icons, ui, shipit) plus a Storybook docs
+            app. Stack: React 18+, TypeScript 5.x, Tailwind v4 (beta),
+            Radix UI primitives, `cva` for variants, `tsup` for library
+            builds, Vitest + `vitest-axe` for tests.
+
+            ## What to look for (in priority order)
+
+            1. **Bugs & logic errors.** Off-by-one, wrong reducer state,
+               race conditions, misuse of refs / effects, broken
+               controlled/uncontrolled handling.
+            2. **A11y regressions.** Every component asserts `axe`
+               violations === 0 — flag anything that would break that
+               (missing `aria-label` on icon-only controls, `role="grid"`
+               without `role="row"` parents, nested-interactive, focus-trap
+               misses, keyboard support gaps).
+            3. **Security.** XSS via `dangerouslySetInnerHTML`, unsanitized
+               URL inputs, leaking secrets in logs, prototype pollution in
+               object spreads.
+            4. **Repo conventions.** Components live in their own folder
+               with `Component.tsx` + `.stories.tsx` + `.test.tsx` + `index.ts`.
+               `forwardRef` everywhere. `cva` for variant axes. No inline
+               conditional classNames — push them into `cva`. Tailwind
+               utilities consume token CSS vars (`bg-accent`, never raw
+               hex). When extending `HTMLAttributes`, `Omit` conflicting
+               props (`title`, `onSelect`, `values`, drag handlers).
+            5. **Test coverage.** New components / patterns must have
+               tests covering: render happy path, every interactive
+               behavior (with `userEvent`, never `fireEvent`), and an
+               `axe` clean assertion. New hooks need a `renderHook` test.
+            6. **Public API hygiene.** Anything exported from
+               `packages/*/src/index.ts` is a contract — flag breaking
+               renames / signature changes that lack a `major` changeset.
+            7. **Changeset hygiene.** If `packages/*` source changed but
+               no `.changeset/*.md` was added, point that out (the
+               `changeset-check` workflow will already have flagged it,
+               but the PR author may need a nudge on bump severity).
+
+            ## Tone
+
+            Match the voice in `design-handoff/project/SKILL.md` — terse,
+            engineer-grade, no hedging. When you're confident, say so.
+            When you're guessing, say "could be wrong, but…". Don't pad
+            with "Great work!" / "Looks good!" — only flag real issues.
+            Approving comments are noise.
+
+            ## What NOT to comment on
+
+            - Style nits the formatter / linter already covers. Prettier
+              + eslint run before you do.
+            - Tailwind class order — `prettier-plugin-tailwindcss` owns
+              that.
+            - Storybook story copy quality, unless it's actually
+              misleading about the component's behavior.
+            - The size of the diff. Big PRs are fine when they're
+              cohesive.
+
+            Land your final summary as the sticky review body. End with a
+            one-line verdict: `LGTM`, `LGTM with nits`, or `Needs work`.
