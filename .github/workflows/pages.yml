@@ -16,6 +16,21 @@ on:
   push:
     branches: [main]
   pull_request:
+    # Only re-validate Storybook on PRs that could actually affect the build.
+    # Anything outside this list (docs/, root markdown, other workflows,
+    # changesets, .editorconfig, etc.) skips the Pages job entirely.
+    paths:
+      - 'apps/docs/**'
+      - 'packages/tokens/**'
+      - 'packages/icons/**'
+      - 'packages/ui/**'
+      - 'packages/shipit/**'
+      - 'packages/tsconfig/**'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'turbo.json'
+      - '.github/workflows/pages.yml'
+      - '.github/actions/setup/**'
   # Allow manual republish (e.g. after enabling Pages for the first time).
   workflow_dispatch:
 
