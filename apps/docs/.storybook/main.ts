@@ -30,7 +30,15 @@ const config: StorybookConfig = {
   // Inject the Tailwind v4 Vite plugin so utility classes are compiled at
   // dev + build time. Without this, the `@import 'tailwindcss'` in
   // globals.css emits nothing and every component renders unstyled.
-  viteFinal: async (cfg) => mergeConfig(cfg, { plugins: [tailwindcss()] }),
+  //
+  // `STORYBOOK_BASE_URL` lets the Pages workflow build assets under the repo
+  // subpath (e.g. `/ship-it-design/`) so absolute asset paths resolve when
+  // hosted at `<owner>.github.io/<repo>/`. Empty in dev / local builds.
+  viteFinal: async (cfg) =>
+    mergeConfig(cfg, {
+      plugins: [tailwindcss()],
+      base: process.env.STORYBOOK_BASE_URL ?? cfg.base,
+    }),
 };
 
 export default config;
