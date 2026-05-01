@@ -14,11 +14,13 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "test": "turbo run test",
+    "test:force": "turbo run test --force",
     "typecheck": "turbo run typecheck",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,mdx,css,yml,yaml}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,mdx,css,yml,yaml}\"",
     "clean": "turbo run clean && rm -rf node_modules",
     "changeset": "changeset",
+    "changeset:empty": "changeset add --empty",
     "version-packages": "changeset version",
     "release": "turbo run build --filter='./packages/*' && changeset publish"
   },
