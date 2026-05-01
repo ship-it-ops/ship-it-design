@@ -1,0 +1,56 @@
+name: Deploy Storybook to Pages
+
+# Builds the static Storybook from `apps/docs/` and publishes it to GitHub
+# Pages on every push to `main`. Pages must be enabled in the repo settings:
+# Settings → Pages → Source: "GitHub Actions".
+#
+# The site is served at `https://<owner>.github.io/<repo>/`. The build sets
+# `STORYBOOK_BASE_URL` so all asset paths inside the static bundle resolve
+# under that subpath.
+
+on:
+  push:
+    branches: [main]
+  # Allow manual republish (e.g. after enabling Pages for the first time).
+  workflow_dispatch:
+
+# Pages deploys require these permissions on the deploying job.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one Pages deploy can run at a time. Don't cancel an in-flight deploy
+# (it'd leave the live site in an inconsistent state); queue instead.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build Storybook
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+
+      - name: Build Storybook (with subpath base)
+        env:
+          STORYBOOK_BASE_URL: /${{ github.event.repository.name }}/
+        run: pnpm --filter docs build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/docs/storybook-static
+
+  deploy:
+    name: Deploy to Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
