@@ -55,4 +55,12 @@ describe('DatePicker', () => {
     const { container } = render(<DatePicker placeholder="Pick a date" />);
     expect(await axe(container)).toHaveNoViolations();
   });
+
+  it('has no a11y violations (open)', async () => {
+    const { container } = render(<DatePicker defaultValue={new Date(2026, 3, 1)} />);
+    await userEvent.click(screen.getByRole('button'));
+    // Wait until the calendar grid has rendered before scanning.
+    await screen.findByRole('button', { name: /Apr 15 2026/ });
+    expect(await axe(container)).toHaveNoViolations();
+  });
 });
