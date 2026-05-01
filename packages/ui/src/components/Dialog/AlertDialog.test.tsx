@@ -4,11 +4,7 @@ import { useState } from 'react';
 import { axe } from 'vitest-axe';
 import { describe, expect, it, vi } from 'vitest';
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-} from './AlertDialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel } from './AlertDialog';
 
 function Stateful({ initial = true }: { initial?: boolean }) {
   const [open, setOpen] = useState(initial);

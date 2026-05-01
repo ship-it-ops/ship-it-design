@@ -37,6 +37,24 @@ jobs:
       github.event.pull_request.user.login != 'dependabot[bot]' &&
       github.event.pull_request.user.login != 'renovate[bot]'
     steps:
+      # Wait for the CI workflow's three jobs to all complete successfully on
+      # this PR's head SHA before running Claude. If any check fails, this
+      # step fails the job and Claude never runs — there's no point reviewing
+      # code that doesn't lint / typecheck / test / build.
+      #
+      # Check names must match `ci.yml`'s `jobs.<id>.name` exactly:
+      #   - "Format"                       (jobs.format)
+      #   - "Lint"                         (jobs.lint)
+      #   - "Typecheck · Test · Build"     (jobs.verify)
+      - name: Wait for CI to pass
+        uses: lewagon/wait-on-check-action@v1.3.4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          check-regexp: '^(Format|Lint|Typecheck · Test · Build)$'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 20
+          allowed-conclusions: success
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
