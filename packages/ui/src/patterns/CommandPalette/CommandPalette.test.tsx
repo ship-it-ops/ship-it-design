@@ -86,11 +86,11 @@ describe('filterCommandItems', () => {
   it('drops empty groups', () => {
     const result = filterCommandItems('billing', groups);
     expect(result).toHaveLength(1);
-    expect(result[0].items).toHaveLength(1);
+    expect(result[0]?.items).toHaveLength(1);
   });
 
   it('returns all groups for empty query', () => {
     const result = filterCommandItems('', groups);
-    expect(result[0].items).toHaveLength(4);
+    expect(result[0]?.items).toHaveLength(4);
   });
 });

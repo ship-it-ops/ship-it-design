@@ -220,6 +220,9 @@ importers:
       '@ship-it/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@storybook/react':
+        specifier: ^8.4.0
+        version: 8.6.18(@storybook/test@8.6.18(storybook@8.6.18(prettier@3.8.3)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.6.18(prettier@3.8.3))(typescript@5.9.3)
       '@testing-library/jest-dom':
         specifier: ^6.6.3
         version: 6.9.1
@@ -373,6 +376,9 @@ importers:
       '@ship-it/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@storybook/react':
+        specifier: ^8.4.0
+        version: 8.6.18(@storybook/test@8.6.15(storybook@8.6.18(prettier@3.8.3)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.6.18(prettier@3.8.3))(typescript@5.9.3)
       '@storybook/test':
         specifier: ^8.4.0
         version: 8.6.15(storybook@8.6.18(prettier@3.8.3))
@@ -6383,6 +6389,21 @@ snapshots:
       storybook: 8.6.18(prettier@3.8.3)
     optionalDependencies:
       '@storybook/test': 8.6.15(storybook@8.6.18(prettier@3.8.3))
+      typescript: 5.9.3
+
+  '@storybook/react@8.6.18(@storybook/test@8.6.18(storybook@8.6.18(prettier@3.8.3)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.6.18(prettier@3.8.3))(typescript@5.9.3)':
+    dependencies:
+      '@storybook/components': 8.6.18(storybook@8.6.18(prettier@3.8.3))
+      '@storybook/global': 5.0.0
+      '@storybook/manager-api': 8.6.18(storybook@8.6.18(prettier@3.8.3))
+      '@storybook/preview-api': 8.6.18(storybook@8.6.18(prettier@3.8.3))
+      '@storybook/react-dom-shim': 8.6.18(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.6.18(prettier@3.8.3))
+      '@storybook/theming': 8.6.18(storybook@8.6.18(prettier@3.8.3))
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      storybook: 8.6.18(prettier@3.8.3)
+    optionalDependencies:
+      '@storybook/test': 8.6.18(storybook@8.6.18(prettier@3.8.3))
       typescript: 5.9.3
 
   '@storybook/test@8.6.14(storybook@8.6.18(prettier@3.8.3))':

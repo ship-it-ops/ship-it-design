@@ -70,6 +70,7 @@
     "@ship-it/icons": "workspace:*",
     "@ship-it/tokens": "workspace:*",
     "@ship-it/tsconfig": "workspace:*",
+    "@storybook/react": "^8.4.0",
     "@storybook/test": "^8.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",
