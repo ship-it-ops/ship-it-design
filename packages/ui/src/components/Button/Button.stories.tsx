@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { expect, fn, userEvent, within } from '@storybook/test';
 
 import { Button } from './Button';
 
@@ -20,6 +21,7 @@ const meta: Meta<typeof Button> = {
   },
   args: {
     children: 'Button',
+    onClick: fn(),
     variant: 'primary',
     size: 'md',
   },
@@ -29,6 +31,11 @@ export default meta;
 type Story = StoryObj<typeof Button>;
 
 export const Primary: Story = {};
+Primary.play = async ({ args, canvasElement }) => {
+  const canvas = within(canvasElement);
+  await userEvent.click(canvas.getByRole('button', { name: String(args.children) }));
+  await expect(args.onClick).toHaveBeenCalled();
+};
 
 export const Secondary: Story = {
   args: { variant: 'secondary' },
@@ -57,6 +64,11 @@ export const Sizes: Story = {
 export const Disabled: Story = {
   args: { disabled: true },
 };
+Disabled.play = async ({ args, canvasElement }) => {
+  const canvas = within(canvasElement);
+  await userEvent.click(canvas.getByRole('button', { name: String(args.children) }));
+  await expect(args.onClick).not.toHaveBeenCalled();
+};
 
 export const AsChildLink: Story = {
   args: {
@@ -67,4 +79,11 @@ export const AsChildLink: Story = {
       <a href="https://example.com">Visit example.com</a>
     </Button>
   ),
+};
+AsChildLink.play = async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  await expect(canvas.getByRole('link', { name: 'Visit example.com' })).toHaveAttribute(
+    'href',
+    'https://example.com',
+  );
 };
