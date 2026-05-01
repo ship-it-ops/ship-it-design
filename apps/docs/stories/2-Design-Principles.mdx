@@ -4,32 +4,45 @@ import { Meta } from '@storybook/blocks';
 
 # Design principles
 
-Principles are the tie-breakers when a design decision could go either way. They are
-**not** rules — they're priorities.
+Tie-breakers when a decision could go either way. Not rules — priorities.
 
-## 1. Tokens before values
+## 1. Quiet by default
 
-Every visible design decision (color, spacing, type, radius) lives in `@ship-it/tokens`
-as a named token. Components consume tokens. This is the single rule that lets us reskin
-the system, ship dark mode, and stay consistent across apps.
+Typography weight does the work; heavy backgrounds and gradients don't. One
+accent color per surface. Borders are 1px and dim until something needs your
+attention.
 
-## 2. Accessible by default
+## 2. Tokens before values
 
-Components are tested against `axe` and built on Radix UI primitives. If a component
-can't pass an a11y test, it can't ship. This includes keyboard interaction,
-focus-visible styling, ARIA semantics, and color contrast.
+Every visible decision (color, spacing, type, radius, motion) is a named token
+in `@ship-it/tokens`. Components consume tokens, never raw hex or px. This is
+the single rule that lets us reskin the system in one variable change.
 
-## 3. Composition over configuration
+## 3. Accessible by default
 
-A few sharp primitives that compose well beat one giant component with thirty props.
-Prefer `<Card><Card.Header /></Card>` over `<Card title="..." subtitle="..." actions={...} />`.
+Every component asserts `axe` violations === 0 in unit tests. Behavior +
+ARIA + keyboard come from Radix primitives where applicable. If a component
+can't pass a11y, it doesn't ship.
 
-## 4. Predictable APIs
+## 4. Composition over configuration
 
-All components accept `className`, forward refs, and use `asChild` for polymorphism.
-Once you've used one component, you can guess how the next one works.
+A few sharp primitives that compose well beat one giant component with thirty
+props. Prefer `<Card><Card.Header /></Card>` to `<Card title=… subtitle=… actions=…/>`.
 
-## 5. Honest performance
+## 5. Predictable APIs
 
-Tree-shakeable ESM, no runtime CSS-in-JS, no global side effects beyond the explicit
-`@ship-it/ui/styles/globals.css` import.
+All components accept `className`, forward refs, and use `asChild` for
+polymorphism. Variant axes are typed via `cva`. Once you've used one
+component, you can guess how the next one works.
+
+## 6. Honest performance
+
+Tree-shakeable ESM. No runtime CSS-in-JS. No global side effects beyond the
+explicit `@ship-it/ui/styles/globals.css` import. Geist is self-hosted, not
+loaded from a CDN.
+
+## 7. Glyphs, not emoji
+
+The icon vocabulary is typographic glyphs (◆ ◇ ○ ▤ ✦ …) rendered at text
+weight, monochromatic, always centered. Never tinted, never gradient. See
+**Foundations / Iconography** for the full set.

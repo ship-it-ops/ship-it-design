@@ -2,24 +2,41 @@ import { Meta } from '@storybook/blocks';
 
 <Meta title="Introduction" />
 
-# Ship-It Design System
+# ShipIt Design System
 
-Welcome to the Ship-It design system. This Storybook is the **interactive** companion
-to the source code in this repo. Every component you see here is the same one consumed
-by every Ship-It front-end app.
+The interactive companion to the design tokens and components in this repo.
+Every component on this site is the same one consumed by every ShipIt-AI app.
+
+## Packages
+
+| Package           | What's in it                                                                        |
+| ----------------- | ----------------------------------------------------------------------------------- |
+| `@ship-it/tokens` | OKLCH color tokens, type ramp, spacing scale, motion durations, radius/shadow       |
+| `@ship-it/icons`  | `IconGlyph` component + the canonical glyph map (◆ ◇ ○ ▤ ✦ …)                       |
+| `@ship-it/ui`     | 35 primitives + 23 patterns + 6 hooks. Generic, reusable, theme-agnostic.           |
+| `@ship-it/shipit` | ShipIt-AI domain composites: AskBar, CopilotMessage, GraphNode, EntityCard, Hero, … |
 
 ## How this Storybook is organized
 
-- **Foundations** — Tokens (color, typography, spacing) and design principles.
-  Start here if you're new to the system.
-- **Components** — One section per component. Each shows live examples and an auto-generated
-  props table.
+- **Foundations** — color, typography, spacing, motion, iconography, layout, voice
+- **Components** — primitives in `@ship-it/ui` (Button, Input, Dialog, Badge, …)
+- **Patterns** — composites in `@ship-it/ui` (Tabs, DataTable, CommandPalette, …)
+- **ShipIt** — domain composites in `@ship-it/shipit` (AI surfaces, graph chrome, marketing)
 
-## Where to go next in the repo
+The sidebar mirrors the showroom in `design-handoff/project/Library.html`.
 
-- [`docs/architecture.md`](https://github.com/ship-it-ops/ship-it-design/blob/main/docs/architecture.md) —
-  how packages fit together.
-- [`docs/adding-a-component.md`](https://github.com/ship-it-ops/ship-it-design/blob/main/docs/adding-a-component.md) —
-  authoring guide.
-- [`docs/design-handoff.md`](https://github.com/ship-it-ops/ship-it-design/blob/main/docs/design-handoff.md) —
-  how Figma decisions land in this codebase.
+## Theme
+
+Tokens are **dark-first**: `:root` carries the dark palette; `[data-theme="light"]`
+overrides it. Use the toolbar toggle (top right) to flip themes — every
+component recolors via OKLCH light overrides.
+
+A single CSS variable, `--accent-h` (default `200`, cyan-blue), drives every
+accent shade. Set `--accent-h: 280` on `:root` to reskin the whole UI to
+purple in one declaration.
+
+## Voice
+
+Read **Foundations / Voice & Content** before writing copy. ShipIt's voice is
+quiet, engineer-grade, declarative. _"Reading your world"_ not _"Loading…"_.
+Glyphs, not emoji.

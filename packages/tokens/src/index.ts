@@ -4,5 +4,6 @@ export * from './spacing';
 export * from './radius';
 export * from './shadow';
 export * from './motion';
+export * from './elevation';
 export * from './breakpoint';
 export * from './z-index';

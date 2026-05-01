@@ -2,20 +2,96 @@ import { Meta } from '@storybook/blocks';
 
 <Meta title="Foundations/Tokens/Typography" />
 
-# Typography tokens
+# Typography
 
-Defined in `packages/tokens/src/typography.ts`:
+UI is set in **Geist**; data, codes, and monospaced labels in **Geist Mono**.
+Both are self-hosted via `@fontsource-variable` and imported from
+`@ship-it/ui/styles/globals.css` — consumers don't depend on Google Fonts.
 
-- `fontFamily` — `sans` (UI) and `mono` (code).
-- `fontSize` — `xs` … `5xl` ramp, all expressed in `rem` so users can rescale text.
-- `fontWeight` — `regular` (400), `medium` (500), `semibold` (600), `bold` (700).
-- `lineHeight` — `tight` (1.2), `normal` (1.5), `relaxed` (1.75).
-- `letterSpacing` — `tight`, `normal`, `wide`.
+## Type ramp
+
+Sizes are named, not numeric, so utilities stay semantic.
+
+export const Sample = ({ token, size, weight = 500, tracking = 'normal' }) => (
+  <div
+    style={{
+      display: 'flex',
+      alignItems: 'baseline',
+      gap: 24,
+      padding: '10px 0',
+      borderBottom: '1px solid var(--color-border)',
+    }}
+  >
+    <code
+      style={{
+        fontFamily: 'var(--font-family-mono)',
+        fontSize: 11,
+        color: 'var(--color-text-dim)',
+        minWidth: 80,
+      }}
+    >
+      {token}
+    </code>
+    <code
+      style={{
+        fontFamily: 'var(--font-family-mono)',
+        fontSize: 11,
+        color: 'var(--color-text-dim)',
+        minWidth: 60,
+      }}
+    >
+      {size}
+    </code>
+    <span
+      style={{
+        fontFamily: 'var(--font-family-sans)',
+        fontSize: size,
+        fontWeight: weight,
+        letterSpacing: tracking,
+      }}
+    >
+      The graph stays quiet.
+    </span>
+  </div>
+);
+
+<Sample token="display" size="56px" tracking="-0.9px" />
+<Sample token="h1" size="34px" tracking="-0.3px" />
+<Sample token="h2" size="28px" tracking="-0.3px" />
+<Sample token="h3" size="22px" />
+<Sample token="h4" size="18px" />
+<Sample token="body-lg" size="15px" weight={400} />
+<Sample token="body" size="13px" weight={400} />
+<Sample token="mono" size="11px" weight={500} />
+<Sample token="eyebrow" size="10px" weight={500} tracking="1.4px" />
+
+## Weights
+
+400 (regular), 500 (medium, the workhorse), 600 (semibold for emphasis), 700
+(bold — rare). 300 (light) is reserved for display-size headings that sit on
+quiet backgrounds.
+
+## Tracking
+
+| Token    | Value  | When                      |
+| -------- | ------ | ------------------------- |
+| `xtight` | -0.9px | display sizes             |
+| `tight`  | -0.3px | h1 / h2                   |
+| `normal` | 0      | body                      |
+| `wide`   | 1.4px  | eyebrow / mono labels     |
+| `xwide`  | 1.8px  | uppercase section headers |
+
+## Tabular numerals
+
+Numbers in any "tick" or "compare" surface use `font-variant-numeric:
+tabular-nums`. The `.font-mono` class enables this automatically; pair it with
+a `tabular-nums` utility on data cells.
 
 ## Usage
 
 ```tsx
-<h1 className="font-sans text-4xl font-bold leading-tight">Heading</h1>
-<p className="text-base leading-normal">Body</p>
-<code className="font-mono text-sm">code</code>
+<h1 className="text-display font-medium tracking-xtight">Headline</h1>
+<p className="text-body text-text-muted">Body</p>
+<code className="font-mono text-mono">match (s:Service)</code>
+<span className="font-mono text-eyebrow tracking-wide uppercase text-text-dim">PROPERTIES</span>
 ```

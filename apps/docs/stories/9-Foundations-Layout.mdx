@@ -1,0 +1,80 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Foundations/Layout" />
+
+# Layout
+
+A few opinionated defaults plus the spacing scale carry most layouts.
+
+## Container widths
+
+| Surface                   | Max width                                       |
+| ------------------------- | ----------------------------------------------- |
+| Marketing hero            | 680px                                           |
+| Marketing content section | 1080px                                          |
+| App body, single column   | 720px (reading) / 1080px (data)                 |
+| App body, split pane      | 100% (driven by sidebar / detail ratios)        |
+| Modal / Dialog            | 460px (default) — adjustable via `width` prop   |
+| CommandPalette            | 540px                                           |
+| Drawer / Sheet            | per-context, default 420px right or 100% bottom |
+
+## 12-column grid (when needed)
+
+Marketing pages and dashboard surfaces use a 12-column CSS grid with the
+spacing scale gaps:
+
+```tsx
+<div className="grid grid-cols-12 gap-3 md:gap-4">
+  <div className="col-span-12 md:col-span-7">…</div>
+  <div className="col-span-12 md:col-span-5">…</div>
+</div>
+```
+
+App tools (the graph, ask, entity surfaces) prefer **flexbox** with explicit
+widths — Sidebar is fixed 240px, Inspector is 340px, the body fills the rest.
+The grid is for content rhythm, not app chrome.
+
+## Split pane
+
+The canonical app layout: fixed Sidebar + Topbar with a content area below.
+Optional Inspector dock on the right.
+
+```tsx
+<div className="flex h-screen">
+  <Sidebar />
+  <div className="flex flex-1 flex-col">
+    <Topbar />
+    <main className="flex-1 overflow-auto">…</main>
+  </div>
+  <Inspector /> {/* optional */}
+</div>
+```
+
+## Density
+
+Two density modes: **cozy** (default) and **compact**. Compact tightens
+list-row vertical padding (8px → 5px) and reduces font sizes one step in
+data-heavy surfaces. Drive it with a `data-density="compact"` attribute on
+the section root and component-level CSS hooks.
+
+## Borders
+
+1px borders, dim until something needs your attention. `border-border` is the
+quiet rule; `border-border-strong` is the rule that's earned a moment of
+emphasis (selection, primary action, focused panel). Outline rings — the
+selected state on cards, the focus ring on inputs — use 2–3px and live
+_outside_ the border via `outline` or `box-shadow`.
+
+## Z-index
+
+The system reserves a tight ladder so consumers can layer reliably:
+
+| Layer                            | z   |
+| -------------------------------- | --- |
+| Sticky banner / topbar           | 30  |
+| Drawer overlay                   | 40  |
+| Popover / DropdownMenu / Tooltip | 40  |
+| Dialog / AlertDialog overlay     | 50  |
+| Dialog content                   | 51  |
+| Tooltip on top of dialog         | 60  |
+| Toast viewport                   | 70  |

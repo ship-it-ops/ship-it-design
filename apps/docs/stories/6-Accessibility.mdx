@@ -4,24 +4,52 @@ import { Meta } from '@storybook/blocks';
 
 # Accessibility
 
-A11y is a hard requirement, not a phase 2 polish. Every component is built on top of
-[Radix UI primitives](https://www.radix-ui.com/) for behavior and tested with
-[`axe-core`](https://github.com/dequelabs/axe-core) at unit-test time.
+A11y is a hard requirement, not a phase-2 polish. Every component asserts
+`axe` violations === 0 at unit-test time, and behavior + ARIA + keyboard
+semantics come from [Radix UI primitives](https://www.radix-ui.com/) where
+applicable.
 
-## What's enforced
+## What's enforced automatically
 
-- **Automated checks** — every component test renders the component and asserts
-  `axe` violations === 0. CI fails on regressions.
-- **Storybook a11y addon** — the panel surfaces issues live as you build.
-- **Focus management** — keyboard navigation, `focus-visible` rings, and ARIA roles
-  come from Radix or are explicitly tested.
-- **Reduced motion** — the global stylesheet zeroes out animation durations when
-  `prefers-reduced-motion: reduce` is set.
+- **Unit-test `axe` checks.** Each component renders + asserts no violations
+  via `vitest-axe`. CI fails on regressions.
+- **Storybook a11y addon.** The panel surfaces issues live as you iterate.
+- **Focus management.** Radix handles focus traps + roving focus on overlays
+  and menus; primitive components include `focus-visible:ring-[3px]
+ring-accent-dim` rings.
+- **Reduced motion.** `tokens.css` zeroes durations under
+  `prefers-reduced-motion: reduce` — components don't need to handle that
+  themselves.
 
 ## What you (the contributor) need to do
 
-- Use semantic HTML elements — never `<div onClick>` for an interactive thing.
-- Provide `aria-label` for icon-only controls.
-- Test with the keyboard. Tab through your component. If you can't operate it
-  without a mouse, it's not ready.
-- Run the Storybook a11y addon panel before opening a PR.
+- **Use semantic HTML.** Never `<div onClick>` for an interactive thing.
+- **Label icon-only controls.** Pass `aria-label` to `<IconButton>`.
+- **Test with the keyboard.** Tab through your component. If you can't operate
+  it without a mouse, it's not ready.
+- **Run the a11y panel** before opening a PR.
+
+## Recurring axe pitfalls (and the fixes)
+
+When you author a new component and the `has no a11y violations` test fails,
+check these first — they cover the bulk of issues we've hit in this library:
+
+1. **`role="grid"` requires `role="row"` parents.** If you don't implement
+   true ARIA grid keyboard nav, drop the grid roles. Buttons in a CSS grid
+   are fine without them.
+
+2. **Nested-interactive on file pickers.** A `role="button"` div around a
+   focusable `<input type="file">` violates `nested-interactive`. Use a
+   `<label>` wrapper — labels are spec-allowed to wrap form controls.
+
+3. **Radix Dialog without a description.** Radix infers `aria-describedby`
+   from a sibling `<DialogDescription>`. If your dialog body is custom, set
+   `aria-describedby={undefined}` on `RadixDialog.Content` and pass an
+   `aria-label` on the content.
+
+## Color contrast
+
+Semantic tokens are tuned for WCAG AA in both themes. The light theme drops
+`accent` luminance from ~0.82 to ~0.72 OKLCH and shifts `accent-text` to a
+darker tone — not for aesthetics, for contrast. If you bypass semantic tokens
+and reach for raw OKLCH, you're on the hook for re-checking contrast.

@@ -8,6 +8,7 @@
     { "path": "./packages/tokens" },
     { "path": "./packages/icons" },
     { "path": "./packages/ui" },
+    { "path": "./packages/shipit" },
     { "path": "./apps/docs" }
   ]
 }

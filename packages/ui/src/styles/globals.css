@@ -1,57 +1,144 @@
 /**
  * Global stylesheet for @ship-it/ui consumers.
  *
- * Pulls in design tokens (CSS variables) and bridges them into Tailwind v4 via
- * the `@theme` directive so utility classes like `bg-background`, `text-text`,
- * `p-4`, `rounded-md` resolve to the same tokens used by handwritten CSS.
+ * Pulls in Geist (self-hosted), design tokens (CSS variables), keyframe animations,
+ * and bridges every token into Tailwind v4 via the `@theme inline` directive — so
+ * utility classes like `bg-bg`, `text-text`, `p-4`, `rounded-md`, `font-sans`,
+ * `text-h2`, `tracking-tight`, `shadow-lg` resolve to the same values that
+ * handwritten CSS using `var(--*)` would resolve to.
  *
  * Apps consuming this library should import this file once at app entry:
  *
  *   import '@ship-it/ui/styles/globals.css';
  */
 
+/* Self-hosted Geist via @fontsource-variable. */
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/geist-mono';
+
 @import 'tailwindcss';
 @import '@ship-it/tokens/styles/tokens.css';
+@import './animations.css';
+
+/*
+ * Tailwind v4 auto-source-detection runs from the consuming app's project
+ * root (e.g. `apps/docs/`), which means it misses the workspace package
+ * source files. These explicit @source directives scan every TS/TSX/MDX file
+ * across `@ship-it/ui`, `@ship-it/shipit`, and the docs Storybook so that
+ * utility classes used in components actually get compiled.
+ *
+ * Paths are resolved relative to this CSS file:
+ *   ../**          = packages/ui/src/**
+ *   ../../../shipit/src/**     = packages/shipit/src/**
+ *   ../../../../apps/docs/**   = apps/docs/**
+ */
+@source '../**/*.{ts,tsx,mdx}';
+@source '../../../shipit/src/**/*.{ts,tsx,mdx}';
+@source '../../../../apps/docs/**/*.{ts,tsx,mdx}';
 
 /*
  * `@theme inline` tells Tailwind to read these variables for utility-class
- * generation (so `bg-brand`, `text-text`, `rounded-md` work) but NOT to redefine
- * them in :root — tokens.css owns the actual values.
+ * generation (so `bg-accent`, `text-text`, `rounded-md` etc. work) but NOT to
+ * redefine them in :root — tokens.css owns the actual values.
  */
 @theme inline {
-  /* Color — semantic tokens become Tailwind color utilities */
-  --color-background: var(--color-background);
-  --color-surface: var(--color-surface);
+  /* Color — semantic tokens become Tailwind color utilities. */
+  --color-bg: var(--color-bg);
+  --color-panel: var(--color-panel);
+  --color-panel-2: var(--color-panel-2);
   --color-border: var(--color-border);
   --color-border-strong: var(--color-border-strong);
   --color-text: var(--color-text);
   --color-text-muted: var(--color-text-muted);
-  --color-brand: var(--color-brand);
-  --color-brand-hover: var(--color-brand-hover);
-  --color-brand-subtle: var(--color-brand-subtle);
-  --color-on-brand: var(--color-on-brand);
+  --color-text-dim: var(--color-text-dim);
+  --color-accent: var(--color-accent);
+  --color-accent-text: var(--color-accent-text);
+  --color-accent-dim: var(--color-accent-dim);
+  --color-accent-glow: var(--color-accent-glow);
+  --color-ok: var(--color-ok);
+  --color-warn: var(--color-warn);
+  --color-err: var(--color-err);
+  --color-purple: var(--color-purple);
+  --color-pink: var(--color-pink);
 
-  /* Typography */
+  /* Foreground for components that sit on top of an accent surface
+   * (primary buttons, solid badges). Always near-black, regardless of theme. */
+  --color-on-accent: #0a0a0b;
+
+  /* Typography — families. */
   --font-sans: var(--font-family-sans);
   --font-mono: var(--font-family-mono);
 
-  /* Radius */
+  /* Typography — sizes (named, not numeric, so utilities stay semantic). */
+  --text-eyebrow: var(--font-size-eyebrow);
+  --text-mono: var(--font-size-mono);
+  --text-body: var(--font-size-body);
+  --text-body-lg: var(--font-size-body-lg);
+  --text-h4: var(--font-size-h4);
+  --text-h3: var(--font-size-h3);
+  --text-h2: var(--font-size-h2);
+  --text-h1: var(--font-size-h1);
+  --text-display: var(--font-size-display);
+
+  /* Typography — weights. */
+  --font-weight-light: var(--font-weight-light);
+  --font-weight-regular: var(--font-weight-regular);
+  --font-weight-medium: var(--font-weight-medium);
+  --font-weight-semibold: var(--font-weight-semibold);
+  --font-weight-bold: var(--font-weight-bold);
+
+  /* Typography — tracking. */
+  --tracking-xtight: var(--tracking-xtight);
+  --tracking-tight: var(--tracking-tight);
+  --tracking-normal: var(--tracking-normal);
+  --tracking-wide: var(--tracking-wide);
+  --tracking-xwide: var(--tracking-xwide);
+
+  /* Spacing (4pt scale, irregular ramp — handoff skips 7). */
+  --spacing-1: var(--space-1);
+  --spacing-2: var(--space-2);
+  --spacing-3: var(--space-3);
+  --spacing-4: var(--space-4);
+  --spacing-5: var(--space-5);
+  --spacing-6: var(--space-6);
+  --spacing-8: var(--space-8);
+
+  /* Radius. */
+  --radius-xs: var(--radius-xs);
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
+  --radius-base: var(--radius-base);
   --radius-lg: var(--radius-lg);
   --radius-xl: var(--radius-xl);
   --radius-full: var(--radius-full);
+
+  /* Shadow. */
+  --shadow-sm: var(--shadow-sm);
+  --shadow: var(--shadow);
+  --shadow-lg: var(--shadow-lg);
 }
 
 @layer base {
   html {
     font-family: var(--font-family-sans);
     color: var(--color-text);
-    background: var(--color-background);
+    background: var(--color-bg);
+    font-feature-settings: 'cv11', 'ss01';
+  }
+
+  body {
+    margin: 0;
+  }
+
+  /* Tabular numerals everywhere there's tick motion or comparison —
+   * matches the handoff's voice rule for `1,204 repos`, `02 / 08`. */
+  .ship-mono,
+  .font-mono {
+    font-variant-numeric: tabular-nums;
   }
 
   *:focus-visible {
-    outline: 2px solid var(--color-brand);
+    outline: 2px solid var(--color-accent);
     outline-offset: 2px;
   }
 }

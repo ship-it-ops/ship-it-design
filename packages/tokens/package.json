@@ -23,6 +23,10 @@
   "sideEffects": [
     "./styles/tokens.css"
   ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "scripts": {
     "build": "tsup && tsx scripts/build-css.ts",
     "dev": "tsup --watch",

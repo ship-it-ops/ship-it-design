@@ -1,30 +1,35 @@
 /**
  * Typography tokens.
  *
- * `fontSize` values are pixel-based but emitted as `rem` in CSS so users can
- * scale text via root font-size for accessibility.
+ * UI uses Geist; data, codes, monospaced labels use Geist Mono.
+ * Geist is self-hosted via @fontsource-variable in the @ship-it/ui package.
  *
- * Values below are placeholders — replace with the design handoff scale.
+ * Sizes are pixel-based but emitted as `px` strings to match the handoff CSS exactly.
+ * (Switch to `rem` later if we want user-zoom scaling.)
  */
 
+// Note: `@fontsource-variable/geist` registers the family as `Geist Variable`
+// (and `Geist Mono Variable`). The non-`Variable` aliases are kept as a fallback
+// in case a consumer self-hosts the static Geist alongside.
 export const fontFamily = {
-  sans: '"Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif',
-  mono: '"JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace',
+  sans: '"Geist Variable", "Geist", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif',
+  mono: '"Geist Mono Variable", "Geist Mono", "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace',
 } as const;
 
 export const fontSize = {
-  xs: '0.75rem',
-  sm: '0.875rem',
-  md: '1rem',
-  lg: '1.125rem',
-  xl: '1.25rem',
-  '2xl': '1.5rem',
-  '3xl': '1.875rem',
-  '4xl': '2.25rem',
-  '5xl': '3rem',
+  eyebrow: '10px',
+  mono: '11px',
+  body: '13px',
+  bodyLg: '15px',
+  h4: '18px',
+  h3: '22px',
+  h2: '28px',
+  h1: '34px',
+  display: '56px',
 } as const;
 
 export const fontWeight = {
+  light: 300,
   regular: 400,
   medium: 500,
   semibold: 600,
@@ -32,16 +37,21 @@ export const fontWeight = {
 } as const;
 
 export const lineHeight = {
-  tight: 1.2,
+  tight: 1.08,
+  snug: 1.2,
   normal: 1.5,
-  relaxed: 1.75,
+  relaxed: 1.7,
 } as const;
 
-export const letterSpacing = {
-  tight: '-0.02em',
+/** Letter-spacing tokens. Negative for display, positive for monospaced eyebrow labels. */
+export const tracking = {
+  xtight: '-0.9px',
+  tight: '-0.3px',
   normal: '0',
-  wide: '0.02em',
+  wide: '1.4px',
+  xwide: '1.8px',
 } as const;
 
 export type FontSizeToken = keyof typeof fontSize;
 export type FontWeightToken = keyof typeof fontWeight;
+export type TrackingToken = keyof typeof tracking;
