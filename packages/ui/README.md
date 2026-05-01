@@ -6,20 +6,23 @@ The React component library for the Ship-It design system.
 
 ```
 src/
-├── components/          One folder per component (the bulk of the package)
+├── components/          Atomic primitives (Button, Input, Avatar, Dialog, …)
 │   └── Button/
 │       ├── Button.tsx           Component + cva variant definitions
-│       ├── Button.stories.tsx   Storybook stories (also serve as docs)
-│       ├── Button.test.tsx      Vitest + Testing Library + axe tests
+│       ├── Button.stories.tsx   Storybook stories (also serve as autodocs)
+│       ├── Button.test.tsx      Vitest + Testing Library + vitest-axe
 │       └── index.ts             Re-exports the component + types
-├── hooks/               Reusable React hooks (useTheme, useMediaQuery, …)
+├── patterns/            Composites of primitives (Tabs, Combobox, DataTable, …)
+├── hooks/               useEscape, useOutsideClick, useTheme, useDisclosure,
+│                          useControllableState, useKeyboardList
 ├── primitives/          Thin wrappers over Radix when we want a Ship-It-flavored API
 ├── utils/
 │   └── cn.ts            clsx + tailwind-merge
 ├── styles/
-│   └── globals.css      Tailwind v4 entrypoint + token CSS-var bridge
+│   ├── globals.css      Tailwind v4 entrypoint + token CSS-var bridge
+│   └── animations.css   Keyframes (spin, pulse, indeterminate, dialogIn, …)
 ├── test/
-│   └── setup.ts         Vitest global setup
+│   └── setup.ts         Vitest global setup (jsdom polyfills + vitest-axe)
 └── index.ts             Public API barrel — only re-exports
 ```
 
