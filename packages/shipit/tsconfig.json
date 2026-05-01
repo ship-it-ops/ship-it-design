@@ -6,6 +6,6 @@
     "tsBuildInfoFile": ".turbo/tsconfig.tsbuildinfo"
   },
   "include": ["src"],
-  "exclude": ["dist", "node_modules", "**/*.test.ts", "**/*.test.tsx", "**/*.stories.tsx"],
+  "exclude": ["dist", "node_modules", "**/*.stories.tsx"],
   "references": [{ "path": "../tokens" }, { "path": "../icons" }, { "path": "../ui" }]
 }

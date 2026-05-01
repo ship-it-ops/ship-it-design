@@ -6,6 +6,9 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./src/test/setup.ts'],
     css: true,
+    typecheck: {
+      tsconfig: './tsconfig.test.json',
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
