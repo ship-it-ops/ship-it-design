@@ -7,10 +7,30 @@ name: Deploy Storybook to Pages
 # The site is served at `https://<owner>.github.io/<repo>/`. The build sets
 # `STORYBOOK_BASE_URL` so all asset paths inside the static bundle resolve
 # under that subpath.
+#
+# On pull_request the workflow runs the same build (with the same env) but
+# stops before the deploy step — that way any change that would break the
+# Pages publish surfaces on the PR before merge.
 
 on:
   push:
     branches: [main]
+  pull_request:
+    # Only re-validate Storybook on PRs that could actually affect the build.
+    # Anything outside this list (docs/, root markdown, other workflows,
+    # changesets, .editorconfig, etc.) skips the Pages job entirely.
+    paths:
+      - 'apps/docs/**'
+      - 'packages/tokens/**'
+      - 'packages/icons/**'
+      - 'packages/ui/**'
+      - 'packages/shipit/**'
+      - 'packages/tsconfig/**'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'turbo.json'
+      - '.github/workflows/pages.yml'
+      - '.github/actions/setup/**'
   # Allow manual republish (e.g. after enabling Pages for the first time).
   workflow_dispatch:
 
@@ -21,10 +41,12 @@ permissions:
   id-token: write
 
 # Only one Pages deploy can run at a time. Don't cancel an in-flight deploy
-# (it'd leave the live site in an inconsistent state); queue instead.
+# (it'd leave the live site in an inconsistent state); queue instead. PR
+# builds use a separate group keyed by the PR number so they can cancel
+# in-flight on new pushes without blocking the live deploy lane.
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: ${{ github.event_name == 'pull_request' && format('pages-pr-{0}', github.event.pull_request.number) || 'pages' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:
@@ -34,12 +56,18 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
 
+      # `turbo run build --filter=docs` builds every upstream workspace
+      # dependency first (tokens → icons → ui → shipit) per
+      # `dependsOn: ["^build"]`, then docs. Without this, storybook fails
+      # to resolve `@ship-it/ui` because its `dist/` doesn't exist.
       - name: Build Storybook (with subpath base)
         env:
           STORYBOOK_BASE_URL: /${{ github.event.repository.name }}/
-        run: pnpm --filter docs build
+        run: pnpm exec turbo run build --filter=docs
 
+      # Skip Pages-specific upload on PR runs — they're build-only.
       - name: Upload Pages artifact
+        if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
         with:
           path: apps/docs/storybook-static
@@ -47,6 +75,7 @@ jobs:
   deploy:
     name: Deploy to Pages
     needs: build
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
