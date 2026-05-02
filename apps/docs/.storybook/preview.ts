@@ -1,7 +1,7 @@
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 import type { Preview } from '@storybook/react-vite';
 
-import '@ship-it/ui/styles/globals.css';
+import '@ship-it-ui/ui/styles/globals.css';
 import './preview.css';
 
 const preview: Preview = {

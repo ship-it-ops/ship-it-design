@@ -7,9 +7,9 @@ import storybook from 'eslint-plugin-storybook';
  *
  * Compose with the base + react configs:
  *
- *   import base from '@ship-it/eslint-config';
- *   import react from '@ship-it/eslint-config/react';
- *   import storybookLayer from '@ship-it/eslint-config/storybook';
+ *   import base from '@ship-it-ui/eslint-config';
+ *   import react from '@ship-it-ui/eslint-config/react';
+ *   import storybookLayer from '@ship-it-ui/eslint-config/storybook';
  *   export default [...base, react, ...storybookLayer];
  */
 export default storybook.configs['flat/recommended'];

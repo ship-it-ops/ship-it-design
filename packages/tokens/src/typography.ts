@@ -2,7 +2,7 @@
  * Typography tokens.
  *
  * UI uses Geist; data, codes, monospaced labels use Geist Mono.
- * Geist is self-hosted via @fontsource-variable in the @ship-it/ui package.
+ * Geist is self-hosted via @fontsource-variable in the @ship-it-ui/ui package.
  *
  * Sizes are pixel-based but emitted as `px` strings to match the handoff CSS exactly.
  * (Switch to `rem` later if we want user-zoom scaling.)

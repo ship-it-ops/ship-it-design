@@ -59,7 +59,7 @@ jobs:
       # `turbo run build --filter=docs` builds every upstream workspace
       # dependency first (tokens → icons → ui → shipit) per
       # `dependsOn: ["^build"]`, then docs. Without this, storybook fails
-      # to resolve `@ship-it/ui` because its `dist/` doesn't exist.
+      # to resolve `@ship-it-ui/ui` because its `dist/` doesn't exist.
       - name: Build Storybook (with subpath base)
         env:
           STORYBOOK_BASE_URL: /${{ github.event.repository.name }}/

@@ -4,7 +4,7 @@ name: Snapshot release
 # for. Versions look like `0.0.0-pr-42-20260430120000` and publish under the
 # `pr-<number>` dist-tag, so consumers can install:
 #
-#   pnpm add @ship-it/ui@pr-42
+#   pnpm add @ship-it-ui/ui@pr-42
 #
 # Trigger by:
 #   - Adding the `release: snapshot` label to a PR, OR
@@ -88,8 +88,8 @@ jobs:
               'Try this build with:',
               '',
               '```bash',
-              `pnpm add @ship-it/ui@${tag}`,
-              `pnpm add @ship-it/shipit@${tag}`,
+              `pnpm add @ship-it-ui/ui@${tag}`,
+              `pnpm add @ship-it-ui/shipit@${tag}`,
               '```',
               '',
               `Full changeset: see the \`Snapshot release\` job on this commit.`,

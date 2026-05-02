@@ -6,8 +6,8 @@
  * build scripts) skip the React-specific rules. The Storybook layer is file-scoped
  * to story files and `.storybook/` config inside the plugin's preset.
  */
-import baseConfig from '@ship-it/eslint-config';
-import reactLayer from '@ship-it/eslint-config/react';
-import storybookLayer from '@ship-it/eslint-config/storybook';
+import baseConfig from '@ship-it-ui/eslint-config';
+import reactLayer from '@ship-it-ui/eslint-config/react';
+import storybookLayer from '@ship-it-ui/eslint-config/storybook';
 
 export default [...baseConfig, reactLayer, ...storybookLayer];

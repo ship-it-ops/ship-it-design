@@ -1,4 +1,4 @@
-# @ship-it/tokens
+# @ship-it-ui/tokens
 
 The single source of truth for design tokens used across the Ship-It design system.
 
@@ -26,26 +26,26 @@ single component.
 src/*.ts                     scripts/build-css.ts                styles/tokens.css
 TypeScript token modules ───────────────► CSS variables ───────────► consumed by
                                                                        Tailwind v4
-                                                                       (@ship-it/ui)
+                                                                       (@ship-it-ui/ui)
 ```
 
 Token consumers have two options:
 
 ```ts
 // Option A — TypeScript (e.g., for inline styles, tests, or theme objects)
-import { spacing, colorSemanticLight } from '@ship-it/tokens';
+import { spacing, colorSemanticLight } from '@ship-it-ui/tokens';
 
 // Option B — CSS variables (preferred inside components)
-import '@ship-it/tokens/styles/tokens.css';
+import '@ship-it-ui/tokens/styles/tokens.css';
 // then use var(--color-text), var(--space-4), etc. — or Tailwind utilities
-// like `text-text` and `p-4` since the @ship-it/ui Tailwind config is wired
+// like `text-text` and `p-4` since the @ship-it-ui/ui Tailwind config is wired
 // to these variables.
 ```
 
 ## Adding or changing a token
 
 1. Edit the relevant module in `src/` (e.g., `src/spacing.ts`).
-2. Run `pnpm --filter @ship-it/tokens build` to regenerate `styles/tokens.css`.
+2. Run `pnpm --filter @ship-it-ui/tokens build` to regenerate `styles/tokens.css`.
 3. If you renamed a token, search the monorepo for the old name and update consumers.
 4. Add a Changeset describing the bump:
    - **patch** — internal cleanup, no consumer-visible change
@@ -54,15 +54,15 @@ import '@ship-it/tokens/styles/tokens.css';
 
 ## Files
 
-| File                   | Purpose                                                     |
-| ---------------------- | ----------------------------------------------------------- |
-| `src/color.ts`         | Primitive palette + light/dark semantic color aliases       |
-| `src/typography.ts`    | Font families, sizes, weights, line-heights, tracking       |
-| `src/spacing.ts`       | 4px-based spacing scale                                     |
-| `src/radius.ts`        | Border-radius tokens                                        |
-| `src/shadow.ts`        | Light + dark elevation shadows                              |
-| `src/motion.ts`        | Durations + easing curves                                   |
-| `src/breakpoint.ts`    | Responsive breakpoints                                      |
-| `src/z-index.ts`       | Named stacking layers                                       |
-| `scripts/build-css.ts` | Emits `styles/tokens.css` from TS sources                   |
-| `styles/tokens.css`    | **Generated.** Imported by `@ship-it/ui/styles/globals.css` |
+| File                   | Purpose                                                        |
+| ---------------------- | -------------------------------------------------------------- |
+| `src/color.ts`         | Primitive palette + light/dark semantic color aliases          |
+| `src/typography.ts`    | Font families, sizes, weights, line-heights, tracking          |
+| `src/spacing.ts`       | 4px-based spacing scale                                        |
+| `src/radius.ts`        | Border-radius tokens                                           |
+| `src/shadow.ts`        | Light + dark elevation shadows                                 |
+| `src/motion.ts`        | Durations + easing curves                                      |
+| `src/breakpoint.ts`    | Responsive breakpoints                                         |
+| `src/z-index.ts`       | Named stacking layers                                          |
+| `scripts/build-css.ts` | Emits `styles/tokens.css` from TS sources                      |
+| `styles/tokens.css`    | **Generated.** Imported by `@ship-it-ui/ui/styles/globals.css` |

@@ -7,8 +7,8 @@ import globals from 'globals';
  * React layer — file-scoped to *.tsx/jsx so non-React TS files (token modules,
  * scripts) skip these rules. Compose with the base config:
  *
- *   import base from '@ship-it/eslint-config';
- *   import react from '@ship-it/eslint-config/react';
+ *   import base from '@ship-it-ui/eslint-config';
+ *   import react from '@ship-it-ui/eslint-config/react';
  *   export default [...base, react];
  */
 export default {

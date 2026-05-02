@@ -1,5 +1,5 @@
 {
-  "extends": "@ship-it/tsconfig/base.json",
+  "extends": "@ship-it-ui/tsconfig/base.json",
   "compilerOptions": {
     "noEmit": true
   },

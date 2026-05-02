@@ -1,5 +1,5 @@
 /**
- * Global stylesheet for @ship-it/ui consumers.
+ * Global stylesheet for @ship-it-ui/ui consumers.
  *
  * Pulls in Geist (self-hosted), design tokens (CSS variables), keyframe animations,
  * and bridges every token into Tailwind v4 via the `@theme inline` directive — so
@@ -9,7 +9,7 @@
  *
  * Apps consuming this library should import this file once at app entry:
  *
- *   import '@ship-it/ui/styles/globals.css';
+ *   import '@ship-it-ui/ui/styles/globals.css';
  */
 
 /* Self-hosted Geist via @fontsource-variable. */
@@ -17,14 +17,14 @@
 @import '@fontsource-variable/geist-mono';
 
 @import 'tailwindcss';
-@import '@ship-it/tokens/styles/tokens.css';
+@import '@ship-it-ui/tokens/styles/tokens.css';
 @import './animations.css';
 
 /*
  * Tailwind v4 auto-source-detection runs from the consuming app's project
  * root (e.g. `apps/docs/`), which means it misses the workspace package
  * source files. These explicit @source directives scan every TS/TSX/MDX file
- * across `@ship-it/ui`, `@ship-it/shipit`, and the docs Storybook so that
+ * across `@ship-it-ui/ui`, `@ship-it-ui/shipit`, and the docs Storybook so that
  * utility classes used in components actually get compiled.
  *
  * Paths are resolved relative to this CSS file:

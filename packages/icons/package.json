@@ -1,5 +1,5 @@
 {
-  "name": "@ship-it/icons",
+  "name": "@ship-it-ui/icons",
   "version": "0.0.1",
   "description": "Iconography for the Ship-It design system: glyph-first IconGlyph + SVGR pipeline for SVG icons.",
   "license": "MIT",
@@ -36,8 +36,8 @@
     "react": "^18.0.0 || ^19.0.0"
   },
   "devDependencies": {
-    "@ship-it/eslint-config": "workspace:*",
-    "@ship-it/tsconfig": "workspace:*",
+    "@ship-it-ui/eslint-config": "workspace:*",
+    "@ship-it-ui/tsconfig": "workspace:*",
     "@svgr/core": "^8.1.0",
     "@svgr/plugin-jsx": "^8.1.0",
     "@svgr/plugin-svgo": "^8.1.0",

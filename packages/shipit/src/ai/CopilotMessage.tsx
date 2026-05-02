@@ -1,4 +1,4 @@
-import { Avatar } from '@ship-it/ui';
+import { Avatar } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 import { cn } from '../utils/cn';

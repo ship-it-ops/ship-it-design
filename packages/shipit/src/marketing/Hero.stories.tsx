@@ -1,4 +1,4 @@
-import { Badge, Button } from '@ship-it/ui';
+import { Badge, Button } from '@ship-it-ui/ui';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Hero } from './Hero';

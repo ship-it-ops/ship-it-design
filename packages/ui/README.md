@@ -1,4 +1,4 @@
-# @ship-it/ui
+# @ship-it-ui/ui
 
 The React component library for the Ship-It design system.
 
@@ -45,7 +45,7 @@ step-by-step guide. In short:
 1. Copy `src/components/Button/` and rename to your component.
 2. Replace the implementation, story, and tests.
 3. Add a re-export line to `src/index.ts`.
-4. `pnpm --filter @ship-it/ui test` — make sure tests pass and axe is clean.
+4. `pnpm --filter @ship-it-ui/ui test` — make sure tests pass and axe is clean.
 5. Run Storybook (`pnpm dev`) and visually verify.
 6. `pnpm changeset` — describe the new component as a `minor` bump.
 

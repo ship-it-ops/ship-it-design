@@ -1,4 +1,4 @@
-import { Chip } from '@ship-it/ui';
+import { Chip } from '@ship-it-ui/ui';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 

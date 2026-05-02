@@ -13,8 +13,8 @@ Every component — primitive, pattern, or shipit composite — follows its shap
 | ShipIt-AI domain piece   | `packages/shipit/src/<group>/<Name>.tsx` | AskBar, GraphNode, EntityCard, Hero       |
 
 If it's specific to ShipIt's product (entity types, AI chrome, graph chrome,
-marketing chrome), it goes in `@ship-it/shipit`. Anything generic goes in
-`@ship-it/ui`. When in doubt, ask: _would another product want this verbatim?_
+marketing chrome), it goes in `@ship-it-ui/shipit`. Anything generic goes in
+`@ship-it-ui/ui`. When in doubt, ask: _would another product want this verbatim?_
 If yes → ui. If no → shipit.
 
 ## Step-by-step
@@ -99,8 +99,8 @@ Keep the export list sectioned and alphabetized within each section.
 ### 6. Verify
 
 ```bash
-pnpm --filter @ship-it/ui test           # tests pass
-pnpm --filter @ship-it/ui typecheck      # types compile
+pnpm --filter @ship-it-ui/ui test           # tests pass
+pnpm --filter @ship-it-ui/ui typecheck      # types compile
 pnpm dev                                 # Storybook shows your component
 ```
 
@@ -113,7 +113,7 @@ If you suspect a turbo cache lie, `pnpm test:force` re-runs without the cache.
 ### 7. Add a changeset
 
 ```bash
-pnpm changeset           # @ship-it/ui (or shipit) → minor for new components
+pnpm changeset           # @ship-it-ui/ui (or shipit) → minor for new components
 ```
 
 The `changeset-check` workflow will fail the PR if you forgot.

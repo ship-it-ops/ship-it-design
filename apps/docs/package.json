@@ -14,16 +14,16 @@
     "clean": "rm -rf storybook-static .turbo"
   },
   "dependencies": {
-    "@ship-it/icons": "workspace:*",
-    "@ship-it/shipit": "workspace:*",
-    "@ship-it/tokens": "workspace:*",
-    "@ship-it/ui": "workspace:*",
+    "@ship-it-ui/icons": "workspace:*",
+    "@ship-it-ui/shipit": "workspace:*",
+    "@ship-it-ui/tokens": "workspace:*",
+    "@ship-it-ui/ui": "workspace:*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@ship-it/eslint-config": "workspace:*",
-    "@ship-it/tsconfig": "workspace:*",
+    "@ship-it-ui/eslint-config": "workspace:*",
+    "@ship-it-ui/tsconfig": "workspace:*",
     "@storybook/addon-a11y": "^10.3.6",
     "@storybook/addon-docs": "^10.3.6",
     "@storybook/addon-links": "^10.3.6",

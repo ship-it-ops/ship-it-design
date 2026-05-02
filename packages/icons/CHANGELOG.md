@@ -1,4 +1,4 @@
-# @ship-it/icons
+# @ship-it-ui/icons
 
 ## 0.0.1
 

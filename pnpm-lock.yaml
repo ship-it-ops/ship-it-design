@@ -11,10 +11,10 @@ importers:
       '@changesets/cli':
         specifier: ^2.27.9
         version: 2.31.0(@types/node@24.12.2)
-      '@ship-it/eslint-config':
+      '@ship-it-ui/eslint-config':
         specifier: workspace:*
         version: link:packages/eslint-config
-      '@ship-it/tsconfig':
+      '@ship-it-ui/tsconfig':
         specifier: workspace:*
         version: link:packages/tsconfig
       eslint:
@@ -35,16 +35,16 @@ importers:
 
   apps/docs:
     dependencies:
-      '@ship-it/icons':
+      '@ship-it-ui/icons':
         specifier: workspace:*
         version: link:../../packages/icons
-      '@ship-it/shipit':
+      '@ship-it-ui/shipit':
         specifier: workspace:*
         version: link:../../packages/shipit
-      '@ship-it/tokens':
+      '@ship-it-ui/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
-      '@ship-it/ui':
+      '@ship-it-ui/ui':
         specifier: workspace:*
         version: link:../../packages/ui
       react:
@@ -54,10 +54,10 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
     devDependencies:
-      '@ship-it/eslint-config':
+      '@ship-it-ui/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
-      '@ship-it/tsconfig':
+      '@ship-it-ui/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
       '@storybook/addon-a11y':
@@ -135,10 +135,10 @@ importers:
 
   packages/icons:
     devDependencies:
-      '@ship-it/eslint-config':
+      '@ship-it-ui/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@ship-it/tsconfig':
+      '@ship-it-ui/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
       '@svgr/core':
@@ -192,10 +192,10 @@ importers:
 
   packages/shipit:
     dependencies:
-      '@ship-it/icons':
+      '@ship-it-ui/icons':
         specifier: workspace:*
         version: link:../icons
-      '@ship-it/ui':
+      '@ship-it-ui/ui':
         specifier: workspace:*
         version: link:../ui
       class-variance-authority:
@@ -208,13 +208,13 @@ importers:
         specifier: ^2.5.4
         version: 2.6.1
     devDependencies:
-      '@ship-it/eslint-config':
+      '@ship-it-ui/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@ship-it/tokens':
+      '@ship-it-ui/tokens':
         specifier: workspace:*
         version: link:../tokens
-      '@ship-it/tsconfig':
+      '@ship-it-ui/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
       '@testing-library/jest-dom':
@@ -259,10 +259,10 @@ importers:
 
   packages/tokens:
     devDependencies:
-      '@ship-it/eslint-config':
+      '@ship-it-ui/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@ship-it/tsconfig':
+      '@ship-it-ui/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
       '@types/node':
@@ -358,16 +358,16 @@ importers:
         specifier: ^2.5.4
         version: 2.6.1
     devDependencies:
-      '@ship-it/eslint-config':
+      '@ship-it-ui/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@ship-it/icons':
+      '@ship-it-ui/icons':
         specifier: workspace:*
         version: link:../icons
-      '@ship-it/tokens':
+      '@ship-it-ui/tokens':
         specifier: workspace:*
         version: link:../tokens
-      '@ship-it/tsconfig':
+      '@ship-it-ui/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
       '@testing-library/jest-dom':

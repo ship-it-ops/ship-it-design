@@ -1,4 +1,4 @@
-# @ship-it/ui
+# @ship-it-ui/ui
 
 ## 0.0.1
 
