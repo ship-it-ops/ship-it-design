@@ -1,6 +1,6 @@
 {
   "name": "@ship-it/eslint-config",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "description": "Shared ESLint flat config for the Ship-It design system monorepo.",
   "license": "MIT",

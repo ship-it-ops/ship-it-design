@@ -1,6 +1,6 @@
 {
   "name": "@ship-it/tokens",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Design tokens for the Ship-It design system. The single source of truth for color, type, spacing, radius, shadow, motion, breakpoints, and z-index.",
   "license": "MIT",
   "type": "module",

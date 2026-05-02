@@ -1,6 +1,6 @@
 {
   "name": "@ship-it/icons",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Iconography for the Ship-It design system: glyph-first IconGlyph + SVGR pipeline for SVG icons.",
   "license": "MIT",
   "type": "module",
