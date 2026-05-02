@@ -127,7 +127,48 @@ jobs:
           # base branch instead of a shallow shadow.
           fetch-depth: 0
 
+      # The Claude action only runs against the workflow definition on the
+      # default branch — a security measure so a PR can't modify the prompt
+      # to exfiltrate secrets. If this PR touches `ci.yml` itself (the file
+      # that defines this job), skip the review with an explanatory comment
+      # instead of letting the action fail.
+      - name: Detect changes to this workflow file
+        id: workflow_check
+        run: |
+          base="${{ github.event.pull_request.base.ref }}"
+          if git diff --name-only "origin/$base...HEAD" -- .github/workflows/ci.yml | grep -q .; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Post skip notice (this workflow modified)
+        if: steps.workflow_check.outputs.changed == 'true'
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const marker = '<!-- claude-review-skip-workflow-changed -->';
+            const body = [
+              marker,
+              '⏭️ **Claude review skipped on this PR**',
+              '',
+              'This PR modifies `.github/workflows/ci.yml`, the workflow that defines this review. The automated review only runs against the workflow definition on the default branch (a safety guard so a PR cannot rewrite its own reviewer prompt), so it is suppressed here.',
+              '',
+              'Once this PR is merged into `main`, future PRs will be reviewed against the updated workflow. You can mention `@claude` in a comment if you want a manual review on this PR.',
+            ].join('\n');
+
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            const { data: comments } = await github.rest.issues.listComments({ owner, repo, issue_number });
+            const existing = comments.find((c) => c.body && c.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            }
+
       - name: Claude Code Review
+        if: steps.workflow_check.outputs.changed != 'true'
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
