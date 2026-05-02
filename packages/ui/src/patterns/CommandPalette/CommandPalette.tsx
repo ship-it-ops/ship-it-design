@@ -159,6 +159,8 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
   },
 );
 
+CommandPalette.displayName = 'CommandPalette';
+
 interface CommandGroupsProps {
   groups: ReadonlyArray<CommandPaletteGroup>;
   cursor: number;

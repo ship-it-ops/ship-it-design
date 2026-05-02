@@ -66,4 +66,6 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
   );
 });
 
+Badge.displayName = 'Badge';
+
 export { badgeStyles };

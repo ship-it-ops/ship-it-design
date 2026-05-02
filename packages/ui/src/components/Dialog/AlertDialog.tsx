@@ -60,3 +60,5 @@ export const AlertDialog = forwardRef<HTMLDivElement, AlertDialogProps>(function
     </AlertDialogRoot>
   );
 });
+
+AlertDialog.displayName = 'AlertDialog';

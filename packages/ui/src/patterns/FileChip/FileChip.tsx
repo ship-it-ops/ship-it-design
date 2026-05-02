@@ -89,3 +89,5 @@ export const FileChip = forwardRef<HTMLDivElement, FileChipProps>(function FileC
     </div>
   );
 });
+
+FileChip.displayName = 'FileChip';

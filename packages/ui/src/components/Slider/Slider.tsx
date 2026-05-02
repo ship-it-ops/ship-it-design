@@ -63,3 +63,5 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
     </span>
   );
 });
+
+Slider.displayName = 'Slider';

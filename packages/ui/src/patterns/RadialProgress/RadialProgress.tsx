@@ -100,3 +100,5 @@ export const RadialProgress = forwardRef<HTMLDivElement, RadialProgressProps>(
     );
   },
 );
+
+RadialProgress.displayName = 'RadialProgress';

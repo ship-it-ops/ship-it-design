@@ -73,3 +73,5 @@ export const GraphNode = forwardRef<HTMLDivElement, GraphNodeProps>(function Gra
     </div>
   );
 });
+
+GraphNode.displayName = 'GraphNode';

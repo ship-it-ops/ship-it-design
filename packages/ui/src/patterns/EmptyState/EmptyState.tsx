@@ -78,3 +78,5 @@ export const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(function E
     </div>
   );
 });
+
+EmptyState.displayName = 'EmptyState';

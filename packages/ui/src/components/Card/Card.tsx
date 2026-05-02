@@ -96,4 +96,6 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
   );
 });
 
+Card.displayName = 'Card';
+
 export { cardStyles };

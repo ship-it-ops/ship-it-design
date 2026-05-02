@@ -1,5 +1,5 @@
 import { type DataTableColumn, StatusDot } from '@ship-it/ui';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { type EntityType } from '../entity/types';
 

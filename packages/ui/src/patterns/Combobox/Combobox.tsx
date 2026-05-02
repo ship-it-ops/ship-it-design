@@ -271,3 +271,5 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(function Com
     </div>
   );
 });
+
+Combobox.displayName = 'Combobox';

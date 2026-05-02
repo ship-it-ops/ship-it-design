@@ -50,3 +50,5 @@ export const SplitButton = forwardRef<HTMLDivElement, SplitButtonProps>(function
     </div>
   );
 });
+
+SplitButton.displayName = 'SplitButton';

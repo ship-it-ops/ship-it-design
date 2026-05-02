@@ -50,6 +50,8 @@ export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(function Br
   );
 });
 
+Breadcrumbs.displayName = 'Breadcrumbs';
+
 export interface CrumbProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   /** Marks this crumb as the current page — disables the link and applies emphasis styling. */
   current?: boolean;
@@ -77,3 +79,5 @@ export const Crumb = forwardRef<HTMLAnchorElement, CrumbProps>(function Crumb(
     </a>
   );
 });
+
+Crumb.displayName = 'Crumb';

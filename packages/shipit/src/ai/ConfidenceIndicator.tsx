@@ -88,3 +88,5 @@ export const ConfidenceIndicator = forwardRef<HTMLDivElement, ConfidenceIndicato
     );
   },
 );
+
+ConfidenceIndicator.displayName = 'ConfidenceIndicator';

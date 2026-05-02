@@ -75,6 +75,8 @@ export const ReasoningBlock = forwardRef<HTMLDivElement, ReasoningBlockProps>(
   },
 );
 
+ReasoningBlock.displayName = 'ReasoningBlock';
+
 export interface ReasoningStepProps extends HTMLAttributes<HTMLDivElement> {
   /** 1-indexed step number. Renders accent-colored before the body. */
   step: number;
@@ -91,3 +93,5 @@ export const ReasoningStep = forwardRef<HTMLDivElement, ReasoningStepProps>(func
     </div>
   );
 });
+
+ReasoningStep.displayName = 'ReasoningStep';

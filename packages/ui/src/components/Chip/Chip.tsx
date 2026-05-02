@@ -45,3 +45,5 @@ export const Chip = forwardRef<HTMLSpanElement, ChipProps>(function Chip(
     </span>
   );
 });
+
+Chip.displayName = 'Chip';

@@ -30,6 +30,8 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>(function Sidebar(
   );
 });
 
+Sidebar.displayName = 'Sidebar';
+
 export interface NavItemProps extends HTMLAttributes<HTMLAnchorElement> {
   /** Left-side glyph or icon node. */
   icon?: ReactNode;
@@ -114,6 +116,8 @@ export const NavItem = forwardRef<HTMLAnchorElement, NavItemProps>(function NavI
   );
 });
 
+NavItem.displayName = 'NavItem';
+
 export interface NavSectionProps extends HTMLAttributes<HTMLDivElement> {
   /** Eyebrow heading. Rendered uppercase, mono, dim. */
   label: ReactNode;
@@ -135,3 +139,5 @@ export const NavSection = forwardRef<HTMLDivElement, NavSectionProps>(function N
     </div>
   );
 });
+
+NavSection.displayName = 'NavSection';

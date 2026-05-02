@@ -30,6 +30,8 @@ export const PopoverContent = forwardRef<HTMLDivElement, RadixPopover.PopoverCon
   },
 );
 
+PopoverContent.displayName = 'PopoverContent';
+
 /**
  * Convenience export — the Radix Root with our default styles applied to Content.
  *

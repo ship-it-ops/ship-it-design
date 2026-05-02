@@ -45,3 +45,5 @@ export const Testimonial = forwardRef<HTMLElement, TestimonialProps>(function Te
     </figure>
   );
 });
+
+Testimonial.displayName = 'Testimonial';

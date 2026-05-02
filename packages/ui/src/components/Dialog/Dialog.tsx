@@ -32,6 +32,8 @@ export const DialogOverlay = forwardRef<HTMLDivElement, RadixDialog.DialogOverla
   },
 );
 
+DialogOverlay.displayName = 'DialogOverlay';
+
 export interface DialogContentProps extends RadixDialog.DialogContentProps {
   /** Pixel max-width of the panel. Defaults to 460. */
   width?: number | string;
@@ -61,6 +63,8 @@ export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(func
     </DialogPortal>
   );
 });
+
+DialogContent.displayName = 'DialogContent';
 
 export interface DialogProps extends RadixDialog.DialogProps {
   /** Convenience: title rendered with proper heading semantics. */

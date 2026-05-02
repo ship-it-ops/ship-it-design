@@ -77,3 +77,5 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
     </div>
   );
 });
+
+Alert.displayName = 'Alert';

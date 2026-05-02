@@ -38,3 +38,5 @@ export const Topbar = forwardRef<HTMLElement, TopbarProps>(function Topbar(
     </header>
   );
 });
+
+Topbar.displayName = 'Topbar';

@@ -61,3 +61,5 @@ export const ButtonGroup = forwardRef<HTMLDivElement, ButtonGroupProps>(function
     </div>
   );
 });
+
+ButtonGroup.displayName = 'ButtonGroup';

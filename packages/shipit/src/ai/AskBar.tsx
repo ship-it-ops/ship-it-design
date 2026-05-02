@@ -138,3 +138,5 @@ export const AskBar = forwardRef<HTMLFormElement, AskBarProps>(function AskBar(
     </form>
   );
 });
+
+AskBar.displayName = 'AskBar';

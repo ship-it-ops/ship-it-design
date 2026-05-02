@@ -110,3 +110,5 @@ export const GraphInspector = forwardRef<HTMLDivElement, GraphInspectorProps>(
     );
   },
 );
+
+GraphInspector.displayName = 'GraphInspector';

@@ -17,11 +17,46 @@ permissions:
   id-token: write
 
 jobs:
-  release:
-    name: Version or publish
+  # Re-run the full CI gate (format, lint, typecheck, test, build) before
+  # cutting a version PR or publishing. CI already runs on the same commit
+  # via `ci.yml`, but we re-validate here so the release job can never run
+  # against a regression — even if someone disabled CI required-checks or
+  # the workflows fall out of sync.
+  validate:
+    name: Validate
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup
+
+      - uses: actions/cache@v5
+        with:
+          path: .turbo
+          key: turbo-release-validate-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-release-validate-${{ runner.os }}-
+
+      - name: Format
+        run: pnpm format:check
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+  release:
+    name: Version or publish
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 

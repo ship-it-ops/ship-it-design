@@ -58,3 +58,5 @@ export const Dots = forwardRef<HTMLElement, DotsProps>(function Dots(
     </nav>
   );
 });
+
+Dots.displayName = 'Dots';

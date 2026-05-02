@@ -60,3 +60,5 @@ export const ToolCallCard = forwardRef<HTMLDivElement, ToolCallCardProps>(functi
     </div>
   );
 });
+
+ToolCallCard.displayName = 'ToolCallCard';

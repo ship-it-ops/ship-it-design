@@ -83,3 +83,5 @@ export const GraphMinimap = forwardRef<HTMLDivElement, GraphMinimapProps>(functi
     </div>
   );
 });
+
+GraphMinimap.displayName = 'GraphMinimap';

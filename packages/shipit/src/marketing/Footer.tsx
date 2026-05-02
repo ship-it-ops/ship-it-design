@@ -61,3 +61,5 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(function Footer(
     </footer>
   );
 });
+
+Footer.displayName = 'Footer';

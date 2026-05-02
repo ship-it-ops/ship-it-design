@@ -89,3 +89,5 @@ export const Sparkline = forwardRef<SVGSVGElement, SparklineProps>(function Spar
     </svg>
   );
 });
+
+Sparkline.displayName = 'Sparkline';

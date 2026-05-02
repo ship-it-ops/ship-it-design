@@ -33,3 +33,5 @@ export const CTAStrip = forwardRef<HTMLElement, CTAStripProps>(function CTAStrip
     </section>
   );
 });
+
+CTAStrip.displayName = 'CTAStrip';

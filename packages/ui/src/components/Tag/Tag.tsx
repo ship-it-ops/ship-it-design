@@ -46,3 +46,5 @@ export const Tag = forwardRef<HTMLSpanElement, TagProps>(function Tag(
     </span>
   );
 });
+
+Tag.displayName = 'Tag';

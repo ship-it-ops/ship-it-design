@@ -63,3 +63,5 @@ export const IconGlyph = forwardRef<HTMLSpanElement, IconGlyphProps>(function Ic
     </span>
   );
 });
+
+IconGlyph.displayName = 'IconGlyph';

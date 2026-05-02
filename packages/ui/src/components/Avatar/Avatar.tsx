@@ -89,3 +89,5 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
     </span>
   );
 });
+
+Avatar.displayName = 'Avatar';

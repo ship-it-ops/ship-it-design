@@ -145,3 +145,5 @@ export const ToastCard = forwardRef<HTMLLIElement, ToastCardProps>(function Toas
     </RadixToast.Root>
   );
 });
+
+ToastCard.displayName = 'ToastCard';

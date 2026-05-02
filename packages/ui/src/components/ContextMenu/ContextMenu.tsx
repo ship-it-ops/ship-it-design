@@ -25,6 +25,8 @@ export const ContextMenuContent = forwardRef<HTMLDivElement, RadixContext.Contex
   },
 );
 
+ContextMenuContent.displayName = 'ContextMenuContent';
+
 const itemBase = cn(
   'flex items-center gap-2 px-[10px] py-[6px] rounded-sm text-[12px] cursor-pointer outline-none',
   'data-[highlighted]:bg-panel-2',
@@ -53,6 +55,8 @@ export const ContextMenuItem = forwardRef<HTMLDivElement, ContextMenuItemProps>(
   },
 );
 
+ContextMenuItem.displayName = 'ContextMenuItem';
+
 export const ContextMenuSeparator = forwardRef<
   HTMLDivElement,
   RadixContext.ContextMenuSeparatorProps
@@ -65,5 +69,7 @@ export const ContextMenuSeparator = forwardRef<
     />
   );
 });
+
+ContextMenuSeparator.displayName = 'ContextMenuSeparator';
 
 export const ContextMenu = RadixContext.Root;

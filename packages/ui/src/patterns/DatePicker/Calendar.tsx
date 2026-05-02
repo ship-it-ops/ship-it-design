@@ -180,3 +180,5 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(function Calen
     </div>
   );
 });
+
+Calendar.displayName = 'Calendar';

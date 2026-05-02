@@ -36,6 +36,8 @@ export const TooltipContent = forwardRef<HTMLDivElement, RadixTooltip.TooltipCon
   },
 );
 
+TooltipContent.displayName = 'TooltipContent';
+
 export interface TooltipProps {
   /** Tooltip text/content. */
   content: ReactNode;
