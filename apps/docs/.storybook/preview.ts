@@ -1,11 +1,12 @@
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
-import type { Preview } from '@storybook/react';
+import type { Preview } from '@storybook/react-vite';
 
 import '@ship-it/ui/styles/globals.css';
+import './preview.css';
 
 const preview: Preview = {
   parameters: {
-    backgrounds: { disable: true }, // we drive bg via the theme decorator
+    backgrounds: { disabled: true }, // we drive bg via the theme decorator
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -21,12 +22,15 @@ const preview: Preview = {
   },
   decorators: [
     // Tokens are dark-first: `:root` is the dark theme, `[data-theme="light"]`
-    // is the opt-in override. Storybook's "dark" theme entry stays empty so
-    // it falls back to `:root`; "light" sets the data-theme attribute.
+    // is the opt-in override. We set `parentSelector: 'html'` so the data-theme
+    // attribute lands on the iframe's `<html>` element — that way the token
+    // CSS variables cascade through *everything* (canvas, autodocs, MDX docs
+    // pages) and the surfaces painted in `preview.css` flip with the toggle.
     withThemeByDataAttribute({
       themes: { dark: '', light: 'light' },
       defaultTheme: 'dark',
       attributeName: 'data-theme',
+      parentSelector: 'html',
     }),
   ],
 };

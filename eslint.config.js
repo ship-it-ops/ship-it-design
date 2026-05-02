@@ -3,9 +3,11 @@
  * so per-package configs aren't needed.
  *
  * The React layer is file-scoped to *.tsx/jsx so non-React TS files (token modules,
- * build scripts) skip the React-specific rules.
+ * build scripts) skip the React-specific rules. The Storybook layer is file-scoped
+ * to story files and `.storybook/` config inside the plugin's preset.
  */
 import baseConfig from '@ship-it/eslint-config';
 import reactLayer from '@ship-it/eslint-config/react';
+import storybookLayer from '@ship-it/eslint-config/storybook';
 
-export default [...baseConfig, reactLayer];
+export default [...baseConfig, reactLayer, ...storybookLayer];

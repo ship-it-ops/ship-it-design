@@ -1,5 +1,5 @@
 import { Chip } from '@ship-it/ui';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 
 import { AskBar, type AskBarProps } from './AskBar';

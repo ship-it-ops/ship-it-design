@@ -8,11 +8,13 @@
   "main": "./index.js",
   "exports": {
     ".": "./index.js",
-    "./react": "./react.js"
+    "./react": "./react.js",
+    "./storybook": "./storybook.js"
   },
   "files": [
     "index.js",
-    "react.js"
+    "react.js",
+    "storybook.js"
   ],
   "peerDependencies": {
     "eslint": "^9.13.0"
@@ -23,6 +25,7 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-storybook": "^10.3.6",
     "globals": "^15.11.0",
     "typescript-eslint": "^8.11.0"
   }
