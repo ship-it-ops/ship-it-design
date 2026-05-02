@@ -30,7 +30,7 @@ jobs:
     name: Format
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
       - run: pnpm format:check
 
@@ -38,9 +38,9 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: .turbo
           key: turbo-lint-${{ runner.os }}-${{ github.sha }}
@@ -56,10 +56,10 @@ jobs:
     name: Typecheck · Test · Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: .turbo
           key: turbo-verify-${{ runner.os }}-${{ github.sha }}
@@ -77,7 +77,7 @@ jobs:
 
       # Surface the static Storybook from CI so the docs are inspectable on a PR.
       - name: Upload Storybook artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: storybook-static
           path: apps/docs/storybook-static
@@ -86,7 +86,7 @@ jobs:
 
       # Ship the built lib bundles too — handy when reviewing dist-shape diffs.
       - name: Upload package dist artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: package-dists
           path: |
@@ -121,7 +121,7 @@ jobs:
       actions: read # read prior CI runs to ground review feedback
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           # Full history so the action can compute a clean diff against the
           # base branch instead of a shallow shadow.
