@@ -49,7 +49,7 @@ Each publishable package has its own `README.md`. `@ship-it/shipit` depends on
 ## Getting started
 
 ```bash
-nvm use                    # Node 20 (per .nvmrc)
+nvm use                    # Node 24 (per .nvmrc)
 corepack enable            # ensures the right pnpm version
 pnpm install
 pnpm dev                   # opens Storybook at http://localhost:6006
