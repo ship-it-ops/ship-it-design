@@ -60,3 +60,5 @@ export const CopilotMessage = forwardRef<HTMLDivElement, CopilotMessageProps>(
     );
   },
 );
+
+CopilotMessage.displayName = 'CopilotMessage';

@@ -30,6 +30,8 @@ export const DropdownMenuContent = forwardRef<HTMLDivElement, RadixMenu.Dropdown
   },
 );
 
+DropdownMenuContent.displayName = 'DropdownMenuContent';
+
 export interface MenuItemProps extends RadixMenu.DropdownMenuItemProps {
   /** Icon rendered to the left of the label. */
   icon?: ReactNode;
@@ -62,6 +64,8 @@ export const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(function MenuI
   );
 });
 
+MenuItem.displayName = 'MenuItem';
+
 export const MenuCheckboxItem = forwardRef<HTMLDivElement, RadixMenu.DropdownMenuCheckboxItemProps>(
   function MenuCheckboxItem({ className, children, ...props }, ref) {
     return (
@@ -79,6 +83,8 @@ export const MenuCheckboxItem = forwardRef<HTMLDivElement, RadixMenu.DropdownMen
   },
 );
 
+MenuCheckboxItem.displayName = 'MenuCheckboxItem';
+
 export const MenuSeparator = forwardRef<HTMLDivElement, RadixMenu.DropdownMenuSeparatorProps>(
   function MenuSeparator({ className, ...props }, ref) {
     return (
@@ -90,6 +96,8 @@ export const MenuSeparator = forwardRef<HTMLDivElement, RadixMenu.DropdownMenuSe
     );
   },
 );
+
+MenuSeparator.displayName = 'MenuSeparator';
 
 /** Convenience export so consumers can `<DropdownMenu>...</DropdownMenu>`. */
 export const DropdownMenu = RadixMenu.Root;

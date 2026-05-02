@@ -43,3 +43,5 @@ export const EntityBadge = forwardRef<HTMLSpanElement, EntityBadgeProps>(functio
     </Badge>
   );
 });
+
+EntityBadge.displayName = 'EntityBadge';

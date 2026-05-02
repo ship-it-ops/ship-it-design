@@ -68,3 +68,5 @@ export const GraphLegend = forwardRef<HTMLDivElement, GraphLegendProps>(function
     </div>
   );
 });
+
+GraphLegend.displayName = 'GraphLegend';

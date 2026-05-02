@@ -76,3 +76,5 @@ export const Stepper = forwardRef<HTMLDivElement, StepperProps>(function Stepper
     </div>
   );
 });
+
+Stepper.displayName = 'Stepper';

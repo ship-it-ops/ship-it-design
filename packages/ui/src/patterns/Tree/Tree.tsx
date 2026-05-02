@@ -100,6 +100,8 @@ export const Tree = forwardRef<HTMLUListElement, TreeProps>(function Tree(
   );
 });
 
+Tree.displayName = 'Tree';
+
 interface TreeItemRowProps {
   item: TreeItem;
   level: number;

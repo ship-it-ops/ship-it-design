@@ -58,3 +58,5 @@ export const StatusDot = forwardRef<HTMLSpanElement, StatusDotProps>(function St
     </span>
   );
 });
+
+StatusDot.displayName = 'StatusDot';

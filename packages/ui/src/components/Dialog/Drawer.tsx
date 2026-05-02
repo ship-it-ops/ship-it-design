@@ -63,3 +63,5 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(function Drawer(
     </DialogRoot>
   );
 });
+
+Drawer.displayName = 'Drawer';

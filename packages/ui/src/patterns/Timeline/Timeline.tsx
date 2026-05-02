@@ -57,6 +57,8 @@ export const Timeline = forwardRef<HTMLOListElement, TimelineProps>(function Tim
   );
 });
 
+Timeline.displayName = 'Timeline';
+
 export interface TimelineItemProps extends HTMLAttributes<HTMLLIElement> {
   tone?: TimelineEventTone;
   description?: ReactNode;
@@ -82,3 +84,5 @@ export const TimelineItem = forwardRef<HTMLLIElement, TimelineItemProps>(functio
     </li>
   );
 });
+
+TimelineItem.displayName = 'TimelineItem';

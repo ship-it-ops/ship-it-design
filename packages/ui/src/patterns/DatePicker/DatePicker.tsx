@@ -106,3 +106,5 @@ export const DatePicker = forwardRef<HTMLButtonElement, DatePickerProps>(functio
     </RadixPopover.Root>
   );
 });
+
+DatePicker.displayName = 'DatePicker';

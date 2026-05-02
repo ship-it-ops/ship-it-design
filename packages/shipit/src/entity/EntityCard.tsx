@@ -106,3 +106,5 @@ export const EntityCard = forwardRef<HTMLDivElement, EntityCardProps>(function E
     </div>
   );
 });
+
+EntityCard.displayName = 'EntityCard';

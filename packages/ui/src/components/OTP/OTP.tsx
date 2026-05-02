@@ -116,3 +116,5 @@ export const OTP = forwardRef<OTPHandle, OTPProps>(function OTP(
     </div>
   );
 });
+
+OTP.displayName = 'OTP';

@@ -110,3 +110,5 @@ export const Dropzone = forwardRef<HTMLLabelElement, DropzoneProps>(function Dro
     </label>
   );
 });
+
+Dropzone.displayName = 'Dropzone';

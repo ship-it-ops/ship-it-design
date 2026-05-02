@@ -35,3 +35,5 @@ export const SuggestionChip = forwardRef<HTMLButtonElement, SuggestionChipProps>
     );
   },
 );
+
+SuggestionChip.displayName = 'SuggestionChip';

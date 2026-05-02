@@ -26,6 +26,8 @@ export const HoverCardContent = forwardRef<HTMLDivElement, RadixHoverCard.HoverC
   },
 );
 
+HoverCardContent.displayName = 'HoverCardContent';
+
 export interface HoverCardProps extends RadixHoverCard.HoverCardProps {
   trigger: ReactNode;
   content: ReactNode;

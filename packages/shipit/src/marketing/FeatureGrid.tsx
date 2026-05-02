@@ -47,3 +47,5 @@ export const FeatureGrid = forwardRef<HTMLDivElement, FeatureGridProps>(function
     </div>
   );
 });
+
+FeatureGrid.displayName = 'FeatureGrid';

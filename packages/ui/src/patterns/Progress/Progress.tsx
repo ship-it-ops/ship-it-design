@@ -103,3 +103,5 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(function Progr
     </div>
   );
 });
+
+Progress.displayName = 'Progress';

@@ -38,3 +38,5 @@ export const FAB = forwardRef<HTMLButtonElement, FABProps>(function FAB(
     </button>
   );
 });
+
+FAB.displayName = 'FAB';

@@ -52,3 +52,5 @@ export const PathOverlay = forwardRef<SVGGElement, PathOverlayProps>(function Pa
     </g>
   );
 });
+
+PathOverlay.displayName = 'PathOverlay';

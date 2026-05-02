@@ -44,3 +44,5 @@ export const Sheet = forwardRef<HTMLDivElement, SheetProps>(function Sheet(
     </DialogRoot>
   );
 });
+
+Sheet.displayName = 'Sheet';

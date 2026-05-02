@@ -28,6 +28,8 @@ export const Menubar = forwardRef<HTMLDivElement, RadixMenubar.MenubarProps>(fun
   );
 });
 
+Menubar.displayName = 'Menubar';
+
 export const MenubarMenu: FC<RadixMenubar.MenubarMenuProps> = RadixMenubar.Menu;
 
 export const MenubarTrigger = forwardRef<HTMLButtonElement, RadixMenubar.MenubarTriggerProps>(
@@ -48,6 +50,8 @@ export const MenubarTrigger = forwardRef<HTMLButtonElement, RadixMenubar.Menubar
   },
 );
 
+MenubarTrigger.displayName = 'MenubarTrigger';
+
 export const MenubarContent = forwardRef<HTMLDivElement, RadixMenubar.MenubarContentProps>(
   function MenubarContent({ className, sideOffset = 6, align = 'start', ...props }, ref) {
     return (
@@ -67,6 +71,8 @@ export const MenubarContent = forwardRef<HTMLDivElement, RadixMenubar.MenubarCon
     );
   },
 );
+
+MenubarContent.displayName = 'MenubarContent';
 
 const itemBase = cn(
   'flex items-center gap-2 rounded-sm px-[10px] py-[6px] text-[12px] cursor-pointer outline-none',
@@ -97,6 +103,8 @@ export const MenubarItem = forwardRef<HTMLDivElement, MenubarItemProps>(function
   );
 });
 
+MenubarItem.displayName = 'MenubarItem';
+
 export const MenubarSeparator = forwardRef<HTMLDivElement, RadixMenubar.MenubarSeparatorProps>(
   function MenubarSeparator({ className, ...props }, ref) {
     return (
@@ -108,3 +116,5 @@ export const MenubarSeparator = forwardRef<HTMLDivElement, RadixMenubar.MenubarS
     );
   },
 );
+
+MenubarSeparator.displayName = 'MenubarSeparator';

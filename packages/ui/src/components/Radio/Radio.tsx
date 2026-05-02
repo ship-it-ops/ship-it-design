@@ -22,6 +22,8 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(function R
   return <RadixRadio.Root ref={ref} className={cn('flex flex-col gap-2', className)} {...props} />;
 });
 
+RadioGroup.displayName = 'RadioGroup';
+
 /* ───── Radio ───── */
 
 export interface RadioProps extends Omit<RadixRadio.RadioGroupItemProps, 'asChild' | 'children'> {
@@ -66,3 +68,5 @@ export const Radio = forwardRef<HTMLButtonElement, RadioProps>(function Radio(
     </span>
   );
 });
+
+Radio.displayName = 'Radio';

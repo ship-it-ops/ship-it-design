@@ -101,3 +101,5 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>(function Pagi
     </nav>
   );
 });
+
+Pagination.displayName = 'Pagination';

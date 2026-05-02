@@ -64,3 +64,5 @@ export const Banner = forwardRef<HTMLDivElement, BannerProps>(function Banner(
     </div>
   );
 });
+
+Banner.displayName = 'Banner';

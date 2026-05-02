@@ -53,3 +53,5 @@ export const StatCard = forwardRef<HTMLDivElement, StatCardProps>(function StatC
     </div>
   );
 });
+
+StatCard.displayName = 'StatCard';

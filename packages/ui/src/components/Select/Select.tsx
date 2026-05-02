@@ -40,6 +40,8 @@ export const SelectTrigger = forwardRef<
   );
 });
 
+SelectTrigger.displayName = 'SelectTrigger';
+
 export const SelectContent = forwardRef<HTMLDivElement, RadixSelect.SelectContentProps>(
   function SelectContent(
     { className, children, position = 'popper', sideOffset = 6, ...props },
@@ -65,6 +67,8 @@ export const SelectContent = forwardRef<HTMLDivElement, RadixSelect.SelectConten
   },
 );
 
+SelectContent.displayName = 'SelectContent';
+
 export const SelectItem = forwardRef<HTMLDivElement, RadixSelect.SelectItemProps>(
   function SelectItem({ className, children, ...props }, ref) {
     return (
@@ -84,6 +88,8 @@ export const SelectItem = forwardRef<HTMLDivElement, RadixSelect.SelectItemProps
     );
   },
 );
+
+SelectItem.displayName = 'SelectItem';
 
 /* ───── Convenience wrapper ───── */
 

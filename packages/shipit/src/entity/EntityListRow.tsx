@@ -79,3 +79,5 @@ export const EntityListRow = forwardRef<HTMLElement, EntityListRowProps>(functio
     </div>
   );
 });
+
+EntityListRow.displayName = 'EntityListRow';

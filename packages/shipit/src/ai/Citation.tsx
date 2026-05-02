@@ -65,3 +65,5 @@ export const Citation = forwardRef<HTMLSpanElement, CitationProps>(function Cita
     </span>
   );
 });
+
+Citation.displayName = 'Citation';

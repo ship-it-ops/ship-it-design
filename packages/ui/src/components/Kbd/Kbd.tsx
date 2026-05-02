@@ -27,3 +27,5 @@ export const Kbd = forwardRef<HTMLElement, KbdProps>(function Kbd(
     </kbd>
   );
 });
+
+Kbd.displayName = 'Kbd';

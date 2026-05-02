@@ -65,3 +65,5 @@ export const PricingCard = forwardRef<HTMLDivElement, PricingCardProps>(function
     </div>
   );
 });
+
+PricingCard.displayName = 'PricingCard';

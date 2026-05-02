@@ -69,6 +69,8 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
   );
 });
 
+Tabs.displayName = 'Tabs';
+
 export const TabsList = forwardRef<HTMLDivElement, RadixTabs.TabsListProps>(function TabsList(
   { className, ...props },
   ref,
@@ -78,6 +80,8 @@ export const TabsList = forwardRef<HTMLDivElement, RadixTabs.TabsListProps>(func
     <RadixTabs.List ref={ref} className={cn(tabsListStyles({ variant }), className)} {...props} />
   );
 });
+
+TabsList.displayName = 'TabsList';
 
 export interface TabProps extends RadixTabs.TabsTriggerProps {
   children?: ReactNode;
@@ -97,6 +101,8 @@ export const Tab = forwardRef<HTMLButtonElement, TabProps>(function Tab(
   );
 });
 
+Tab.displayName = 'Tab';
+
 export const TabsContent = forwardRef<HTMLDivElement, RadixTabs.TabsContentProps>(
   function TabsContent({ className, ...props }, ref) {
     return (
@@ -111,5 +117,7 @@ export const TabsContent = forwardRef<HTMLDivElement, RadixTabs.TabsContentProps
     );
   },
 );
+
+TabsContent.displayName = 'TabsContent';
 
 export type TabsVariantProps = VariantProps<typeof tabsTriggerStyles>;
