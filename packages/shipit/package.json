@@ -3,6 +3,11 @@
   "version": "0.0.1",
   "description": "ShipIt-AI domain composites: AI surfaces, knowledge-graph chrome, entity displays, and marketing components — built on @ship-it-ui/ui.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ship-it-ops/ship-it-design.git",
+    "directory": "packages/shipit"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",

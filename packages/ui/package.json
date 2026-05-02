@@ -3,6 +3,11 @@
   "version": "0.0.1",
   "description": "React component library for the Ship-It design system. Tailwind v4 + Radix UI primitives, themed via @ship-it-ui/tokens.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ship-it-ops/ship-it-design.git",
+    "directory": "packages/ui"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
