@@ -227,11 +227,10 @@ jobs:
 
             ## Tone
 
-            Match the voice in `design-handoff/project/SKILL.md` — terse,
-            engineer-grade, no hedging. When you're confident, say so.
-            When you're guessing, say "could be wrong, but…". Don't pad
-            with "Great work!" / "Looks good!" — only flag real issues.
-            Approving comments are noise.
+            Terse, engineer-grade, no hedging. When you're confident, say
+            so. When you're guessing, say "could be wrong, but…". Don't
+            pad with "Great work!" / "Looks good!" — only flag real
+            issues. Approving comments are noise.
 
             ## What NOT to comment on
 
