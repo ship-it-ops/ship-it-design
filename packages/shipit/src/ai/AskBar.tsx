@@ -1,4 +1,4 @@
-import { Button, useControllableState } from '@ship-it/ui';
+import { Button, useControllableState } from '@ship-it-ui/ui';
 import {
   forwardRef,
   useRef,
@@ -16,7 +16,7 @@ import { cn } from '../utils/cn';
  * button or `⌘↵` / `Ctrl↵`.
  *
  * Children are rendered as scope chips below the textarea (use the existing
- * `<Chip>` from @ship-it/ui to mark a scoped query). Children render slot is
+ * `<Chip>` from @ship-it-ui/ui to mark a scoped query). Children render slot is
  * the "scopes" row — leave empty for an unscoped bar.
  */
 

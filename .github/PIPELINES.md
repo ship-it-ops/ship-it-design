@@ -1,6 +1,6 @@
 # CI / Release pipelines
 
-How `@ship-it/*` is verified and shipped. Three GitHub Actions workflows plus
+How `@ship-it-ui/*` is verified and shipped. Three GitHub Actions workflows plus
 a shared composite action.
 
 ## Topology
@@ -21,10 +21,10 @@ so the pnpm and Node versions live in exactly two places (the action and
 Configure these once at the repo (or org) level under
 **Settings → Secrets and variables → Actions**:
 
-| Secret         | When               | Notes                                                           |
-| -------------- | ------------------ | --------------------------------------------------------------- |
-| `NPM_TOKEN`    | release + snapshot | Automation token from npm with publish rights for `@ship-it/*`. |
-| `GITHUB_TOKEN` | release            | Auto-provided by Actions. No setup.                             |
+| Secret         | When               | Notes                                                              |
+| -------------- | ------------------ | ------------------------------------------------------------------ |
+| `NPM_TOKEN`    | release + snapshot | Automation token from npm with publish rights for `@ship-it-ui/*`. |
+| `GITHUB_TOKEN` | release            | Auto-provided by Actions. No setup.                                |
 
 The `id-token: write` permission is granted in the workflows that publish so
 npm provenance can sign each tarball with the workflow's OIDC token. No extra
@@ -74,7 +74,7 @@ Snapshots use versions like `0.0.0-pr-42-20260430120000` and **never**
 overwrite `latest`. They're purely opt-in via dist-tag.
 
 ```bash
-pnpm add @ship-it/ui@pr-42
+pnpm add @ship-it-ui/ui@pr-42
 ```
 
 ## Releasing to `latest`
@@ -112,6 +112,6 @@ run for quick verification.
 It's listed in `.changeset/config.json`'s `ignore` array. Anything else
 under `apps/` should follow the same pattern.
 
-`@ship-it/eslint-config` and `@ship-it/tsconfig` are workspace-internal and
+`@ship-it-ui/eslint-config` and `@ship-it-ui/tsconfig` are workspace-internal and
 not currently set up for publish; mark them `private: true` if that ever
 needs enforcing.

@@ -1,4 +1,4 @@
-import { DataTable, type DataTableColumn, type DataTableProps } from '@ship-it/ui';
+import { DataTable, type DataTableColumn, type DataTableProps } from '@ship-it-ui/ui';
 import { type Ref } from 'react';
 
 import { EntityBadge } from '../entity/EntityBadge';
@@ -8,7 +8,7 @@ import { ENTITY_GLYPH, ENTITY_TONE_CLASS, type EntityType } from '../entity/type
  * EntityTable — DataTable preset with two ShipIt-aware column helpers:
  * `entityColumn(...)` for the typed name cell and `entityTypeColumn()` for a
  * standalone type column. Everything else (sort, selection, sticky header)
- * comes from `@ship-it/ui` DataTable as-is.
+ * comes from `@ship-it-ui/ui` DataTable as-is.
  */
 
 interface MinimalEntity {

@@ -1,4 +1,4 @@
-# @ship-it/tsconfig
+# @ship-it-ui/tsconfig
 
 ## 0.0.1
 

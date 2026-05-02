@@ -6,23 +6,23 @@ How the pieces of the Ship-It design system fit together. Read this first.
 
 ```
             ┌─────────────────────┐
-            │   @ship-it/tokens   │   Source of truth for design decisions.
+            │   @ship-it-ui/tokens   │   Source of truth for design decisions.
             │   (TS → CSS vars)   │   Emits styles/tokens.css (dark-first).
             └──────────┬──────────┘
                        │ imported as CSS variables
         ┌──────────────┼──────────────┐
         ▼                             ▼
 ┌─────────────────────┐   ┌─────────────────────┐
-│   @ship-it/icons    │   │     @ship-it/ui     │   Generic primitives,
+│   @ship-it-ui/icons    │   │     @ship-it-ui/ui     │   Generic primitives,
 │ IconGlyph + SVGR    │──▶│  React + Tailwind   │   patterns, hooks.
 └──────────┬──────────┘   └──────────┬──────────┘
            │                         │
            └────────────┬────────────┘
                         ▼
             ┌─────────────────────┐
-            │   @ship-it/shipit   │   ShipIt-AI domain composites
+            │   @ship-it-ui/shipit   │   ShipIt-AI domain composites
             │ AI · Graph · Entity │   (AskBar, GraphNode, …) built
-            │ Marketing · Data    │   on top of @ship-it/ui.
+            │ Marketing · Data    │   on top of @ship-it-ui/ui.
             └──────────┬──────────┘
                        │
                        ▼
@@ -36,25 +36,25 @@ How the pieces of the Ship-It design system fit together. Read this first.
 
 The split reflects how change propagates and who consumes what.
 
-- **`@ship-it/tokens`** changes when design changes a value (a brand color, a
+- **`@ship-it-ui/tokens`** changes when design changes a value (a brand color, a
   spacing unit). Every consumer sees the change with no component code edits.
-- **`@ship-it/icons`** changes when a designer adds or updates an SVG, or when
+- **`@ship-it-ui/icons`** changes when a designer adds or updates an SVG, or when
   the glyph vocabulary expands. Ships independently.
-- **`@ship-it/ui`** changes when generic primitive / pattern behavior or markup
+- **`@ship-it-ui/ui`** changes when generic primitive / pattern behavior or markup
   changes. Depends on tokens (and optionally icons), never the reverse.
-- **`@ship-it/shipit`** changes when ShipIt-AI's product surface evolves. It
-  imports from `@ship-it/ui` for chrome and contributes the domain layer
+- **`@ship-it-ui/shipit`** changes when ShipIt-AI's product surface evolves. It
+  imports from `@ship-it-ui/ui` for chrome and contributes the domain layer
   (AskBar, CopilotMessage, GraphNode, EntityCard, …). This separation keeps
   generic UI reusable by other products without dragging product-specific
   semantics with it.
 
 A consuming app may install only what it needs:
 
-| Use case                    | Install                                  |
-| --------------------------- | ---------------------------------------- |
-| Marketing site, tokens only | `@ship-it/tokens`                        |
-| Generic React app           | `@ship-it/ui` (+ `@ship-it/tokens` peer) |
-| ShipIt-AI product surface   | `@ship-it/shipit` (pulls ui + tokens)    |
+| Use case                    | Install                                        |
+| --------------------------- | ---------------------------------------------- |
+| Marketing site, tokens only | `@ship-it-ui/tokens`                           |
+| Generic React app           | `@ship-it-ui/ui` (+ `@ship-it-ui/tokens` peer) |
+| ShipIt-AI product surface   | `@ship-it-ui/shipit` (pulls ui + tokens)       |
 
 ## Theming model — dark-first OKLCH
 
@@ -94,13 +94,13 @@ The chain:
    Tailwind v4's `@theme inline` directive to expose the CSS variables as
    Tailwind utilities. `bg-accent`, `text-text`, `border-border-strong` resolve
    to the right token at runtime.
-4. Apps consuming `@ship-it/ui` `import '@ship-it/ui/styles/globals.css'`
+4. Apps consuming `@ship-it-ui/ui` `import '@ship-it-ui/ui/styles/globals.css'`
    once at their entrypoint. That single import brings in tokens and Tailwind
    utilities; no extra Tailwind config required in the consumer.
 
 `prefers-reduced-motion: reduce` zeros the duration tokens automatically.
 
-## Inside `@ship-it/ui`
+## Inside `@ship-it-ui/ui`
 
 Three concerns, three folders:
 
@@ -117,7 +117,7 @@ Components and patterns share the same authoring shape — see
 [`adding-a-component.md`](./adding-a-component.md). Patterns are just
 "components that compose other components"; the line is fluid.
 
-## Inside `@ship-it/shipit`
+## Inside `@ship-it-ui/shipit`
 
 ```
 packages/shipit/src/
@@ -130,23 +130,23 @@ packages/shipit/src/
 └── data/         EntityTable (DataTable wrapper, pre-typed for ShipIt entities)
 ```
 
-Same authoring conventions as `@ship-it/ui`. These are deliberately product-
+Same authoring conventions as `@ship-it-ui/ui`. These are deliberately product-
 specific — they encode ShipIt's vocabulary (entity types, glyphs, AI bubble
-chrome). Don't add anything generic here; it belongs in `@ship-it/ui`.
+chrome). Don't add anything generic here; it belongs in `@ship-it-ui/ui`.
 
 ## Build pipeline
 
 Orchestrated by Turborepo (`turbo.json`). `pnpm build` from the repo root runs
 in topological order:
 
-1. `@ship-it/tokens build` — `tsup` compiles TS, then `build-css.ts` writes
+1. `@ship-it-ui/tokens build` — `tsup` compiles TS, then `build-css.ts` writes
    `styles/tokens.css`. Cache outputs include `dist/**` and `styles/**`.
-2. `@ship-it/icons build` — `build.ts` runs SVGR over every SVG in `src/svg/`
+2. `@ship-it-ui/icons build` — `build.ts` runs SVGR over every SVG in `src/svg/`
    into `src/components/`, then `tsup` compiles to `dist/`.
-3. `@ship-it/ui build` — `tsup` compiles TS to ESM + CJS + `.d.ts`. (No CSS
+3. `@ship-it-ui/ui build` — `tsup` compiles TS to ESM + CJS + `.d.ts`. (No CSS
    bundling — apps import `globals.css` from source so they pick up Tailwind's
    own pipeline.)
-4. `@ship-it/shipit build` — same as ui.
+4. `@ship-it-ui/shipit build` — same as ui.
 5. `apps/docs build` — Storybook static build (consumes the freshly-built libs
    via workspace links).
 

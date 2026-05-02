@@ -1,5 +1,5 @@
 /**
- * @ship-it/shipit — ShipIt-AI domain composites built on @ship-it/ui.
+ * @ship-it-ui/shipit — ShipIt-AI domain composites built on @ship-it-ui/ui.
  *
  * AI surfaces, knowledge-graph chrome, entity displays, and marketing
  * sections. Add new composites here as they're built. Keep exports

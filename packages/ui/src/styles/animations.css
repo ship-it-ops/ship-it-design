@@ -1,5 +1,5 @@
 /*
- * Keyframes used across @ship-it/ui components.
+ * Keyframes used across @ship-it-ui/ui components.
  *
  * Imported by globals.css so consumers get all animations with one stylesheet.
  * All durations are gated by the `prefers-reduced-motion` block in tokens.css —

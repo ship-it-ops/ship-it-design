@@ -1,5 +1,5 @@
 {
-  "extends": "@ship-it/tsconfig/react-app.json",
+  "extends": "@ship-it-ui/tsconfig/react-app.json",
   "compilerOptions": {
     "tsBuildInfoFile": ".turbo/tsconfig.tsbuildinfo"
   },

@@ -188,7 +188,7 @@ jobs:
             ## What this repo is
 
             A pnpm + turbo monorepo shipping four npm packages under
-            `@ship-it/*` (tokens, icons, ui, shipit) plus a Storybook docs
+            `@ship-it-ui/*` (tokens, icons, ui, shipit) plus a Storybook docs
             app. Stack: React 18+, TypeScript 5.x, Tailwind v4 (beta),
             Radix UI primitives, `cva` for variants, `tsup` for library
             builds, Vitest + `vitest-axe` for tests.

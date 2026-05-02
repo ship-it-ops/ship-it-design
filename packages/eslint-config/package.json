@@ -1,5 +1,5 @@
 {
-  "name": "@ship-it/eslint-config",
+  "name": "@ship-it-ui/eslint-config",
   "version": "0.0.1",
   "private": true,
   "description": "Shared ESLint flat config for the Ship-It design system monorepo.",

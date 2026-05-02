@@ -1,4 +1,4 @@
-import { Button } from '@ship-it/ui';
+import { Button } from '@ship-it-ui/ui';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { EntityCard } from './EntityCard';

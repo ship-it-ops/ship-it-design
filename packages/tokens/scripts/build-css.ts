@@ -16,7 +16,7 @@
  *     :root { --duration-micro: 0ms; --duration-step: 0ms; }
  *   }
  *
- * Run via `pnpm --filter @ship-it/tokens build` (also part of top-level `pnpm build`).
+ * Run via `pnpm --filter @ship-it-ui/tokens build` (also part of top-level `pnpm build`).
  */
 
 import { mkdirSync, writeFileSync } from 'node:fs';

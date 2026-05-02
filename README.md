@@ -13,20 +13,20 @@ packages, and a Storybook docs app.
 apps/
   docs/                     Storybook 8 — live component playground & docs site
 packages/
-  tokens/         (publish) @ship-it/tokens   — colors, type, spacing, radius,
+  tokens/         (publish) @ship-it-ui/tokens   — colors, type, spacing, radius,
                                                  shadow, motion, breakpoints, z-index
-  icons/          (publish) @ship-it/icons    — IconGlyph + glyph map + SVGR pipeline
-  ui/             (publish) @ship-it/ui       — generic primitives + patterns + hooks
-  shipit/         (publish) @ship-it/shipit   — ShipIt-AI domain composites
+  icons/          (publish) @ship-it-ui/icons    — IconGlyph + glyph map + SVGR pipeline
+  ui/             (publish) @ship-it-ui/ui       — generic primitives + patterns + hooks
+  shipit/         (publish) @ship-it-ui/shipit   — ShipIt-AI domain composites
                                                  (AI surfaces, graph, entity, marketing)
   tsconfig/       (internal) shared TypeScript presets
   eslint-config/  (internal) shared ESLint flat config
 docs/                       Long-form repo docs (architecture, contributing, etc.)
 ```
 
-Each publishable package has its own `README.md`. `@ship-it/shipit` depends on
-`@ship-it/ui` + `@ship-it/icons`; `@ship-it/ui` depends on `@ship-it/tokens` +
-`@ship-it/icons`. Apps may install only what they need.
+Each publishable package has its own `README.md`. `@ship-it-ui/shipit` depends on
+`@ship-it-ui/ui` + `@ship-it-ui/icons`; `@ship-it-ui/ui` depends on `@ship-it-ui/tokens` +
+`@ship-it-ui/icons`. Apps may install only what they need.
 
 ## Tech stack
 
@@ -70,7 +70,7 @@ pnpm format:check          # Prettier check (no writes)
 pnpm changeset             # describe a version bump for a PR
 ```
 
-Per-package: `pnpm --filter @ship-it/ui test`, etc.
+Per-package: `pnpm --filter @ship-it-ui/ui test`, etc.
 
 ## CI
 

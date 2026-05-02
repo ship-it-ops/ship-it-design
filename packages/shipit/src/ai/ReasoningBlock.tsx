@@ -1,4 +1,4 @@
-import { useControllableState } from '@ship-it/ui';
+import { useControllableState } from '@ship-it-ui/ui';
 import { Children, forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 import { cn } from '../utils/cn';

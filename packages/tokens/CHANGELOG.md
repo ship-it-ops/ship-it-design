@@ -1,4 +1,4 @@
-# @ship-it/tokens
+# @ship-it-ui/tokens
 
 ## 0.0.1
 

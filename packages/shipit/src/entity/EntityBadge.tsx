@@ -1,4 +1,4 @@
-import { Badge, type BadgeProps } from '@ship-it/ui';
+import { Badge, type BadgeProps } from '@ship-it-ui/ui';
 import { forwardRef, type ReactNode } from 'react';
 
 import { cn } from '../utils/cn';

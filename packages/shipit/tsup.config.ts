@@ -8,5 +8,5 @@ export default defineConfig({
   sourcemap: true,
   clean: true,
   treeshake: true,
-  external: ['react', 'react-dom', '@ship-it/ui', '@ship-it/icons'],
+  external: ['react', 'react-dom', '@ship-it-ui/ui', '@ship-it-ui/icons'],
 });

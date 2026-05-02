@@ -1,4 +1,4 @@
-# @ship-it/eslint-config
+# @ship-it-ui/eslint-config
 
 ## 0.0.1
 

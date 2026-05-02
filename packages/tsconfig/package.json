@@ -1,5 +1,5 @@
 {
-  "name": "@ship-it/tsconfig",
+  "name": "@ship-it-ui/tsconfig",
   "version": "0.0.1",
   "private": true,
   "description": "Shared TypeScript configuration presets for the Ship-It design system monorepo.",

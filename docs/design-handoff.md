@@ -39,7 +39,7 @@ decision in the handoff:
 After editing tokens:
 
 ```bash
-pnpm --filter @ship-it/tokens build
+pnpm --filter @ship-it-ui/tokens build
 ```
 
 This regenerates `styles/tokens.css` and `dist/`. Spot-check the CSS — search
@@ -54,7 +54,7 @@ This codebase uses two icon systems side by side:
   This is the canonical engineering-console vocabulary; most components use it.
   Add a glyph by extending the map in `packages/icons/src/glyphs.ts`.
 - **SVG icons** — SVGR pipeline. Drop a `*.svg` into `packages/icons/src/svg/`,
-  run `pnpm --filter @ship-it/icons build`, and a `*Icon` React component
+  run `pnpm --filter @ship-it-ui/icons build`, and a `*Icon` React component
   appears. See `packages/icons/README.md` for the SVG hygiene checklist.
 
 Use `IconGlyph` by default. Use SVG icons for connector logos, brand marks,
@@ -62,10 +62,10 @@ and anything that genuinely needs vector geometry rather than a glyph.
 
 ### 4. Decide where the component lives
 
-Generic primitive (Button, Input, Dialog, …) → `@ship-it/ui` (`components/`).
-Composite of primitives (Tabs, Combobox, DataTable, …) → `@ship-it/ui`
+Generic primitive (Button, Input, Dialog, …) → `@ship-it-ui/ui` (`components/`).
+Composite of primitives (Tabs, Combobox, DataTable, …) → `@ship-it-ui/ui`
 (`patterns/`). Specific to ShipIt-AI's product (AskBar, GraphNode,
-EntityCard, Hero, …) → `@ship-it/shipit`.
+EntityCard, Hero, …) → `@ship-it-ui/shipit`.
 
 The test: _would another Ship-It Ops product want this verbatim?_ Yes → ui.
 No → shipit.

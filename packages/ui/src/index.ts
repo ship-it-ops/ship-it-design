@@ -1,5 +1,5 @@
 /**
- * Public API for @ship-it/ui.
+ * Public API for @ship-it-ui/ui.
  *
  * Add new components here as they're built. Keep exports alphabetical within each
  * category so the barrel stays scannable.
