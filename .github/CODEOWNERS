@@ -5,10 +5,10 @@
 *                                       @ship-it-ops/maintainers
 
 # Tokens — design owns the source of truth.
-/packages/tokens/                       @ship-it-ops/design @ship-it-ops/maintainers
+/packages/tokens/                       @ship-it-ops/maintainers
 
 # Icons.
-/packages/icons/                        @ship-it-ops/design @ship-it-ops/maintainers
+/packages/icons/                        @ship-it-ops/maintainers
 
 # Generic UI components & patterns.
 /packages/ui/                           @ship-it-ops/maintainers
