@@ -3,6 +3,18 @@
   "version": "0.0.1",
   "description": "Iconography for the Ship-It design system: glyph-first IconGlyph + SVGR pipeline for SVG icons.",
   "license": "MIT",
+  "homepage": "https://ship-it-ops.github.io/ship-it-design/",
+  "bugs": {
+    "url": "https://github.com/ship-it-ops/ship-it-design/issues"
+  },
+  "author": "Ship-It Ops",
+  "keywords": [
+    "design-system",
+    "react",
+    "icons",
+    "svgr",
+    "shipit"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ship-it-ops/ship-it-design.git",

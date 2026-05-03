@@ -18,6 +18,6 @@ pnpm test:force             # same, but bypass cache (use to confirm green)
 pnpm changeset              # before opening a PR that touches a published package
 ```
 
-Open a PR. CI runs format → lint → typecheck → test → build, and only then runs
-the Claude PR review. If your PR includes a `.changeset/*.md` file, the release
-workflow handles publishing on merge.
+Open a PR. CI runs format → lint → typecheck → test → build. If your PR
+includes a `.changeset/*.md` file, the release workflow handles publishing on
+merge.

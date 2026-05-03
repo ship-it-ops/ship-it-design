@@ -7,6 +7,7 @@
 
 // Utilities
 export { cn } from './utils/cn';
+export type { ClassValue } from './utils/cn';
 
 // Hooks
 export * from './hooks';

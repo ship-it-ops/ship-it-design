@@ -1,12 +1,15 @@
+'use client';
+
 import * as RadixAvatar from '@radix-ui/react-avatar';
 import { forwardRef, type HTMLAttributes } from 'react';
 
 import { cn } from '../../utils/cn';
+import { stateLabel } from '../StatusDot/StatusDot';
+
+import { sizePx } from './sizes';
 
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export type AvatarStatus = 'ok' | 'warn' | 'err' | 'off';
-
-const sizePx: Record<AvatarSize, number> = { xs: 20, sm: 24, md: 32, lg: 40, xl: 56 };
 
 const statusBg: Record<AvatarStatus, string> = {
   ok: 'bg-ok',
@@ -65,7 +68,11 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
     >
       <RadixAvatar.Root
         className="border-border relative inline-flex h-full w-full shrink-0 overflow-hidden rounded-full border"
-        style={{ background: src ? undefined : `oklch(0.4 0.1 ${hue})` }}
+        style={{
+          background: src
+            ? undefined
+            : `oklch(var(--color-avatar-fallback-l) var(--color-avatar-fallback-c) ${hue})`,
+        }}
       >
         {src && <RadixAvatar.Image src={src} alt={name} className="h-full w-full object-cover" />}
         <RadixAvatar.Fallback
@@ -78,7 +85,7 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
       {status && (
         <span
           role="img"
-          aria-label={`status: ${status}`}
+          aria-label={stateLabel[status]}
           className={cn(
             'border-bg absolute right-0 bottom-0 rounded-full border-[2px]',
             statusBg[status],

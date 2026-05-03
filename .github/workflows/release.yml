@@ -26,15 +26,15 @@ jobs:
     name: Validate
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
       - uses: ./.github/actions/setup
 
-      - uses: actions/cache@v5
+      - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         with:
           path: .turbo
-          key: turbo-release-validate-${{ runner.os }}-${{ github.sha }}
+          key: turbo-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'turbo.json') }}
           restore-keys: |
-            turbo-release-validate-${{ runner.os }}-
+            turbo-${{ runner.os }}-
 
       - name: Format
         run: pnpm format:check
@@ -56,18 +56,24 @@ jobs:
     needs: validate
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
         with:
           fetch-depth: 0
 
+      # `registry-url` makes setup-node write a project-scoped `.npmrc` that
+      # picks up `NODE_AUTH_TOKEN` from the publish step's env — no token ever
+      # touches `~/.npmrc` on disk. Mirrors `snapshot.yml` for symmetry.
       - uses: ./.github/actions/setup
+        with:
+          registry-url: 'https://registry.npmjs.org'
 
-      - name: Build packages
-        run: pnpm build --filter='./packages/*'
+      # No explicit `pnpm build` step here — `pnpm release`
+      # (`turbo run build --filter='./packages/*' && changeset publish`)
+      # already builds before publishing. A second build would run for nothing.
 
       - name: Create release PR or publish
         id: changesets
-        uses: changesets/action@v1
+        uses: changesets/action@6a0a831ff30acef54f2c6aa1cbbc1096b066edaf # v1
         with:
           # When there are pending changesets on `main`, opens / updates the
           # version PR. When the version PR is merged, runs `pnpm release`,
@@ -82,6 +88,11 @@ jobs:
           createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # `setup-node` configured the project `.npmrc` with
+          # `//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}` — so we pass
+          # the token only via env, never to disk. Some tooling still reads
+          # `NPM_TOKEN`, so we expose both names pointing at the same secret.
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           # Force npm provenance on the publish step so each tarball is
           # signed by this workflow's OIDC token.

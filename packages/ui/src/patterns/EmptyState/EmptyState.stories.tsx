@@ -9,7 +9,7 @@ const meta: Meta<typeof EmptyState> = {
   component: EmptyState,
   tags: ['autodocs'],
   argTypes: {
-    tone: { control: 'inline-radio', options: ['accent', 'danger', 'muted'] },
+    tone: { control: 'inline-radio', options: [undefined, 'accent', 'ok', 'warn', 'err'] },
   },
   args: {
     icon: '◇',
@@ -70,11 +70,11 @@ export const Suggestions: Story = {
   ),
 };
 
-export const Danger: Story = {
+export const Err: Story = {
   render: () => (
     <div className="w-[280px]">
       <EmptyState
-        tone="danger"
+        tone="err"
         icon="!"
         title="Sync failed"
         description="GitHub returned a 401. Your token may have expired."

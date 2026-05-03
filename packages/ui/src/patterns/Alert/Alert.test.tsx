@@ -11,21 +11,33 @@ describe('Alert', () => {
     expect(screen.getByText('142 entities committed.')).toBeInTheDocument();
   });
 
-  it('uses role="alert" for err and warn', () => {
-    const { rerender } = render(<Alert variant="err" title="Boom" />);
-    expect(screen.getByRole('alert')).toBeInTheDocument();
-    rerender(<Alert variant="warn" title="Heads up" />);
-    expect(screen.getByRole('alert')).toBeInTheDocument();
+  it('defaults to role="status" with aria-live="polite" regardless of tone', () => {
+    const { rerender } = render(<Alert tone="err" title="Boom" />);
+    let alert = screen.getByRole('status');
+    expect(alert).toBeInTheDocument();
+    expect(alert).toHaveAttribute('aria-live', 'polite');
+    rerender(<Alert tone="warn" title="Heads up" />);
+    alert = screen.getByRole('status');
+    expect(alert).toBeInTheDocument();
+    expect(alert).toHaveAttribute('aria-live', 'polite');
   });
 
-  it('uses role="status" for info and ok', () => {
-    render(<Alert variant="ok" title="Synced" />);
-    expect(screen.getByRole('status')).toBeInTheDocument();
+  it('uses role="alert" only when live="assertive" is set', () => {
+    render(<Alert tone="err" live="assertive" title="Boom" />);
+    const alert = screen.getByRole('alert');
+    expect(alert).toBeInTheDocument();
+    expect(alert).toHaveAttribute('aria-live', 'assertive');
+  });
+
+  it('omits aria-live entirely when live="off"', () => {
+    render(<Alert tone="ok" live="off" title="Synced" />);
+    const alert = screen.getByRole('status');
+    expect(alert).not.toHaveAttribute('aria-live');
   });
 
   it('has no a11y violations', async () => {
     const { container } = render(
-      <Alert variant="warn" title="Token expires soon" description="Renew before Friday." />,
+      <Alert tone="warn" title="Token expires soon" description="Renew before Friday." />,
     );
     expect(await axe(container)).toHaveNoViolations();
   });

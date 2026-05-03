@@ -1,6 +1,7 @@
 export { useControllableState, type UseControllableStateProps } from './useControllableState';
 export { useDisclosure } from './useDisclosure';
 export { useEscape } from './useEscape';
+export { useIsomorphicLayoutEffect } from './useIsomorphicLayoutEffect';
 export {
   useKeyboardList,
   type UseKeyboardListOptions,

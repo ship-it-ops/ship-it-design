@@ -1,3 +1,5 @@
+'use client';
+
 import { useCallback, useRef, useState } from 'react';
 
 /**
@@ -18,11 +20,28 @@ export interface UseControllableStateProps<T> {
   onChange?: (value: T) => void;
 }
 
+// Overload: a required `defaultValue` (or a controlled `value`) means the
+// returned tuple is always non-undefined `T`. This is the common case for
+// composites like DataTable / Tree that pass an `EMPTY_SET` fallback.
+export function useControllableState<T>(opts: {
+  value?: T;
+  defaultValue: T;
+  onChange?: (next: T) => void;
+}): readonly [T, (next: T | ((prev: T) => T)) => void];
+
+// Overload: no default → the value may be `undefined` until the consumer sets it.
+export function useControllableState<T>(opts: {
+  value?: T;
+  defaultValue?: T;
+  onChange?: (next: T) => void;
+}): readonly [T | undefined, (next: T | ((prev: T | undefined) => T)) => void];
+
+// Implementation
 export function useControllableState<T>({
   value: controlledValue,
   defaultValue,
   onChange,
-}: UseControllableStateProps<T>): [
+}: UseControllableStateProps<T>): readonly [
   T | undefined,
   (next: T | ((prev: T | undefined) => T)) => void,
 ] {
@@ -49,5 +68,5 @@ export function useControllableState<T>({
     [isControlled],
   );
 
-  return [value, setValue];
+  return [value, setValue] as const;
 }

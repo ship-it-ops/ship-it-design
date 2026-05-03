@@ -16,9 +16,9 @@ describe('Avatar', () => {
     expect(screen.getByText('XY')).toBeInTheDocument();
   });
 
-  it('renders status indicator', () => {
+  it('renders status indicator with a friendly label', () => {
     render(<Avatar name="X" status="ok" />);
-    expect(screen.getByLabelText('status: ok')).toBeInTheDocument();
+    expect(screen.getByLabelText('Online')).toBeInTheDocument();
   });
 
   it('falls back to ? when name is empty', () => {

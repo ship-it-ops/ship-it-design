@@ -16,11 +16,15 @@ describe('GraphMinimap', () => {
   });
 
   it('renders the viewport rectangle when provided', () => {
-    const { container } = render(
+    const { getByTestId } = render(
       <GraphMinimap points={points} viewport={{ x: 0.2, y: 0.2, width: 0.4, height: 0.4 }} />,
     );
-    const dots = container.querySelectorAll('span');
-    expect(dots.length).toBeGreaterThan(points.length);
+    const viewport = getByTestId('minimap-viewport');
+    expect(viewport).toBeInTheDocument();
+    expect(viewport.style.left).toBe('20%');
+    expect(viewport.style.top).toBe('20%');
+    expect(viewport.style.width).toBe('40%');
+    expect(viewport.style.height).toBe('40%');
   });
 
   it('has no a11y violations', async () => {

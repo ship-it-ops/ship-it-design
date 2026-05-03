@@ -16,6 +16,7 @@
     "test": "turbo run test",
     "test:force": "turbo run test --force",
     "typecheck": "turbo run typecheck",
+    "typecheck:force": "turbo run typecheck --force",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,mdx,css,yml,yaml}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,mdx,css,yml,yaml}\"",
     "clean": "turbo run clean && rm -rf node_modules",

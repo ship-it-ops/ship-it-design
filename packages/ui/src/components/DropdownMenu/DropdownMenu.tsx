@@ -1,3 +1,5 @@
+'use client';
+
 import * as RadixMenu from '@radix-ui/react-dropdown-menu';
 import { forwardRef, type ReactNode } from 'react';
 
@@ -19,7 +21,7 @@ export const DropdownMenuContent = forwardRef<HTMLDivElement, RadixMenu.Dropdown
           sideOffset={sideOffset}
           align={align}
           className={cn(
-            'bg-panel border-border-strong z-40 min-w-[180px] rounded-md border p-1 shadow-lg outline-none',
+            'bg-panel border-border-strong z-popover min-w-[180px] rounded-md border p-1 shadow-lg outline-none',
             'data-[state=open]:animate-[ship-pop-in_140ms_var(--easing-out)]',
             className,
           )}

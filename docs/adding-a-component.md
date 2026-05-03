@@ -29,6 +29,8 @@ mv Button.stories.tsx <Name>.stories.tsx
 mv Button.test.tsx <Name>.test.tsx
 ```
 
+On Windows, use Git Bash or `Copy-Item -Recurse` in PowerShell.
+
 Then global-replace `Button` → `<Name>` inside the four files. (For patterns:
 target `packages/ui/src/patterns/<Name>/`. For shipit: target the right group
 folder under `packages/shipit/src/`.)

@@ -1,3 +1,5 @@
+'use client';
+
 import * as RadixDialog from '@radix-ui/react-dialog';
 import { forwardRef, type ReactNode } from 'react';
 
@@ -22,7 +24,7 @@ export const DialogOverlay = forwardRef<HTMLDivElement, RadixDialog.DialogOverla
       <RadixDialog.Overlay
         ref={ref}
         className={cn(
-          'fixed inset-0 z-50 bg-black/55 backdrop-blur-[4px]',
+          'z-overlay fixed inset-0 bg-black/55 backdrop-blur-[4px]',
           'data-[state=open]:animate-[ship-fade-in_150ms_ease]',
           className,
         )}
@@ -49,7 +51,7 @@ export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(func
       <RadixDialog.Content
         ref={ref}
         className={cn(
-          'fixed top-1/2 left-1/2 z-[51] w-[calc(100%-40px)] -translate-x-1/2 -translate-y-1/2 p-6',
+          'z-modal fixed top-1/2 left-1/2 w-[calc(100%-40px)] -translate-x-1/2 -translate-y-1/2 p-6',
           'bg-panel border-border-strong rounded-lg border shadow-lg',
           'data-[state=open]:animate-[ship-dialog-in_180ms_var(--easing-out)]',
           'outline-none',

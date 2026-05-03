@@ -1,6 +1,8 @@
+'use client';
+
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-import { cn } from '../utils/cn';
+import { cn } from '@ship-it-ui/ui';
 
 /**
  * Citation — superscript-style numbered chip + source label, used in answer
@@ -20,7 +22,7 @@ function toSuperscript(n: number): string {
     .join('');
 }
 
-export interface CitationProps extends HTMLAttributes<HTMLSpanElement> {
+export interface CitationProps extends HTMLAttributes<HTMLElement> {
   /** Citation number (1-indexed). */
   index: number;
   /** Source label — e.g., `runbook-oncall.md:L42`. */
@@ -31,14 +33,14 @@ export interface CitationProps extends HTMLAttributes<HTMLSpanElement> {
   inline?: boolean;
 }
 
-export const Citation = forwardRef<HTMLSpanElement, CitationProps>(function Citation(
+export const Citation = forwardRef<HTMLElement, CitationProps>(function Citation(
   { index, source, meta, inline, className, ...props },
   ref,
 ) {
   if (inline) {
     return (
       <sup
-        ref={ref as never}
+        ref={ref}
         aria-label={
           typeof source === 'string' ? `Citation ${index}: ${source}` : `Citation ${index}`
         }

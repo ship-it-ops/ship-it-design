@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Card } from './Card';
+import { Card, CardLink } from './Card';
 import { StatCard } from './StatCard';
 
 const meta: Meta<typeof Card> = {
@@ -37,5 +37,18 @@ export const Stats: Story = {
       <StatCard label="Sources live" value="4 / 6" delta="2 pending" trend="flat" />
       <StatCard label="Avg confidence" value="92.4%" delta="−0.3%" trend="down" />
     </div>
+  ),
+};
+
+export const AsLink: Story = {
+  render: () => (
+    <CardLink
+      href="https://example.com/payments"
+      title="Payments service"
+      description="The whole card is a single link — no nested-interactive violation."
+      footer="updated 2m ago"
+    >
+      <div className="text-text-muted text-[12px]">Use CardLink when the card is the link.</div>
+    </CardLink>
   ),
 };

@@ -24,6 +24,6 @@ export const Default: Story = {
 
 export const StandaloneCalendar: Story = {
   render: () => (
-    <Calendar defaultMonth={3} defaultYear={2026} defaultSelected={new Date(2026, 3, 23)} />
+    <Calendar defaultMonth={3} defaultYear={2026} defaultValue={new Date(2026, 3, 23)} />
   ),
 };

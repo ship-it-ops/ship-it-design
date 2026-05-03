@@ -10,9 +10,32 @@ describe('Banner', () => {
     expect(screen.getByText('Trial expires in 4 days.')).toBeInTheDocument();
   });
 
-  it('uses role="alert" for warn/err', () => {
-    render(<Banner variant="warn">Heads up</Banner>);
-    expect(screen.getByRole('alert')).toBeInTheDocument();
+  it('defaults to role="status" with aria-live="polite" so initial page render is not announced assertively', () => {
+    render(<Banner tone="warn">Heads up</Banner>);
+    const banner = screen.getByRole('status');
+    expect(banner).toBeInTheDocument();
+    expect(banner).toHaveAttribute('aria-live', 'polite');
+  });
+
+  it('uses role="alert" only when live="assertive" is set', () => {
+    render(
+      <Banner tone="err" live="assertive">
+        Outage
+      </Banner>,
+    );
+    const banner = screen.getByRole('alert');
+    expect(banner).toBeInTheDocument();
+    expect(banner).toHaveAttribute('aria-live', 'assertive');
+  });
+
+  it('omits aria-live entirely when live="off"', () => {
+    render(
+      <Banner tone="accent" live="off">
+        Quiet
+      </Banner>,
+    );
+    const banner = screen.getByRole('status');
+    expect(banner).not.toHaveAttribute('aria-live');
   });
 
   it('renders trailing action', () => {
@@ -21,7 +44,7 @@ describe('Banner', () => {
   });
 
   it('has no a11y violations', async () => {
-    const { container } = render(<Banner variant="info">News</Banner>);
+    const { container } = render(<Banner tone="accent">News</Banner>);
     expect(await axe(container)).toHaveNoViolations();
   });
 });

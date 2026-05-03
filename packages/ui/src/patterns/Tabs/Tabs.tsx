@@ -1,3 +1,5 @@
+'use client';
+
 import * as RadixTabs from '@radix-ui/react-tabs';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { createContext, forwardRef, useContext, type ReactNode } from 'react';

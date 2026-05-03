@@ -26,7 +26,7 @@ describe('FileChip', () => {
     const onRemove = vi.fn();
     render(<FileChip name="a.pdf" onRemove={onRemove} />);
     await userEvent.click(screen.getByRole('button', { name: 'Remove a.pdf' }));
-    expect(onRemove).toHaveBeenCalled();
+    expect(onRemove).toHaveBeenCalledTimes(1);
   });
 
   it('has no a11y violations', async () => {

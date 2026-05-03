@@ -1,3 +1,5 @@
+'use client';
+
 import {
   forwardRef,
   useId,
@@ -42,25 +44,34 @@ export const OTP = forwardRef<OTPHandle, OTPProps>(function OTP(
   const [values, setValues] = useState<string[]>(() =>
     Array.from({ length }, (_, i) => defaultValue[i] ?? ''),
   );
+  const [completedAnnouncement, setCompletedAnnouncement] = useState('');
 
   useImperativeHandle(ref, () => ({
     focus: () => refs.current[0]?.focus(),
     reset: () => {
       setValues(Array(length).fill(''));
+      setCompletedAnnouncement('');
       refs.current[0]?.focus();
     },
   }));
 
   const writeAt = (i: number, char: string) => {
     if (!/^\d?$/.test(char)) return;
-    setValues((prev) => {
-      const next = [...prev];
-      next[i] = char;
-      const joined = next.join('');
-      onChange?.(joined);
-      if (joined.length === length && next.every((c) => c)) onComplete?.(joined);
-      return next;
-    });
+    // Compute next outside the updater so callbacks fire exactly once even
+    // when React Strict Mode invokes the updater twice in dev.
+    const next = [...values];
+    next[i] = char;
+    setValues(next);
+    const joined = next.join('');
+    onChange?.(joined);
+    const isComplete = joined.length === length && next.every((c) => c);
+    if (isComplete) {
+      onComplete?.(joined);
+      setCompletedAnnouncement('Code complete');
+    } else {
+      // Reset the announcement when the user is editing the value back to incomplete.
+      setCompletedAnnouncement('');
+    }
     if (char && i < length - 1) refs.current[i + 1]?.focus();
   };
 
@@ -82,7 +93,13 @@ export const OTP = forwardRef<OTPHandle, OTPProps>(function OTP(
     setValues(next);
     const joined = next.join('');
     onChange?.(joined);
-    if (joined.length === length) onComplete?.(joined);
+    const isComplete = joined.length === length && next.every((c) => c);
+    if (isComplete) {
+      onComplete?.(joined);
+      setCompletedAnnouncement('Code complete');
+    } else {
+      setCompletedAnnouncement('');
+    }
     refs.current[Math.min(pasted.length, length - 1)]?.focus();
   };
 
@@ -113,6 +130,9 @@ export const OTP = forwardRef<OTPHandle, OTPProps>(function OTP(
           )}
         />
       ))}
+      <span className="sr-only" aria-live="polite" aria-atomic="true">
+        {completedAnnouncement}
+      </span>
     </div>
   );
 });

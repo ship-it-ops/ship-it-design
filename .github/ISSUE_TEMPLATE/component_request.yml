@@ -1,0 +1,41 @@
+name: Component / feature request
+description: Propose a new component, pattern, or hook — or a meaningful change to an existing one.
+labels: ['enhancement', 'needs triage']
+body:
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use case
+      description: What problem are you solving? Who is the user? Why does the existing surface not cover it?
+    validations:
+      required: true
+  - type: textarea
+    id: proposed-api
+    attributes:
+      label: Proposed API
+      description: Sketch the props / behavior. JSX-ish pseudocode is fine.
+      render: tsx
+    validations:
+      required: true
+  - type: textarea
+    id: prior-art
+    attributes:
+      label: Prior art
+      description: Links to similar implementations in other design systems (shadcn, Polaris, Material, Radix, etc.).
+  - type: textarea
+    id: design
+    attributes:
+      label: Design references
+      description: Figma link, screenshots, or design-handoff doc references. Anything visual.
+  - type: dropdown
+    id: package
+    attributes:
+      label: Which package would house this?
+      options:
+        - '@ship-it-ui/tokens (token)'
+        - '@ship-it-ui/icons (icon)'
+        - '@ship-it-ui/ui (generic component / pattern / hook)'
+        - '@ship-it-ui/shipit (ShipIt-AI domain composite)'
+        - 'Not sure'
+    validations:
+      required: true

@@ -1,3 +1,5 @@
+'use client';
+
 import { forwardRef, Fragment, type HTMLAttributes } from 'react';
 
 import { cn } from '../../utils/cn';
@@ -9,9 +11,16 @@ import { cn } from '../../utils/cn';
 
 export type StepState = 'done' | 'current' | 'upcoming';
 
-export interface StepperProps extends HTMLAttributes<HTMLDivElement> {
-  /** Ordered step labels. */
-  steps: ReadonlyArray<string>;
+/** A step in a Stepper. Pass either a bare string label or a `{ id?, label }` object. */
+export type StepperStep = string | { id?: string; label: string };
+
+export interface StepperProps extends HTMLAttributes<HTMLOListElement> {
+  /**
+   * Ordered steps. A step may be either a bare string label or an object
+   * `{ id?, label }`. Use `id` to give React a stable key when two steps
+   * share a label (e.g. ["Plan", "Plan Review"]).
+   */
+  steps: ReadonlyArray<StepperStep>;
   /** Zero-based index of the current step. Steps before are `done`, after are `upcoming`. */
   current: number;
 }
@@ -37,25 +46,25 @@ function stateFor(index: number, current: number): StepState {
   return 'upcoming';
 }
 
-export const Stepper = forwardRef<HTMLDivElement, StepperProps>(function Stepper(
+export const Stepper = forwardRef<HTMLOListElement, StepperProps>(function Stepper(
   { steps, current, className, ...props },
   ref,
 ) {
   return (
-    <div
+    <ol
       ref={ref}
-      role="list"
       aria-label="Progress"
-      className={cn('flex w-full items-center', className)}
+      className={cn('m-0 flex w-full list-none items-center p-0', className)}
       {...props}
     >
-      {steps.map((label, i) => {
+      {steps.map((step, i) => {
+        const label = typeof step === 'string' ? step : step.label;
+        const id = typeof step === 'string' ? undefined : step.id;
         const state = stateFor(i, current);
         const connectorActive = i < current;
         return (
-          <Fragment key={label}>
-            <div
-              role="listitem"
+          <Fragment key={id ?? i}>
+            <li
               aria-current={state === 'current' ? 'step' : undefined}
               className="flex items-center gap-2"
             >
@@ -63,7 +72,7 @@ export const Stepper = forwardRef<HTMLDivElement, StepperProps>(function Stepper
                 {state === 'done' ? '✓' : i + 1}
               </span>
               <span className={cn('text-[12px]', labelStateClass[state])}>{label}</span>
-            </div>
+            </li>
             {i < steps.length - 1 && (
               <span
                 aria-hidden
@@ -73,7 +82,7 @@ export const Stepper = forwardRef<HTMLDivElement, StepperProps>(function Stepper
           </Fragment>
         );
       })}
-    </div>
+    </ol>
   );
 });
 

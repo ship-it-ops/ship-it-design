@@ -1,3 +1,5 @@
+'use client';
+
 import * as RadixDialog from '@radix-ui/react-dialog';
 import { forwardRef, type ReactNode } from 'react';
 
@@ -25,7 +27,7 @@ const sideClasses: Record<DrawerSide, string> = {
 
 const DrawerHeader = ({ title, onClose }: { title: ReactNode; onClose?: () => void }) => (
   <div className="border-border flex items-center justify-between border-b p-[16px] px-5">
-    <span className="text-[14px] font-medium">{title}</span>
+    <RadixDialog.Title className="text-[14px] font-medium">{title}</RadixDialog.Title>
     <RadixDialog.Close
       onClick={onClose}
       aria-label="Close"
@@ -50,13 +52,18 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(function Drawer(
         <DialogOverlay />
         <RadixDialog.Content
           ref={ref}
+          aria-describedby={undefined}
           className={cn(
-            'bg-panel fixed top-0 bottom-0 z-[51] flex flex-col shadow-lg outline-none',
+            'bg-panel z-modal fixed top-0 bottom-0 flex flex-col shadow-lg outline-none',
             sideClasses[side],
           )}
           style={{ width }}
         >
-          {title && <DrawerHeader title={title} />}
+          {title ? (
+            <DrawerHeader title={title} />
+          ) : (
+            <RadixDialog.Title className="sr-only">Drawer</RadixDialog.Title>
+          )}
           <div className="flex-1 overflow-auto p-5">{children}</div>
         </RadixDialog.Content>
       </DialogPortal>

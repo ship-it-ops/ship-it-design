@@ -45,7 +45,7 @@ export const colorSemanticDark = {
 
   text: '#ededef',
   textMuted: '#8a8a94',
-  textDim: '#55555d',
+  textDim: '#7c7c86',
 
   // Accents reference the runtime `--accent-h` knob.
   accent: 'oklch(0.82 0.12 var(--accent-h))',
@@ -58,6 +58,27 @@ export const colorSemanticDark = {
   err: colorPrimitive.err,
   purple: colorPrimitive.purple,
   pink: colorPrimitive.pink,
+
+  // Foregrounds for components that sit ON a solid `bg-ok`/`bg-warn`/`bg-err` surface.
+  // Companion palette is bright in dark theme, so near-black text gets ≥4.5:1 contrast.
+  okFg: '#0a0a0b',
+  warnFg: '#0a0a0b',
+  errFg: '#0a0a0b',
+
+  // Foregrounds for `text-ok`/`text-warn`/`text-err` use cases (text on bg/panel).
+  // In dark theme the companion palette is already bright enough to read on `#0a0a0b`,
+  // so okText/warnText/errText alias the bright ramps.
+  okText: colorPrimitive.ok,
+  warnText: colorPrimitive.warn,
+  errText: colorPrimitive.err,
+
+  // Marketing surfaces (CTAStrip, hero gradients). Theme-aware so light theme stays light.
+  ctaFrom: 'oklch(0.2 0.08 260)',
+  ctaTo: 'oklch(0.16 0.06 300)',
+
+  // Avatar fallback L+C. Hue is derived from name hash at render time.
+  avatarFallbackL: '0.4',
+  avatarFallbackC: '0.1',
 } as const;
 
 /** Light theme — applied via `[data-theme="light"]`. Overrides only what changes. */
@@ -70,14 +91,41 @@ export const colorSemanticLight = {
 
   text: '#0e0e10',
   textMuted: '#5a5a63',
-  textDim: '#8e8e96',
+  textDim: '#6f6f78',
 
-  accent: 'oklch(0.72 0.13 var(--accent-h))',
+  accent: 'oklch(0.45 0.13 var(--accent-h))',
   accentText: 'oklch(0.38 0.13 var(--accent-h))',
   accentDim: 'oklch(0.72 0.13 var(--accent-h) / 0.10)',
   accentGlow: 'oklch(0.72 0.13 var(--accent-h) / 0.25)',
 
-  // Companion palette is theme-invariant — same OKLCH values look right in both themes.
+  // Companion palette tuned for light bg `#fbfbfa`. The dark-theme ramps were too
+  // light to read as text in light mode (`text-err` ≈3.0:1, `text-warn` ≈1.5:1).
+  // These darker L values keep the same hues but pass ≥4.5:1 against `#fbfbfa`.
+  ok: 'oklch(0.55 0.17 150)',
+  warn: 'oklch(0.55 0.17 75)',
+  err: 'oklch(0.5 0.19 25)',
+  purple: 'oklch(0.5 0.14 300)',
+  pink: 'oklch(0.5 0.15 0)',
+
+  // On-solid foregrounds: the lowered L companion palette is still bright enough that
+  // near-black text wins on `bg-ok`/`bg-warn`/`bg-err` solid surfaces.
+  okFg: '#0a0a0b',
+  warnFg: '#0a0a0b',
+  errFg: '#ffffff',
+
+  // Text-on-bg foregrounds for light theme. Drop L further so the text reads as text
+  // (≥4.5:1 against `#fbfbfa`), not as a status pill.
+  okText: 'oklch(0.5 0.17 150)',
+  warnText: 'oklch(0.5 0.17 75)',
+  errText: 'oklch(0.5 0.19 25)',
+
+  // Marketing surfaces (CTAStrip). Light-theme equivalents look right on a brighter bg.
+  ctaFrom: 'oklch(0.96 0.02 260)',
+  ctaTo: 'oklch(0.94 0.03 300)',
+
+  // Avatar fallback L+C — same hue rotation, slightly darker L for contrast against light bg.
+  avatarFallbackL: '0.55',
+  avatarFallbackC: '0.12',
 } as const;
 
 export type ColorSemantic = typeof colorSemanticDark;

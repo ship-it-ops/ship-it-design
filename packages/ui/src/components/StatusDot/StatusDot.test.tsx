@@ -10,9 +10,14 @@ describe('StatusDot', () => {
     expect(screen.getByRole('status')).toHaveTextContent('Synced');
   });
 
-  it('falls back to img role with the state name when no label', () => {
+  it('falls back to img role with a friendly state name when no label', () => {
     render(<StatusDot state="warn" />);
-    expect(screen.getByRole('img', { name: 'warn' })).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'Warning' })).toBeInTheDocument();
+  });
+
+  it('respects a consumer-provided aria-label', () => {
+    render(<StatusDot state="ok" aria-label="Custom" />);
+    expect(screen.getByRole('img', { name: 'Custom' })).toBeInTheDocument();
   });
 
   it('has no a11y violations', async () => {

@@ -1,6 +1,8 @@
+'use client';
+
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-import { cn } from '../utils/cn';
+import { cn } from '@ship-it-ui/ui';
 
 /**
  * Footer — site footer with brand on the left and grouped link columns on

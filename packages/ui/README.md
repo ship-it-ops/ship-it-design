@@ -2,20 +2,25 @@
 
 The React component library for the Ship-It design system.
 
+## How this fits in
+
+Part of the [Ship-It Design System](../../docs/architecture.md). See the
+architecture overview for how `@ship-it-ui/tokens`, `@ship-it-ui/icons`,
+`@ship-it-ui/ui`, and `@ship-it-ui/shipit` compose.
+
 ## Architecture
 
 ```
 src/
-├── components/          Atomic primitives (Button, Input, Avatar, Dialog, …)
+├── components/          Atomic components (Button, Input, Avatar, Dialog, …)
 │   └── Button/
 │       ├── Button.tsx           Component + cva variant definitions
 │       ├── Button.stories.tsx   Storybook stories (also serve as autodocs)
 │       ├── Button.test.tsx      Vitest + Testing Library + vitest-axe
 │       └── index.ts             Re-exports the component + types
-├── patterns/            Composites of primitives (Tabs, Combobox, DataTable, …)
+├── patterns/            Composites of components (Tabs, Combobox, DataTable, …)
 ├── hooks/               useEscape, useOutsideClick, useTheme, useDisclosure,
 │                          useControllableState, useKeyboardList
-├── primitives/          Thin wrappers over Radix when we want a Ship-It-flavored API
 ├── utils/
 │   └── cn.ts            clsx + tailwind-merge
 ├── styles/
@@ -51,7 +56,7 @@ step-by-step guide. In short:
 
 ## Conventions
 
-- **Always consume semantic tokens**, never primitive ones. `bg-brand`, not `bg-indigo-600`.
+- **Always consume semantic tokens**, never primitive ones. `bg-accent`, not `bg-indigo-600`.
 - **Forward refs**. Every component uses `forwardRef` so consumers can attach refs and
   Radix integrations can wire focus management.
 - **`asChild` polymorphism**. Use `@radix-ui/react-slot` for components that should be

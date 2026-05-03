@@ -1,3 +1,5 @@
+'use client';
+
 import * as RadixMenubar from '@radix-ui/react-menubar';
 import { forwardRef, type FC, type ReactNode } from 'react';
 
@@ -61,7 +63,7 @@ export const MenubarContent = forwardRef<HTMLDivElement, RadixMenubar.MenubarCon
           sideOffset={sideOffset}
           align={align}
           className={cn(
-            'border-border-strong bg-panel z-40 min-w-[180px] rounded-md border p-1 shadow-lg outline-none',
+            'border-border-strong bg-panel z-popover min-w-[180px] rounded-md border p-1 shadow-lg outline-none',
             'data-[state=open]:animate-[ship-pop-in_140ms_var(--easing-out)]',
             className,
           )}

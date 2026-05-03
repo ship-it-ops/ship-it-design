@@ -1,3 +1,5 @@
+'use client';
+
 import { cva, type VariantProps } from 'class-variance-authority';
 import { forwardRef, type InputHTMLAttributes, type ReactNode } from 'react';
 
@@ -18,8 +20,7 @@ const inputWrapperStyles = cva(
       },
       tone: {
         default: 'bg-panel border-border focus-within:border-accent focus-within:ring-accent-dim',
-        error:
-          'bg-panel border-err focus-within:border-err focus-within:ring-[oklch(0.55_0.18_30/0.18)]',
+        err: 'bg-panel border-err focus-within:border-err focus-within:ring-err/30',
       },
     },
     defaultVariants: { size: 'md', tone: 'default' },
@@ -44,7 +45,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   { size, tone, icon, trailing, error, width, className, style, disabled, ...props },
   ref,
 ) {
-  const computedTone = error ? 'error' : tone;
+  const computedTone = error ? 'err' : tone;
   return (
     <div
       className={cn(inputWrapperStyles({ size, tone: computedTone }), className)}

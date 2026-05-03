@@ -1,3 +1,5 @@
+'use client';
+
 import { cva, type VariantProps } from 'class-variance-authority';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
@@ -48,16 +50,21 @@ const dotColorClass = {
 
 const dotSize = { sm: 'h-[5px] w-[5px]', md: 'h-[6px] w-[6px]', lg: 'h-[7px] w-[7px]' } as const;
 
+type BadgeSize = keyof typeof dotSize;
+type BadgeVariant = keyof typeof dotColorClass;
+
 export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
   { variant = 'neutral', size = 'md', dot, icon, className, children, ...props },
   ref,
 ) {
+  const sz = (size ?? 'md') as BadgeSize;
+  const v = (variant ?? 'neutral') as BadgeVariant;
   return (
     <span ref={ref} className={cn(badgeStyles({ variant, size }), className)} {...props}>
       {dot && (
         <span
           aria-hidden
-          className={cn('inline-block rounded-full', dotSize[size!], dotColorClass[variant!])}
+          className={cn('inline-block rounded-full', dotSize[sz], dotColorClass[v])}
         />
       )}
       {icon && <span className="inline-flex leading-none">{icon}</span>}

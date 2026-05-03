@@ -1,6 +1,8 @@
+'use client';
+
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-import { cn } from '../utils/cn';
+import { cn } from '@ship-it-ui/ui';
 
 /**
  * Hero — landing-page top section. Optional eyebrow / pill above the headline,

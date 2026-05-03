@@ -10,6 +10,27 @@
  *
  * Use via `<IconGlyph name="ask" />` rather than literal characters in JSX, so a
  * glyph swap in this file propagates everywhere.
+ *
+ * ## Intentional aliases
+ *
+ * Some keys map to the same glyph on purpose — the same character carries
+ * different *semantic intent* at the call site. Picking the alias whose name
+ * matches what the UI is *saying* (`schema` vs `menu`, `dismiss` vs `close`)
+ * keeps grep-ability and screen-reader semantics aligned with intent. Current
+ * aliases:
+ *
+ *   - service ↔ serviceOutline (both ◇)
+ *   - incident ↔ target (both ◎)
+ *   - cmd ↔ schema ↔ menu (all ≡)
+ *   - ask ↔ sparkle (both ✦)
+ *   - upRight ↔ external (both ↗)
+ *   - confirm ↔ check (both ✓)
+ *   - close ↔ dismiss (both ×)
+ *   - warn ↔ warnAlt (both !)
+ *
+ * If design intent diverges (e.g. `dismiss` should become a distinct glyph
+ * from `close`), swap the alias's value here — every consumer using the
+ * renamed key picks up the change automatically.
  */
 
 export const glyphs = {

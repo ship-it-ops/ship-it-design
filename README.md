@@ -1,7 +1,7 @@
 # Ship-It Design System
 
 The official design system and React component library for Ship-It Ops front-end
-applications. Single source of truth for design tokens, icons, primitives,
+applications. Single source of truth for design tokens, icons, components,
 patterns, and ShipIt-AI-specific composites.
 
 ## What's inside
@@ -16,7 +16,7 @@ packages/
   tokens/         (publish) @ship-it-ui/tokens   — colors, type, spacing, radius,
                                                  shadow, motion, breakpoints, z-index
   icons/          (publish) @ship-it-ui/icons    — IconGlyph + glyph map + SVGR pipeline
-  ui/             (publish) @ship-it-ui/ui       — generic primitives + patterns + hooks
+  ui/             (publish) @ship-it-ui/ui       — generic components + patterns + hooks
   shipit/         (publish) @ship-it-ui/shipit   — ShipIt-AI domain composites
                                                  (AI surfaces, graph, entity, marketing)
   tsconfig/       (internal) shared TypeScript presets
@@ -44,7 +44,7 @@ Each publishable package has its own `README.md`. `@ship-it-ui/shipit` depends o
 | Versioning & release | Changesets                                                                       |
 | Task orchestration   | Turborepo                                                                        |
 | Package manager      | pnpm 9                                                                           |
-| Node                 | 20 LTS (see `.nvmrc`)                                                            |
+| Node                 | 24 (see `.nvmrc`)                                                                |
 
 ## Getting started
 
@@ -76,24 +76,19 @@ Per-package: `pnpm --filter @ship-it-ui/ui test`, etc.
 
 GitHub Actions workflows in `.github/workflows/`:
 
-| Workflow              | Triggers on                     | What it does                                                 |
-| --------------------- | ------------------------------- | ------------------------------------------------------------ |
-| `ci.yml`              | every PR + push to `main`       | format → lint → typecheck/test/build → Claude PR review      |
-| `claude.yml`          | `@claude` mention in PR / issue | reactive — runs Claude with the comment as context           |
-| `changeset-check.yml` | every PR touching `packages/*`  | fails if a publish-worthy change has no `.changeset/*.md`    |
-| `snapshot.yml`        | manual                          | publishes a `0.0.0-snap-*` build to npm under the `snap` tag |
-| `release.yml`         | push to `main` with changesets  | opens "Version Packages" PR; publishes on merge              |
-
-The Claude PR review job runs as the last stage of `ci.yml` with
-`needs: [format, lint, verify]` — it only fires if all three CI stages pass on
-the PR's head commit. Skip a specific PR with the `skip-claude` label.
+| Workflow              | Triggers on                         | What it does                                                                                           |
+| --------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `ci.yml`              | every PR + push to `main`           | format → lint → typecheck → test → build                                                               |
+| `changeset-check.yml` | every PR touching `packages/*`      | fails if a publish-worthy change has no `.changeset/*.md`                                              |
+| `snapshot.yml`        | `release: snapshot` label or manual | publishes a `0.0.0-pr-<N>-*` (or `0.0.0-snapshot-*` off main) build to npm under the matching dist-tag |
+| `release.yml`         | push to `main` with changesets      | opens "Version Packages" PR; publishes on merge                                                        |
 
 ## Where to read next
 
 - **[`docs/architecture.md`](./docs/architecture.md)** — how tokens, icons, ui,
   and shipit fit together; theming model; build pipeline.
 - **[`docs/adding-a-component.md`](./docs/adding-a-component.md)** — step-by-step
-  authoring guide (primitives, patterns, and shipit composites).
+  authoring guide (components, patterns, and shipit composites).
 - **[`docs/design-handoff.md`](./docs/design-handoff.md)** — translating a Figma
   / design-tool handoff into tokens and components.
 - **[`docs/contributing.md`](./docs/contributing.md)** — branching, commits,

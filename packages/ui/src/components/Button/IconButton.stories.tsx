@@ -7,7 +7,10 @@ const meta: Meta<typeof IconButton> = {
   component: IconButton,
   tags: ['autodocs'],
   argTypes: {
-    variant: { control: 'inline-radio', options: ['primary', 'secondary', 'ghost', 'outline'] },
+    variant: {
+      control: 'inline-radio',
+      options: ['primary', 'secondary', 'ghost', 'outline', 'destructive', 'success'],
+    },
     size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
     onClick: { action: 'clicked' },
   },
@@ -34,6 +37,8 @@ export const Variants: Story = {
       <IconButton aria-label="Search" icon="⌕" variant="secondary" />
       <IconButton aria-label="Search" icon="⌕" variant="ghost" />
       <IconButton aria-label="Search" icon="⌕" variant="outline" />
+      <IconButton aria-label="Delete" icon="×" variant="destructive" />
+      <IconButton aria-label="Confirm" icon="✓" variant="success" />
     </div>
   ),
 };

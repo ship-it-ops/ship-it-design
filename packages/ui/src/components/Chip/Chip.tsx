@@ -1,3 +1,5 @@
+'use client';
+
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 import { cn } from '../../utils/cn';
@@ -5,8 +7,10 @@ import { cn } from '../../utils/cn';
 export interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
   /** Pill-style leading icon (typically a glyph or `@`/`#`). */
   icon?: ReactNode;
-  /** Optional remove handler — renders an inset close button. */
-  removable?: boolean;
+  /**
+   * Optional remove handler. When provided, renders an inset close button.
+   * Mirrors the `Tag` API — pass `onRemove` and the X is rendered automatically.
+   */
   onRemove?: () => void;
   children: ReactNode;
 }
@@ -17,7 +21,7 @@ export interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
  * and slightly more decorative.
  */
 export const Chip = forwardRef<HTMLSpanElement, ChipProps>(function Chip(
-  { icon, removable, onRemove, className, children, ...props },
+  { icon, onRemove, className, children, ...props },
   ref,
 ) {
   return (
@@ -32,7 +36,7 @@ export const Chip = forwardRef<HTMLSpanElement, ChipProps>(function Chip(
     >
       {icon && <span className="text-text-dim inline-flex text-[10px]">{icon}</span>}
       {children}
-      {removable && (
+      {onRemove && (
         <button
           type="button"
           onClick={onRemove}

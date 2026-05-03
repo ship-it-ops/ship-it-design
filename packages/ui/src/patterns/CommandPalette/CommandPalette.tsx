@@ -1,5 +1,7 @@
+'use client';
+
 import * as RadixDialog from '@radix-ui/react-dialog';
-import { forwardRef, useEffect, useMemo, type ReactNode } from 'react';
+import { forwardRef, useEffect, useId, useMemo, type ReactNode } from 'react';
 
 import { useKeyboardList } from '../../hooks/useKeyboardList';
 import { cn } from '../../utils/cn';
@@ -85,6 +87,11 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
       },
     });
 
+    const reactId = useId();
+    const listboxId = `${reactId}-listbox`;
+    const optionId = (i: number) => `${listboxId}-option-${i}`;
+    const hasMatches = flat.length > 0;
+
     // Reset the cursor whenever the query or groups shape changes.
     useEffect(() => {
       setCursor(0);
@@ -95,7 +102,7 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
         <RadixDialog.Portal>
           <RadixDialog.Overlay
             className={cn(
-              'fixed inset-0 z-50 bg-black/55 backdrop-blur-[4px]',
+              'z-overlay fixed inset-0 bg-black/55 backdrop-blur-[4px]',
               'data-[state=open]:animate-[ship-fade-in_150ms_ease]',
             )}
           />
@@ -105,7 +112,7 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
             aria-describedby={undefined}
             style={{ width }}
             className={cn(
-              'fixed top-[20%] left-1/2 z-[51] max-w-[calc(100%-40px)] -translate-x-1/2',
+              'z-modal fixed top-[20%] left-1/2 max-w-[calc(100%-40px)] -translate-x-1/2',
               'border-border-strong bg-panel overflow-hidden rounded-xl border shadow-lg',
               'outline-none data-[state=open]:animate-[ship-dialog-in_180ms_var(--easing-out)]',
             )}
@@ -126,14 +133,21 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
                 onChange={(e) => onQueryChange(e.target.value)}
                 placeholder={placeholder}
                 aria-label="Search"
+                role="combobox"
                 aria-autocomplete="list"
+                // The listbox is always rendered while the palette is open
+                // (even in the empty-state branch the container is mounted),
+                // so `aria-expanded` is true whenever this input is mounted.
+                aria-expanded
+                aria-controls={listboxId}
+                aria-activedescendant={hasMatches ? optionId(cursor) : undefined}
                 className="text-text placeholder:text-text-dim flex-1 border-0 bg-transparent text-[14px] outline-none"
               />
               <span className="border-border text-text-dim rounded-xs border px-[6px] py-[2px] font-mono text-[10px]">
                 ESC
               </span>
             </div>
-            <div className="min-h-[220px] p-2" role="listbox" aria-label="Results">
+            <div id={listboxId} className="min-h-[220px] p-2" role="listbox" aria-label="Results">
               {flat.length === 0 ? (
                 (emptyState ?? (
                   <div className="text-text-dim px-3 py-5 text-center text-[12px]">No matches</div>
@@ -144,6 +158,7 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
                   cursor={cursor}
                   setCursor={setCursor}
                   onSelect={onSelect}
+                  optionId={optionId}
                 />
               )}
             </div>
@@ -166,9 +181,10 @@ interface CommandGroupsProps {
   cursor: number;
   setCursor: (i: number) => void;
   onSelect: (id: string) => void;
+  optionId: (i: number) => string;
 }
 
-function CommandGroups({ groups, cursor, setCursor, onSelect }: CommandGroupsProps) {
+function CommandGroups({ groups, cursor, setCursor, onSelect, optionId }: CommandGroupsProps) {
   let runningIndex = 0;
   return (
     <>
@@ -187,6 +203,7 @@ function CommandGroups({ groups, cursor, setCursor, onSelect }: CommandGroupsPro
               return (
                 <button
                   key={item.id}
+                  id={optionId(myIndex)}
                   type="button"
                   role="option"
                   aria-selected={isActive}

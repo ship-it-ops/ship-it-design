@@ -1,6 +1,8 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
+export type { ClassValue } from 'clsx';
+
 /**
  * Combine class names with conflict-aware Tailwind merging.
  *

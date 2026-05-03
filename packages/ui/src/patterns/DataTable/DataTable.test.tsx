@@ -40,22 +40,36 @@ describe('DataTable', () => {
 
   it('sorts ascending then descending then unsorted on header click', async () => {
     render(<DataTable data={rows} columns={columns} rowKey={(r) => r.id} />);
-    const header = screen.getByRole('columnheader', { name: /Deploys\/d/ });
-    await userEvent.click(header);
+    const headerButton = screen.getByRole('button', { name: /Deploys\/d/ });
+    await userEvent.click(headerButton);
     expect(getRowOrder()).toEqual(['ledger-core', 'payment-webhook-v2', 'notify-dispatch']);
-    await userEvent.click(header);
+    await userEvent.click(headerButton);
     expect(getRowOrder()).toEqual(['notify-dispatch', 'payment-webhook-v2', 'ledger-core']);
-    await userEvent.click(header);
+    await userEvent.click(headerButton);
     expect(getRowOrder()).toEqual(['payment-webhook-v2', 'ledger-core', 'notify-dispatch']);
   });
 
   it('exposes aria-sort on the active column', async () => {
     render(<DataTable data={rows} columns={columns} rowKey={(r) => r.id} />);
-    await userEvent.click(screen.getByRole('columnheader', { name: /Name/ }));
+    await userEvent.click(screen.getByRole('button', { name: /Name/ }));
     expect(screen.getByRole('columnheader', { name: /Name/ })).toHaveAttribute(
       'aria-sort',
       'ascending',
     );
+  });
+
+  it('sortable headers are keyboard-operable', async () => {
+    const onSortChange = vi.fn();
+    render(
+      <DataTable data={rows} columns={columns} rowKey={(r) => r.id} onSortChange={onSortChange} />,
+    );
+    const headerButton = screen.getByRole('button', { name: /Name/ });
+    headerButton.focus();
+    expect(headerButton).toHaveFocus();
+    await userEvent.keyboard('{Enter}');
+    expect(onSortChange).toHaveBeenCalledWith({ key: 'name', direction: 'asc' });
+    await userEvent.keyboard(' ');
+    expect(onSortChange).toHaveBeenLastCalledWith({ key: 'name', direction: 'desc' });
   });
 
   it('selects rows individually', async () => {

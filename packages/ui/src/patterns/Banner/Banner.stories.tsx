@@ -7,18 +7,18 @@ const meta: Meta<typeof Banner> = {
   component: Banner,
   tags: ['autodocs'],
   argTypes: {
-    variant: { control: 'inline-radio', options: ['info', 'ok', 'warn', 'err'] },
+    tone: { control: 'inline-radio', options: ['accent', 'ok', 'warn', 'err'] },
     sticky: { control: 'boolean' },
   },
-  args: { variant: 'info' },
+  args: { tone: 'accent' },
   parameters: { layout: 'fullscreen' },
 };
 export default meta;
 
 type Story = StoryObj<typeof Banner>;
 
-export const Info: Story = {
-  args: { variant: 'info' },
+export const Accent: Story = {
+  args: { tone: 'accent' },
   render: (args) => (
     <Banner
       {...args}
@@ -34,7 +34,7 @@ export const Info: Story = {
 };
 
 export const Warn: Story = {
-  args: { variant: 'warn' },
+  args: { tone: 'warn' },
   render: (args) => (
     <Banner
       {...args}
@@ -53,7 +53,7 @@ export const Stack: Story = {
   render: () => (
     <div>
       <Banner
-        variant="warn"
+        tone="warn"
         action={
           <a href="https://example.com/billing" className="underline">
             Upgrade →
@@ -63,7 +63,7 @@ export const Stack: Story = {
         Trial expires in <strong>4 days</strong>.
       </Banner>
       <Banner
-        variant="info"
+        tone="accent"
         action={
           <a href="https://example.com/changelog" className="underline">
             What&apos;s new →

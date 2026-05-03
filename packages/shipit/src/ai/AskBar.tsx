@@ -1,3 +1,5 @@
+'use client';
+
 import { Button, useControllableState } from '@ship-it-ui/ui';
 import {
   forwardRef,
@@ -8,7 +10,7 @@ import {
   type ReactNode,
 } from 'react';
 
-import { cn } from '../utils/cn';
+import { cn } from '@ship-it-ui/ui';
 
 /**
  * AskBar — the primary "ask anything" input. The leading ✦ glyph + accent

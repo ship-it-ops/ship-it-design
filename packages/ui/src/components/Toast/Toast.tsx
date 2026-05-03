@@ -1,3 +1,5 @@
+'use client';
+
 import * as RadixToast from '@radix-ui/react-toast';
 import {
   createContext,
@@ -60,6 +62,11 @@ const variantBorderLeft: Record<ToastVariant, string> = {
   err: 'border-l-err',
 };
 
+// Module-scope counter for auto-generated IDs. SSR-safe (no browser APIs)
+// and unique within a session — safer than `Math.random()` for keys.
+let toastIdCounter = 0;
+const nextToastId = () => `toast-${++toastIdCounter}`;
+
 /**
  * Wrap your app once at the root. Components inside can call `useToast()` to
  * push transient messages from anywhere.
@@ -68,8 +75,18 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<ToastEntry[]>([]);
 
   const toast = useCallback((t: ToastInput) => {
-    const id = t.id ?? Math.random().toString(36).slice(2);
-    setToasts((prev) => [...prev, { ...t, id }]);
+    // Only dedupe when the consumer explicitly supplied an id — auto-generated
+    // ids never collide, so the `find` would always miss. This makes
+    // `toast({ id: 'save-status', ... })` a natural "replace existing" API.
+    const explicitId = t.id;
+    const id = explicitId ?? nextToastId();
+    const entry = { ...t, id };
+    setToasts((prev) => {
+      if (explicitId !== undefined && prev.some((existing) => existing.id === explicitId)) {
+        return prev.map((existing) => (existing.id === explicitId ? entry : existing));
+      }
+      return [...prev, entry];
+    });
     return id;
   }, []);
 
@@ -86,7 +103,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         {toasts.map((t) => (
           <ToastCard key={t.id} toast={t} onDismiss={() => dismiss(t.id)} />
         ))}
-        <RadixToast.Viewport className="fixed right-5 bottom-5 z-[70] flex w-[380px] max-w-[calc(100vw-40px)] flex-col gap-2 outline-none" />
+        <RadixToast.Viewport className="z-toast fixed right-5 bottom-5 flex w-[380px] max-w-[calc(100vw-40px)] flex-col gap-2 outline-none" />
       </RadixToast.Provider>
     </ToastContext.Provider>
   );

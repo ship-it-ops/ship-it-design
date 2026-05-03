@@ -8,6 +8,12 @@ ReasoningBlock, …), knowledge-graph chrome (GraphNode, GraphEdge, …), entity
 displays (EntityBadge, EntityCard, …), and the marketing sections. The
 generic primitives and patterns live in `@ship-it-ui/ui`.
 
+## How this fits in
+
+Part of the [Ship-It Design System](../../docs/architecture.md). See the
+architecture overview for how `@ship-it-ui/tokens`, `@ship-it-ui/icons`,
+`@ship-it-ui/ui`, and `@ship-it-ui/shipit` compose.
+
 ## Install
 
 ```bash

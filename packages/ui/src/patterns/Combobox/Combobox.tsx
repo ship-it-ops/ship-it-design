@@ -1,3 +1,5 @@
+'use client';
+
 import {
   forwardRef,
   useEffect,
@@ -228,7 +230,7 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(function Com
           role="listbox"
           aria-label={ariaLabel ?? 'Suggestions'}
           className={cn(
-            'absolute top-full right-0 left-0 z-30 mt-1 max-h-[220px] overflow-auto',
+            'z-dropdown absolute top-full right-0 left-0 mt-1 max-h-[220px] overflow-auto',
             'border-border bg-panel rounded-md border p-1 shadow-lg',
           )}
         >

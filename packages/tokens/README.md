@@ -2,6 +2,12 @@
 
 The single source of truth for design tokens used across the Ship-It design system.
 
+## How this fits in
+
+Part of the [Ship-It Design System](../../docs/architecture.md). See the
+architecture overview for how `@ship-it-ui/tokens`, `@ship-it-ui/icons`,
+`@ship-it-ui/ui`, and `@ship-it-ui/shipit` compose.
+
 ## What's a token?
 
 A token is a named design decision — `color.brand`, `space.4`, `radius.md`. Components
@@ -15,7 +21,8 @@ We use a two-layer color system:
 1. **Primitive** (`colorPrimitive`) — the raw palette: `neutral-50`, `brand-500`, etc.
    Components must **not** import these directly.
 2. **Semantic** (`colorSemanticLight`, `colorSemanticDark`) — role-based aliases like
-   `background`, `text`, `border`, `brand`. Components import these.
+   `bg`, `panel`, `text`, `text-muted`, `border`, `accent`, `ok`, `warn`, `err`
+   (the full set lives in `packages/ui/src/styles/globals.css`). Components import these.
 
 This decoupling means we can reskin the system (swap palettes) without changing a
 single component.

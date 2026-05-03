@@ -6,8 +6,9 @@
  * alphabetical within each category.
  */
 
-// Utilities
-export { cn } from './utils/cn';
+// Utilities — re-exported from @ship-it-ui/ui to keep the canonical implementation
+// in one place (clsx + tailwind-merge live there).
+export { cn } from '@ship-it-ui/ui';
 
 // AI surfaces
 export * from './ai';

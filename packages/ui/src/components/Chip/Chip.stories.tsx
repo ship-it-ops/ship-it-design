@@ -12,4 +12,4 @@ export default meta;
 
 type Story = StoryObj<typeof Chip>;
 export const Default: Story = {};
-export const Removable: Story = { args: { removable: true } };
+export const Removable: Story = { args: { onRemove: () => {} } };
