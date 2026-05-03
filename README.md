@@ -1,7 +1,7 @@
 # Ship-It Design System
 
 The official design system and React component library for Ship-It Ops front-end
-applications. Single source of truth for design tokens, icons, primitives,
+applications. Single source of truth for design tokens, icons, components,
 patterns, and ShipIt-AI-specific composites.
 
 ## What's inside
@@ -16,7 +16,7 @@ packages/
   tokens/         (publish) @ship-it-ui/tokens   — colors, type, spacing, radius,
                                                  shadow, motion, breakpoints, z-index
   icons/          (publish) @ship-it-ui/icons    — IconGlyph + glyph map + SVGR pipeline
-  ui/             (publish) @ship-it-ui/ui       — generic primitives + patterns + hooks
+  ui/             (publish) @ship-it-ui/ui       — generic components + patterns + hooks
   shipit/         (publish) @ship-it-ui/shipit   — ShipIt-AI domain composites
                                                  (AI surfaces, graph, entity, marketing)
   tsconfig/       (internal) shared TypeScript presets
@@ -44,7 +44,7 @@ Each publishable package has its own `README.md`. `@ship-it-ui/shipit` depends o
 | Versioning & release | Changesets                                                                       |
 | Task orchestration   | Turborepo                                                                        |
 | Package manager      | pnpm 9                                                                           |
-| Node                 | 20 LTS (see `.nvmrc`)                                                            |
+| Node                 | 24 (see `.nvmrc`)                                                                |
 
 ## Getting started
 
@@ -93,7 +93,7 @@ the PR's head commit. Skip a specific PR with the `skip-claude` label.
 - **[`docs/architecture.md`](./docs/architecture.md)** — how tokens, icons, ui,
   and shipit fit together; theming model; build pipeline.
 - **[`docs/adding-a-component.md`](./docs/adding-a-component.md)** — step-by-step
-  authoring guide (primitives, patterns, and shipit composites).
+  authoring guide (components, patterns, and shipit composites).
 - **[`docs/design-handoff.md`](./docs/design-handoff.md)** — translating a Figma
   / design-tool handoff into tokens and components.
 - **[`docs/contributing.md`](./docs/contributing.md)** — branching, commits,

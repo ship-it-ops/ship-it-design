@@ -3,7 +3,7 @@
 import { Avatar } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-import { cn } from '../utils/cn';
+import { cn } from '@ship-it-ui/ui';
 
 /**
  * CopilotMessage — chat bubble for the AI conversation. Two roles:

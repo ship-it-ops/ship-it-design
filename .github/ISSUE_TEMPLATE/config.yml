@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discussion
+    url: https://github.com/ship-it-ops/ship-it-design/discussions
+    about: Have a question or want to brainstorm an idea? Start a discussion.
+  - name: Security vulnerability
+    url: https://github.com/ship-it-ops/ship-it-design/security/advisories/new
+    about: Found a security issue? Please report it privately — see SECURITY.md.

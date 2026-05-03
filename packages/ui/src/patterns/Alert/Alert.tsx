@@ -51,16 +51,27 @@ export interface AlertProps
   icon?: ReactNode;
   /** Optional trailing actions (rendered to the right of the description). */
   action?: ReactNode;
+  /**
+   * Aria-live behavior for the alert. Default `'polite'`.
+   *
+   * Alerts that are part of the initial page render should leave this at the
+   * default — `role="alert"` (which is `aria-live="assertive"`) interrupts the
+   * screen reader on every page load. Set `'assertive'` only for urgent
+   * alerts that appear *after* initial render. Set `'off'` to suppress
+   * announcements entirely (still rendered, still has `role="status"`).
+   */
+  live?: 'off' | 'polite' | 'assertive';
 }
 
 export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
-  { tone = 'accent', title, description, icon, action, className, children, ...props },
+  { tone = 'accent', title, description, icon, action, live = 'polite', className, children, ...props },
   ref,
 ) {
   return (
     <div
       ref={ref}
-      role={tone === 'err' || tone === 'warn' ? 'alert' : 'status'}
+      role={live === 'assertive' ? 'alert' : 'status'}
+      aria-live={live === 'off' ? undefined : live}
       className={cn(alertStyles({ tone }), className)}
       {...props}
     >

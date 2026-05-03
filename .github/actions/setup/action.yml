@@ -3,24 +3,55 @@ description: Install pnpm + Node, restore the dependency cache, install workspac
 
 # Reused by every workflow. Centralizes pnpm version, Node version, and the
 # install command so we don't drift between CI / release / snapshot.
+#
+# Third-party actions are pinned by commit SHA (with the version in a comment)
+# to defend against `tj-actions/changed-files`-style supply-chain attacks. See
+# `.github/PIPELINES.md` for the rationale; Dependabot bumps the SHAs.
 
 inputs:
   install:
     description: When 'true' (default), runs `pnpm install --frozen-lockfile`.
     required: false
     default: 'true'
+  node-version:
+    description: |
+      Node.js version to install. Defaults to whatever `.nvmrc` declares so
+      single-Node jobs stay declarative; matrix jobs pass an explicit value
+      (`'20'`, `'22'`, `'24'`) to verify cross-version compatibility.
+    required: false
+    default: ''
+  registry-url:
+    description: |
+      Optional npm registry URL passed through to `actions/setup-node`. When
+      set, the action writes a project `.npmrc` that picks up `NODE_AUTH_TOKEN`
+      from the publish step's env so we never write tokens to disk. Used by
+      `release.yml` and `snapshot.yml`.
+    required: false
+    default: ''
 
 runs:
   using: composite
   steps:
     - name: Setup pnpm
-      uses: pnpm/action-setup@v5
+      uses: pnpm/action-setup@a8198c4bff370c8506180b035930dea56dbd5288 # v5
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v6
+    - name: Setup Node.js (from .nvmrc)
+      if: ${{ inputs.node-version == '' }}
+      uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
       with:
         node-version-file: .nvmrc
         cache: pnpm
+        registry-url: ${{ inputs.registry-url }}
+        always-auth: ${{ inputs.registry-url != '' }}
+
+    - name: Setup Node.js (explicit)
+      if: ${{ inputs.node-version != '' }}
+      uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: pnpm
+        registry-url: ${{ inputs.registry-url }}
+        always-auth: ${{ inputs.registry-url != '' }}
 
     - name: Install dependencies
       if: ${{ inputs.install == 'true' }}

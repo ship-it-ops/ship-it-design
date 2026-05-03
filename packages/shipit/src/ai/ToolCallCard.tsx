@@ -3,7 +3,7 @@
 import { Badge } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-import { cn } from '../utils/cn';
+import { cn } from '@ship-it-ui/ui';
 
 /**
  * ToolCallCard — visual card for a function/tool invocation in the AI

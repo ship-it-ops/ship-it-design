@@ -1,20 +1,36 @@
 # CI / Release pipelines
 
-How `@ship-it-ui/*` is verified and shipped. Three GitHub Actions workflows plus
+How `@ship-it-ui/*` is verified and shipped. Six GitHub Actions workflows plus
 a shared composite action.
 
 ## Topology
 
-| Workflow              | Trigger                                         | What it does                                                                                                                                                           |
-| --------------------- | ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ci.yml`              | every PR + push to `main`                       | Format, lint, typecheck, test, build, upload Storybook + dist artifacts.                                                                                               |
-| `changeset-check.yml` | PRs (label-aware)                               | Fails the PR if `packages/*` changed without an accompanying `.changeset/*.md`.                                                                                        |
-| `snapshot.yml`        | PR label `release: snapshot` or manual dispatch | Publishes a one-off `pr-N` build to npm (with provenance) and comments the install command on the PR.                                                                  |
-| `release.yml`         | push to `main`                                  | Opens / updates the "Version Packages" PR. When that PR merges, publishes every bumped package to npm (with provenance), pushes git tags, and creates GitHub releases. |
+| Workflow              | Trigger                                                         | What it does                                                                                                                                                           |
+| --------------------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ci.yml`              | every PR + push to `main`                                       | Format, lint, typecheck, test, build across a Node `[20, 22, 24]` matrix; upload Storybook + dist artifacts; trigger the unattended Claude review on PRs.              |
+| `changeset-check.yml` | PRs (label-aware)                                               | Fails the PR if `packages/*` changed without an accompanying `.changeset/*.md`.                                                                                        |
+| `snapshot.yml`        | PR label `release: snapshot` or manual dispatch                 | Publishes a one-off `pr-N` build to npm (with provenance) and comments the install command on the PR.                                                                  |
+| `release.yml`         | push to `main`                                                  | Opens / updates the "Version Packages" PR. When that PR merges, publishes every bumped package to npm (with provenance), pushes git tags, and creates GitHub releases. |
+| `pages.yml`           | push to `main`, PRs touching `apps/docs`/`packages/*`, dispatch | Builds the static Storybook (with the repo-name subpath base) and deploys it to GitHub Pages. PR runs build-only.                                                      |
+| `claude.yml`          | `@claude` mention in an issue, PR, or review comment            | Reactive Claude Code Action handler — runs on demand against the workflow definition on `main` (PRs cannot rewrite the prompt).                                        |
 
-All four share `.github/actions/setup/action.yml` for pnpm + Node + install,
-so the pnpm and Node versions live in exactly two places (the action and
-`.nvmrc`).
+All six share `.github/actions/setup/action.yml` for pnpm + Node + install,
+so the pnpm version, Node version, and registry-auth wiring live in exactly
+two places (the composite action and `.nvmrc`).
+
+## Supply-chain pinning
+
+Every third-party action reference (`org/repo@<sha>`) is pinned to a full
+40-character commit SHA with the version in a trailing comment, e.g.
+`changesets/action@6a0a831ff30acef54f2c6aa1cbbc1096b066edaf # v1`. This
+defends against the `tj-actions/changed-files`-style attack where a
+maintainer (or compromised account) force-pushes a malicious commit onto
+the floating major tag — which would otherwise execute under our
+`id-token: write` + `NPM_TOKEN` privileges on `release.yml` / `snapshot.yml`.
+First-party `actions/*` references are pinned the same way for uniformity.
+
+Dependabot (`.github/dependabot.yml`) bumps the SHAs weekly under a single
+grouped PR, so pinning has no maintenance tax beyond reviewing one PR a week.
 
 ## Required secrets
 

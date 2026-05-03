@@ -10,9 +10,32 @@ describe('Banner', () => {
     expect(screen.getByText('Trial expires in 4 days.')).toBeInTheDocument();
   });
 
-  it('uses role="alert" for warn/err', () => {
+  it('defaults to role="status" with aria-live="polite" so initial page render is not announced assertively', () => {
     render(<Banner tone="warn">Heads up</Banner>);
-    expect(screen.getByRole('alert')).toBeInTheDocument();
+    const banner = screen.getByRole('status');
+    expect(banner).toBeInTheDocument();
+    expect(banner).toHaveAttribute('aria-live', 'polite');
+  });
+
+  it('uses role="alert" only when live="assertive" is set', () => {
+    render(
+      <Banner tone="err" live="assertive">
+        Outage
+      </Banner>,
+    );
+    const banner = screen.getByRole('alert');
+    expect(banner).toBeInTheDocument();
+    expect(banner).toHaveAttribute('aria-live', 'assertive');
+  });
+
+  it('omits aria-live entirely when live="off"', () => {
+    render(
+      <Banner tone="accent" live="off">
+        Quiet
+      </Banner>,
+    );
+    const banner = screen.getByRole('status');
+    expect(banner).not.toHaveAttribute('aria-live');
   });
 
   it('renders trailing action', () => {

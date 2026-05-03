@@ -6,16 +6,15 @@ The React component library for the Ship-It design system.
 
 ```
 src/
-├── components/          Atomic primitives (Button, Input, Avatar, Dialog, …)
+├── components/          Atomic components (Button, Input, Avatar, Dialog, …)
 │   └── Button/
 │       ├── Button.tsx           Component + cva variant definitions
 │       ├── Button.stories.tsx   Storybook stories (also serve as autodocs)
 │       ├── Button.test.tsx      Vitest + Testing Library + vitest-axe
 │       └── index.ts             Re-exports the component + types
-├── patterns/            Composites of primitives (Tabs, Combobox, DataTable, …)
+├── patterns/            Composites of components (Tabs, Combobox, DataTable, …)
 ├── hooks/               useEscape, useOutsideClick, useTheme, useDisclosure,
 │                          useControllableState, useKeyboardList
-├── primitives/          Thin wrappers over Radix when we want a Ship-It-flavored API
 ├── utils/
 │   └── cn.ts            clsx + tailwind-merge
 ├── styles/

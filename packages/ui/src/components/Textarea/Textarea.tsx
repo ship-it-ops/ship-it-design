@@ -17,7 +17,7 @@ const textareaStyles = cva(
     variants: {
       tone: {
         default: 'border-border focus-visible:border-accent focus-visible:ring-accent-dim',
-        err: 'border-err focus-visible:border-err focus-visible:ring-[oklch(0.55_0.18_30/0.18)]',
+        err: 'border-err focus-visible:border-err focus-visible:ring-err/30',
       },
     },
     defaultVariants: { tone: 'default' },

@@ -55,14 +55,14 @@ export const OTP = forwardRef<OTPHandle, OTPProps>(function OTP(
 
   const writeAt = (i: number, char: string) => {
     if (!/^\d?$/.test(char)) return;
-    setValues((prev) => {
-      const next = [...prev];
-      next[i] = char;
-      const joined = next.join('');
-      onChange?.(joined);
-      if (joined.length === length && next.every((c) => c)) onComplete?.(joined);
-      return next;
-    });
+    // Compute next outside the updater so callbacks fire exactly once even
+    // when React Strict Mode invokes the updater twice in dev.
+    const next = [...values];
+    next[i] = char;
+    setValues(next);
+    const joined = next.join('');
+    onChange?.(joined);
+    if (joined.length === length && next.every((c) => c)) onComplete?.(joined);
     if (char && i < length - 1) refs.current[i + 1]?.focus();
   };
 

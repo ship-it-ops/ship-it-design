@@ -11,9 +11,16 @@ import { cn } from '../../utils/cn';
 
 export type StepState = 'done' | 'current' | 'upcoming';
 
+/** A step in a Stepper. Pass either a bare string label or a `{ id?, label }` object. */
+export type StepperStep = string | { id?: string; label: string };
+
 export interface StepperProps extends HTMLAttributes<HTMLOListElement> {
-  /** Ordered step labels. */
-  steps: ReadonlyArray<string>;
+  /**
+   * Ordered steps. A step may be either a bare string label or an object
+   * `{ id?, label }`. Use `id` to give React a stable key when two steps
+   * share a label (e.g. ["Plan", "Plan Review"]).
+   */
+  steps: ReadonlyArray<StepperStep>;
   /** Zero-based index of the current step. Steps before are `done`, after are `upcoming`. */
   current: number;
 }
@@ -50,11 +57,13 @@ export const Stepper = forwardRef<HTMLOListElement, StepperProps>(function Stepp
       className={cn('flex w-full items-center list-none p-0 m-0', className)}
       {...props}
     >
-      {steps.map((label, i) => {
+      {steps.map((step, i) => {
+        const label = typeof step === 'string' ? step : step.label;
+        const id = typeof step === 'string' ? undefined : step.id;
         const state = stateFor(i, current);
         const connectorActive = i < current;
         return (
-          <Fragment key={label}>
+          <Fragment key={id ?? i}>
             <li
               aria-current={state === 'current' ? 'step' : undefined}
               className="flex items-center gap-2"

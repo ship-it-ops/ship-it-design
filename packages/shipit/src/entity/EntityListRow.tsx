@@ -2,7 +2,7 @@
 
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-import { cn } from '../utils/cn';
+import { cn } from '@ship-it-ui/ui';
 
 import { ENTITY_GLYPH, ENTITY_TONE_CLASS, type EntityType } from './types';
 

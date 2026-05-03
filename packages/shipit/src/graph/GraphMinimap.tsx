@@ -2,7 +2,7 @@
 
 import { forwardRef, type HTMLAttributes } from 'react';
 
-import { cn } from '../utils/cn';
+import { cn } from '@ship-it-ui/ui';
 
 /**
  * GraphMinimap — miniature scatter of node positions with a translucent
@@ -77,7 +77,7 @@ export const GraphMinimap = forwardRef<HTMLDivElement, GraphMinimapProps>(functi
               top: `${viewport.y * 100}%`,
               width: `${viewport.width * 100}%`,
               height: `${viewport.height * 100}%`,
-              background: 'oklch(0.8 0.12 200 / 0.12)',
+              background: 'var(--color-accent-glow)',
             }}
           />
         )}

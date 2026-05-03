@@ -1,0 +1,43 @@
+# Dependabot config — keeps GitHub Actions SHAs and npm dependencies fresh.
+#
+# Why grouped: ungrouped PR volume on a 4-package monorepo with Storybook +
+# Tailwind beta + every Radix primitive will swamp the queue. The groups
+# below collapse families that always update together (Radix primitives,
+# `@types/*`, every-action-bumped-this-week) into single PRs.
+#
+# Action SHAs are managed centrally — the `actions` group bumps every pinned
+# `org/repo@<sha>` reference in `.github/workflows/*` and `.github/actions/*`
+# weekly. Without this, the SHA pins (added defensively against
+# `tj-actions/changed-files`-style supply-chain attacks) silently rot.
+
+version: 2
+
+updates:
+  - package-ecosystem: github-actions
+    directory: '/'
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns:
+          - '*'
+
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: weekly
+    groups:
+      radix:
+        patterns:
+          - '@radix-ui/*'
+      types:
+        patterns:
+          - '@types/*'
+      patches:
+        update-types:
+          - patch
+    ignore:
+      # Pinned to a v4 beta until Tailwind ships a stable 4.0. Caret on a
+      # pre-release range-resolves to newer betas with breaking @theme
+      # changes, so let humans drive this upgrade.
+      - dependency-name: tailwindcss

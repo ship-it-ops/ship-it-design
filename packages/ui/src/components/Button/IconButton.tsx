@@ -13,6 +13,9 @@ const iconButtonStyles = cva(
   ],
   {
     variants: {
+      // Mirrors `Button`'s variant set, minus `link` — an underlined link
+      // affordance is awkward for an icon-only target, so we omit it
+      // intentionally. Use `<Button variant="link" icon={…} />` if you need it.
       variant: {
         primary: 'bg-accent text-on-accent border border-accent hover:brightness-110',
         secondary:
@@ -21,6 +24,9 @@ const iconButtonStyles = cva(
           'bg-transparent text-text-muted border border-transparent hover:bg-panel-2 hover:text-text',
         outline:
           'bg-transparent text-text-muted border border-border-strong hover:bg-panel-2 hover:text-text',
+        destructive:
+          'bg-err text-on-accent border border-err hover:brightness-110 active:brightness-95',
+        success: 'bg-ok text-on-accent border border-ok hover:brightness-110 active:brightness-95',
       },
       size: {
         sm: 'h-[26px] w-[26px] text-[12px] rounded-[5px]',

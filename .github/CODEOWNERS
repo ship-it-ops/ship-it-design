@@ -1,0 +1,27 @@
+# CODEOWNERS — automatic reviewers per directory.
+# Format: <path-glob> <owner-handle(s)>
+
+# Default: anyone in the org reviews unowned files.
+*                                       @ship-it-ops/maintainers
+
+# Tokens — design owns the source of truth.
+/packages/tokens/                       @ship-it-ops/design @ship-it-ops/maintainers
+
+# Icons.
+/packages/icons/                        @ship-it-ops/design @ship-it-ops/maintainers
+
+# Generic UI components & patterns.
+/packages/ui/                           @ship-it-ops/maintainers
+
+# Domain composites (ShipIt-AI specific).
+/packages/shipit/                       @ship-it-ops/maintainers
+
+# Docs site.
+/apps/docs/                             @ship-it-ops/maintainers
+
+# Long-form docs.
+/docs/                                  @ship-it-ops/maintainers
+
+# CI / release infra — be cautious here.
+/.github/                               @ship-it-ops/maintainers
+/.changeset/                            @ship-it-ops/maintainers

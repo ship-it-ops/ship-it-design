@@ -7,7 +7,10 @@ const meta: Meta<typeof SplitButton> = {
   component: SplitButton,
   tags: ['autodocs'],
   argTypes: {
-    variant: { control: 'inline-radio', options: ['primary', 'secondary', 'outline'] },
+    variant: {
+      control: 'inline-radio',
+      options: ['primary', 'secondary', 'outline', 'ghost', 'destructive', 'success'],
+    },
     size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
     onClick: { action: 'main clicked' },
     onMenu: { action: 'menu clicked' },

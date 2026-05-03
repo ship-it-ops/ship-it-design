@@ -13,7 +13,7 @@ export default defineConfig({
   // esbuild-plugin-preserve-directives plugin re-injected. esbuild itself
   // already tree-shakes during the initial bundle.
   treeshake: false,
-  external: ['react', 'react-dom', '@ship-it-ui/ui', '@ship-it-ui/icons'],
+  external: [/^react/, /^@ship-it-ui\//, 'class-variance-authority', 'clsx', 'tailwind-merge'],
   esbuildPlugins: [
     preserveDirectivesPlugin({
       directives: ['use client', 'use server'],

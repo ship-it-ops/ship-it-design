@@ -45,16 +45,27 @@ export interface BannerProps
   icon?: ReactNode;
   /** Optional trailing action (e.g., a link). Rendered with `ml-auto`. */
   action?: ReactNode;
+  /**
+   * Aria-live behavior for the banner. Default `'polite'`.
+   *
+   * Banners that are part of the initial page render should leave this at the
+   * default — `role="alert"` (which is `aria-live="assertive"`) interrupts the
+   * screen reader on every page load. Set `'assertive'` only for urgent
+   * banners that appear *after* initial render. Set `'off'` to suppress
+   * announcements entirely (still rendered, still has `role="status"`).
+   */
+  live?: 'off' | 'polite' | 'assertive';
 }
 
 export const Banner = forwardRef<HTMLDivElement, BannerProps>(function Banner(
-  { tone = 'accent', sticky, icon, action, className, children, ...props },
+  { tone = 'accent', sticky, icon, action, live = 'polite', className, children, ...props },
   ref,
 ) {
   return (
     <div
       ref={ref}
-      role={tone === 'err' || tone === 'warn' ? 'alert' : 'status'}
+      role={live === 'assertive' ? 'alert' : 'status'}
+      aria-live={live === 'off' ? undefined : live}
       className={cn(bannerStyles({ tone, sticky }), className)}
       {...props}
     >

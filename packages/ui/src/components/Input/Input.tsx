@@ -20,8 +20,7 @@ const inputWrapperStyles = cva(
       },
       tone: {
         default: 'bg-panel border-border focus-within:border-accent focus-within:ring-accent-dim',
-        err:
-          'bg-panel border-err focus-within:border-err focus-within:ring-[oklch(0.55_0.18_30/0.18)]',
+        err: 'bg-panel border-err focus-within:border-err focus-within:ring-err/30',
       },
     },
     defaultVariants: { size: 'md', tone: 'default' },

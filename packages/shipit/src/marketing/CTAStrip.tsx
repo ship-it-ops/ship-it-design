@@ -2,7 +2,7 @@
 
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-import { cn } from '../utils/cn';
+import { cn } from '@ship-it-ui/ui';
 
 /**
  * CTAStrip — full-width call-to-action band. Title + body + actions, on a
@@ -24,7 +24,7 @@ export const CTAStrip = forwardRef<HTMLElement, CTAStripProps>(function CTAStrip
       ref={ref}
       className={cn(
         'rounded-xl px-10 py-12 text-center',
-        'bg-[linear-gradient(135deg,oklch(0.2_0.08_260),oklch(0.16_0.06_300))]',
+        'bg-[linear-gradient(135deg,var(--color-cta-from),var(--color-cta-to))]',
         className,
       )}
       {...props}

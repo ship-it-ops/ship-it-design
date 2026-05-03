@@ -2,7 +2,7 @@
 
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-import { cn } from '../utils/cn';
+import { cn } from '@ship-it-ui/ui';
 
 /**
  * ConfidenceIndicator — horizontal bar + percent + tier label. The tier tone

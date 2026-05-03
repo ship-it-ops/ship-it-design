@@ -4,7 +4,7 @@ import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 import { EntityBadge } from '../entity/EntityBadge';
 import { type EntityType } from '../entity/types';
-import { cn } from '../utils/cn';
+import { cn } from '@ship-it-ui/ui';
 
 /**
  * GraphInspector — drill-in panel that appears next to a selected graph node.

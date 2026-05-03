@@ -50,21 +50,21 @@ describe('CommandPalette', () => {
 
   it('filters as the user types', async () => {
     render(<Harness onSelect={() => {}} />);
-    await userEvent.type(screen.getByRole('textbox'), 'billing');
+    await userEvent.type(screen.getByRole('combobox', { name: 'Search' }), 'billing');
     expect(screen.getByText('billing-service')).toBeInTheDocument();
     expect(screen.queryByText('payment-webhook-v2')).not.toBeInTheDocument();
   });
 
   it('shows empty state when nothing matches', async () => {
     render(<Harness onSelect={() => {}} />);
-    await userEvent.type(screen.getByRole('textbox'), 'zzznopezzz');
+    await userEvent.type(screen.getByRole('combobox', { name: 'Search' }), 'zzznopezzz');
     expect(screen.getByText('No matches')).toBeInTheDocument();
   });
 
   it('selects the highlighted item on Enter', async () => {
     const onSelect = vi.fn();
     render(<Harness onSelect={onSelect} />);
-    const input = screen.getByRole('textbox');
+    const input = screen.getByRole('combobox', { name: 'Search' });
     await userEvent.type(input, '{ArrowDown}{ArrowDown}{Enter}');
     expect(onSelect).toHaveBeenCalledWith('c');
   });
@@ -74,6 +74,37 @@ describe('CommandPalette', () => {
     render(<Harness onSelect={onSelect} />);
     await userEvent.click(screen.getByRole('option', { name: /billing-service/ }));
     expect(onSelect).toHaveBeenCalledWith('d');
+  });
+
+  it('wires the input to the listbox via combobox semantics', async () => {
+    render(<Harness onSelect={() => {}} />);
+    const input = screen.getByRole('combobox', { name: 'Search' });
+    const listboxId = input.getAttribute('aria-controls');
+    expect(listboxId).toBeTruthy();
+    expect(input).toHaveAttribute('aria-expanded', 'true');
+    expect(input).toHaveAttribute('aria-autocomplete', 'list');
+
+    const listbox = document.getElementById(listboxId!);
+    expect(listbox).toHaveAttribute('role', 'listbox');
+
+    // aria-activedescendant points at the highlighted option's id.
+    const activeId = input.getAttribute('aria-activedescendant');
+    expect(activeId).toBeTruthy();
+    expect(document.getElementById(activeId!)).toHaveAttribute('role', 'option');
+
+    // Arrowing down should move aria-activedescendant to a new option id.
+    await userEvent.type(input, '{ArrowDown}');
+    expect(input.getAttribute('aria-activedescendant')).not.toEqual(activeId);
+  });
+
+  it('drops aria-activedescendant when the listbox is empty', async () => {
+    render(<Harness onSelect={() => {}} />);
+    const input = screen.getByRole('combobox', { name: 'Search' });
+    await userEvent.type(input, 'zzznopezzz');
+    // Listbox container stays mounted (empty-state lives inside it), so
+    // aria-expanded remains true; only aria-activedescendant clears.
+    expect(input).toHaveAttribute('aria-expanded', 'true');
+    expect(input).not.toHaveAttribute('aria-activedescendant');
   });
 
   it('has no a11y violations', async () => {

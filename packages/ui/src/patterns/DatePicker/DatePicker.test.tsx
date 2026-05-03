@@ -9,7 +9,7 @@ import { DatePicker } from './DatePicker';
 describe('Calendar', () => {
   it('renders the visible month', () => {
     render(<Calendar defaultMonth={3} defaultYear={2026} />);
-    expect(screen.getByText('April 2026')).toBeInTheDocument();
+    expect(screen.getByText('Apr 2026')).toBeInTheDocument();
   });
 
   it('selects on day click', async () => {

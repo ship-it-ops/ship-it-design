@@ -106,8 +106,8 @@ Three concerns, three folders:
 
 ```
 packages/ui/src/
-├── components/   Atomic primitives (Button, Input, Dialog, Avatar, …)
-├── patterns/     Composites of primitives (Tabs, Combobox, DataTable,
+├── components/   Atomic components (Button, Input, Dialog, Avatar, …)
+├── patterns/     Composites of components (Tabs, Combobox, DataTable,
 │                  CommandPalette, Sidebar, Topbar, …)
 └── hooks/        Reusable behaviors (useEscape, useOutsideClick, useTheme,
                    useDisclosure, useControllableState, useKeyboardList)

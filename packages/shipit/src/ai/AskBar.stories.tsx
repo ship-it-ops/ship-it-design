@@ -40,7 +40,7 @@ export const ScopedWithChips: Story = {
   render: (args) => (
     <AskBar {...args} defaultValue="Who is on call this week?">
       <Chip>scoped: Payments</Chip>
-      <Chip removable>service:payment-webhook-v2</Chip>
+      <Chip onRemove={() => {}}>service:payment-webhook-v2</Chip>
     </AskBar>
   ),
 };

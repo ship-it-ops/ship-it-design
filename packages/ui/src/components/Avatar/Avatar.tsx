@@ -67,7 +67,11 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
     >
       <RadixAvatar.Root
         className="border-border relative inline-flex h-full w-full shrink-0 overflow-hidden rounded-full border"
-        style={{ background: src ? undefined : `oklch(0.4 0.1 ${hue})` }}
+        style={{
+          background: src
+            ? undefined
+            : `oklch(var(--color-avatar-fallback-l) var(--color-avatar-fallback-c) ${hue})`,
+        }}
       >
         {src && <RadixAvatar.Image src={src} alt={name} className="h-full w-full object-cover" />}
         <RadixAvatar.Fallback

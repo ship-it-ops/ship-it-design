@@ -3,7 +3,7 @@
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 import { ENTITY_GLYPH, type EntityType } from '../entity/types';
-import { cn } from '../utils/cn';
+import { cn } from '@ship-it-ui/ui';
 
 /**
  * GraphNode — visual representation of a graph node. Six entity-type variants

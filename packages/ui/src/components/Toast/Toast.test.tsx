@@ -22,11 +22,15 @@ describe('Toast', () => {
   });
 
   it('has no a11y violations', async () => {
-    const { container } = render(
+    const { baseElement } = render(
       <ToastProvider>
         <Trigger />
       </ToastProvider>,
     );
-    expect(await axe(container)).toHaveNoViolations();
+    // Fire the toast first — without this, axe runs against an empty Radix
+    // viewport and never evaluates the live region, dismiss button, or contrast.
+    await userEvent.click(screen.getByText('fire'));
+    await screen.findByText('Hello');
+    expect(await axe(baseElement)).toHaveNoViolations();
   });
 });

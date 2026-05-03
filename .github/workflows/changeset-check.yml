@@ -20,9 +20,19 @@ jobs:
   required:
     name: Changeset required for package changes
     runs-on: ubuntu-latest
-    if: ${{ !contains(github.event.pull_request.labels.*.name, 'no-changeset') }}
+    # Skip when the `no-changeset` label is present (opt-out for non-shipping
+    # PRs). On `labeled`/`unlabeled` events, additionally skip unless the
+    # affected label is `no-changeset` itself — without this guard, every
+    # label add/remove (e.g. `release: snapshot`, `skip-claude`) would spin
+    # up a runner for nothing.
+    if: |
+      !contains(github.event.pull_request.labels.*.name, 'no-changeset') &&
+      (
+        (github.event.action != 'labeled' && github.event.action != 'unlabeled') ||
+        github.event.label.name == 'no-changeset'
+      )
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
         with:
           # Need the full history so `changeset status --since=origin/main`
           # can compare against the merge base.

@@ -3,6 +3,18 @@
   "version": "0.0.1",
   "description": "ShipIt-AI domain composites: AI surfaces, knowledge-graph chrome, entity displays, and marketing components — built on @ship-it-ui/ui.",
   "license": "MIT",
+  "homepage": "https://ship-it-ops.github.io/ship-it-design/",
+  "bugs": {
+    "url": "https://github.com/ship-it-ops/ship-it-design/issues"
+  },
+  "author": "Ship-It Ops",
+  "keywords": [
+    "design-system",
+    "react",
+    "ai-ui",
+    "knowledge-graph",
+    "shipit"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ship-it-ops/ship-it-design.git",
@@ -38,19 +50,14 @@
     "clean": "rm -rf dist .turbo"
   },
   "peerDependencies": {
+    "@ship-it-ui/ui": "workspace:*",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
-  },
-  "dependencies": {
-    "@ship-it-ui/icons": "workspace:*",
-    "@ship-it-ui/ui": "workspace:*",
-    "class-variance-authority": "^0.7.0",
-    "clsx": "^2.1.1",
-    "tailwind-merge": "^2.5.4"
   },
   "devDependencies": {
     "@ship-it-ui/eslint-config": "workspace:*",
     "@ship-it-ui/tokens": "workspace:*",
+    "@ship-it-ui/ui": "workspace:*",
     "@ship-it-ui/tsconfig": "workspace:*",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",

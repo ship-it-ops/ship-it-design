@@ -17,7 +17,15 @@ export interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> 
  * topbar search, and entity search.
  */
 export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(function SearchInput(
-  { shortcut = '⌘K', width = 360, className, style, placeholder = 'Search…', ...props },
+  {
+    shortcut = '⌘K',
+    width = 360,
+    className,
+    style,
+    placeholder = 'Search…',
+    'aria-label': ariaLabel,
+    ...props
+  },
   ref,
 ) {
   return (
@@ -31,11 +39,17 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(functi
       )}
       style={{ width, ...style }}
     >
-      <span className="text-text-dim leading-none">⌕</span>
+      <span className="text-text-dim leading-none" aria-hidden>
+        ⌕
+      </span>
       <input
         ref={ref}
         type="search"
         placeholder={placeholder}
+        // Default the accessible name to the placeholder. WCAG 4.1.2 / 3.3.2
+        // require a programmatic name; placeholder alone does not satisfy
+        // either criterion. Consumers can still override by passing aria-label.
+        aria-label={ariaLabel ?? (typeof placeholder === 'string' ? placeholder : 'Search')}
         className="text-text placeholder:text-text-dim min-w-0 flex-1 border-none bg-transparent text-[13px] outline-none"
         {...props}
       />
