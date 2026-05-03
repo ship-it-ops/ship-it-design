@@ -1,6 +1,5 @@
 'use client';
 
-import { glyphs } from '@ship-it-ui/icons';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 import { cn } from '../../utils/cn';
@@ -86,7 +85,7 @@ export const SplitButton = forwardRef<HTMLDivElement, SplitButtonProps>(function
         aria-label={menuAriaLabel}
         className="rounded-l-none px-2"
       >
-        {glyphs.collapse}
+        ▾
       </Button>
     </div>
   );
