@@ -1,3 +1,5 @@
+'use client';
+
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 import { EntityBadge } from '../entity/EntityBadge';

@@ -1,3 +1,5 @@
+'use client';
+
 import * as RadixToast from '@radix-ui/react-toast';
 import {
   createContext,
@@ -86,7 +88,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         {toasts.map((t) => (
           <ToastCard key={t.id} toast={t} onDismiss={() => dismiss(t.id)} />
         ))}
-        <RadixToast.Viewport className="fixed right-5 bottom-5 z-[70] flex w-[380px] max-w-[calc(100vw-40px)] flex-col gap-2 outline-none" />
+        <RadixToast.Viewport className="fixed right-5 bottom-5 z-toast flex w-[380px] max-w-[calc(100vw-40px)] flex-col gap-2 outline-none" />
       </RadixToast.Provider>
     </ToastContext.Provider>
   );

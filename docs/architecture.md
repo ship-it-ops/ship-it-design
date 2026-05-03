@@ -98,7 +98,7 @@ The chain:
    once at their entrypoint. That single import brings in tokens and Tailwind
    utilities; no extra Tailwind config required in the consumer.
 
-`prefers-reduced-motion: reduce` zeros the duration tokens automatically.
+`prefers-reduced-motion: reduce` is honored globally — `animations.css` zeros animation and transition durations under the user preference. The duration tokens (`--duration-micro`, `--duration-step`) also zero out, so any component reading them in JS gets the same effect.
 
 ## Inside `@ship-it-ui/ui`
 

@@ -1,3 +1,5 @@
+'use client';
+
 import * as RadixTooltip from '@radix-ui/react-tooltip';
 import { forwardRef, type ReactNode } from 'react';
 
@@ -24,7 +26,7 @@ export const TooltipContent = forwardRef<HTMLDivElement, RadixTooltip.TooltipCon
           ref={ref}
           sideOffset={sideOffset}
           className={cn(
-            'pointer-events-none z-[60] rounded-sm px-2 py-[5px] text-[11px] whitespace-nowrap',
+            'pointer-events-none z-tooltip rounded-sm px-2 py-[5px] text-[11px] whitespace-nowrap',
             'bg-text text-bg',
             'data-[state=delayed-open]:animate-[ship-pop-in_120ms_var(--easing-out)]',
             className,

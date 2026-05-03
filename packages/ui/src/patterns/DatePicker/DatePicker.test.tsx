@@ -13,11 +13,11 @@ describe('Calendar', () => {
   });
 
   it('selects on day click', async () => {
-    const onSelect = vi.fn();
-    render(<Calendar defaultMonth={3} defaultYear={2026} onSelect={onSelect} />);
+    const onValueChange = vi.fn();
+    render(<Calendar defaultMonth={3} defaultYear={2026} onValueChange={onValueChange} />);
     await userEvent.click(screen.getByRole('button', { name: /Apr 15 2026/ }));
-    expect(onSelect).toHaveBeenCalledTimes(1);
-    const arg = onSelect.mock.calls[0]![0] as Date;
+    expect(onValueChange).toHaveBeenCalledTimes(1);
+    const arg = onValueChange.mock.calls[0]![0] as Date;
     expect(arg.getDate()).toBe(15);
     expect(arg.getMonth()).toBe(3);
     expect(arg.getFullYear()).toBe(2026);
@@ -32,6 +32,39 @@ describe('Calendar', () => {
   it('has no a11y violations', async () => {
     const { container } = render(<Calendar defaultMonth={3} defaultYear={2026} />);
     expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('supports arrow-key navigation with roving tabindex', async () => {
+    render(
+      <Calendar
+        defaultMonth={3}
+        defaultYear={2026}
+        defaultValue={new Date(2026, 3, 15)}
+      />,
+    );
+    // Selected day starts as the focused/tabbable cell.
+    const apr15 = screen.getByRole('button', { name: /Apr 15 2026/ });
+    expect(apr15).toHaveAttribute('tabindex', '0');
+    apr15.focus();
+    expect(apr15).toHaveFocus();
+
+    // ArrowRight moves focus to the next day.
+    await userEvent.keyboard('{ArrowRight}');
+    const apr16 = screen.getByRole('button', { name: /Apr 16 2026/ });
+    expect(apr16).toHaveFocus();
+    expect(apr16).toHaveAttribute('tabindex', '0');
+    expect(apr15).toHaveAttribute('tabindex', '-1');
+
+    // ArrowDown moves a week forward.
+    await userEvent.keyboard('{ArrowDown}');
+    const apr23 = screen.getByRole('button', { name: /Apr 23 2026/ });
+    expect(apr23).toHaveFocus();
+
+    // PageDown moves to the next month and focuses the equivalent day.
+    await userEvent.keyboard('{PageDown}');
+    expect(screen.getByText('May 2026')).toBeInTheDocument();
+    const may23 = screen.getByRole('button', { name: /May 23 2026/ });
+    expect(may23).toHaveFocus();
   });
 });
 

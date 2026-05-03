@@ -47,7 +47,8 @@ Drafts, the auto-generated `chore(release): version packages` PR, and PRs from
 
 ## Commit style
 
-We don't enforce conventional commits, but a useful prefix helps reviewers:
+Commit messages tend to use one of these prefixes; we don't enforce this with a
+hook today, so treat the list as a reference rather than a rule:
 
 ```
 ui: add Tooltip component
@@ -65,10 +66,12 @@ chore: bump turbo
 - Tests-only changes that don't affect published output.
 
 The Changesets `ignore` config already excludes these paths, but be deliberate —
-every changeset triggers a version bump.
+every changeset triggers a version bump. (Note: the `ignore` list in
+`.changeset/config.json` uses package `name` values from each package.json, not
+filesystem paths.)
 
 ## Got stuck?
 
-Open a draft PR with the `[help wanted]` label, or file an issue describing
+Open a draft PR with the `help wanted` label, or file an issue describing
 what you're trying to do and where you're stuck. Include a minimal repro and
 the output of `pnpm typecheck && pnpm test 2>&1 | tail -50` if relevant.

@@ -1,3 +1,5 @@
+'use client';
+
 import { Avatar } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 

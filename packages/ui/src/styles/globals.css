@@ -116,6 +116,19 @@
   --shadow-sm: var(--shadow-sm);
   --shadow: var(--shadow);
   --shadow-lg: var(--shadow-lg);
+
+  /* Z-index — named layers from the token scale.
+   * Use `z-modal`, `z-tooltip`, etc. instead of arbitrary `z-[51]` literals so
+   * stacking conflicts can be reasoned about globally. */
+  --z-base: var(--z-base);
+  --z-raised: var(--z-raised);
+  --z-dropdown: var(--z-dropdown);
+  --z-sticky: var(--z-sticky);
+  --z-overlay: var(--z-overlay);
+  --z-modal: var(--z-modal);
+  --z-popover: var(--z-popover);
+  --z-toast: var(--z-toast);
+  --z-tooltip: var(--z-tooltip);
 }
 
 @layer base {

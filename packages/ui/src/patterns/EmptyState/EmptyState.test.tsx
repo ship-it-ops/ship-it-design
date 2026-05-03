@@ -16,7 +16,7 @@ describe('EmptyState', () => {
     const onClick = vi.fn();
     render(<EmptyState title="Ask anything" chips={[{ label: 'Who owns checkout?', onClick }]} />);
     await userEvent.click(screen.getByRole('button', { name: 'Who owns checkout?' }));
-    expect(onClick).toHaveBeenCalled();
+    expect(onClick).toHaveBeenCalledTimes(1);
   });
 
   it('has no a11y violations', async () => {

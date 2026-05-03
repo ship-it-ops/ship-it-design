@@ -1,3 +1,5 @@
+'use client';
+
 import * as RadixPopover from '@radix-ui/react-popover';
 import { forwardRef } from 'react';
 
@@ -19,7 +21,7 @@ export const PopoverContent = forwardRef<HTMLDivElement, RadixPopover.PopoverCon
           align={align}
           sideOffset={sideOffset}
           className={cn(
-            'bg-panel border-border-strong z-40 rounded-md border p-[6px] shadow-lg outline-none',
+            'bg-panel border-border-strong z-popover rounded-md border p-[6px] shadow-lg outline-none',
             'data-[state=open]:animate-[ship-pop-in_140ms_var(--easing-out)]',
             className,
           )}

@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Children,
   forwardRef,
@@ -68,10 +70,13 @@ export const Crumb = forwardRef<HTMLAnchorElement, CrumbProps>(function Crumb(
       </span>
     );
   }
+  if (href === undefined) {
+    return <span className={cn('text-text-dim', className)}>{children}</span>;
+  }
   return (
     <a
       ref={ref}
-      href={href ?? '#'}
+      href={href}
       className={cn('hover:text-text transition-colors duration-(--duration-micro)', className)}
       {...props}
     >

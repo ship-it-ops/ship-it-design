@@ -12,20 +12,20 @@ describe('Alert', () => {
   });
 
   it('uses role="alert" for err and warn', () => {
-    const { rerender } = render(<Alert variant="err" title="Boom" />);
+    const { rerender } = render(<Alert tone="err" title="Boom" />);
     expect(screen.getByRole('alert')).toBeInTheDocument();
-    rerender(<Alert variant="warn" title="Heads up" />);
+    rerender(<Alert tone="warn" title="Heads up" />);
     expect(screen.getByRole('alert')).toBeInTheDocument();
   });
 
-  it('uses role="status" for info and ok', () => {
-    render(<Alert variant="ok" title="Synced" />);
+  it('uses role="status" for accent and ok', () => {
+    render(<Alert tone="ok" title="Synced" />);
     expect(screen.getByRole('status')).toBeInTheDocument();
   });
 
   it('has no a11y violations', async () => {
     const { container } = render(
-      <Alert variant="warn" title="Token expires soon" description="Renew before Friday." />,
+      <Alert tone="warn" title="Token expires soon" description="Renew before Friday." />,
     );
     expect(await axe(container)).toHaveNoViolations();
   });

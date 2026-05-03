@@ -1,3 +1,5 @@
+'use client';
+
 import { forwardRef, useMemo, type SVGAttributes } from 'react';
 
 import { cn } from '../../utils/cn';

@@ -1,3 +1,5 @@
+'use client';
+
 import { useCallback, useEffect, useState } from 'react';
 
 export type Theme = 'dark' | 'light';
@@ -17,12 +19,15 @@ export function useTheme(): {
   setTheme: (next: Theme) => void;
   toggle: () => void;
 } {
-  const [theme, setThemeState] = useState<Theme>(() => {
-    if (typeof document === 'undefined') return 'dark';
-    return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-  });
+  // Initialize to 'dark' on both server and client to avoid SSR hydration mismatch.
+  // The real DOM value is read post-mount in the effect below.
+  const [theme, setThemeState] = useState<Theme>('dark');
 
   const setTheme = useCallback((next: Theme) => {
+    if (typeof document === 'undefined') {
+      setThemeState(next);
+      return;
+    }
     if (next === 'light') {
       document.documentElement.setAttribute('data-theme', 'light');
     } else {
@@ -35,8 +40,11 @@ export function useTheme(): {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   }, [theme, setTheme]);
 
-  // Keep state in sync if something else flips the attribute (e.g., a test, a parent app).
+  // Sync state with the actual DOM attribute on mount, then keep it in sync if
+  // something else flips the attribute (e.g., a test, a parent app).
   useEffect(() => {
+    const initial = document.documentElement.getAttribute('data-theme');
+    setThemeState(initial === 'light' ? 'light' : 'dark');
     const observer = new MutationObserver(() => {
       const attr = document.documentElement.getAttribute('data-theme');
       setThemeState(attr === 'light' ? 'light' : 'dark');

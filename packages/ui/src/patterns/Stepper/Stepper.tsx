@@ -1,3 +1,5 @@
+'use client';
+
 import { forwardRef, Fragment, type HTMLAttributes } from 'react';
 
 import { cn } from '../../utils/cn';
@@ -9,7 +11,7 @@ import { cn } from '../../utils/cn';
 
 export type StepState = 'done' | 'current' | 'upcoming';
 
-export interface StepperProps extends HTMLAttributes<HTMLDivElement> {
+export interface StepperProps extends HTMLAttributes<HTMLOListElement> {
   /** Ordered step labels. */
   steps: ReadonlyArray<string>;
   /** Zero-based index of the current step. Steps before are `done`, after are `upcoming`. */
@@ -37,16 +39,15 @@ function stateFor(index: number, current: number): StepState {
   return 'upcoming';
 }
 
-export const Stepper = forwardRef<HTMLDivElement, StepperProps>(function Stepper(
+export const Stepper = forwardRef<HTMLOListElement, StepperProps>(function Stepper(
   { steps, current, className, ...props },
   ref,
 ) {
   return (
-    <div
+    <ol
       ref={ref}
-      role="list"
       aria-label="Progress"
-      className={cn('flex w-full items-center', className)}
+      className={cn('flex w-full items-center list-none p-0 m-0', className)}
       {...props}
     >
       {steps.map((label, i) => {
@@ -54,8 +55,7 @@ export const Stepper = forwardRef<HTMLDivElement, StepperProps>(function Stepper
         const connectorActive = i < current;
         return (
           <Fragment key={label}>
-            <div
-              role="listitem"
+            <li
               aria-current={state === 'current' ? 'step' : undefined}
               className="flex items-center gap-2"
             >
@@ -63,7 +63,7 @@ export const Stepper = forwardRef<HTMLDivElement, StepperProps>(function Stepper
                 {state === 'done' ? '✓' : i + 1}
               </span>
               <span className={cn('text-[12px]', labelStateClass[state])}>{label}</span>
-            </div>
+            </li>
             {i < steps.length - 1 && (
               <span
                 aria-hidden
@@ -73,7 +73,7 @@ export const Stepper = forwardRef<HTMLDivElement, StepperProps>(function Stepper
           </Fragment>
         );
       })}
-    </div>
+    </ol>
   );
 });
 

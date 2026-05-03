@@ -1,3 +1,5 @@
+'use client';
+
 import * as RadixPopover from '@radix-ui/react-popover';
 import { forwardRef, useState, type ReactNode } from 'react';
 
@@ -86,13 +88,13 @@ export const DatePicker = forwardRef<HTMLButtonElement, DatePickerProps>(functio
         <RadixPopover.Content
           align="start"
           sideOffset={6}
-          className="z-40 outline-none data-[state=open]:animate-[ship-pop-in_140ms_var(--easing-out)]"
+          className="z-popover outline-none data-[state=open]:animate-[ship-pop-in_140ms_var(--easing-out)]"
         >
           <Calendar
-            selected={value}
+            value={value}
             defaultMonth={value?.getMonth()}
             defaultYear={value?.getFullYear()}
-            onSelect={(date) => {
+            onValueChange={(date) => {
               setValue(date);
               setOpen(false);
             }}

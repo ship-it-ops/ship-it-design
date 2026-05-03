@@ -1,3 +1,5 @@
+'use client';
+
 import { cva, type VariantProps } from 'class-variance-authority';
 import { forwardRef, type TextareaHTMLAttributes } from 'react';
 
@@ -15,7 +17,7 @@ const textareaStyles = cva(
     variants: {
       tone: {
         default: 'border-border focus-visible:border-accent focus-visible:ring-accent-dim',
-        error: 'border-err focus-visible:border-err focus-visible:ring-[oklch(0.55_0.18_30/0.18)]',
+        err: 'border-err focus-visible:border-err focus-visible:ring-[oklch(0.55_0.18_30/0.18)]',
       },
     },
     defaultVariants: { tone: 'default' },
@@ -37,7 +39,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
       ref={ref}
       rows={rows}
       aria-invalid={error || undefined}
-      className={cn(textareaStyles({ tone: error ? 'error' : tone }), className)}
+      className={cn(textareaStyles({ tone: error ? 'err' : tone }), className)}
       {...props}
     />
   );

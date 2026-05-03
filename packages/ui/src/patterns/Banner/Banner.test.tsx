@@ -11,7 +11,7 @@ describe('Banner', () => {
   });
 
   it('uses role="alert" for warn/err', () => {
-    render(<Banner variant="warn">Heads up</Banner>);
+    render(<Banner tone="warn">Heads up</Banner>);
     expect(screen.getByRole('alert')).toBeInTheDocument();
   });
 
@@ -21,7 +21,7 @@ describe('Banner', () => {
   });
 
   it('has no a11y violations', async () => {
-    const { container } = render(<Banner variant="info">News</Banner>);
+    const { container } = render(<Banner tone="accent">News</Banner>);
     expect(await axe(container)).toHaveNoViolations();
   });
 });

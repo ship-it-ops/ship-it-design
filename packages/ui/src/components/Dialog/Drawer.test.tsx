@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { describe, expect, it } from 'vitest';
+import { axe } from 'vitest-axe';
 
 import { Drawer } from './Drawer';
 
@@ -63,5 +64,14 @@ describe('Drawer', () => {
     render(<Stateful />);
     await userEvent.keyboard('{Escape}');
     expect(screen.queryByText('body')).not.toBeInTheDocument();
+  });
+
+  it('has no a11y violations when open', async () => {
+    const { container } = render(
+      <Drawer open title="Filters">
+        <p>body</p>
+      </Drawer>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

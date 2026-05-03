@@ -1,3 +1,5 @@
+'use client';
+
 import * as RadixCheckbox from '@radix-ui/react-checkbox';
 import { forwardRef, useId, type ReactNode } from 'react';
 

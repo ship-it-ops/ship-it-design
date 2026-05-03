@@ -1,11 +1,10 @@
+'use client';
+
 import { forwardRef, type HTMLAttributes } from 'react';
 
 import { cn } from '../../utils/cn';
 
-/**
- * Spinner — circular loading indicator. Three sizes; respects
- * `prefers-reduced-motion` via the global motion override in `tokens.css`.
- */
+/** Spinner — circular loading indicator. Three sizes. */
 
 const sizes = {
   sm: { box: 'h-3 w-3', border: 'border-[2px]' },

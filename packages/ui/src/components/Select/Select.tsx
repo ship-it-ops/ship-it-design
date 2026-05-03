@@ -1,3 +1,5 @@
+'use client';
+
 import * as RadixSelect from '@radix-ui/react-select';
 import { forwardRef, type ReactNode } from 'react';
 
@@ -54,7 +56,7 @@ export const SelectContent = forwardRef<HTMLDivElement, RadixSelect.SelectConten
           position={position}
           sideOffset={sideOffset}
           className={cn(
-            'bg-panel border-border z-50 min-w-[var(--radix-select-trigger-width)] rounded-md border p-1 shadow',
+            'bg-panel border-border z-popover min-w-[var(--radix-select-trigger-width)] rounded-md border p-1 shadow',
             'data-[state=open]:animate-[ship-pop-in_140ms_var(--easing-out)]',
             className,
           )}

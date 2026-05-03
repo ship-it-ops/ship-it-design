@@ -15,7 +15,8 @@ We use a two-layer color system:
 1. **Primitive** (`colorPrimitive`) — the raw palette: `neutral-50`, `brand-500`, etc.
    Components must **not** import these directly.
 2. **Semantic** (`colorSemanticLight`, `colorSemanticDark`) — role-based aliases like
-   `background`, `text`, `border`, `brand`. Components import these.
+   `bg`, `panel`, `text`, `text-muted`, `border`, `accent`, `ok`, `warn`, `err`
+   (the full set lives in `packages/ui/src/styles/globals.css`). Components import these.
 
 This decoupling means we can reskin the system (swap palettes) without changing a
 single component.

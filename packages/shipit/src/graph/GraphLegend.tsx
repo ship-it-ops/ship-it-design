@@ -1,3 +1,5 @@
+'use client';
+
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 import { ENTITY_LABEL, type EntityType } from '../entity/types';

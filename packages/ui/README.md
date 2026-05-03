@@ -51,7 +51,7 @@ step-by-step guide. In short:
 
 ## Conventions
 
-- **Always consume semantic tokens**, never primitive ones. `bg-brand`, not `bg-indigo-600`.
+- **Always consume semantic tokens**, never primitive ones. `bg-accent`, not `bg-indigo-600`.
 - **Forward refs**. Every component uses `forwardRef` so consumers can attach refs and
   Radix integrations can wire focus management.
 - **`asChild` polymorphism**. Use `@radix-ui/react-slot` for components that should be

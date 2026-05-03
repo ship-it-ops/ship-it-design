@@ -1,3 +1,5 @@
+'use client';
+
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 import { ENTITY_GLYPH, type EntityType } from '../entity/types';
@@ -38,7 +40,8 @@ export const GraphNode = forwardRef<HTMLDivElement, GraphNodeProps>(function Gra
   ref,
 ) {
   const color = state === 'path' ? (pathColor ?? 'var(--color-purple)') : typeColorVar[type];
-  const glowAlpha = state === 'hover' ? '80' : '40';
+  // Glow opacity expressed as a percent for color-mix; hover ≈ 50% (was hex 80), default ≈ 25% (was hex 40).
+  const glowPct = state === 'hover' ? 50 : 25;
   const opacity = state === 'dim' ? 0.35 : 1;
   const showRing = state === 'selected' || state === 'path';
 
@@ -61,7 +64,7 @@ export const GraphNode = forwardRef<HTMLDivElement, GraphNodeProps>(function Gra
           borderColor: color,
           color,
           fontSize: Math.round(size * 0.42),
-          boxShadow: `0 0 ${state === 'hover' ? 30 : 20}px ${color}${glowAlpha}`,
+          boxShadow: `0 0 ${state === 'hover' ? 30 : 20}px color-mix(in oklab, ${color} ${glowPct}%, transparent)`,
           outline: showRing ? `2px solid ${color}` : undefined,
           outlineOffset: showRing ? 4 : undefined,
           opacity,

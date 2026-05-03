@@ -1,3 +1,5 @@
+'use client';
+
 import { Badge, type BadgeProps } from '@ship-it-ui/ui';
 import { forwardRef, type ReactNode } from 'react';
 

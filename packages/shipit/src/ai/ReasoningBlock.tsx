@@ -1,3 +1,5 @@
+'use client';
+
 import { useControllableState } from '@ship-it-ui/ui';
 import { Children, forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 

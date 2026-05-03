@@ -1,3 +1,5 @@
+'use client';
+
 import * as RadixHoverCard from '@radix-ui/react-hover-card';
 import { forwardRef, type ReactNode } from 'react';
 
@@ -15,7 +17,7 @@ export const HoverCardContent = forwardRef<HTMLDivElement, RadixHoverCard.HoverC
           ref={ref}
           sideOffset={sideOffset}
           className={cn(
-            'rounded-base bg-panel border-border-strong z-40 border p-[14px] shadow-lg outline-none',
+            'rounded-base bg-panel border-border-strong z-popover border p-[14px] shadow-lg outline-none',
             'data-[state=open]:animate-[ship-pop-in_140ms_var(--easing-out)]',
             className,
           )}

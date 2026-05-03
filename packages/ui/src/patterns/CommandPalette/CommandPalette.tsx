@@ -1,3 +1,5 @@
+'use client';
+
 import * as RadixDialog from '@radix-ui/react-dialog';
 import { forwardRef, useEffect, useMemo, type ReactNode } from 'react';
 
@@ -95,7 +97,7 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
         <RadixDialog.Portal>
           <RadixDialog.Overlay
             className={cn(
-              'fixed inset-0 z-50 bg-black/55 backdrop-blur-[4px]',
+              'fixed inset-0 z-overlay bg-black/55 backdrop-blur-[4px]',
               'data-[state=open]:animate-[ship-fade-in_150ms_ease]',
             )}
           />
@@ -105,7 +107,7 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
             aria-describedby={undefined}
             style={{ width }}
             className={cn(
-              'fixed top-[20%] left-1/2 z-[51] max-w-[calc(100%-40px)] -translate-x-1/2',
+              'fixed top-[20%] left-1/2 z-modal max-w-[calc(100%-40px)] -translate-x-1/2',
               'border-border-strong bg-panel overflow-hidden rounded-xl border shadow-lg',
               'outline-none data-[state=open]:animate-[ship-dialog-in_180ms_var(--easing-out)]',
             )}

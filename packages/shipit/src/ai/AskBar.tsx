@@ -1,3 +1,5 @@
+'use client';
+
 import { Button, useControllableState } from '@ship-it-ui/ui';
 import {
   forwardRef,

@@ -22,7 +22,7 @@ describe('Card', () => {
     const handle = vi.fn();
     render(<Card title="x" onClick={handle} />);
     await userEvent.click(screen.getByText('x'));
-    expect(handle).toHaveBeenCalled();
+    expect(handle).toHaveBeenCalledTimes(1);
   });
 
   it('renders an actions slot in the header', () => {

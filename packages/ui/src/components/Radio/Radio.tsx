@@ -1,3 +1,5 @@
+'use client';
+
 import * as RadixRadio from '@radix-ui/react-radio-group';
 import { forwardRef, useId, type ReactNode } from 'react';
 

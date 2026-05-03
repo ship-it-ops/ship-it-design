@@ -29,7 +29,7 @@ describe('EntityTable', () => {
 
   it('sorts on the entity name column', async () => {
     render(<EntityTable data={rows} columns={[entityColumn()]} />);
-    await userEvent.click(screen.getByRole('columnheader', { name: /Name/ }));
+    await userEvent.click(screen.getByRole('button', { name: /Name/ }));
     const header = screen.getByRole('columnheader', { name: /Name/ });
     expect(header).toHaveAttribute('aria-sort', 'ascending');
     // localeCompare ascending: payment-webhook-v2, Priya K, runbook.md

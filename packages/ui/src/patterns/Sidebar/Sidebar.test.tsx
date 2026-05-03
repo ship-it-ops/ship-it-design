@@ -36,7 +36,7 @@ describe('Sidebar', () => {
       </Sidebar>,
     );
     await userEvent.click(screen.getByRole('button', { name: 'Graph' }));
-    expect(onClick).toHaveBeenCalled();
+    expect(onClick).toHaveBeenCalledTimes(1);
   });
 
   it('has no a11y violations', async () => {

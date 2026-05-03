@@ -1,3 +1,5 @@
+'use client';
+
 import { type Ref, useEffect, useMemo, useRef, type ReactNode } from 'react';
 
 import { useControllableState } from '../../hooks/useControllableState';
@@ -47,7 +49,7 @@ export interface DataTableProps<T> {
   /** Controlled selection. */
   selected?: ReadonlySet<string>;
   defaultSelected?: ReadonlyArray<string>;
-  onSelectionChange?: (selection: Set<string>) => void;
+  onSelectionChange?: (selection: ReadonlySet<string>) => void;
   /** Rendered when `data` is empty. */
   emptyState?: ReactNode;
   /** Sticky table header (requires the table to live in a scroll container). */
@@ -62,6 +64,13 @@ const alignClass = {
   right: 'text-right',
   center: 'text-center',
 } as const;
+
+/**
+ * Stable empty-set fallback for unset controlled `selected`. Using a single
+ * frozen instance keeps `.has(id)` lookups cheap and avoids referential churn
+ * in render-derived memos.
+ */
+const EMPTY_SET: ReadonlySet<string> = new Set();
 
 // Note: this is a generic component. The forwardRef helper loses the generic
 // type, so we keep it as a plain function and accept an optional ref via props.
@@ -90,8 +99,8 @@ export function DataTable<T>(props: DataTableProps<T> & { ref?: Ref<HTMLTableEle
     onChange: onSortChange,
   });
 
-  const [selected, setSelected] = useControllableState<Set<string>>({
-    value: selectedProp instanceof Set ? selectedProp : (selectedProp as Set<string> | undefined),
+  const [selected, setSelected] = useControllableState<ReadonlySet<string>>({
+    value: selectedProp,
     defaultValue: new Set(defaultSelected ?? []),
     onChange: onSelectionChange,
   });
@@ -116,8 +125,9 @@ export function DataTable<T>(props: DataTableProps<T> & { ref?: Ref<HTMLTableEle
   }, [data, sort, sortableMap]);
 
   const allIds = useMemo(() => sortedData.map(rowKey), [sortedData, rowKey]);
-  const allSelected = allIds.length > 0 && allIds.every((id) => selected!.has(id));
-  const someSelected = !allSelected && allIds.some((id) => selected!.has(id));
+  const selectedSet = selected ?? EMPTY_SET;
+  const allSelected = allIds.length > 0 && allIds.every((id) => selectedSet.has(id));
+  const someSelected = !allSelected && allIds.some((id) => selectedSet.has(id));
 
   const headerCheckRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -158,7 +168,7 @@ export function DataTable<T>(props: DataTableProps<T> & { ref?: Ref<HTMLTableEle
   return (
     <table ref={ref} className={cn('w-full border-collapse text-[12px]', className)}>
       {caption && <caption className="sr-only">{caption}</caption>}
-      <thead className={cn('bg-panel-2', stickyHeader && 'sticky top-0 z-10')}>
+      <thead className={cn('bg-panel-2', stickyHeader && 'sticky top-0 z-raised')}>
         <tr>
           {selectable && (
             <th scope="col" className="border-border w-8 border-b px-3 py-2 text-left">
@@ -183,12 +193,16 @@ export function DataTable<T>(props: DataTableProps<T> & { ref?: Ref<HTMLTableEle
                   : 'descending'
                 : 'none';
             const align = col.align ?? 'left';
+            const indicator = sortable && isSorted && (
+              <span aria-hidden className="ml-1">
+                {sort?.direction === 'asc' ? '↑' : '↓'}
+              </span>
+            );
             return (
               <th
                 key={col.key}
                 scope="col"
                 aria-sort={ariaSort}
-                onClick={sortable ? () => toggleSort(col.key) : undefined}
                 style={col.width != null ? { width: col.width } : undefined}
                 className={cn(
                   'border-border border-b px-3 py-2 font-mono text-[10px] font-medium tracking-[1.4px] uppercase select-none',
@@ -197,11 +211,17 @@ export function DataTable<T>(props: DataTableProps<T> & { ref?: Ref<HTMLTableEle
                   isSorted ? 'text-accent' : 'text-text-dim',
                 )}
               >
-                {col.header}
-                {sortable && isSorted && (
-                  <span aria-hidden className="ml-1">
-                    {sort?.direction === 'asc' ? '↑' : '↓'}
-                  </span>
+                {sortable ? (
+                  <button
+                    type="button"
+                    onClick={() => toggleSort(col.key)}
+                    className="focus-visible:ring-accent-dim inline-flex cursor-pointer items-center gap-1 font-mono text-[10px] font-medium tracking-[1.4px] uppercase outline-none focus-visible:ring-[3px]"
+                  >
+                    {col.header}
+                    {indicator}
+                  </button>
+                ) : (
+                  col.header
                 )}
               </th>
             );
@@ -221,7 +241,7 @@ export function DataTable<T>(props: DataTableProps<T> & { ref?: Ref<HTMLTableEle
         )}
         {sortedData.map((row) => {
           const id = rowKey(row);
-          const isSelected = selected!.has(id);
+          const isSelected = selectedSet.has(id);
           return (
             <tr
               key={id}

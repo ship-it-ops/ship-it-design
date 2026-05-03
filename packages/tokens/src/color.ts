@@ -45,7 +45,7 @@ export const colorSemanticDark = {
 
   text: '#ededef',
   textMuted: '#8a8a94',
-  textDim: '#55555d',
+  textDim: '#7c7c86',
 
   // Accents reference the runtime `--accent-h` knob.
   accent: 'oklch(0.82 0.12 var(--accent-h))',
@@ -70,9 +70,9 @@ export const colorSemanticLight = {
 
   text: '#0e0e10',
   textMuted: '#5a5a63',
-  textDim: '#8e8e96',
+  textDim: '#6f6f78',
 
-  accent: 'oklch(0.72 0.13 var(--accent-h))',
+  accent: 'oklch(0.45 0.13 var(--accent-h))',
   accentText: 'oklch(0.38 0.13 var(--accent-h))',
   accentDim: 'oklch(0.72 0.13 var(--accent-h) / 0.10)',
   accentGlow: 'oklch(0.72 0.13 var(--accent-h) / 0.25)',

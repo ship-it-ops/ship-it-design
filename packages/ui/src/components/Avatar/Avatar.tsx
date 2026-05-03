@@ -1,12 +1,14 @@
+'use client';
+
 import * as RadixAvatar from '@radix-ui/react-avatar';
 import { forwardRef, type HTMLAttributes } from 'react';
 
 import { cn } from '../../utils/cn';
 
+import { sizePx } from './sizes';
+
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export type AvatarStatus = 'ok' | 'warn' | 'err' | 'off';
-
-const sizePx: Record<AvatarSize, number> = { xs: 20, sm: 24, md: 32, lg: 40, xl: 56 };
 
 const statusBg: Record<AvatarStatus, string> = {
   ok: 'bg-ok',
