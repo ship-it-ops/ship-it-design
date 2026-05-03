@@ -45,6 +45,13 @@ is conditional on the label being absent — it skips entirely when present.
 Drafts, the auto-generated `chore(release): version packages` PR, and PRs from
 `dependabot[bot]` / `renovate[bot]` are also skipped automatically.
 
+**About the Claude review.** PRs are reviewed by Claude (Anthropic) using the
+org's API key — the cost is on the project, not on you. The review is
+non-binding: it leaves inline notes and a sticky summary, but merge decisions
+still rest with human reviewers. If you'd prefer your diff not be sent to a
+third-party LLM (employer-confidentiality reasons, in-flight security work,
+etc.), apply the `skip-claude` label and the job won't run.
+
 ## Commit style
 
 Commit messages tend to use one of these prefixes; we don't enforce this with a

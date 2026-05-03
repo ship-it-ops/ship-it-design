@@ -37,8 +37,7 @@ export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(function Br
           const isCurrent = i === last;
           return (
             <li key={i} className="inline-flex items-center gap-[6px]">
-              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-              {isCurrent ? <Crumb {...(crumb.props as any)} current /> : crumb}
+              {isCurrent ? <Crumb {...crumb.props} current /> : crumb}
               {!isCurrent && (
                 <span aria-hidden className="text-text-dim">
                   {separator}

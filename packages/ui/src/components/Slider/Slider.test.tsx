@@ -11,7 +11,7 @@ describe('Slider', () => {
   });
 
   it('accepts a controlled scalar value (not just an array)', () => {
-    render(<Slider value={37 as unknown as never} aria-label="v" />);
+    render(<Slider value={37} aria-label="v" />);
     expect(screen.getByRole('slider')).toHaveAttribute('aria-valuenow', '37');
   });
 
@@ -21,7 +21,7 @@ describe('Slider', () => {
   });
 
   it('accepts a scalar defaultValue', () => {
-    render(<Slider defaultValue={12 as unknown as never} aria-label="v" />);
+    render(<Slider defaultValue={12} aria-label="v" />);
     expect(screen.getByRole('slider')).toHaveAttribute('aria-valuenow', '12');
   });
 

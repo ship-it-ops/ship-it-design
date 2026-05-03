@@ -84,6 +84,19 @@ jobs:
       - name: Test
         run: pnpm test
 
+      # Surface coverage as a PR artifact so reviewers can inspect uncovered
+      # branches without having to re-run the suite locally. Only fired by the
+      # vitest configs in `packages/*/vitest.config.ts`; `if-no-files-found:
+      # ignore` keeps this step quiet when a package opts out.
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: coverage-node${{ matrix.node-version }}
+          path: packages/*/coverage/
+          if-no-files-found: ignore
+          retention-days: 14
+
       - name: Build
         run: pnpm build
 

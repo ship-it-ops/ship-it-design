@@ -2,6 +2,12 @@
 
 The single source of truth for design tokens used across the Ship-It design system.
 
+## How this fits in
+
+Part of the [Ship-It Design System](../../docs/architecture.md). See the
+architecture overview for how `@ship-it-ui/tokens`, `@ship-it-ui/icons`,
+`@ship-it-ui/ui`, and `@ship-it-ui/shipit` compose.
+
 ## What's a token?
 
 A token is a named design decision — `color.brand`, `space.4`, `radius.md`. Components

@@ -71,6 +71,7 @@ export const GraphMinimap = forwardRef<HTMLDivElement, GraphMinimapProps>(functi
         {viewport && (
           <span
             aria-hidden
+            data-testid="minimap-viewport"
             className="border-accent absolute rounded-[2px] border"
             style={{
               left: `${viewport.x * 100}%`,

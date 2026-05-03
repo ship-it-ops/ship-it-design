@@ -31,6 +31,12 @@ export interface SplitButtonProps extends HTMLAttributes<HTMLDivElement> {
   onMenu?: () => void;
   /** Disable both segments. */
   disabled?: boolean;
+  /**
+   * Accessible label for the trailing menu button. Defaults to
+   * `"More actions"`. Override when the menu's purpose is more specific
+   * (e.g. `"Deploy options"`) so screen-reader users hear the right intent.
+   */
+  menuAriaLabel?: string;
   children: ReactNode;
 }
 
@@ -39,7 +45,17 @@ export interface SplitButtonProps extends HTMLAttributes<HTMLDivElement> {
  * Common pattern for "Deploy ▾" or "Save and …" controls.
  */
 export const SplitButton = forwardRef<HTMLDivElement, SplitButtonProps>(function SplitButton(
-  { variant = 'primary', size = 'md', onClick, onMenu, disabled, className, children, ...props },
+  {
+    variant = 'primary',
+    size = 'md',
+    onClick,
+    onMenu,
+    disabled,
+    menuAriaLabel = 'More actions',
+    className,
+    children,
+    ...props
+  },
   ref,
 ) {
   // Token-aware divider between the two segments. For variants whose
@@ -67,7 +83,7 @@ export const SplitButton = forwardRef<HTMLDivElement, SplitButtonProps>(function
         size={size}
         onClick={onMenu}
         disabled={disabled}
-        aria-label="More actions"
+        aria-label={menuAriaLabel}
         className="rounded-l-none px-2"
       >
         {glyphs.collapse}

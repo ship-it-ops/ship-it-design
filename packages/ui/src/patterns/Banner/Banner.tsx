@@ -61,6 +61,7 @@ export const Banner = forwardRef<HTMLDivElement, BannerProps>(function Banner(
   { tone = 'accent', sticky, icon, action, live = 'polite', className, children, ...props },
   ref,
 ) {
+  const t = (tone ?? 'accent') as BannerTone;
   return (
     <div
       ref={ref}
@@ -70,7 +71,7 @@ export const Banner = forwardRef<HTMLDivElement, BannerProps>(function Banner(
       {...props}
     >
       <span aria-hidden className="leading-none">
-        {icon ?? defaultGlyph[tone!]}
+        {icon ?? defaultGlyph[t]}
       </span>
       <div className="min-w-0 flex-1">{children}</div>
       {action && <div className="ml-auto">{action}</div>}

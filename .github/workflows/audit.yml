@@ -1,0 +1,34 @@
+name: Weekly audit
+
+# Surfaces npm advisories and lockfile-dedupe drift on a cron so they don't
+# wait until the next contributor stumbles on them. Runs as a non-blocking
+# warning — the goal is visibility, not gating.
+#
+# Manual trigger (workflow_dispatch) is exposed for ad-hoc runs after a
+# noisy advisory week or after a chunky dep bump.
+
+on:
+  schedule:
+    - cron: '0 12 * * 1' # Monday 12:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    name: pnpm audit + dedupe check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: ./.github/actions/setup
+
+      - name: pnpm audit (prod, high+)
+        run: pnpm audit --prod --audit-level=high || echo "::warning::Audit found high+ vulns — review the log"
+
+      - name: pnpm dedupe check
+        run: pnpm dedupe --check || echo "::warning::Lockfile is not deduped — run pnpm dedupe locally"

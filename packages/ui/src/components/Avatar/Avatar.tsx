@@ -4,6 +4,7 @@ import * as RadixAvatar from '@radix-ui/react-avatar';
 import { forwardRef, type HTMLAttributes } from 'react';
 
 import { cn } from '../../utils/cn';
+import { stateLabel } from '../StatusDot/StatusDot';
 
 import { sizePx } from './sizes';
 
@@ -84,7 +85,7 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
       {status && (
         <span
           role="img"
-          aria-label={`status: ${status}`}
+          aria-label={stateLabel[status]}
           className={cn(
             'border-bg absolute right-0 bottom-0 rounded-full border-[2px]',
             statusBg[status],

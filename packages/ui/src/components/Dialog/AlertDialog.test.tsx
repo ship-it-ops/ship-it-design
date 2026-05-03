@@ -65,6 +65,8 @@ describe('AlertDialog', () => {
 
     await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
     expect(onCancel).toHaveBeenCalledOnce();
+    await userEvent.click(screen.getByRole('button', { name: 'Disconnect' }));
+    expect(onConfirm).toHaveBeenCalledOnce();
   });
 
   it('closes via ESC', async () => {

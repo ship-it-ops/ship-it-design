@@ -12,6 +12,11 @@ const meta: Meta<typeof SplitButton> = {
       options: ['primary', 'secondary', 'outline', 'ghost', 'destructive', 'success'],
     },
     size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
+    menuAriaLabel: {
+      control: 'text',
+      description:
+        'Accessible label for the trailing chevron button. Defaults to "More actions"; override to match the menu\'s actual purpose (e.g. "Deploy options").',
+    },
     onClick: { action: 'main clicked' },
     onMenu: { action: 'menu clicked' },
   },

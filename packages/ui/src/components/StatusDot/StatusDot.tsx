@@ -35,6 +35,21 @@ const stateText: Record<StatusState, string> = {
   accent: 'text-accent',
 };
 
+/**
+ * Human-friendly accessible names for each status. Used as the default
+ * `aria-label` when no `label` is provided so screen readers announce
+ * "Online" instead of the raw enum token "ok". Exported so other components
+ * (e.g., `Avatar`'s status indicator) can reuse the same vocabulary.
+ */
+export const stateLabel: Record<StatusState, string> = {
+  ok: 'Online',
+  warn: 'Warning',
+  err: 'Error',
+  off: 'Offline',
+  sync: 'Syncing',
+  accent: 'Active',
+};
+
 export const StatusDot = forwardRef<HTMLSpanElement, StatusDotProps>(function StatusDot(
   { state = 'ok', label, pulse, size = 8, className, ...props },
   ref,
@@ -43,7 +58,7 @@ export const StatusDot = forwardRef<HTMLSpanElement, StatusDotProps>(function St
     <span
       ref={ref}
       role={label ? 'status' : 'img'}
-      aria-label={!label && typeof state === 'string' ? state : undefined}
+      aria-label={!label ? stateLabel[state] : undefined}
       className={cn('inline-flex items-center gap-[6px]', className)}
       {...props}
     >

@@ -2,6 +2,12 @@
 
 The React component library for the Ship-It design system.
 
+## How this fits in
+
+Part of the [Ship-It Design System](../../docs/architecture.md). See the
+architecture overview for how `@ship-it-ui/tokens`, `@ship-it-ui/icons`,
+`@ship-it-ui/ui`, and `@ship-it-ui/shipit` compose.
+
 ## Architecture
 
 ```

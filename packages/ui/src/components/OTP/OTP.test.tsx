@@ -36,6 +36,30 @@ describe('OTP', () => {
     expect(handle).toHaveBeenCalledWith('123');
   });
 
+  it('announces "Code complete" via a polite live region when filled', async () => {
+    const { container } = render(<OTP length={3} />);
+    const liveRegion = container.querySelector('[aria-live="polite"]');
+    expect(liveRegion).not.toBeNull();
+    expect(liveRegion).toHaveTextContent('');
+    const slots = screen.getAllByRole('textbox');
+    await userEvent.click(slots[0]!);
+    await userEvent.keyboard('123');
+    expect(liveRegion).toHaveTextContent('Code complete');
+  });
+
+  it('clears the completion announcement when the code becomes incomplete', async () => {
+    const { container } = render(<OTP length={3} />);
+    const liveRegion = container.querySelector('[aria-live="polite"]')!;
+    const slots = screen.getAllByRole('textbox');
+    await userEvent.click(slots[0]!);
+    await userEvent.keyboard('123');
+    expect(liveRegion).toHaveTextContent('Code complete');
+    // Clear the last slot — focus + select (via onFocus) means Backspace deletes the digit.
+    await userEvent.click(slots[2]!);
+    await userEvent.keyboard('{Backspace}');
+    expect(liveRegion).toHaveTextContent('');
+  });
+
   it('has no a11y violations', async () => {
     const { container } = render(<OTP length={3} />);
     expect(await axe(container)).toHaveNoViolations();

@@ -44,11 +44,13 @@ export const OTP = forwardRef<OTPHandle, OTPProps>(function OTP(
   const [values, setValues] = useState<string[]>(() =>
     Array.from({ length }, (_, i) => defaultValue[i] ?? ''),
   );
+  const [completedAnnouncement, setCompletedAnnouncement] = useState('');
 
   useImperativeHandle(ref, () => ({
     focus: () => refs.current[0]?.focus(),
     reset: () => {
       setValues(Array(length).fill(''));
+      setCompletedAnnouncement('');
       refs.current[0]?.focus();
     },
   }));
@@ -62,7 +64,14 @@ export const OTP = forwardRef<OTPHandle, OTPProps>(function OTP(
     setValues(next);
     const joined = next.join('');
     onChange?.(joined);
-    if (joined.length === length && next.every((c) => c)) onComplete?.(joined);
+    const isComplete = joined.length === length && next.every((c) => c);
+    if (isComplete) {
+      onComplete?.(joined);
+      setCompletedAnnouncement('Code complete');
+    } else {
+      // Reset the announcement when the user is editing the value back to incomplete.
+      setCompletedAnnouncement('');
+    }
     if (char && i < length - 1) refs.current[i + 1]?.focus();
   };
 
@@ -84,7 +93,13 @@ export const OTP = forwardRef<OTPHandle, OTPProps>(function OTP(
     setValues(next);
     const joined = next.join('');
     onChange?.(joined);
-    if (joined.length === length) onComplete?.(joined);
+    const isComplete = joined.length === length && next.every((c) => c);
+    if (isComplete) {
+      onComplete?.(joined);
+      setCompletedAnnouncement('Code complete');
+    } else {
+      setCompletedAnnouncement('');
+    }
     refs.current[Math.min(pasted.length, length - 1)]?.focus();
   };
 
@@ -115,6 +130,9 @@ export const OTP = forwardRef<OTPHandle, OTPProps>(function OTP(
           )}
         />
       ))}
+      <span className="sr-only" aria-live="polite" aria-atomic="true">
+        {completedAnnouncement}
+      </span>
     </div>
   );
 });

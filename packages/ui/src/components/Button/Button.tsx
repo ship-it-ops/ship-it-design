@@ -106,7 +106,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   if (asChild) {
     return (
       <Slot
-        ref={ref as unknown as Ref<HTMLElement>}
+        // Radix Slot widens the rendered element to whatever the consumer passes
+        // as the single child, but our public ref type is HTMLButtonElement (the
+        // common case). Cast to HTMLElement for the asChild branch — consumers
+        // rendering a non-button child accept the variance.
+        ref={ref as Ref<HTMLElement>}
         aria-busy={loading || undefined}
         aria-disabled={isDisabled || undefined}
         data-disabled={isDisabled ? '' : undefined}

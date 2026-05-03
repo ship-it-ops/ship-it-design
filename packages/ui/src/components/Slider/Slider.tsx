@@ -5,7 +5,8 @@ import { forwardRef } from 'react';
 
 import { cn } from '../../utils/cn';
 
-export interface SliderProps extends Omit<RadixSlider.SliderProps, 'asChild'> {
+export interface SliderProps
+  extends Omit<RadixSlider.SliderProps, 'asChild' | 'value' | 'defaultValue' | 'onValueChange'> {
   /** Show the numeric value to the right of the track. */
   showValue?: boolean;
   /** Pixel width or any CSS length. Defaults to `240`. */
@@ -17,6 +18,20 @@ export interface SliderProps extends Omit<RadixSlider.SliderProps, 'asChild'> {
    * literal `'Value'` when neither is provided).
    */
   thumbLabels?: ReadonlyArray<string>;
+  /**
+   * Controlled value. Accepts a scalar for single-thumb sliders or an array
+   * for multi-thumb (range) sliders. The shape passed in mirrors the shape
+   * passed back to `onValueChange`.
+   */
+  value?: number | number[];
+  /** Uncontrolled initial value. Same scalar/array semantics as `value`. */
+  defaultValue?: number | number[];
+  /**
+   * Fires when the value changes. The argument shape mirrors the input shape:
+   * if `value`/`defaultValue` is a scalar, `next` is a scalar; if it's an
+   * array, `next` is an array.
+   */
+  onValueChange?: (next: number | number[]) => void;
 }
 
 /**
