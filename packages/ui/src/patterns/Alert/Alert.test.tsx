@@ -23,9 +23,7 @@ describe('Alert', () => {
   });
 
   it('uses role="alert" only when live="assertive" is set', () => {
-    render(
-      <Alert tone="err" live="assertive" title="Boom" />,
-    );
+    render(<Alert tone="err" live="assertive" title="Boom" />);
     const alert = screen.getByRole('alert');
     expect(alert).toBeInTheDocument();
     expect(alert).toHaveAttribute('aria-live', 'assertive');

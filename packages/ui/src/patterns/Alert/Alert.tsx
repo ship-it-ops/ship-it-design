@@ -64,7 +64,17 @@ export interface AlertProps
 }
 
 export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
-  { tone = 'accent', title, description, icon, action, live = 'polite', className, children, ...props },
+  {
+    tone = 'accent',
+    title,
+    description,
+    icon,
+    action,
+    live = 'polite',
+    className,
+    children,
+    ...props
+  },
   ref,
 ) {
   const t = (tone ?? 'accent') as AlertTone;
@@ -76,10 +86,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
       className={cn(alertStyles({ tone }), className)}
       {...props}
     >
-      <span
-        aria-hidden
-        className={cn('mt-[1px] text-[14px] leading-none', iconColorClass[t])}
-      >
+      <span aria-hidden className={cn('mt-[1px] text-[14px] leading-none', iconColorClass[t])}>
         {icon ?? defaultGlyph[t]}
       </span>
       <div className="min-w-0 flex-1">

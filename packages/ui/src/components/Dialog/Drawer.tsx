@@ -54,7 +54,7 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(function Drawer(
           ref={ref}
           aria-describedby={undefined}
           className={cn(
-            'bg-panel fixed top-0 bottom-0 z-modal flex flex-col shadow-lg outline-none',
+            'bg-panel z-modal fixed top-0 bottom-0 flex flex-col shadow-lg outline-none',
             sideClasses[side],
           )}
           style={{ width }}

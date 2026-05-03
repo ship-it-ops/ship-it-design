@@ -31,7 +31,7 @@ export const Sheet = forwardRef<HTMLDivElement, SheetProps>(function Sheet(
           ref={ref}
           aria-describedby={undefined}
           className={cn(
-            'fixed bottom-0 left-1/2 z-modal -translate-x-1/2 p-5',
+            'z-modal fixed bottom-0 left-1/2 -translate-x-1/2 p-5',
             'bg-panel border-border-strong rounded-tl-lg rounded-tr-lg border-t shadow-lg outline-none',
             'data-[state=open]:animate-[ship-slide-in-bottom_220ms_var(--easing-out)]',
           )}

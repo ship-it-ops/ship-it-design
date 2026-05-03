@@ -35,13 +35,7 @@ describe('Calendar', () => {
   });
 
   it('supports arrow-key navigation with roving tabindex', async () => {
-    render(
-      <Calendar
-        defaultMonth={3}
-        defaultYear={2026}
-        defaultValue={new Date(2026, 3, 15)}
-      />,
-    );
+    render(<Calendar defaultMonth={3} defaultYear={2026} defaultValue={new Date(2026, 3, 15)} />);
     // Selected day starts as the focused/tabbable cell.
     const apr15 = screen.getByRole('button', { name: /Apr 15 2026/ });
     expect(apr15).toHaveAttribute('tabindex', '0');

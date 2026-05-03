@@ -17,7 +17,7 @@ The doc set is impressively complete for a 0.0.1 system — `architecture.md`, `
   - Fix: either fix the implementation (covered by A11y persona's P0) and keep the doc, or correct the doc to "tokens are zeroed; per-component animations must consume the duration tokens to opt in" until the implementation matches.
 
 - **`docs/architecture.md` install table says `ui (+ tokens peer)` but the package.json declares tokens as devDep** — `docs/architecture.md:55-57`, `packages/ui/package.json:76`
-  - What: the doc says installing `@ship-it-ui/ui` requires `@ship-it-ui/tokens` as a peer. The package's `peerDependencies` only lists `react`/`react-dom`. The `architecture.md` table is *intent-correct*; the package.json is *wrong* (covered as P0 by SE and FE).
+  - What: the doc says installing `@ship-it-ui/ui` requires `@ship-it-ui/tokens` as a peer. The package's `peerDependencies` only lists `react`/`react-dom`. The `architecture.md` table is _intent-correct_; the package.json is _wrong_ (covered as P0 by SE and FE).
   - Why it matters: a contributor following the doc adds `tokens` as a peer in their consuming app, then `pnpm install` works; another contributor reads the package.json and concludes tokens isn't required, then their CSS import breaks. Two equally-defensible-from-the-evidence contradictory mental models.
   - Fix: fix the package.json (per SE/FE persona). Keep the doc as-is.
 

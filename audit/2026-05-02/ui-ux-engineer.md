@@ -7,7 +7,7 @@ The design language is coherent and visually mature for a 0.0.1 system: dark-fir
 ## P0 — blockers
 
 - **Z-index token scale exists but is never consumed** — `packages/tokens/src/z-index.ts:6-16`, every overlay component
-  - What: `zIndex` defines `base:0, raised:10, dropdown:1000, sticky:1100, overlay:1200, modal:1300, popover:1400, toast:1500, tooltip:1600`. The `@theme inline` block in `packages/ui/src/styles/globals.css:44-119` does not register any z-index token with Tailwind. Components hardcode arbitrary numbers: `Tooltip.tsx:27` uses `z-[60]` (token says 1600), `Toast.tsx:89` uses `z-[70]` (token says 1500), `Dialog.tsx:25,52` uses `z-50`/`z-[51]` (token says 1300), `Popover.tsx:22` uses `z-40` (token says 1400), `Banner.tsx:25` uses `z-30` (token says 1100), `DataTable.tsx:161` uses `z-10`, `Combobox.tsx:231` uses `z-30`. Both the values and the *ordering* differ from the token scale.
+  - What: `zIndex` defines `base:0, raised:10, dropdown:1000, sticky:1100, overlay:1200, modal:1300, popover:1400, toast:1500, tooltip:1600`. The `@theme inline` block in `packages/ui/src/styles/globals.css:44-119` does not register any z-index token with Tailwind. Components hardcode arbitrary numbers: `Tooltip.tsx:27` uses `z-[60]` (token says 1600), `Toast.tsx:89` uses `z-[70]` (token says 1500), `Dialog.tsx:25,52` uses `z-50`/`z-[51]` (token says 1300), `Popover.tsx:22` uses `z-40` (token says 1400), `Banner.tsx:25` uses `z-30` (token says 1100), `DataTable.tsx:161` uses `z-10`, `Combobox.tsx:231` uses `z-30`. Both the values and the _ordering_ differ from the token scale.
   - Why it matters: the entire promise of "use these named layers instead of arbitrary numbers so stacking conflicts can be reasoned about globally" (the JSDoc on `z-index.ts:1-4`) is unfulfilled. A consumer who reads the docs and uses `z-modal` will get nothing, and a contributor who looks at `Tooltip` to see how the token system applies sees `z-[60]` and concludes the system isn't real.
   - Fix: add `--z-base: 0; --z-dropdown: 1000; --z-modal: 1300; …` to `tokens.css`, register them under `@theme inline` so Tailwind generates `z-modal`/`z-tooltip` utilities, then sweep every overlay component to consume the tokens. This is the single change that makes the rest of the token-system claim believable.
 
@@ -31,8 +31,9 @@ The design language is coherent and visually mature for a 0.0.1 system: dark-fir
     - `RadialProgress` → `tone: 'accent' | 'ok' | 'warn' | 'err'` (same)
     - `EmptyState` → `tone: 'accent' | 'danger' | 'muted'` (`err` becomes `danger`, `muted` exists nowhere else)
     - `Input`/`Textarea` → `tone: 'default' | 'error'` (yet another vocabulary)
-    
+
     So `variant` vs `tone` is split, `info` vs `accent` is split, `err` vs `danger` is split, and `muted` is a one-off.
+
   - Why it matters: `<Alert variant="err">` and `<EmptyState tone="danger">` mean the same thing. A consumer who learns one will guess wrong on the other. Worse, `<Alert variant="info">` and `<Progress tone="accent">` ALSO mean the same thing. The vocabulary doesn't compose.
   - Fix: rename for one shared convention. Recommended: keep `variant` for visual style (e.g., `Button`'s primary/secondary/ghost/outline/destructive/success/link, `Tabs`' underline/pill, `Card`'s elevated/outlined), and use `tone` for semantic intent (`accent | ok | warn | err`). Then enforce both vocabularies across every component. Drop `info` (= `accent`), drop `danger` (= `err`), drop `muted` (or promote it as a real tone token).
 
@@ -47,8 +48,8 @@ The design language is coherent and visually mature for a 0.0.1 system: dark-fir
   - What:
     - `Input` error ring: `focus-within:ring-[oklch(0.55_0.18_30/0.18)]` — a hardcoded red, not the `--color-err` token
     - `Textarea` error ring: same hardcoded red
-    - `Avatar` initial-fallback bg: `style={{ background: \`oklch(0.4 0.1 ${hue})\` }}` — hue derived from the user's name, but L+C are baked-in literals so reskins to `--accent-h` won't propagate
-    - `GraphMinimap` viewport tint: `'oklch(0.8 0.12 200 / 0.12)'` — hardcodes the *default* `--accent-h: 200`. A consumer who switches `--accent-h: 280` for purple will see GraphMinimap stay cyan.
+    - `Avatar` initial-fallback bg: `style={{ background: \`oklch(0.4 0.1 ${hue})\` }}`— hue derived from the user's name, but L+C are baked-in literals so reskins to`--accent-h` won't propagate
+    - `GraphMinimap` viewport tint: `'oklch(0.8 0.12 200 / 0.12)'` — hardcodes the _default_ `--accent-h: 200`. A consumer who switches `--accent-h: 280` for purple will see GraphMinimap stay cyan.
     - `CTAStrip` background: `bg-[linear-gradient(135deg,oklch(0.2_0.08_260),oklch(0.16_0.06_300))]` — completely outside the token system; light theme will look the same dark.
   - Why it matters: the central design-system pitch is "one knob reskins everything." Five components silently ignore the knob.
   - Fix: in `Input`/`Textarea` error ring, use `ring-err/30` (or introduce a `--color-err-glow` token mirroring `--color-accent-glow`). In `Avatar`, add `--color-avatar-fallback-{0..n}` tokens or accept that hue rotation is "design-intentional" and document it. In `GraphMinimap`, switch to `var(--color-accent-glow)` or a new `--color-graph-viewport` token. `CTAStrip` is marketing — flag for design review; it likely needs its own dedicated marketing-only tokens.
@@ -60,10 +61,10 @@ The design language is coherent and visually mature for a 0.0.1 system: dark-fir
 
 - **No paired `*-fg`/`*-bg` tokens for ok/warn/err** — `packages/tokens/src/color.ts:38-61`, `packages/ui/src/styles/globals.css:44-66`
   - What: `--color-on-accent: #0a0a0b` exists (the foreground for components that sit on `bg-accent`). No `--color-on-ok`, `--color-on-warn`, `--color-on-err`. So a "success" toast or button with `bg-ok` has no semantic foreground token to use; components default to `text-on-accent` (`Button.tsx:30` for `success` variant) which happens to be near-black — accidentally readable on the bright OK green, but only because both happen to need dark text. Brittle.
-  - Why it matters: any time a designer swaps a tone palette, the foreground breaks invisibly. Also: `Banner.tsx:21-24` solves this by drowning the bg in `color-mix(in_oklab,var(--color-X),transparent_82%)` so the background is *barely* tinted — clever, but it's a workaround for missing paired tokens.
+  - Why it matters: any time a designer swaps a tone palette, the foreground breaks invisibly. Also: `Banner.tsx:21-24` solves this by drowning the bg in `color-mix(in_oklab,var(--color-X),transparent_82%)` so the background is _barely_ tinted — clever, but it's a workaround for missing paired tokens.
   - Fix: add `okFg`, `warnFg`, `errFg`, `purpleFg`, `pinkFg` aliasing `#0a0a0b` (dark) / `#ededef` (light) per the contrast each ramp needs. Update `Button` `success`/`destructive` and any `bg-ok`/`bg-err` consumer.
 
-- **Variant *count* is split across the Button family** — `packages/ui/src/components/Button/Button.tsx:21-32`, `packages/ui/src/components/Button/IconButton.tsx:14`, `packages/ui/src/components/Button/SplitButton.tsx:9`
+- **Variant _count_ is split across the Button family** — `packages/ui/src/components/Button/Button.tsx:21-32`, `packages/ui/src/components/Button/IconButton.tsx:14`, `packages/ui/src/components/Button/SplitButton.tsx:9`
   - What: `Button` ships 7 variants (`primary, secondary, ghost, outline, destructive, success, link`). `IconButton` ships 4 (`primary, secondary, ghost, outline`). `SplitButton` ships 3 (`primary, secondary, outline`).
   - Why it matters: a consumer with a "Delete" `<IconButton>` cannot use `variant="destructive"` even though the parent `Button` supports it. The arbitrary subset means design intent doesn't propagate across the family.
   - Fix: bring `IconButton` and `SplitButton` to parity with `Button`. If certain variants don't make sense for icon-only (say, `link`), document the exclusion in a JSDoc rather than silently dropping support.
@@ -74,7 +75,7 @@ The design language is coherent and visually mature for a 0.0.1 system: dark-fir
   - Fix: drop `removable` from `Chip`; render the close-X whenever `onRemove` is set (matches Tag). Or (better) ask: are `Chip` and `Tag` actually different? If they're visual variants of the same concept, merge them.
 
 - **Empty `packages/ui/src/primitives/` directory referenced as a category by 3 docs** — `packages/ui/src/primitives/`, `README.md:19`, `docs/architecture.md:109`, `packages/ui/README.md:18`
-  - What: documented as "Thin wrappers over Radix when we want a Ship-It-flavored API" but the directory contains zero files. The components folder already has Dialog, DropdownMenu, Popover etc. that *are* thin Radix wrappers — so the category is conceptually muddled. There's no rule for what would qualify for `primitives/` vs `components/`.
+  - What: documented as "Thin wrappers over Radix when we want a Ship-It-flavored API" but the directory contains zero files. The components folder already has Dialog, DropdownMenu, Popover etc. that _are_ thin Radix wrappers — so the category is conceptually muddled. There's no rule for what would qualify for `primitives/` vs `components/`.
   - Why it matters: a contributor adding a new Radix-backed component has no clear placement rule. Three documented categories (primitives / components / patterns) but only two exist.
   - Fix: either (a) delete the empty directory and update the docs to two categories, or (b) define and enforce the boundary — e.g., `primitives/` is "Slot/asChild-shaped Ship-It-flavored Radix re-exports without ShipIt visual styling" and migrate the relevant files.
 
@@ -85,7 +86,7 @@ The design language is coherent and visually mature for a 0.0.1 system: dark-fir
 
 - **Token vocabulary documented in per-package READMEs does not match the actual token names** — `packages/ui/README.md:54`, `packages/tokens/README.md:18`
   - What: `packages/ui/README.md:54` example uses `bg-brand` (token doesn't exist; the role is `accent`). `packages/tokens/README.md:18` lists "semantic aliases like background, text, border, brand" — actual names are `bg`, `panel`, `text`, `text-muted`, `text-dim`, `border`, `border-strong`, `accent`, `accent-text`, `accent-dim`, `accent-glow`, `ok`, `warn`, `err`, `purple`, `pink` — `background` and `brand` aren't real.
-  - Why it matters: a consumer's first contact with the token vocabulary is the README. If the README's examples are wrong, every subsequent decision they make is built on a false mental model. (PM persona owns the doc fix; UI/UX angle: the *token vocabulary itself* is what's at stake — the inconsistency between docs and code is a design-system credibility issue.)
+  - Why it matters: a consumer's first contact with the token vocabulary is the README. If the README's examples are wrong, every subsequent decision they make is built on a false mental model. (PM persona owns the doc fix; UI/UX angle: the _token vocabulary itself_ is what's at stake — the inconsistency between docs and code is a design-system credibility issue.)
   - Fix: PM persona's fix.
 
 ## P2 — medium
@@ -129,7 +130,7 @@ The design language is coherent and visually mature for a 0.0.1 system: dark-fir
   - Already P1. From UI/UX angle: the hue rotation (8 distinct hues from the user's name) is a strong UX choice; the L+C choice is fine but should be tokenized so it can be re-tuned globally.
   - Fix: covered by P1.
 
-- **The `--color-on-accent` foreground is *always* `#0a0a0b` regardless of theme** — `packages/ui/src/styles/globals.css:66`
+- **The `--color-on-accent` foreground is _always_ `#0a0a0b` regardless of theme** — `packages/ui/src/styles/globals.css:66`
   - What: comment at line 65 says "Always near-black, regardless of theme." This is correct only as long as `--color-accent` stays light (`oklch(0.82 …)` dark, `oklch(0.72 …)` light). If `--accent-h` is rotated to a hue where L=0.72 happens to look darker (e.g., a saturated blue), `text-on-accent` flips to dark-on-dark.
   - Why it matters: the OKLCH knob is a great idea, but `on-accent` should depend on the resolved L of the accent, not be hardcoded. (Could be done with `light-dark()` once browser support catches up, or with a runtime check.)
   - Fix: document the knob's safe range, or add a runtime "auto-pick fg" using `color-mix(in oklab, white 70%, transparent)` against the accent.

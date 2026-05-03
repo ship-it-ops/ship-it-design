@@ -1,20 +1,20 @@
 name: Bug report
 description: Something broke or behaves unexpectedly in @ship-it-ui/*.
-labels: ["bug", "needs triage"]
+labels: ['bug', 'needs triage']
 body:
   - type: input
     id: package
     attributes:
       label: Package
       description: Which `@ship-it-ui/*` package is affected? (tokens / icons / ui / shipit)
-      placeholder: "@ship-it-ui/ui"
+      placeholder: '@ship-it-ui/ui'
     validations:
       required: true
   - type: input
     id: version
     attributes:
       label: Package version
-      placeholder: "0.0.1"
+      placeholder: '0.0.1'
     validations:
       required: true
   - type: textarea

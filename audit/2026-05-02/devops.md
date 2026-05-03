@@ -69,7 +69,7 @@ _None._
   - Why it matters: only relevant when ESM source resolution would work (i.e., consumers reach into `src/`). For typecheck specifically, `tsc` follows TS path mappings — if those existed at the workspace level you could drop `^build` from `typecheck`. Currently no `paths` in `tsconfig.json`, so the `dist`-based resolution is necessary; intent verified, finding is informational only.
   - Fix: long-term, add TypeScript project references or `paths` mappings so `typecheck` and `lint` can drop the `^build` dep. ~5-10x speedup on those tasks.
 
-- **`turbo.json:21` lists `coverage/**` and `storybook-static/**` as outputs of `test`** — `turbo.json:21`
+- **`turbo.json:21` lists `coverage/**`and`storybook-static/**`as outputs of`test`** — `turbo.json:21`
   - What: `storybook-static/**` is an output of `apps/docs`'s `test` script (`storybook build --test -o storybook-static` per `apps/docs/package.json:12`), but it's _also_ already an output of `build`. Listing it under both means `test` cache invalidations stomp `build` cache outputs and vice versa.
   - Fix: limit `test` outputs to `coverage/**` only.
 

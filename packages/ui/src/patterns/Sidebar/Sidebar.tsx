@@ -1,11 +1,6 @@
 'use client';
 
-import {
-  forwardRef,
-  type ButtonHTMLAttributes,
-  type HTMLAttributes,
-  type ReactNode,
-} from 'react';
+import { forwardRef, type ButtonHTMLAttributes, type HTMLAttributes, type ReactNode } from 'react';
 
 import { cn } from '../../utils/cn';
 
@@ -55,10 +50,7 @@ type NavItemBaseProps = {
 export type NavItemProps = NavItemBaseProps &
   (
     | ({ href: string } & Omit<HTMLAttributes<HTMLAnchorElement>, keyof NavItemBaseProps>)
-    | ({ href?: undefined } & Omit<
-        ButtonHTMLAttributes<HTMLButtonElement>,
-        keyof NavItemBaseProps
-      >)
+    | ({ href?: undefined } & Omit<ButtonHTMLAttributes<HTMLButtonElement>, keyof NavItemBaseProps>)
   );
 
 export const NavItem = forwardRef<HTMLAnchorElement | HTMLButtonElement, NavItemProps>(

@@ -1,22 +1,25 @@
 # Software Engineer — audit findings
 
 ## Verdict
+
 Engineering health is solid for a 0.0.1 design system: TypeScript is set to `strict` plus `noUncheckedIndexedAccess` from `packages/tsconfig/base.json`, the cva/cn vocabulary is consistent, hooks are small and well-scoped, and 86 test files cover most components with a useful axe pass at the end. The real fragility is at the dependency-graph seam: `@ship-it-ui/ui` ships a CSS file that imports `@ship-it-ui/tokens` while declaring tokens only as a devDependency — the package is broken on `npm install` for end users. Several declared deps are unused, two `instanceof Set ? x : (x as Set)` constructs are no-op casts that hide a real type hole in `DataTable`/`Tree`, and `GraphNode` has a CSS-color concatenation bug that silently mis-renders the hover/glow ring. Tests are mostly behavior-driven but lean on shallow assertions in a few places (`toHaveBeenCalled()` with no argument check, the EntityListRow test asserting only Cancel's spy fires, etc). There is no dead-code disaster and no cycles, but there is duplicated `cn` and test setup between `ui` and `shipit` and a directory (`packages/ui/src/primitives/`) referenced by docs but empty on disk.
 
 ## P0 — blockers
+
 - **`@ship-it-ui/tokens` is a devDependency but consumers' CSS imports it at runtime** — `packages/ui/package.json:76`, `packages/ui/src/styles/globals.css:20`
   - What: `globals.css` runs `@import '@ship-it-ui/tokens/styles/tokens.css';` and is exported from the published package as `./styles/globals.css`. `@ship-it-ui/tokens` is listed in `devDependencies` only, so an end user who runs `npm i @ship-it-ui/ui` and follows the documented `import '@ship-it-ui/ui/styles/globals.css'` (README + `apps/docs/.storybook/preview.ts:4`) will hit a Tailwind/Vite resolve error: the bare `@ship-it-ui/tokens` specifier won't be on disk.
   - Why it matters: the publishable artifact is unusable as documented. This is a publish-time foot-gun, not a workspace problem.
   - Fix: move `@ship-it-ui/tokens` from `devDependencies` to `peerDependencies` (or to `dependencies`). Same goes for `@fontsource-variable/geist` / `geist-mono` if they should be peers — currently they're runtime deps, which is fine, but tokens needs to live alongside them.
 
 - **`useControllableState`'s "value changed" check uses identity, but `DataTable`/`Tree` updaters return Set instances that always change identity** — `packages/ui/src/hooks/useControllableState.ts:45`, `packages/ui/src/patterns/DataTable/DataTable.tsx:138-156`, `packages/ui/src/patterns/Tree/Tree.tsx:69-79`
-  - What: the hook only fires `onChange` when `resolved !== valueRef.current`. The DataTable/Tree updaters always return `new Set(prev)`, so the identity is always different — that part is fine. The actual issue is the inverse: in *controlled* mode where the parent passes a stable `selected={mySet}` reference, the hook will store the same `mySet` in `valueRef`, and a child setSelected updater that mutates a clone and returns it always sees a different reference, so onChange fires correctly. **However**, the `setSelected` calls cast through `useControllableState<Set<string>>` typed as `T | undefined` and then dereference with `selected!.has(id)` (DataTable.tsx:119, 120, 224) and `expanded ?? new Set()` (Tree.tsx:93). With `noUncheckedIndexedAccess` and `strict`, the non-null assertion is masking a real possibility: a consumer passes `selected={undefined}` explicitly (controlled-but-empty), `useControllableState` returns the controlled value `undefined`, and `selected!.has(id)` throws `Cannot read properties of undefined`.
+  - What: the hook only fires `onChange` when `resolved !== valueRef.current`. The DataTable/Tree updaters always return `new Set(prev)`, so the identity is always different — that part is fine. The actual issue is the inverse: in _controlled_ mode where the parent passes a stable `selected={mySet}` reference, the hook will store the same `mySet` in `valueRef`, and a child setSelected updater that mutates a clone and returns it always sees a different reference, so onChange fires correctly. **However**, the `setSelected` calls cast through `useControllableState<Set<string>>` typed as `T | undefined` and then dereference with `selected!.has(id)` (DataTable.tsx:119, 120, 224) and `expanded ?? new Set()` (Tree.tsx:93). With `noUncheckedIndexedAccess` and `strict`, the non-null assertion is masking a real possibility: a consumer passes `selected={undefined}` explicitly (controlled-but-empty), `useControllableState` returns the controlled value `undefined`, and `selected!.has(id)` throws `Cannot read properties of undefined`.
   - Why it matters: a runtime crash path on a sensible API call.
   - Fix: replace `selected!.has(id)` with `(selected ?? EMPTY_SET).has(id)` (or hoist a stable empty-set constant), and drop the `!` non-null assertions. Same for Tree.tsx:164 `item.children!.map`, which is currently guarded by `hasChildren` but unnecessarily uses `!`.
 
 ## P1 — high priority
+
 - **`GraphNode` concatenates CSS color values, producing invalid CSS** — `packages/shipit/src/graph/GraphNode.tsx:64`
-  - What: `boxShadow: \`0 0 ${state === 'hover' ? 30 : 20}px ${color}${glowAlpha}\`` produces e.g. `0 0 30px var(--color-accent)40`. The trailing `40` is an attempt to apply hex-alpha, but `var(--color-accent)` is not a hex string — the resulting token `var(--color-accent)40` is unparseable, the browser drops the rule, and the glow shadow never renders.
+  - What: `boxShadow: \`0 0 ${state === 'hover' ? 30 : 20}px ${color}${glowAlpha}\``produces e.g.`0 0 30px var(--color-accent)40`. The trailing `40`is an attempt to apply hex-alpha, but`var(--color-accent)`is not a hex string — the resulting token`var(--color-accent)40` is unparseable, the browser drops the rule, and the glow shadow never renders.
   - Why it matters: a default presentational state of a flagship component (hover/path) silently fails to render the visual it's testing for. Hard to spot in tests because the test only checks DOM presence, not the painted shadow.
   - Fix: switch to `color-mix(in oklab, ${color} ${pct}%, transparent)` so the CSS variable resolves first, or precompute an alpha-aware color using a token (e.g. `var(--color-accent-glow)`).
 
@@ -66,6 +69,7 @@ Engineering health is solid for a 0.0.1 design system: TypeScript is set to `str
   - Fix: in `packages/shipit/src`, replace `import { cn } from '../utils/cn'` with `import { cn } from '@ship-it-ui/ui'`, drop `packages/shipit/src/utils/cn.ts`, and remove `clsx` + `tailwind-merge` from `packages/shipit/package.json` (they'll come transitively via `@ship-it-ui/ui`).
 
 ## P2 — medium
+
 - **`as any` cast bypassing real prop forwarding in Breadcrumbs** — `packages/ui/src/patterns/Breadcrumbs/Breadcrumbs.tsx:39`
   - What: `<Crumb {...(crumb.props as any)} current />` — explicit `as any` with eslint-disable. Works today because `<Crumb>` is the only valid child, but if anyone passes a custom child (e.g. a custom anchor wrapping the link), the props spread loses all type safety.
   - Why it matters: the only `as any` in production source. Easy to type properly with `crumb.props as CrumbProps`.
@@ -157,7 +161,7 @@ Engineering health is solid for a 0.0.1 design system: TypeScript is set to `str
   - Fix: add `await userEvent.click(getByRole('button', { name: 'Disconnect' }))` and `expect(onConfirm).toHaveBeenCalledOnce()`.
 
 - **`GraphMinimap` "renders the viewport rectangle when provided" test only counts spans** — `packages/shipit/src/graph/GraphMinimap.test.tsx:18-24`
-  - What: `expect(dots.length).toBeGreaterThan(points.length)` — proves there's *some* extra span, doesn't prove it's the viewport rectangle, doesn't check its position/size. If the implementation regresses to always render an extra span, this still passes.
+  - What: `expect(dots.length).toBeGreaterThan(points.length)` — proves there's _some_ extra span, doesn't prove it's the viewport rectangle, doesn't check its position/size. If the implementation regresses to always render an extra span, this still passes.
   - Why it matters: the assertion is structurally true regardless of correctness.
   - Fix: assert on a specific `data-testid="minimap-viewport"` element (add the testid first), or query by computed style.
 
@@ -177,6 +181,7 @@ Engineering health is solid for a 0.0.1 design system: TypeScript is set to `str
   - Fix: add `{ "path": "../../packages/icons" }` and `{ "path": "../../packages/shipit" }` to the references array.
 
 ## P3 — nits
+
 - **Dead `import.meta.resolve` reliance is the only Node-24-specific feature in build code** — `apps/docs/.storybook/main.ts:15`
   - What: `import.meta.resolve` was unflagged in Node 20.6+. The repo's `engines.node: ">=24"` (`package.json:8-10`) and `.nvmrc: 24` aren't strictly necessary for current source. (PM persona owns the doc-vs-config inconsistency; flagging the engineering side: nothing in the build actually requires Node 24.)
   - Fix: align engines with what the build actually needs (Node 20.6+) or document why 24 is required (test runner, etc.).
@@ -201,6 +206,7 @@ Engineering health is solid for a 0.0.1 design system: TypeScript is set to `str
   - Fix: prefer `toHaveBeenCalledWith(...)` or `toHaveBeenCalledTimes(1)` plus an inspection of `mock.calls[0]`.
 
 ## Out of scope / not assessed
+
 - ARIA correctness of components (Drawer omits `<Dialog.Title>` even with a `title` prop — flagged in passing at `packages/ui/src/components/Dialog/Drawer.tsx:28`; full a11y review owned by the Accessibility persona).
 - Component API design quality, naming consistency between `Banner`/`Alert`/`Toast`/`Dialog`/`Drawer`/`Sheet`, token semantics — UI/UX persona.
 - React-specific perf (memoization missing on hot paths in DataTable, Combobox), SSR safety of `useTheme`'s document access, `"use client"` directives — Frontend persona.

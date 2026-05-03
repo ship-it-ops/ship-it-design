@@ -54,7 +54,7 @@ export const Stepper = forwardRef<HTMLOListElement, StepperProps>(function Stepp
     <ol
       ref={ref}
       aria-label="Progress"
-      className={cn('flex w-full items-center list-none p-0 m-0', className)}
+      className={cn('m-0 flex w-full list-none items-center p-0', className)}
       {...props}
     >
       {steps.map((step, i) => {

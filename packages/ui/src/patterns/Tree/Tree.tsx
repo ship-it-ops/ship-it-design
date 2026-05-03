@@ -272,7 +272,17 @@ export const Tree = forwardRef<HTMLUListElement, TreeProps>(function Tree(
           break;
       }
     },
-    [collapse, expand, expandedSet, flatVisible, moveActive, onKeyDown, selectItem, tabStopId, toggle],
+    [
+      collapse,
+      expand,
+      expandedSet,
+      flatVisible,
+      moveActive,
+      onKeyDown,
+      selectItem,
+      tabStopId,
+      toggle,
+    ],
   );
 
   return (

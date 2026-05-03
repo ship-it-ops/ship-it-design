@@ -76,12 +76,12 @@ Per-package: `pnpm --filter @ship-it-ui/ui test`, etc.
 
 GitHub Actions workflows in `.github/workflows/`:
 
-| Workflow              | Triggers on                     | What it does                                                 |
-| --------------------- | ------------------------------- | ------------------------------------------------------------ |
-| `ci.yml`              | every PR + push to `main`       | format → lint → typecheck → test → build                     |
-| `changeset-check.yml` | every PR touching `packages/*`  | fails if a publish-worthy change has no `.changeset/*.md`    |
+| Workflow              | Triggers on                         | What it does                                                                                           |
+| --------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `ci.yml`              | every PR + push to `main`           | format → lint → typecheck → test → build                                                               |
+| `changeset-check.yml` | every PR touching `packages/*`      | fails if a publish-worthy change has no `.changeset/*.md`                                              |
 | `snapshot.yml`        | `release: snapshot` label or manual | publishes a `0.0.0-pr-<N>-*` (or `0.0.0-snapshot-*` off main) build to npm under the matching dist-tag |
-| `release.yml`         | push to `main` with changesets  | opens "Version Packages" PR; publishes on merge              |
+| `release.yml`         | push to `main` with changesets      | opens "Version Packages" PR; publishes on merge                                                        |
 
 ## Where to read next
 

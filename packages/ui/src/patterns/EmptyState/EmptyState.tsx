@@ -30,8 +30,7 @@ const plateStyles = cva('grid h-12 w-12 place-items-center rounded-base text-[22
 
 type PlateVariantProps = VariantProps<typeof plateStyles>;
 
-export interface EmptyStateProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
+export interface EmptyStateProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Glyph or icon node shown in the rounded plate. */
   icon?: ReactNode;
   /** Title heading. */

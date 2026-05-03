@@ -80,46 +80,46 @@ Findings cluster into **5 cross-cutting themes**, each summarized below.
 
 ## P1 — high priority (per persona, deduplicated)
 
-| Theme | Finding | Persona(s) | Cite |
-|---|---|---|---|
-| Supply chain | Every third-party GH Action pinned to floating major tag (incl. release-critical `changesets/action@v1` + `actions/setup-node@v6` running with `id-token: write` and `NPM_TOKEN`) | DevOps | `release.yml:70`, `snapshot.yml:81`, `actions/setup/action.yml:17,20` |
-| CI cache | Turbo cache key uses `github.sha` so it never restores from itself; thrashes the 10 GB LRU | DevOps | `ci.yml:46,65`, `release.yml:35` |
-| CI redundancy | Build runs three times on every main push (validate → release.yml:66 → `pnpm release`) | DevOps | `release.yml:25-52,66`, `package.json:25` |
-| Doc/code drift | README "Tech stack" table says Node 20 LTS while everything else (`.nvmrc`, `engines`, contributing.md) says Node 24 | PM, DevOps | `README.md:47` |
-| Bundle | tsup `external: ['react', 'react-dom']` only — every Radix package gets bundled into `dist/`, splitting React contexts when consumer also uses Radix directly | FE | `packages/ui/tsup.config.ts:11` |
-| Beta dep | Tailwind v4 caret on a pre-release tag — `pnpm install` will silently float to newer betas with breaking `@theme inline` changes | FE | `packages/ui/package.json:88` |
-| Token API | No paired `*-fg` tokens for `ok`/`warn`/`err` — components default to `text-on-accent` for success/destructive, semantically wrong | UI/UX | `packages/tokens/src/color.ts:38-61` |
-| Token coverage | Companion palette (`ok`/`warn`/`err`/`purple`/`pink`) uses identical OKLCH for both themes — light-theme contrast not validated; `text-err` likely fails | UI/UX | `packages/tokens/src/color.ts:80` |
-| Tokens bypass | 5 components hardcode `oklch(...)` literals bypassing the accent knob (Input/Textarea error rings, Avatar fallback, GraphMinimap, CTAStrip) | UI/UX | `Input.tsx:22`, `Textarea.tsx:18`, `Avatar.tsx:68`, `GraphMinimap.tsx:78`, `CTAStrip.tsx:25` |
-| Tokens bypass | `SplitButton` hardcodes `border-r-black/20` — invisible in light theme | UI/UX | `SplitButton.tsx:36` |
-| API parity | Button family variant counts inconsistent — Button=7, IconButton=4, SplitButton=3 (no destructive IconButton) | UI/UX | `Button.tsx:21-32`, `IconButton.tsx:14`, `SplitButton.tsx:9` |
-| API mismatch | `Chip` requires `removable={true}` + `onRemove`; `Tag` only requires `onRemove`. Setting `removable` without `onRemove` renders a no-op X | UI/UX, SE | `Chip.tsx:9-10,35`, `Tag.tsx:7,36` |
-| Hook safety | `useOutsideClick` listens on `mousedown` only — touch silent for `Combobox` on mobile | FE, SE | `useOutsideClick.ts:21` |
-| Hook semantic | `useTheme` `setTheme` mutates `document` with no SSR guard | FE | `useTheme.ts:25-32` |
-| State purity | OTP fires `onChange`/`onComplete` from inside a `setState` updater — double-fires under StrictMode | SE | `OTP.tsx:54-65` |
-| Static UI | `Banner`/`Alert` use `role="alert"` for warn/err — announces on every initial page render | UI/UX, A11y | `Banner.tsx:55`, `Alert.tsx:67` |
-| Form a11y | `SearchInput` has no accessible name | A11y | `SearchInput.tsx:33-39` |
-| Form a11y | `Slider` thumb hardcodes `aria-label="Value"` with no override | A11y | `Slider.tsx:55` |
-| Combobox a11y | `CommandPalette` input not wired to listbox via combobox semantics (no `role="combobox"`, `aria-controls`, `aria-activedescendant`) | A11y | `CommandPalette.tsx:119-135` |
-| Keyboard | Calendar date grid has no Arrow-key navigation; uses `aria-pressed` instead of `aria-selected` | A11y | `Calendar.tsx:151-178` |
-| Drawer/Sheet | After Title fix, still missing `aria-describedby={undefined}` to silence Radix warning | A11y | `Drawer.tsx:51-58`, `Sheet.tsx:28-36` |
-| Test gap | Toast axe test runs against empty viewport (before any toast is fired) | A11y | `Toast.test.tsx:24-31` |
-| Type hole | `instanceof Set ? x : x as Set` is a no-op cast hiding `ReadonlySet → Set` variance hole in DataTable/Tree | SE | `DataTable.tsx:94`, `Tree.tsx:58` |
-| Type hole | `useControllableState` typed `T \| undefined` proliferates `value!`/`value ?? fallback` everywhere — root-cause for the DataTable/Tree P0 | SE | `useControllableState.ts:21-29` |
-| Calendar bug | `MONTHS = ['Jan','Feb','Mar','April','May','June','July','Aug','Sep','Oct','Nov','Dec']` mixes 3-letter and full names; the test asserts on the bug | SE | `Calendar.tsx:17-30` |
-| Stepper bug | `key={label}` causes React reconciliation collisions on duplicate labels | SE | `Stepper.tsx:56` |
-| Workspace | `@radix-ui/react-label` declared as dep but never imported (every consumer pulls unused Radix package) | SE | `packages/ui/package.json:58` |
-| Workspace | `@ship-it-ui/icons` declared as dep of `shipit` but never imported | SE | `packages/shipit/package.json:45` |
-| Test setup | `cn` utility and the entire vitest setup duplicated byte-for-byte between `ui` and `shipit` (already drifted once) | SE | `ui/src/utils/cn.ts`, `shipit/src/utils/cn.ts`, `ui/src/test/setup.ts`, `shipit/src/test/setup.ts` |
-| Empty dir | `packages/ui/src/primitives/` empty, but referenced as a category by 3 docs | SE, UI/UX, PM | `packages/ui/src/primitives/`, `README.md:19`, `docs/architecture.md:109` |
-| Docs gap | No PR template, no issue templates, no CODEOWNERS, no CODE_OF_CONDUCT, no FUNDING.yml | PM | `.github/` |
-| Docs gap | All four publishable packages missing `homepage`, `bugs`, `keywords`, `author`, `funding` | PM | `packages/{tokens,icons,ui,shipit}/package.json` |
-| Docs gap | No documented 1.0 milestone, stability promise, or deprecation policy | PM | repo root |
-| Docs gap | `PIPELINES.md` says "three workflows", lists four, repo has six (`claude.yml`, `pages.yml` undocumented) | PM, DevOps | `.github/PIPELINES.md:1-4` |
-| Pipeline | No Dependabot or Renovate config — Storybook beta, Tailwind beta, every action floating major | DevOps, PM | `.github/` |
-| Pipeline | No matrix strategy — CI tests Node 24 / React 18 only, but `engines` claims `>=24` and peerDeps allow React 19 | DevOps | `ci.yml:31` |
-| Pipeline | Snapshot publish writes `_authToken` to `~/.npmrc` on disk before build (vs release.yml's env-only path) | DevOps | `snapshot.yml:48-78` |
-| Pipeline | Format/lint jobs run cold pnpm install — 60-90s pre-work for a seconds-long check | DevOps | `ci.yml:29-49` |
+| Theme          | Finding                                                                                                                                                                           | Persona(s)    | Cite                                                                                               |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | -------------------------------------------------------------------------------------------------- |
+| Supply chain   | Every third-party GH Action pinned to floating major tag (incl. release-critical `changesets/action@v1` + `actions/setup-node@v6` running with `id-token: write` and `NPM_TOKEN`) | DevOps        | `release.yml:70`, `snapshot.yml:81`, `actions/setup/action.yml:17,20`                              |
+| CI cache       | Turbo cache key uses `github.sha` so it never restores from itself; thrashes the 10 GB LRU                                                                                        | DevOps        | `ci.yml:46,65`, `release.yml:35`                                                                   |
+| CI redundancy  | Build runs three times on every main push (validate → release.yml:66 → `pnpm release`)                                                                                            | DevOps        | `release.yml:25-52,66`, `package.json:25`                                                          |
+| Doc/code drift | README "Tech stack" table says Node 20 LTS while everything else (`.nvmrc`, `engines`, contributing.md) says Node 24                                                              | PM, DevOps    | `README.md:47`                                                                                     |
+| Bundle         | tsup `external: ['react', 'react-dom']` only — every Radix package gets bundled into `dist/`, splitting React contexts when consumer also uses Radix directly                     | FE            | `packages/ui/tsup.config.ts:11`                                                                    |
+| Beta dep       | Tailwind v4 caret on a pre-release tag — `pnpm install` will silently float to newer betas with breaking `@theme inline` changes                                                  | FE            | `packages/ui/package.json:88`                                                                      |
+| Token API      | No paired `*-fg` tokens for `ok`/`warn`/`err` — components default to `text-on-accent` for success/destructive, semantically wrong                                                | UI/UX         | `packages/tokens/src/color.ts:38-61`                                                               |
+| Token coverage | Companion palette (`ok`/`warn`/`err`/`purple`/`pink`) uses identical OKLCH for both themes — light-theme contrast not validated; `text-err` likely fails                          | UI/UX         | `packages/tokens/src/color.ts:80`                                                                  |
+| Tokens bypass  | 5 components hardcode `oklch(...)` literals bypassing the accent knob (Input/Textarea error rings, Avatar fallback, GraphMinimap, CTAStrip)                                       | UI/UX         | `Input.tsx:22`, `Textarea.tsx:18`, `Avatar.tsx:68`, `GraphMinimap.tsx:78`, `CTAStrip.tsx:25`       |
+| Tokens bypass  | `SplitButton` hardcodes `border-r-black/20` — invisible in light theme                                                                                                            | UI/UX         | `SplitButton.tsx:36`                                                                               |
+| API parity     | Button family variant counts inconsistent — Button=7, IconButton=4, SplitButton=3 (no destructive IconButton)                                                                     | UI/UX         | `Button.tsx:21-32`, `IconButton.tsx:14`, `SplitButton.tsx:9`                                       |
+| API mismatch   | `Chip` requires `removable={true}` + `onRemove`; `Tag` only requires `onRemove`. Setting `removable` without `onRemove` renders a no-op X                                         | UI/UX, SE     | `Chip.tsx:9-10,35`, `Tag.tsx:7,36`                                                                 |
+| Hook safety    | `useOutsideClick` listens on `mousedown` only — touch silent for `Combobox` on mobile                                                                                             | FE, SE        | `useOutsideClick.ts:21`                                                                            |
+| Hook semantic  | `useTheme` `setTheme` mutates `document` with no SSR guard                                                                                                                        | FE            | `useTheme.ts:25-32`                                                                                |
+| State purity   | OTP fires `onChange`/`onComplete` from inside a `setState` updater — double-fires under StrictMode                                                                                | SE            | `OTP.tsx:54-65`                                                                                    |
+| Static UI      | `Banner`/`Alert` use `role="alert"` for warn/err — announces on every initial page render                                                                                         | UI/UX, A11y   | `Banner.tsx:55`, `Alert.tsx:67`                                                                    |
+| Form a11y      | `SearchInput` has no accessible name                                                                                                                                              | A11y          | `SearchInput.tsx:33-39`                                                                            |
+| Form a11y      | `Slider` thumb hardcodes `aria-label="Value"` with no override                                                                                                                    | A11y          | `Slider.tsx:55`                                                                                    |
+| Combobox a11y  | `CommandPalette` input not wired to listbox via combobox semantics (no `role="combobox"`, `aria-controls`, `aria-activedescendant`)                                               | A11y          | `CommandPalette.tsx:119-135`                                                                       |
+| Keyboard       | Calendar date grid has no Arrow-key navigation; uses `aria-pressed` instead of `aria-selected`                                                                                    | A11y          | `Calendar.tsx:151-178`                                                                             |
+| Drawer/Sheet   | After Title fix, still missing `aria-describedby={undefined}` to silence Radix warning                                                                                            | A11y          | `Drawer.tsx:51-58`, `Sheet.tsx:28-36`                                                              |
+| Test gap       | Toast axe test runs against empty viewport (before any toast is fired)                                                                                                            | A11y          | `Toast.test.tsx:24-31`                                                                             |
+| Type hole      | `instanceof Set ? x : x as Set` is a no-op cast hiding `ReadonlySet → Set` variance hole in DataTable/Tree                                                                        | SE            | `DataTable.tsx:94`, `Tree.tsx:58`                                                                  |
+| Type hole      | `useControllableState` typed `T \| undefined` proliferates `value!`/`value ?? fallback` everywhere — root-cause for the DataTable/Tree P0                                         | SE            | `useControllableState.ts:21-29`                                                                    |
+| Calendar bug   | `MONTHS = ['Jan','Feb','Mar','April','May','June','July','Aug','Sep','Oct','Nov','Dec']` mixes 3-letter and full names; the test asserts on the bug                               | SE            | `Calendar.tsx:17-30`                                                                               |
+| Stepper bug    | `key={label}` causes React reconciliation collisions on duplicate labels                                                                                                          | SE            | `Stepper.tsx:56`                                                                                   |
+| Workspace      | `@radix-ui/react-label` declared as dep but never imported (every consumer pulls unused Radix package)                                                                            | SE            | `packages/ui/package.json:58`                                                                      |
+| Workspace      | `@ship-it-ui/icons` declared as dep of `shipit` but never imported                                                                                                                | SE            | `packages/shipit/package.json:45`                                                                  |
+| Test setup     | `cn` utility and the entire vitest setup duplicated byte-for-byte between `ui` and `shipit` (already drifted once)                                                                | SE            | `ui/src/utils/cn.ts`, `shipit/src/utils/cn.ts`, `ui/src/test/setup.ts`, `shipit/src/test/setup.ts` |
+| Empty dir      | `packages/ui/src/primitives/` empty, but referenced as a category by 3 docs                                                                                                       | SE, UI/UX, PM | `packages/ui/src/primitives/`, `README.md:19`, `docs/architecture.md:109`                          |
+| Docs gap       | No PR template, no issue templates, no CODEOWNERS, no CODE_OF_CONDUCT, no FUNDING.yml                                                                                             | PM            | `.github/`                                                                                         |
+| Docs gap       | All four publishable packages missing `homepage`, `bugs`, `keywords`, `author`, `funding`                                                                                         | PM            | `packages/{tokens,icons,ui,shipit}/package.json`                                                   |
+| Docs gap       | No documented 1.0 milestone, stability promise, or deprecation policy                                                                                                             | PM            | repo root                                                                                          |
+| Docs gap       | `PIPELINES.md` says "three workflows", lists four, repo has six (`claude.yml`, `pages.yml` undocumented)                                                                          | PM, DevOps    | `.github/PIPELINES.md:1-4`                                                                         |
+| Pipeline       | No Dependabot or Renovate config — Storybook beta, Tailwind beta, every action floating major                                                                                     | DevOps, PM    | `.github/`                                                                                         |
+| Pipeline       | No matrix strategy — CI tests Node 24 / React 18 only, but `engines` claims `>=24` and peerDeps allow React 19                                                                    | DevOps        | `ci.yml:31`                                                                                        |
+| Pipeline       | Snapshot publish writes `_authToken` to `~/.npmrc` on disk before build (vs release.yml's env-only path)                                                                          | DevOps        | `snapshot.yml:48-78`                                                                               |
+| Pipeline       | Format/lint jobs run cold pnpm install — 60-90s pre-work for a seconds-long check                                                                                                 | DevOps        | `ci.yml:29-49`                                                                                     |
 
 ## P2 / P3 — bulk
 
@@ -131,7 +131,7 @@ Roughly **40 P2 findings** and **20 P3 findings** distributed across the per-per
 - **`Tooltip` content has `pointer-events-none`** — fine for label tooltips, breaks if consumers put interactive content inside (A11y P1, WCAG 1.4.13)
 - **`StatusDot`/`Avatar` use enum value as `aria-label`** — "ok" / "err" instead of "Online" / "Error" (A11y P2)
 - **No coverage upload** — Vitest produces it with 80% thresholds, but it's never artifacted or sent to Codecov (DevOps P2)
-- **`turbo.json` test outputs include `storybook-static/**` which is also `build`'s output — cache stomping** (DevOps P2)
+- **`turbo.json` test outputs include `storybook-static/**`which is also`build`'s output — cache stomping\*\* (DevOps P2)
 - **Tabs/IconButton/Card story controls coverage looks good but composite "States" stories not consistently present** (UI/UX P2)
 - **Each per-package CHANGELOG.md is just the Changesets boilerplate header** (PM P3 — expected pre-1.0)
 
@@ -160,15 +160,15 @@ After these 10, the library is publishable to internal consumers with confidence
 
 ## Severity counts
 
-| Persona | P0 | P1 | P2 | P3 | File |
-|---|---:|---:|---:|---:|---|
-| Software Engineer | 2 | 9 | ~16 | 6 | [software-engineer.md](software-engineer.md) |
-| UI/UX Engineer | 3 | 9 | ~13 | 6 | [ui-ux-engineer.md](ui-ux-engineer.md) |
-| Accessibility | 7 | 8 | 7 | 5 | [accessibility.md](accessibility.md) |
-| DevOps | 0 | 9 | 12 | 8 | [devops.md](devops.md) |
-| Frontend Engineer | 5 | 5 | 5 | 5 | [frontend-engineer.md](frontend-engineer.md) |
-| Project Manager | 4 | 11 | 8 | 6 | [project-manager.md](project-manager.md) |
-| **Total (deduplicated)** | **~17 unique** | **~50 unique** | **~60** | **~35** | |
+| Persona                  |             P0 |             P1 |      P2 |      P3 | File                                         |
+| ------------------------ | -------------: | -------------: | ------: | ------: | -------------------------------------------- |
+| Software Engineer        |              2 |              9 |     ~16 |       6 | [software-engineer.md](software-engineer.md) |
+| UI/UX Engineer           |              3 |              9 |     ~13 |       6 | [ui-ux-engineer.md](ui-ux-engineer.md)       |
+| Accessibility            |              7 |              8 |       7 |       5 | [accessibility.md](accessibility.md)         |
+| DevOps                   |              0 |              9 |      12 |       8 | [devops.md](devops.md)                       |
+| Frontend Engineer        |              5 |              5 |       5 |       5 | [frontend-engineer.md](frontend-engineer.md) |
+| Project Manager          |              4 |             11 |       8 |       6 | [project-manager.md](project-manager.md)     |
+| **Total (deduplicated)** | **~17 unique** | **~50 unique** | **~60** | **~35** |                                              |
 
 P0/P1 deduplication accounts for cross-persona overlaps (the `tokens` devDep finding appears in SE, FE, and PM; the `prefers-reduced-motion` finding appears in A11y P0 and PM P0).
 
@@ -178,13 +178,13 @@ P0/P1 deduplication accounts for cross-persona overlaps (the `tokens` devDep fin
 
 I directly confirmed the following high-severity findings by opening the cited file:line:
 
-| Finding | Cite | Verified |
-|---|---|---|
-| `@ship-it-ui/tokens` declared at `packages/ui/package.json:76` (in the devDependencies section, not peerDependencies) | SE P0 #1 | ✅ `grep -n "ship-it-ui/tokens" packages/ui/package.json` returns line 76 in the devDeps block |
-| Drawer/Sheet test files contain no `axe()` assertions; Dialog/AlertDialog test files do | A11y P0 | ✅ `grep -l "axe(" packages/ui/src/components/Dialog/*.test.tsx` returns only `Dialog.test.tsx` and `AlertDialog.test.tsx` (Drawer/Sheet absent) |
-| Zero `"use client"` directives across UI + shipit packages | FE P0 #1 | ✅ `grep -rln '"use client"' packages/{ui,shipit}/src/` returns 0 |
-| `text-text-dim` widely used as visible body text | A11y P0 | ✅ 71 source usages outside tests/stories (A11y persona estimated 57; broader sweep including shipit caught more — directionally correct, conservative) |
-| Z-index scale defined in `tokens/z-index.ts:6-16` but components use literal `z-30/40/50/[51]/[60]/[70]` Tailwind classes | UI/UX P0 #1 | ✅ Token file matches; grep across components confirms no `z-modal`/`z-tooltip` usage |
+| Finding                                                                                                                   | Cite        | Verified                                                                                                                                                |
+| ------------------------------------------------------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@ship-it-ui/tokens` declared at `packages/ui/package.json:76` (in the devDependencies section, not peerDependencies)     | SE P0 #1    | ✅ `grep -n "ship-it-ui/tokens" packages/ui/package.json` returns line 76 in the devDeps block                                                          |
+| Drawer/Sheet test files contain no `axe()` assertions; Dialog/AlertDialog test files do                                   | A11y P0     | ✅ `grep -l "axe(" packages/ui/src/components/Dialog/*.test.tsx` returns only `Dialog.test.tsx` and `AlertDialog.test.tsx` (Drawer/Sheet absent)        |
+| Zero `"use client"` directives across UI + shipit packages                                                                | FE P0 #1    | ✅ `grep -rln '"use client"' packages/{ui,shipit}/src/` returns 0                                                                                       |
+| `text-text-dim` widely used as visible body text                                                                          | A11y P0     | ✅ 71 source usages outside tests/stories (A11y persona estimated 57; broader sweep including shipit caught more — directionally correct, conservative) |
+| Z-index scale defined in `tokens/z-index.ts:6-16` but components use literal `z-30/40/50/[51]/[60]/[70]` Tailwind classes | UI/UX P0 #1 | ✅ Token file matches; grep across components confirms no `z-modal`/`z-tooltip` usage                                                                   |
 
 No hallucinations found in the spot-check sample. Findings reproduce as cited.
 

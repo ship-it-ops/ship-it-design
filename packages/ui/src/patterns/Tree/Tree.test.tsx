@@ -118,9 +118,7 @@ describe('Tree', () => {
 
   it('Enter selects the active treeitem', async () => {
     const onValueChange = vi.fn();
-    render(
-      <Tree items={items} defaultExpanded={['src']} onValueChange={onValueChange} />,
-    );
+    render(<Tree items={items} defaultExpanded={['src']} onValueChange={onValueChange} />);
     const child = screen.getByRole('treeitem', { name: /index\.ts/ });
     child.focus();
     await userEvent.keyboard('{Enter}');

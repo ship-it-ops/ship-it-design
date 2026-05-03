@@ -75,15 +75,11 @@ function RowInner({
 }
 
 export interface EntityListRowDivProps
-  extends EntityListRowCommonProps,
-    Omit<HTMLAttributes<HTMLDivElement>, 'title' | 'name'> {}
+  extends EntityListRowCommonProps, Omit<HTMLAttributes<HTMLDivElement>, 'title' | 'name'> {}
 
 /** Non-interactive row. Use this when you have a static list of entities. */
 export const EntityListRowDiv = forwardRef<HTMLDivElement, EntityListRowDivProps>(
-  function EntityListRowDiv(
-    { type, name, relation, meta, hideGlyph, className, ...props },
-    ref,
-  ) {
+  function EntityListRowDiv({ type, name, relation, meta, hideGlyph, className, ...props }, ref) {
     return (
       <div ref={ref} className={baseClassNames(false, className)} {...props}>
         <RowInner type={type} name={name} relation={relation} meta={meta} hideGlyph={hideGlyph} />
@@ -95,7 +91,8 @@ export const EntityListRowDiv = forwardRef<HTMLDivElement, EntityListRowDivProps
 EntityListRowDiv.displayName = 'EntityListRowDiv';
 
 export interface EntityListRowButtonProps
-  extends EntityListRowCommonProps,
+  extends
+    EntityListRowCommonProps,
     Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'title' | 'type' | 'name' | 'onClick'> {
   /** Click handler. Required for the button variant. */
   onClick: MouseEventHandler<HTMLButtonElement>;
@@ -123,7 +120,10 @@ export const EntityListRowButton = forwardRef<HTMLButtonElement, EntityListRowBu
 
 EntityListRowButton.displayName = 'EntityListRowButton';
 
-export interface EntityListRowProps extends Omit<HTMLAttributes<HTMLElement>, 'title' | 'name' | 'onClick'> {
+export interface EntityListRowProps extends Omit<
+  HTMLAttributes<HTMLElement>,
+  'title' | 'name' | 'onClick'
+> {
   type: EntityType;
   /** Entity name / id. Rendered in mono. */
   name: ReactNode;

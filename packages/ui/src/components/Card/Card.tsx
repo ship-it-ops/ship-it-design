@@ -1,12 +1,7 @@
 'use client';
 
 import { cva, type VariantProps } from 'class-variance-authority';
-import {
-  forwardRef,
-  type AnchorHTMLAttributes,
-  type HTMLAttributes,
-  type ReactNode,
-} from 'react';
+import { forwardRef, type AnchorHTMLAttributes, type HTMLAttributes, type ReactNode } from 'react';
 
 import { cn } from '../../utils/cn';
 
@@ -29,8 +24,7 @@ const cardStyles = cva(
 );
 
 export interface CardProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'title'>,
-    VariantProps<typeof cardStyles> {
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'title'>, VariantProps<typeof cardStyles> {
   /** Render a header row with this title (and optional `actions`). */
   title?: ReactNode;
   /** Description shown under the title (or above children when no title). */
@@ -114,11 +108,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
       onKeyDown={handleKeyDown}
       role={isInteractive ? 'button' : undefined}
       tabIndex={isInteractive ? 0 : undefined}
-      className={cn(
-        cardStyles({ variant, interactive: wantsInteractive }),
-        'p-[18px]',
-        className,
-      )}
+      className={cn(cardStyles({ variant, interactive: wantsInteractive }), 'p-[18px]', className)}
       {...props}
     >
       {(title || actions) && (
@@ -145,8 +135,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
 Card.displayName = 'Card';
 
 export interface CardLinkProps
-  extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'title'>,
-    VariantProps<typeof cardStyles> {
+  extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'title'>, VariantProps<typeof cardStyles> {
   /** Destination URL. The whole card becomes a single link to this URL. */
   href: string;
   /** Render a header row with this title. */
@@ -177,7 +166,7 @@ export const CardLink = forwardRef<HTMLAnchorElement, CardLinkProps>(function Ca
       href={href}
       className={cn(
         cardStyles({ variant, interactive: true }),
-        'p-[18px] no-underline outline-none focus-visible:ring-[3px] focus-visible:ring-accent-dim',
+        'focus-visible:ring-accent-dim p-[18px] no-underline outline-none focus-visible:ring-[3px]',
         className,
       )}
       {...props}

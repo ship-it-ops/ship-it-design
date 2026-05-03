@@ -1,6 +1,6 @@
 name: Component / feature request
 description: Propose a new component, pattern, or hook — or a meaningful change to an existing one.
-labels: ["enhancement", "needs triage"]
+labels: ['enhancement', 'needs triage']
 body:
   - type: textarea
     id: use-case
@@ -32,10 +32,10 @@ body:
     attributes:
       label: Which package would house this?
       options:
-        - "@ship-it-ui/tokens (token)"
-        - "@ship-it-ui/icons (icon)"
-        - "@ship-it-ui/ui (generic component / pattern / hook)"
-        - "@ship-it-ui/shipit (ShipIt-AI domain composite)"
-        - "Not sure"
+        - '@ship-it-ui/tokens (token)'
+        - '@ship-it-ui/icons (icon)'
+        - '@ship-it-ui/ui (generic component / pattern / hook)'
+        - '@ship-it-ui/shipit (ShipIt-AI domain composite)'
+        - 'Not sure'
     validations:
       required: true

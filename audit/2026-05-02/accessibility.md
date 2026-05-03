@@ -31,7 +31,7 @@ The library has the right bones — Radix powers most overlays, every interactiv
   - Fix: render the header label inside a `<button>` (so the keyboard model is free), or stamp `tabIndex=0`/`role="button"`/Enter+Space handlers on the `<th>`. axe does not catch this — add a keyboard test.
 
 - **Tree falls out of tab order when nothing is selected and has no Up/Down arrow navigation** — `packages/ui/src/patterns/Tree/Tree.tsx:120-143`
-  - What: `tabIndex={isSelected ? 0 : -1}` means *every* treeitem gets `tabIndex=-1` until the user has selected one. With no default selection, the tree is unreachable by Tab. The `onKeyDown` handler implements Enter/Space and ArrowLeft/ArrowRight only; the WAI-ARIA tree pattern requires ArrowUp/ArrowDown to move between visible nodes (and ideally Home/End and type-ahead).
+  - What: `tabIndex={isSelected ? 0 : -1}` means _every_ treeitem gets `tabIndex=-1` until the user has selected one. With no default selection, the tree is unreachable by Tab. The `onKeyDown` handler implements Enter/Space and ArrowLeft/ArrowRight only; the WAI-ARIA tree pattern requires ArrowUp/ArrowDown to move between visible nodes (and ideally Home/End and type-ahead).
   - WCAG criterion: 2.1.1 Keyboard; APG tree pattern (ARIA Authoring Practices).
   - Why it matters: a tree with no entry point and no vertical traversal is keyboard-unusable. The `Tree.test.tsx:50-58` test only exercises ArrowRight/ArrowLeft, so this gap is uncovered.
   - Fix: when there is no selection, give the first treeitem `tabIndex=0` (roving tabindex). Add ArrowDown/ArrowUp handlers that move focus to the next/prev visible treeitem, and ArrowLeft on a leaf to move to its parent.
@@ -49,9 +49,9 @@ The library has the right bones — Radix powers most overlays, every interactiv
 
 - **`text-accent` on light theme fails contrast as body text** — `packages/tokens/src/color.ts:75`
   - What: Light `--color-accent: oklch(0.72 0.13 var(--accent-h))` at the default `--accent-h: 200` is a mid-tone cyan with relative luminance ≈0.42. Against `--color-bg` `#fbfbfa` (L≈0.97) the ratio is **≈ 2.27:1** (fails 4.5:1 and 3:1). The same token used as a fill (`bg-accent`) against `text-on-accent` `#0a0a0b` is ~9:1 (passes), but the `text-accent` direction does not.
-  - Used as visible body text in light theme on bg/panel surfaces by: `Combobox`/`CommandPalette` highlighted option (`Combobox.tsx:256`, `CommandPalette.tsx:197`), `DataTable` sorted-column header (`DataTable.tsx:197`), `Sidebar` `NavItem` active row (`Sidebar.tsx:78`), `Stepper` current step (`Stepper.tsx:24`), `Pagination` active page (`Pagination.tsx:85`), `Banner` info variant (`Banner.tsx:19`), `Alert` info-tone icon (`Alert.tsx:29`), `Button` link variant (`Button.tsx:31`), `Tab` underline active label *(uses `text-text` — OK)*, every `*-pulse` glow.
+  - Used as visible body text in light theme on bg/panel surfaces by: `Combobox`/`CommandPalette` highlighted option (`Combobox.tsx:256`, `CommandPalette.tsx:197`), `DataTable` sorted-column header (`DataTable.tsx:197`), `Sidebar` `NavItem` active row (`Sidebar.tsx:78`), `Stepper` current step (`Stepper.tsx:24`), `Pagination` active page (`Pagination.tsx:85`), `Banner` info variant (`Banner.tsx:19`), `Alert` info-tone icon (`Alert.tsx:29`), `Button` link variant (`Button.tsx:31`), `Tab` underline active label _(uses `text-text` — OK)_, every `*-pulse` glow.
   - WCAG criterion: 1.4.3 Contrast (Minimum) on light-theme body text.
-  - Why it matters: switching to `[data-theme="light"]` instantly degrades all of those active/selected states below threshold. The OKLCH knob doesn't help — every accent hue at L=0.72 has roughly the same luminance and fails by the same margin. The companion `--color-accent-text: oklch(0.38 0.13 …)` token *does* meet contrast (~7.5:1) but is not used in the components above; only the trigger-color in light theme. Components seem to assume `accent` is a "text-safe" token in both themes.
+  - Why it matters: switching to `[data-theme="light"]` instantly degrades all of those active/selected states below threshold. The OKLCH knob doesn't help — every accent hue at L=0.72 has roughly the same luminance and fails by the same margin. The companion `--color-accent-text: oklch(0.38 0.13 …)` token _does_ meet contrast (~7.5:1) but is not used in the components above; only the trigger-color in light theme. Components seem to assume `accent` is a "text-safe" token in both themes.
   - Fix (token-level, UI/UX): either lower light `--color-accent` to ≈`oklch(0.45 0.13 …)` (≈4.6:1) and use a separate brighter token for the fill role, or have components consume `accent-text` (the dark variant) for foreground roles in light theme.
 
 - **`prefers-reduced-motion` is silently ignored by every keyframe animation** — `packages/ui/src/styles/animations.css:1-123`, `packages/tokens/styles/tokens.css:138-143`
@@ -71,7 +71,7 @@ The library has the right bones — Radix powers most overlays, every interactiv
   - What: each day is an isolated `<button>`. Tab moves through 28–31 buttons in linear order (no roving tabindex), and there is no Arrow/PageUp/PageDown/Home/End traversal — the standard pattern for date pickers (move ±1 day, ±1 week, ±1 month, jump to start/end of week).
   - WCAG criterion: 2.1.1 Keyboard / APG date picker pattern.
   - Why it matters: keyboard-only date entry takes up to 31 Tab presses per month switch. Also, `aria-pressed={isSelected}` is wrong — for a date grid the correct semantic is `aria-selected` inside `role="grid"`/`role="gridcell"`, or `aria-current="date"` for today only and no pressed state.
-  - Fix: implement the APG grid keyboard model (this is one of the rare cases where `role="grid"` is the right call — pitfall #2 is about *misuse*, not blanket avoidance) and switch `aria-pressed` → `aria-selected`.
+  - Fix: implement the APG grid keyboard model (this is one of the rare cases where `role="grid"` is the right call — pitfall #2 is about _misuse_, not blanket avoidance) and switch `aria-pressed` → `aria-selected`.
 
 - **`SearchInput` has no accessible name** — `packages/ui/src/components/Input/SearchInput.tsx:33-39`
   - What: the `<input type="search">` is rendered with `placeholder="Search…"` but no `aria-label`, no associated `<label>`, and the wrapper isn't labelled either. Consumers can pass `aria-label` through `…props`, but the component doesn't enforce or default it.
@@ -91,7 +91,7 @@ The library has the right bones — Radix powers most overlays, every interactiv
 
 - **`Banner` uses `role="alert"` for warn/err on initial render** — `packages/ui/src/patterns/Banner/Banner.tsx:55`
   - What: an `alert` is an `aria-live="assertive"` region. A banner that is part of the initial page render is announced by screen readers on every page load, interrupting whatever else is being read.
-  - WCAG criterion: 4.1.3 Status Messages (correct *use* of live regions).
+  - WCAG criterion: 4.1.3 Status Messages (correct _use_ of live regions).
   - Fix: use `role="status"` for static banners; reserve `role="alert"` for banners that appear after page load (and even then mount them on demand, not in initial DOM).
 
 - **`Toast` axe test only runs against the empty viewport** — `packages/ui/src/components/Toast/Toast.test.tsx:24-31`
@@ -131,7 +131,7 @@ The library has the right bones — Radix powers most overlays, every interactiv
   - Fix: accept a `loading` prop on the parent that wraps a single live region; default Skeleton to `aria-hidden`.
 
 - **`Dropzone` `<label>` wrapping a hidden `<input type="file">` works keyboard-wise but only because the input has `sr-only` (still focusable)** — `packages/ui/src/patterns/Dropzone/Dropzone.tsx:72-101`
-  - What: this is the correct *non-button* form of the file picker (pitfall #3 was about `<button>` containing `<input>` — Dropzone uses `<label>`, which is fine). The keyboard focus ring only shows on the input, but the visual focus indicator is on the label via `focus-within:ring-accent-dim`. Acceptable. Worth a comment in code; pitfall #3 stays fixed.
+  - What: this is the correct _non-button_ form of the file picker (pitfall #3 was about `<button>` containing `<input>` — Dropzone uses `<label>`, which is fine). The keyboard focus ring only shows on the input, but the visual focus indicator is on the label via `focus-within:ring-accent-dim`. Acceptable. Worth a comment in code; pitfall #3 stays fixed.
   - Fix: none required — flagged for completeness.
 
 - **`OTP` has no aggregate "code complete" announcement** — `packages/ui/src/components/OTP/OTP.tsx:89-117`
@@ -165,7 +165,7 @@ The library has the right bones — Radix powers most overlays, every interactiv
 
 - TS / hook correctness of `useControllableState`, `useKeyboardList`, `useOutsideClick` — owned by SE.
 - Variant API design (e.g., should `Banner` be `tone` instead of `variant`) — owned by UI/UX.
-- Token-color values themselves (whether `textDim` *should* be raised) — owned by UI/UX. The a11y consequence (P0 contrast) is in scope; the chosen replacement value is not.
+- Token-color values themselves (whether `textDim` _should_ be raised) — owned by UI/UX. The a11y consequence (P0 contrast) is in scope; the chosen replacement value is not.
 - React rendering performance, SSR safety, bundle-size of Radix imports — owned by Frontend.
 - Storybook a11y addon configuration / CI a11y gate — owned by DevOps.
 - MDX docs accessibility (heading order on docs site) — owned by PM.

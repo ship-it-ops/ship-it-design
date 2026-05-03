@@ -103,7 +103,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         {toasts.map((t) => (
           <ToastCard key={t.id} toast={t} onDismiss={() => dismiss(t.id)} />
         ))}
-        <RadixToast.Viewport className="fixed right-5 bottom-5 z-toast flex w-[380px] max-w-[calc(100vw-40px)] flex-col gap-2 outline-none" />
+        <RadixToast.Viewport className="z-toast fixed right-5 bottom-5 flex w-[380px] max-w-[calc(100vw-40px)] flex-col gap-2 outline-none" />
       </RadixToast.Provider>
     </ToastContext.Provider>
   );

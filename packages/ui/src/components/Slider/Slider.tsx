@@ -5,8 +5,10 @@ import { forwardRef } from 'react';
 
 import { cn } from '../../utils/cn';
 
-export interface SliderProps
-  extends Omit<RadixSlider.SliderProps, 'asChild' | 'value' | 'defaultValue' | 'onValueChange'> {
+export interface SliderProps extends Omit<
+  RadixSlider.SliderProps,
+  'asChild' | 'value' | 'defaultValue' | 'onValueChange'
+> {
   /** Show the numeric value to the right of the track. */
   showValue?: boolean;
   /** Pixel width or any CSS length. Defaults to `240`. */
@@ -91,8 +93,7 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
         {Array.from({ length: thumbCount }, (_, i) => {
           const perThumb = thumbLabels?.[i];
           // aria-labelledby wins when there's no per-thumb override.
-          const thumbAriaLabel =
-            perThumb ?? (ariaLabelledBy ? undefined : (ariaLabel ?? 'Value'));
+          const thumbAriaLabel = perThumb ?? (ariaLabelledBy ? undefined : (ariaLabel ?? 'Value'));
           return (
             <RadixSlider.Thumb
               key={i}

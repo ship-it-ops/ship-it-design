@@ -102,7 +102,7 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
         <RadixDialog.Portal>
           <RadixDialog.Overlay
             className={cn(
-              'fixed inset-0 z-overlay bg-black/55 backdrop-blur-[4px]',
+              'z-overlay fixed inset-0 bg-black/55 backdrop-blur-[4px]',
               'data-[state=open]:animate-[ship-fade-in_150ms_ease]',
             )}
           />
@@ -112,7 +112,7 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
             aria-describedby={undefined}
             style={{ width }}
             className={cn(
-              'fixed top-[20%] left-1/2 z-modal max-w-[calc(100%-40px)] -translate-x-1/2',
+              'z-modal fixed top-[20%] left-1/2 max-w-[calc(100%-40px)] -translate-x-1/2',
               'border-border-strong bg-panel overflow-hidden rounded-xl border shadow-lg',
               'outline-none data-[state=open]:animate-[ship-dialog-in_180ms_var(--easing-out)]',
             )}
@@ -147,12 +147,7 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
                 ESC
               </span>
             </div>
-            <div
-              id={listboxId}
-              className="min-h-[220px] p-2"
-              role="listbox"
-              aria-label="Results"
-            >
+            <div id={listboxId} className="min-h-[220px] p-2" role="listbox" aria-label="Results">
               {flat.length === 0 ? (
                 (emptyState ?? (
                   <div className="text-text-dim px-3 py-5 text-center text-[12px]">No matches</div>

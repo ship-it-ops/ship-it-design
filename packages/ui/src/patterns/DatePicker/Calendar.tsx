@@ -32,24 +32,13 @@ import { cn } from '../../utils/cn';
  * - Roving tabindex: only the focused day cell is in the tab order.
  */
 
-const MONTHS = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
-];
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
-export interface CalendarProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelect' | 'defaultValue'> {
+export interface CalendarProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'onSelect' | 'defaultValue'
+> {
   /** Currently selected date (controlled). */
   value?: Date;
   /** Default selected date (uncontrolled). */
