@@ -7,13 +7,12 @@ package on npm receives security fixes.
 
 ## Reporting a vulnerability
 
-Please **do not** open a public issue for security vulnerabilities. Instead:
+Please **do not** open a public issue for security vulnerabilities. Instead,
+use GitHub's [private vulnerability reporting](https://github.com/ship-it-ops/ship-it-design/security/advisories/new)
+(Security tab → "Report a vulnerability").
 
-1. Use GitHub's [private vulnerability reporting](https://github.com/ship-it-ops/ship-it-design/security/advisories/new)
-   (Security tab → "Report a vulnerability"), OR
-2. Email security@ship-it-ops.com with details.
-
-We aim to acknowledge reports within 3 business days, confirm or reject within
-10 business days, and ship a fix on a coordinated-disclosure timeline.
+This is a solo-maintained project, so response is best-effort and timing is
+not guaranteed. Please don't publicly disclose the issue while a fix is being
+prepared.
 
 Thanks for helping keep the ecosystem safe.
