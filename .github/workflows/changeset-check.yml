@@ -3,6 +3,22 @@ name: Changeset
 on:
   pull_request:
     types: [opened, synchronize, reopened, labeled, unlabeled]
+    # The gate only matters for PRs that change publishable code. Docs,
+    # workflow definitions, license/editorconfig, and the audit folder
+    # never require a changeset, so skip the runner entirely on those.
+    # PRs that touch a mix (e.g. workflows + packages/) still fire because
+    # not every changed path matches the ignore list.
+    paths-ignore:
+      - '.github/**'
+      - 'docs/**'
+      - 'apps/docs/**'
+      - 'audit/**'
+      - '**.md'
+      - 'LICENSE'
+      - '.editorconfig'
+      - '.gitignore'
+      - '.npmrc'
+      - '.nvmrc'
 
 # Block PRs that change `packages/*` but don't add a `.changeset/*.md`.
 # Authors can opt-out for non-shipping changes (refactors, ci, internal docs)
@@ -23,7 +39,7 @@ jobs:
     # Skip when the `no-changeset` label is present (opt-out for non-shipping
     # PRs). On `labeled`/`unlabeled` events, additionally skip unless the
     # affected label is `no-changeset` itself — without this guard, every
-    # label add/remove (e.g. `release: snapshot`, `skip-claude`) would spin
+    # label add/remove (e.g. `release: snapshot`, `help wanted`) would spin
     # up a runner for nothing.
     if: |
       !contains(github.event.pull_request.labels.*.name, 'no-changeset') &&

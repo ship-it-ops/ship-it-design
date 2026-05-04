@@ -88,13 +88,11 @@ jobs:
     needs: build
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
-    # Belt-and-suspenders alongside the workflow-level concurrency above:
-    # the deploy job itself is single-flighted, never cancelled mid-deploy.
-    # Two simultaneous `actions/deploy-pages` calls leave Pages in an
-    # inconsistent state, so cancel-in-progress: false here is intentional.
-    concurrency:
-      group: pages
-      cancel-in-progress: false
+    # Single-flighted via the workflow-level `concurrency` block above
+    # (group `pages`, cancel-in-progress: false on push). Don't add a
+    # job-level `concurrency: { group: pages }` here — that re-requests the
+    # same lock the workflow already holds and triggers a self-deadlock that
+    # GitHub cancels with "deadlock detected for concurrency group: 'pages'".
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

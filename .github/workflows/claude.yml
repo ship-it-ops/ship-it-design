@@ -1,7 +1,6 @@
 name: Claude Code
 
 # Responds when a human writes `@claude` in a PR / issue / review comment.
-# Pairs with `claude-code-review.yml` (the unattended pass on every PR).
 #
 # Auth: uses the `CLAUDE_CODE_OAUTH_TOKEN` repo/org secret + the Claude
 # GitHub App installed on the org. No `ANTHROPIC_API_KEY` needed.
