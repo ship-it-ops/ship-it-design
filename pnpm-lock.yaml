@@ -62,9 +62,15 @@ importers:
       flexsearch:
         specifier: ^0.7.43
         version: 0.7.43
+      github-slugger:
+        specifier: ^2.0.0
+        version: 2.0.0
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3
+      mdast-util-to-string:
+        specifier: ^4.0.0
+        version: 4.0.0
       next:
         specifier: ^15.1.4
         version: 15.5.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -86,9 +92,15 @@ importers:
       remark-gfm:
         specifier: ^4.0.0
         version: 4.0.1
+      remark-parse:
+        specifier: ^11.0.0
+        version: 11.0.0
       shiki:
         specifier: ^1.24.4
         version: 1.29.2
+      unified:
+        specifier: ^11.0.5
+        version: 11.0.5
     devDependencies:
       '@ship-it-ui/eslint-config':
         specifier: workspace:*
