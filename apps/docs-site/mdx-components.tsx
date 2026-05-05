@@ -11,9 +11,10 @@ import { Shortcut } from '@/components/docs/Shortcut';
 
 /**
  * Tells `@next/mdx` which React components to substitute for HTML elements
- * and which custom components are available unprefixed inside MDX. The MDX
- * router (`app/[[...slug]]/page.tsx`) calls `useMDXComponents` to compose
- * this map with the page-specific overrides.
+ * and which custom components are available unprefixed inside MDX.
+ * `@next/mdx` calls `useMDXComponents` for every `page.mdx` it compiles
+ * (pages are served directly as `app/(docs)/.../page.mdx` via
+ * `pageExtensions`), composing this map with any page-specific overrides.
  */
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {

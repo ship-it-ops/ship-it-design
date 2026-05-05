@@ -2,11 +2,12 @@
  * Single source of truth for the docs sidebar.
  *
  * Filesystem order is meaningless — the order here is the order users see.
- * The MDX router (`app/[[...slug]]/page.tsx`) and the Sidebar component
- * (`components/shell/AppSidebar.tsx`) both read from this file, so a page
- * unreachable from the sidebar is also unreachable by URL.
+ * Pages are served directly as `app/(docs)/<slug>/page.mdx` via Next's
+ * `pageExtensions: ['ts','tsx','mdx']`, so a route only becomes reachable
+ * once an entry is added here AND a matching `page.mdx` exists.
  *
- * To add a page: drop the MDX into `content/<section>/`, add an entry here.
+ * To add a page: drop the MDX at `app/(docs)/<section>/<slug>/page.mdx`
+ * and add an entry to the matching section below.
  */
 
 export interface NavLeaf {
