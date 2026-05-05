@@ -58,7 +58,7 @@ export const navigation: NavSection[] = [
         ],
       },
       {
-        label: 'Foundations',
+        label: 'Guidelines',
         items: [
           { title: 'Design Principles', slug: 'foundations/principles' },
           { title: 'Iconography', slug: 'foundations/iconography' },
