@@ -6,8 +6,9 @@ import { useTheme } from '@ship-it-ui/ui';
 
 /**
  * Reuses `useTheme` from `@ship-it-ui/ui` (toggles `[data-theme]` on `<html>`)
- * and persists the choice in a cookie so the server layout can render with
- * the right attribute on first paint.
+ * and persists the choice to `localStorage`. The root layout runs an inline
+ * bootstrap script that reads the same key before first paint to avoid a
+ * theme flash.
  */
 export function ThemeToggle() {
   const { theme, toggle } = useTheme();
