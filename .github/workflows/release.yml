@@ -25,6 +25,14 @@ jobs:
   validate:
     name: Validate
     runs-on: ubuntu-latest
+    # Skip routine `chore` pushes (dep bumps, ci tweaks, refactors) — they
+    # never have changesets, so spinning up validate + release is wasted CI.
+    # Carve-out: `chore(release): version packages` is the merge of the
+    # changesets bot's version PR; that commit is exactly what flips the
+    # workflow into publish mode, so it MUST run.
+    if: |
+      !startsWith(github.event.head_commit.message, 'chore') ||
+      startsWith(github.event.head_commit.message, 'chore(release)')
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: ./.github/actions/setup
