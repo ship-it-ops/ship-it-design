@@ -13,8 +13,8 @@ import { navigation } from '@/content/navigation';
  * each section becomes a stack of `NavSection` blocks. Active state matches
  * the slug against the current pathname.
  *
- * NavItem renders a real `<a>` when `href` is set (`Sidebar.tsx:86`), so we
- * pass `href` directly and intercept the click for client-side navigation.
+ * NavItem renders a real `<a>` when `href` is set, so we pass `href`
+ * directly and intercept the click for client-side navigation.
  */
 export function AppSidebar() {
   const router = useRouter();
