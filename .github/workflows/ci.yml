@@ -61,8 +61,10 @@ jobs:
   # tasks share `^build` dependencies; splitting would force re-installs
   # and thrash the dependency cache.
   #
-  # Matrix on Node versions because `engines.node: ">=20"` and the package
-  # claims compatibility with Node 20, 22, and 24. Storybook + dist artifacts
+  # Matrix on Node versions consistent with `engines.node: ">=24"` plus the
+  # last Active LTS (22) as a forward-compat hedge. Node 20 dropped on
+  # 2026-04-30 (its EOL date) and because docs-site generators rely on
+  # `--experimental-strip-types`, which only landed in 22.6+. Dist artifacts
   # only upload from the Node 24 leg (the default dev runtime, per `.nvmrc`)
   # so we don't ship N copies of the same bundle.
   verify:
@@ -71,7 +73,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [20, 22, 24]
+        node-version: [22, 24]
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: ./.github/actions/setup
