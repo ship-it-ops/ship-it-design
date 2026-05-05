@@ -22,9 +22,10 @@ interface Props {
 /**
  * ⌘K search. Built on `CommandPalette` from `@ship-it-ui/ui`. The index is
  * fetched lazily from `public/search-index.json` (built by
- * `scripts/build-search-index.ts`) on first open. We use a lightweight
- * substring filter here — the FlexSearch instance is built on demand and
- * cached.
+ * `scripts/build-search-index.ts`) on first open and filtered with a plain
+ * substring match against title/description. Good enough for the current
+ * content footprint; swap in FlexSearch (already in deps) once the corpus
+ * grows past a couple hundred entries or once we want fuzzy matching.
  */
 export function DocsSearch({ open, onOpenChange }: Props) {
   const router = useRouter();
