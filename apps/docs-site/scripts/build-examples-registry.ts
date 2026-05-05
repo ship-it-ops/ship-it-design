@@ -21,6 +21,8 @@ const EXAMPLES_DIR = join(ROOT, 'examples');
 const OUT_DIR = join(ROOT, '.generated');
 const OUT_FILE = join(OUT_DIR, 'examples.ts');
 
+const SLUG_RE = /^[a-z0-9][a-z0-9-]*(?:\/[a-z0-9][a-z0-9-]*)*$/;
+
 interface Entry {
   slug: string;
   importPath: string;
@@ -36,6 +38,11 @@ function walk(dir: string, out: Entry[] = []): Entry[] {
       const rel = relative(EXAMPLES_DIR, abs)
         .replace(/\\/g, '/')
         .replace(/\.tsx$/, '');
+      if (!SLUG_RE.test(rel)) {
+        throw new Error(
+          `[examples-registry] Refusing example with non-conforming slug: ${JSON.stringify(rel)}. Slugs must match ${SLUG_RE} (lowercase, digits, hyphens, slash-separated).`,
+        );
+      }
       const importPath = `../examples/${rel}`;
       const source = readFileSync(abs, 'utf8');
       out.push({ slug: rel, importPath, source });

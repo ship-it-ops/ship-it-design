@@ -6,12 +6,15 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "predev": "node --experimental-strip-types scripts/build-examples-registry.ts && node --experimental-strip-types scripts/build-docgen.ts && node --experimental-strip-types scripts/build-search-index.ts",
+    "generate": "node --experimental-strip-types scripts/build-examples-registry.ts && node --experimental-strip-types scripts/build-docgen.ts && node --experimental-strip-types scripts/build-search-index.ts",
+    "predev": "pnpm run generate",
     "dev": "next dev",
-    "prebuild": "node --experimental-strip-types scripts/build-examples-registry.ts && node --experimental-strip-types scripts/build-docgen.ts && node --experimental-strip-types scripts/build-search-index.ts",
+    "prebuild": "pnpm run generate",
     "build": "next build",
     "start": "next start",
+    "prelint": "pnpm run generate",
     "lint": "next lint",
+    "pretypecheck": "pnpm run generate",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf .next out .turbo .generated"
   },
