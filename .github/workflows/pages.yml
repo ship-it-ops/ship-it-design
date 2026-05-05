@@ -1,11 +1,11 @@
-name: Deploy Storybook to Pages
+name: Deploy docs-site to Pages
 
-# Builds the static Storybook from `apps/docs/` and publishes it to GitHub
-# Pages on every push to `main`. Pages must be enabled in the repo settings:
-# Settings → Pages → Source: "GitHub Actions".
+# Builds the static Next.js docs from `apps/docs-site/` and publishes it to
+# GitHub Pages on every push to `main`. Pages must be enabled in the repo
+# settings: Settings → Pages → Source: "GitHub Actions".
 #
 # The site is served at `https://<owner>.github.io/<repo>/`. The build sets
-# `STORYBOOK_BASE_URL` so all asset paths inside the static bundle resolve
+# `NEXT_PUBLIC_BASE_PATH` so all asset paths inside the static export resolve
 # under that subpath.
 #
 # On pull_request the workflow runs the same build (with the same env) but
@@ -16,11 +16,10 @@ on:
   push:
     branches: [main]
   pull_request:
-    # Only re-validate Storybook on PRs that could actually affect the build.
-    # Anything outside this list (docs/, root markdown, other workflows,
-    # changesets, .editorconfig, etc.) skips the Pages job entirely.
+    # Only re-validate the docs site on PRs that could actually affect the
+    # build. Anything outside this list skips the Pages job entirely.
     paths:
-      - 'apps/docs/**'
+      - 'apps/docs-site/**'
       - 'packages/tokens/**'
       - 'packages/icons/**'
       - 'packages/ui/**'
@@ -50,29 +49,29 @@ concurrency:
 
 jobs:
   build:
-    name: Build Storybook
+    name: Build docs-site
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: ./.github/actions/setup
 
-      # `turbo run build --filter=docs` builds every upstream workspace
+      # `turbo run build --filter=docs-site` builds every upstream workspace
       # dependency first (tokens → icons → ui → shipit) per
-      # `dependsOn: ["^build"]`, then docs. Without this, storybook fails
+      # `dependsOn: ["^build"]`, then docs-site. Without this, Next.js fails
       # to resolve `@ship-it-ui/ui` because its `dist/` doesn't exist.
-      - name: Build Storybook (with subpath base)
+      - name: Build docs-site (with subpath base)
         env:
-          STORYBOOK_BASE_URL: /${{ github.event.repository.name }}/
-        run: pnpm exec turbo run build --filter=docs
+          NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
+        run: pnpm exec turbo run build --filter=docs-site
 
       # Verify the build actually produced an `index.html`. PR builds skip
       # `upload-pages-artifact` (no `if-no-files-found: error` safety net),
-      # so without this check a regression that empties `storybook-static`
-      # would pass PR CI silently and only blow up on the main deploy.
-      - name: Verify Storybook output exists
+      # so without this check a regression that empties `out/` would pass PR
+      # CI silently and only blow up on the main deploy.
+      - name: Verify static export exists
         run: |
-          if [ ! -f apps/docs/storybook-static/index.html ]; then
-            echo "::error::storybook-static/index.html missing — Storybook build produced no output."
+          if [ ! -f apps/docs-site/out/index.html ]; then
+            echo "::error::out/index.html missing — Next.js export produced no output."
             exit 1
           fi
 
@@ -81,7 +80,7 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
         with:
-          path: apps/docs/storybook-static
+          path: apps/docs-site/out
 
   deploy:
     name: Deploy to Pages

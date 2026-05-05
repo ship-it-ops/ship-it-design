@@ -108,14 +108,14 @@ jobs:
       - name: Build
         run: pnpm build
 
-      # Surface the static Storybook from CI so the docs are inspectable on a PR.
+      # Surface the static docs export from CI so it's inspectable on a PR.
       # Only upload from the canonical Node version to avoid N duplicate artifacts.
-      - name: Upload Storybook artifact
+      - name: Upload docs-site artifact
         if: matrix.node-version == 24
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
-          name: storybook-static
-          path: apps/docs/storybook-static
+          name: docs-site
+          path: apps/docs-site/out
           retention-days: 14
           if-no-files-found: error
 
@@ -224,8 +224,8 @@ jobs:
             ## What this repo is
 
             A pnpm + turbo monorepo shipping four npm packages under
-            `@ship-it-ui/*` (tokens, icons, ui, shipit) plus a Storybook docs
-            app. Stack: React 18+, TypeScript 5.x, Tailwind v4 (beta),
+            `@ship-it-ui/*` (tokens, icons, ui, shipit) plus a Next.js docs
+            site at `apps/docs-site/`. Stack: React 18+, TypeScript 5.x, Tailwind v4 (beta),
             Radix UI primitives, `cva` for variants, `tsup` for library
             builds, Vitest + `vitest-axe` for tests.
 

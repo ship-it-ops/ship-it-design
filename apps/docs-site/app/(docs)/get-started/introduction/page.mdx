@@ -1,0 +1,38 @@
+# ShipIt Design System
+
+The interactive companion to the design tokens and components in this repo.
+Every component on this site is the same one consumed by every ShipIt-AI app.
+
+## Packages
+
+| Package              | What's in it                                                                        |
+| -------------------- | ----------------------------------------------------------------------------------- |
+| `@ship-it-ui/tokens` | OKLCH color tokens, type ramp, spacing scale, motion durations, radius/shadow       |
+| `@ship-it-ui/icons`  | `IconGlyph` component + the canonical glyph map (◆ ◇ ○ ▤ ✦ …)                       |
+| `@ship-it-ui/ui`     | 35 primitives + 23 patterns + 6 hooks. Generic, reusable, theme-agnostic.           |
+| `@ship-it-ui/shipit` | ShipIt-AI domain composites: AskBar, CopilotMessage, GraphNode, EntityCard, Hero, … |
+
+## How this Storybook is organized
+
+- **Foundations** — color, typography, spacing, motion, iconography, layout, voice
+- **Components** — primitives in `@ship-it-ui/ui` (Button, Input, Dialog, Badge, …)
+- **Patterns** — composites in `@ship-it-ui/ui` (Tabs, DataTable, CommandPalette, …)
+- **ShipIt** — domain composites in `@ship-it-ui/shipit` (AI surfaces, graph chrome, marketing)
+
+The sidebar mirrors the showroom in `design-handoff/project/Library.html`.
+
+## Theme
+
+Tokens are **dark-first**: `:root` carries the dark palette; `[data-theme="light"]`
+overrides it. Use the toolbar toggle (top right) to flip themes — every
+component recolors via OKLCH light overrides.
+
+A single CSS variable, `--accent-h` (default `200`, cyan-blue), drives every
+accent shade. Set `--accent-h: 280` on `:root` to reskin the whole UI to
+purple in one declaration.
+
+## Voice
+
+Read **Foundations / Voice & Content** before writing copy. ShipIt's voice is
+quiet, engineer-grade, declarative. _"Reading your world"_ not _"Loading…"_.
+Glyphs, not emoji.

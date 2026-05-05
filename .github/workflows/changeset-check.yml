@@ -11,7 +11,7 @@ on:
     paths-ignore:
       - '.github/**'
       - 'docs/**'
-      - 'apps/docs/**'
+      - 'apps/docs-site/**'
       - 'audit/**'
       - '**.md'
       - 'LICENSE'

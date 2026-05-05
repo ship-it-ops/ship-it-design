@@ -1,0 +1,34 @@
+/**
+ * Global stylesheet for the docs site.
+ *
+ * Re-exports `@ship-it-ui/ui`'s globals (which itself sets up Geist, tokens,
+ * Tailwind v4, animations, and `@source` directives that scan workspace
+ * package source). The `@source` for `apps/docs-site/**` lives in
+ * `packages/ui/src/styles/globals.css` so utility classes used here get
+ * compiled.
+ */
+
+@import '@ship-it-ui/ui/styles/globals.css';
+
+/* Docs-only chrome rules. */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 72px;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Anchor links rendered by rehype-slug get a subtle hover marker. */
+.docs-anchor {
+  margin-left: 0.4rem;
+  opacity: 0;
+  color: var(--color-text-dim);
+  transition: opacity 120ms ease;
+}
+:where(h2, h3, h4):hover .docs-anchor {
+  opacity: 1;
+}

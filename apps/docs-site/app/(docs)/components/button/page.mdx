@@ -1,0 +1,44 @@
+# Button
+
+Click targets for primary and secondary actions. Seven variants × three sizes ×
+five states. **One primary per surface** — everything else defers.
+
+<LivePreview example="button/primary" />
+
+## Variants
+
+<LivePreview example="button/secondary" />
+<LivePreview example="button/ghost" />
+<LivePreview example="button/destructive" />
+
+## Sizes
+
+`sm`, `md` (default), `lg`.
+
+<LivePreview example="button/sizes" />
+
+## States
+
+Loading swaps the icon for a spinner and disables the button.
+
+<LivePreview example="button/loading" />
+
+## With icon
+
+`icon` accepts any node — a glyph string, an SVG, or an `IconGlyph`.
+
+<LivePreview example="button/with-icon" />
+
+## Props
+
+<PropsTable component="Button" />
+
+## Accessibility
+
+- Renders a real `<button>`, with all native keyboard and focus semantics.
+- Loading state sets `aria-busy="true"` so screen readers announce the change.
+- Visible focus ring uses the accent palette; passes WCAG AA contrast in both
+  themes.
+- Use `asChild` to wrap a routing link without losing button behavior.
+
+<EditOnGithub source="apps/docs-site/app/(docs)/components/button/page.mdx" />
