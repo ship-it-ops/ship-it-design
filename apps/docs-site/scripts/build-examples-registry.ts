@@ -70,10 +70,9 @@ function main() {
   lines.push('');
   lines.push('export const examples: Record<string, ExampleEntry> = {');
   for (const e of entries) {
-    const escaped = e.source.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
     lines.push(`  ${JSON.stringify(e.slug)}: {`);
     lines.push(`    Component: lazy(() => import(${JSON.stringify(e.importPath)})),`);
-    lines.push(`    source: \`${escaped}\`,`);
+    lines.push(`    source: ${JSON.stringify(e.source)},`);
     lines.push('  },');
   }
   lines.push('};');
