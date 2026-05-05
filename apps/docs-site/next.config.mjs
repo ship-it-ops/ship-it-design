@@ -1,4 +1,5 @@
 import createMDX from '@next/mdx';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
@@ -37,6 +38,19 @@ const withMDX = createMDX({
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
       rehypeSlug,
+      // Render a `<a class="docs-anchor">#</a>` after every h2/h3/h4 so the
+      // hover-reveal `.docs-anchor` styles in `app/globals.css` actually have
+      // a target. `rehype-slug` only writes the `id`; this plugin emits the
+      // anchor element.
+      [
+        rehypeAutolinkHeadings,
+        {
+          behavior: 'append',
+          properties: { className: ['docs-anchor'], 'aria-label': 'Link to section' },
+          content: { type: 'text', value: '#' },
+          test: ['h2', 'h3', 'h4'],
+        },
+      ],
       [
         rehypePrettyCode,
         {
