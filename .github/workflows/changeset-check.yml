@@ -36,19 +36,24 @@ jobs:
   required:
     name: Changeset required for package changes
     runs-on: ubuntu-latest
-    # Skip when the `no-changeset` label is present (opt-out for non-shipping
-    # PRs). On `labeled`/`unlabeled` events, additionally skip unless the
-    # affected label is `no-changeset` itself — without this guard, every
-    # label add/remove (e.g. `release: snapshot`, `help wanted`) would spin
-    # up a runner for nothing.
+    # Skip in three cases:
+    #   1. The PR title starts with `chore` (deps, ci, refactors, the
+    #      changesets-bot release PR itself) — these never ship consumer-
+    #      visible changes, so requiring a changeset on them is noise.
+    #   2. The `no-changeset` label is present (manual opt-out for
+    #      non-shipping PRs that don't fit the `chore` convention).
+    #   3. The triggering event is a label add/remove for any label OTHER
+    #      than `no-changeset` (e.g. `release: snapshot`, `help wanted`) —
+    #      without this guard every label change would spin up a runner.
     if: |
+      !startsWith(github.event.pull_request.title, 'chore') &&
       !contains(github.event.pull_request.labels.*.name, 'no-changeset') &&
       (
         (github.event.action != 'labeled' && github.event.action != 'unlabeled') ||
         github.event.label.name == 'no-changeset'
       )
     steps:
-      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           # Need the full history so `changeset status --since=origin/main`
           # can compare against the merge base.
