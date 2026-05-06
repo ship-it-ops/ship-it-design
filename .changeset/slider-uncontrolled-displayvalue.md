@@ -1,5 +1,5 @@
 ---
-"@ship-it-ui/ui": patch
+'@ship-it-ui/ui': patch
 ---
 
 Fix `Slider` so the `showValue` chip and the `<Slider>` component itself

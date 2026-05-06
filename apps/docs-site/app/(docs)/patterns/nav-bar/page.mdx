@@ -1,0 +1,74 @@
+# NavBar
+
+Primary app navigation. The same component renders either horizontally
+(top bar) or vertically (side rail), driven by one `items` tree. Items
+can carry nested `children` to produce dropdowns on horizontal and
+expand-collapse groups on vertical. Below the `md` breakpoint the bar
+collapses to a hamburger that opens a `Drawer` containing the items —
+opt out with `responsive={false}`.
+
+## Horizontal
+
+The default layout. Brand on the left, items in the middle, actions on
+the right. Items without `children` render as plain links; items with
+`children` open a dropdown via `@radix-ui/react-navigation-menu`.
+
+<LivePreview example="nav-bar/horizontal" />
+
+## Vertical
+
+Same data, side rail. Groups with `children` expand inline. The group
+auto-opens when one of its descendants is the active item, so deep links
+land on a discoverable item without a manual click.
+
+<LivePreview example="nav-bar/vertical" />
+
+## With submenus (horizontal)
+
+Top-level items can declare `children` to open a dropdown. Disabled
+children are still rendered but skip activation.
+
+<LivePreview example="nav-bar/with-submenus" />
+
+## With expandable groups (vertical)
+
+Same `children` shape — the vertical layout shows them as collapsible
+groups instead of dropdowns. Active state propagates to the parent
+trigger so the visual hierarchy matches what the user is looking at.
+
+<LivePreview example="nav-bar/vertical-with-groups" />
+
+## Active state
+
+Active state is either **controlled** via `value` + `onValueChange`, or
+**uncontrolled** via `defaultValue`. An item is "active" when its `id`
+matches `value`; for groups, the trigger is treated as active when any
+descendant is active.
+
+```tsx
+const [active, setActive] = useState('overview');
+
+<NavBar items={items} value={active} onValueChange={setActive} />;
+```
+
+## Items with hrefs
+
+When an item has an `href`, it renders as an `<a>` and `onValueChange`
+fires alongside the native link navigation — convenient for keeping a
+"current page" highlight in sync with router-driven navigation. Items
+without `href` render as `<button>` elements, so keyboard activation
+(Enter / Space) works without extra wiring.
+
+## Mobile / narrow viewports
+
+By default, the bar collapses to a top-row hamburger below `md`
+(768px) and the items move into a left-side `Drawer`. Both orientations
+share the same drawer body so users on small screens get the vertical
+list regardless of which orientation the desktop layout uses. Pass
+`responsive={false}` if your app handles its own responsive behavior.
+
+## Props
+
+<PropsTable component="NavBar" />
+
+<EditOnGithub source="apps/docs-site/app/(docs)/patterns/nav-bar/page.mdx" />

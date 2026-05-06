@@ -167,6 +167,7 @@ export const navigation: NavSection[] = [
         label: 'Layout',
         items: [
           { title: 'Menubar', slug: 'patterns/menubar' },
+          { title: 'NavBar', slug: 'patterns/nav-bar' },
           { title: 'Sidebar', slug: 'patterns/sidebar' },
           { title: 'Topbar', slug: 'patterns/topbar' },
         ],
