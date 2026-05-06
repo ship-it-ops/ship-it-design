@@ -25,13 +25,12 @@ If yes → ui. If no → shipit.
 cp -r packages/ui/src/components/Button packages/ui/src/components/<Name>
 cd packages/ui/src/components/<Name>
 mv Button.tsx <Name>.tsx
-mv Button.stories.tsx <Name>.stories.tsx
 mv Button.test.tsx <Name>.test.tsx
 ```
 
 On Windows, use Git Bash or `Copy-Item -Recurse` in PowerShell.
 
-Then global-replace `Button` → `<Name>` inside the four files. (For patterns:
+Then global-replace `Button` → `<Name>` inside the three files. (For patterns:
 target `packages/ui/src/patterns/<Name>/`. For shipit: target the right group
 folder under `packages/shipit/src/`.)
 
@@ -57,20 +56,93 @@ In `<Name>.tsx`:
   `values`, drag handlers, `role`, `cite`. (Adopt-then-rename your prop is
   another option, but `Omit` is usually cleaner.)
 
-### 3. Write the story
+### 3. Document it on the docs site
 
-In `<Name>.stories.tsx`:
+Two artifacts: a set of example files (one per variant) and one MDX page.
 
-- Title: `Components/<Group>/<Name>` for primitives,
-  `Patterns/<Group>/<Name>` for patterns, `ShipIt/<Group>/<Name>` for shipit.
-- One story per variant, plus a composite "Sizes" or "States" story.
-- Use `argTypes` to expose every variant prop as a Storybook control.
-- Tag `['autodocs']` so the auto-generated docs page works.
-- If a story needs `useState` (toggle, controlled inputs), extract its render
-  to a top-level **PascalCase component** — `MyStoryDemo` — and have the story
-  do `render: (args) => <MyStoryDemo {...args} />`. ESLint's
-  `react-hooks/rules-of-hooks` rejects hooks inside lowercase `render`
-  arrow functions.
+**a. Examples** — `apps/docs-site/examples/<kebab>/<name>.tsx`. Each file
+default-exports a single React component called `Example`:
+
+```tsx
+import { Foo } from '@ship-it-ui/ui';
+
+export default function Example() {
+  return <Foo>Hello</Foo>;
+}
+```
+
+Add one file per variant / state / behavior worth showing — `default.tsx`,
+`secondary.tsx`, `with-icon.tsx`, `loading.tsx`, `sizes.tsx`, etc. The
+file's contents are shown verbatim under the Code tab on the docs page, so
+keep them small and self-contained: no shared module-level helpers unless
+the example genuinely can't be expressed without one.
+
+If an example needs `useState` or another hook (controlled inputs, toggles,
+live values), extract the stateful part into an inner **PascalCase**
+component:
+
+```tsx
+'use client';
+import { useState } from 'react';
+import { Slider } from '@ship-it-ui/ui';
+
+function Inner() {
+  const [v, setV] = useState<number[]>([42]);
+  return <Slider value={v} onValueChange={(n) => setV(Array.isArray(n) ? n : [n])} showValue />;
+}
+
+export default function Example() {
+  return <Inner />;
+}
+```
+
+**b. Docs page** — `apps/docs-site/app/(docs)/<section>/<kebab>/page.mdx`,
+where `<section>` is `components`, `patterns`, or `shipit`. Use the existing
+Button page (`app/(docs)/components/button/page.mdx`) as the template:
+
+```mdx
+# Foo
+
+Two-line summary — what it is, when to reach for it.
+
+<LivePreview example="foo/default" />
+
+## Variants
+
+<LivePreview example="foo/secondary" />
+
+## Sizes
+
+<LivePreview example="foo/sizes" />
+
+## Props
+
+<PropsTable component="Foo" />
+
+## Accessibility
+
+- Keyboard semantics covered.
+- aria-* contracts.
+
+<EditOnGithub source="apps/docs-site/app/(docs)/components/foo/page.mdx" />
+```
+
+`<PropsTable>` is auto-generated from `react-docgen-typescript`, so the JSDoc
+above each prop in `<Name>.tsx` becomes the row's Description column. Keep
+those comments accurate.
+
+**c. Register in the sidebar** — `apps/docs-site/content/navigation.ts`. A
+page that isn't listed here is unreachable, even if `page.mdx` exists.
+
+```ts
+{
+  label: 'Display',
+  items: [
+    // …
+    { title: 'Foo', slug: 'components/foo' },
+  ],
+},
+```
 
 ### 4. Write the tests
 
@@ -103,12 +175,20 @@ Keep the export list sectioned and alphabetized within each section.
 ```bash
 pnpm --filter @ship-it-ui/ui test           # tests pass
 pnpm --filter @ship-it-ui/ui typecheck      # types compile
-pnpm dev                                 # Storybook shows your component
+pnpm --filter docs-site dev                 # Next.js docs site on :3000
 ```
 
-In Storybook: toggle the theme switcher in the toolbar. Confirm the component
-looks right in both dark (default) and light. Open the Accessibility panel — it
-should show no violations.
+Open `http://localhost:3000/<section>/<kebab>` and confirm:
+
+- The live preview renders for every example you added.
+- The Code tab shows the example file source verbatim.
+- `<PropsTable>` is populated and the descriptions match your JSDoc.
+- Toggling the theme (top-right) flips the preview cleanly in both light
+  and dark.
+- No console warnings or hydration mismatches.
+
+A11y is asserted in the unit test (`vitest-axe`); there's no separate panel
+to inspect on the docs site itself.
 
 If you suspect a turbo cache lie, `pnpm test:force` re-runs without the cache.
 
@@ -122,11 +202,15 @@ The `changeset-check` workflow will fail the PR if you forgot.
 
 ### 8. Open the PR
 
-Include a screenshot or short Loom of the component. Reviewers will look at:
+Include a screenshot or short Loom of the component (the live preview from
+the docs page is usually the cleanest source). Reviewers will look at:
 
 - Tests + axe passing
 - Token usage (no raw values)
-- Storybook story coverage (every variant + a state story)
+- Docs page coverage — one `<LivePreview>` per variant + a composite
+  Sizes/States preview
+- Sidebar entry registered in `content/navigation.ts`
+- `<PropsTable>` populated (JSDoc on every prop)
 - Whether the API matches the rest of the library
 - Public API hygiene — anything you exported is now a contract
 
@@ -139,11 +223,14 @@ Copy this into your PR description:
 - [ ] Uses `cva` for variants (no inline conditional classNames)
 - [ ] Consumes semantic tokens only (no raw hex / zinc-N)
 - [ ] `asChild` supported (or rationale why not)
-- [ ] Story per variant + a composite (Sizes/States) story
+- [ ] Example file per variant + a composite (Sizes/States) example under apps/docs-site/examples/<kebab>/
+- [ ] Docs page at apps/docs-site/app/(docs)/<section>/<kebab>/page.mdx
+- [ ] Sidebar entry added to apps/docs-site/content/navigation.ts
+- [ ] PropsTable populated (every prop has a JSDoc description)
 - [ ] Test per interactive behavior (userEvent, not fireEvent)
 - [ ] axe violations === 0
 - [ ] Keyboard navigation works (Tab / Enter / Space / Escape / Arrows where applicable)
-- [ ] Looks right in dark AND light themes
+- [ ] Looks right in dark AND light themes (verified locally on the docs page)
 - [ ] Re-exported from src/index.ts
 - [ ] Changeset added (if a publishable package changed)
 ```
