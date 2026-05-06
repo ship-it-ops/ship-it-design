@@ -7,11 +7,11 @@ patterns, and ShipIt-AI-specific composites.
 ## What's inside
 
 A pnpm + Turborepo monorepo. Four publishable packages, two internal config
-packages, and a Storybook docs app.
+packages, and a Next.js docs site.
 
 ```
 apps/
-  docs/                     Storybook 8 — live component playground & docs site
+  docs-site/                Next.js 15 docs site — MDX, static export to GitHub Pages
 packages/
   tokens/         (publish) @ship-it-ui/tokens   — colors, type, spacing, radius,
                                                  shadow, motion, breakpoints, z-index
@@ -39,7 +39,7 @@ Each publishable package has its own `README.md`. `@ship-it-ui/shipit` depends o
 | Headless behavior    | Radix UI primitives                                                              |
 | Variant API          | `class-variance-authority` + `clsx` + `tailwind-merge`                           |
 | Library build        | `tsup` (ESM + CJS + types)                                                       |
-| Docs / playground    | Storybook 8                                                                      |
+| Docs site            | Next.js 15 + MDX (static export)                                                 |
 | Testing              | Vitest + `@testing-library/react` + `@testing-library/user-event` + `vitest-axe` |
 | Versioning & release | Changesets                                                                       |
 | Task orchestration   | Turborepo                                                                        |
@@ -52,7 +52,7 @@ Each publishable package has its own `README.md`. `@ship-it-ui/shipit` depends o
 nvm use                    # Node 24 (per .nvmrc)
 corepack enable            # ensures the right pnpm version
 pnpm install
-pnpm dev                   # opens Storybook at http://localhost:6006
+pnpm dev                   # docs site dev server on http://localhost:3000
 ```
 
 ## Common scripts
@@ -60,7 +60,7 @@ pnpm dev                   # opens Storybook at http://localhost:6006
 Run from the repo root.
 
 ```bash
-pnpm build                 # build all packages + Storybook static
+pnpm build                 # build all packages + docs static export
 pnpm test                  # Vitest across every package (turbo-cached)
 pnpm test:force            # same as `test`, but bypasses turbo's cache
 pnpm typecheck             # tsc --noEmit across the project graph

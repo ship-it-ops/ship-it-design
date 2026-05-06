@@ -1,0 +1,32 @@
+# Theming
+
+Tokens are **dark-first**. The default `:root` carries the dark palette;
+`[data-theme="light"]` is the opt-in override. Setting the attribute on
+`<html>` flips every CSS variable — every component goes with it.
+
+```tsx
+// Toggle from anywhere in your app:
+import { useTheme } from '@ship-it-ui/ui';
+
+const { theme, toggle } = useTheme();
+```
+
+## Accent
+
+A single `--accent-h` knob drives the accent in both themes. Override it on
+`<html>` (or any ancestor) to recolor:
+
+```css
+:root {
+  --accent-h: 220; /* default cyan-ish */
+}
+[data-brand='warm'] {
+  --accent-h: 30;
+}
+```
+
+## Custom palettes
+
+For full overrides, import `@ship-it-ui/tokens` and re-emit the CSS variables
+you want to change inside your own `@layer base` block. Token names are stable
+across versions; the values are not.

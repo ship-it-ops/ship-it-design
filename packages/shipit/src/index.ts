@@ -21,3 +21,6 @@ export * from './graph';
 
 // Marketing
 export * from './marketing';
+
+// Data composites
+export * from './data';

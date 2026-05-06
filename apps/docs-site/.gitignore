@@ -1,0 +1,6 @@
+.next/
+out/
+.turbo/
+node_modules/
+.generated/
+public/search-index.json

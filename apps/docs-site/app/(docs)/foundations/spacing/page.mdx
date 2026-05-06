@@ -1,0 +1,61 @@
+# Spacing
+
+A 4pt scale with an **irregular ramp**: `5 = 22px`, `6 = 28px`. The handoff
+deliberately skips a `7` step to discourage hand-tuned 7px values that erode
+visual rhythm. If you want something in-between, pick the nearer real token.
+
+export const Bar = ({ token, value }) => (
+  <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '6px 0' }}>
+    <code
+      style={{
+        fontFamily: 'var(--font-family-mono)',
+        fontSize: 11,
+        color: 'var(--color-text-dim)',
+        minWidth: 70,
+      }}
+    >
+      space-{token}
+    </code>
+    <code
+      style={{
+        fontFamily: 'var(--font-family-mono)',
+        fontSize: 11,
+        color: 'var(--color-text)',
+        minWidth: 50,
+      }}
+    >
+      {value}
+    </code>
+    <div style={{ height: 12, width: value, background: 'var(--color-accent)', borderRadius: 2 }} />
+  </div>
+);
+
+<Bar token="1" value="4px" />
+<Bar token="2" value="8px" />
+<Bar token="3" value="12px" />
+<Bar token="4" value="16px" />
+<Bar token="5" value="22px" />
+<Bar token="6" value="28px" />
+<Bar token="8" value="40px" />
+
+## Radius
+
+| Token  | Value  | When                |
+| ------ | ------ | ------------------- |
+| `xs`   | 4px    | tag / kbd           |
+| `sm`   | 6px    | small button, badge |
+| `md`   | 8px    | input, card cell    |
+| `base` | 10px   | card, panel         |
+| `lg`   | 14px   | sheet / drawer      |
+| `xl`   | 18px   | hero plates         |
+| `full` | 9999px | pills, dots         |
+
+## Usage
+
+```tsx
+<div className="p-4 gap-2">         {/* 16px / 8px */}
+<div className="px-5 py-3">          {/* 22px / 12px */}
+<div className="rounded-md">         {/* radius-md */}
+```
+
+Arbitrary values (`p-[15px]`) are a smell — almost always a missed token.

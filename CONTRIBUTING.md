@@ -12,7 +12,8 @@ Quick links:
 
 ```bash
 pnpm install
-pnpm dev                    # Storybook on :6006, watching every package
+pnpm dev                    # Next.js docs site on :3000 + tsup --watch on every lib
+pnpm --filter docs-site dev # docs site only (skip the lib watchers — usually enough)
 pnpm test                   # Vitest across the workspace (turbo-cached)
 pnpm test:force             # same, but bypass cache (use to confirm green)
 pnpm changeset              # before opening a PR that touches a published package

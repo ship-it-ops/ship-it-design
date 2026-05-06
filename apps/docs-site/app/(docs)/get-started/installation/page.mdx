@@ -1,0 +1,29 @@
+# Installation
+
+Add the `@ship-it-ui/*` packages to your app:
+
+<InstallTabs pkg="@ship-it-ui/ui @ship-it-ui/tokens @ship-it-ui/icons" />
+
+Then import the global stylesheet **once** at app entry — it pulls in Geist, the
+design tokens, Tailwind v4, and keyframe animations:
+
+```tsx
+import '@ship-it-ui/ui/styles/globals.css';
+```
+
+That's it. Components are tree-shakeable; import what you need:
+
+```tsx
+import { Button, Tabs, Toast } from '@ship-it-ui/ui';
+```
+
+## Peer dependencies
+
+- React `^18.0.0` or `^19.0.0`
+- Tailwind CSS v4
+
+## Tailwind config
+
+The library ships its own `@source` directives so utility classes used inside
+`@ship-it-ui/ui` get compiled, even when Tailwind's auto-source-detection runs
+from your app root. Nothing extra to configure.

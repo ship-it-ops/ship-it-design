@@ -28,13 +28,13 @@
  * utility classes used in components actually get compiled.
  *
  * Paths are resolved relative to this CSS file:
- *   ../**          = packages/ui/src/**
- *   ../../../shipit/src/**     = packages/shipit/src/**
- *   ../../../../apps/docs/**   = apps/docs/**
+ *   ../**                          = packages/ui/src/**
+ *   ../../../shipit/src/**         = packages/shipit/src/**
+ *   ../../../../apps/docs-site/**  = apps/docs-site/**
  */
 @source '../**/*.{ts,tsx,mdx}';
 @source '../../../shipit/src/**/*.{ts,tsx,mdx}';
-@source '../../../../apps/docs/**/*.{ts,tsx,mdx}';
+@source '../../../../apps/docs-site/**/*.{ts,tsx,mdx}';
 
 /*
  * `@theme inline` tells Tailwind to read these variables for utility-class
