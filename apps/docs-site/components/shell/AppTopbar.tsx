@@ -2,6 +2,8 @@
 
 import { Badge, Kbd, Topbar } from '@ship-it-ui/ui';
 
+import { SYSTEM_VERSION } from '@/lib/version';
+
 import { ThemeToggle } from './ThemeToggle';
 
 const REPO_URL = 'https://github.com/ship-it-ops/ship-it-design';
@@ -16,7 +18,7 @@ export function AppTopbar({ onOpenSearch }: Props) {
       title={
         <span className="flex items-center gap-2">
           <span className="text-text">Ship-It Design</span>
-          <Badge variant="outline">v0.0.2</Badge>
+          <Badge variant="outline">{SYSTEM_VERSION}</Badge>
         </span>
       }
       leading={

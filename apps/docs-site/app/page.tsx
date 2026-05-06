@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Badge } from '@ship-it-ui/ui';
 
 import { navigation } from '@/content/navigation';
+import { SYSTEM_VERSION } from '@/lib/version';
 
 export default function HomePage() {
   return (
@@ -11,7 +12,7 @@ export default function HomePage() {
         <span aria-hidden className="text-accent text-[18px]">
           ◆
         </span>
-        <Badge variant="outline">v0.0.2</Badge>
+        <Badge variant="outline">{SYSTEM_VERSION}</Badge>
       </div>
       <h1 className="text-text text-[44px] leading-tight font-semibold tracking-tight">
         Ship-It Design System
