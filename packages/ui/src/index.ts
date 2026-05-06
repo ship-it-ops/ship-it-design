@@ -52,6 +52,7 @@ export * from './patterns/CommandPalette';
 export * from './patterns/DataTable';
 export * from './patterns/DatePicker';
 export * from './patterns/Dots';
+export * from './patterns/Dropzone';
 export * from './patterns/EmptyState';
 export * from './patterns/FileChip';
 export * from './patterns/Menubar';
