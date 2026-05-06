@@ -227,17 +227,15 @@ function liftRenderBody(file: SourceFile, init: VariableDeclaration): RenderBody
   if (renderInit.getKind() === SyntaxKind.ArrowFunction) {
     const arrow = renderInit.asKindOrThrow(SyntaxKind.ArrowFunction);
     const param = arrow.getParameters()[0];
-    const paramName = param?.getNameNode().getKind() === SyntaxKind.Identifier
-      ? param.getName()
-      : undefined;
+    const paramName =
+      param?.getNameNode().getKind() === SyntaxKind.Identifier ? param.getName() : undefined;
     return { body: arrow.getBody().getText(), paramName };
   }
   if (renderInit.getKind() === SyntaxKind.FunctionExpression) {
     const fn = renderInit.asKindOrThrow(SyntaxKind.FunctionExpression);
     const param = fn.getParameters()[0];
-    const paramName = param?.getNameNode().getKind() === SyntaxKind.Identifier
-      ? param.getName()
-      : undefined;
+    const paramName =
+      param?.getNameNode().getKind() === SyntaxKind.Identifier ? param.getName() : undefined;
     return { body: fn.getBody().getText(), paramName };
   }
   void file;
@@ -256,9 +254,9 @@ function buildMergedArgsObject(
     if (!obj) continue;
     let ol: ObjectLiteralExpression | undefined;
     if (obj.getKind() === SyntaxKind.PropertyAssignment) {
-      ol = obj.asKindOrThrow(SyntaxKind.PropertyAssignment).getInitializerIfKind(
-        SyntaxKind.ObjectLiteralExpression,
-      );
+      ol = obj
+        .asKindOrThrow(SyntaxKind.PropertyAssignment)
+        .getInitializerIfKind(SyntaxKind.ObjectLiteralExpression);
     } else if (obj.getKind() === SyntaxKind.ObjectLiteralExpression) {
       ol = obj as ObjectLiteralExpression;
     }
@@ -345,9 +343,7 @@ function generateExampleSource(opts: {
     const argsBinding = lifted.paramName
       ? `const ${lifted.paramName} = ${argsLiteral} as const;\n`
       : '';
-    const renderText = lifted.body.startsWith('{')
-      ? lifted.body
-      : `{ return ${lifted.body}; }`;
+    const renderText = lifted.body.startsWith('{') ? lifted.body : `{ return ${lifted.body}; }`;
     // Strip enclosing braces, then re-wrap with the args binding.
     const inner = renderText.replace(/^\s*\{/, '').replace(/\}\s*$/, '');
     body = `{${argsBinding}${inner}}`;
@@ -407,10 +403,10 @@ function generateExampleSource(opts: {
   if (!survivingStatement) throw new Error(`No statement for ${exportName}`);
   survivingStatement.remove();
 
-  const trimmedBody = body.trim().startsWith('{')
-    ? body.trim().slice(1, -1)
-    : `${body.trim()}`;
-  work.addStatements(`\nexport default function Example() {\n  ${trimmedBody.replace(/\n/g, '\n  ')}\n}\n`);
+  const trimmedBody = body.trim().startsWith('{') ? body.trim().slice(1, -1) : `${body.trim()}`;
+  work.addStatements(
+    `\nexport default function Example() {\n  ${trimmedBody.replace(/\n/g, '\n  ')}\n}\n`,
+  );
 
   work.formatText();
   return work.getFullText();
@@ -430,7 +426,11 @@ function processStory(path: string): MigratedComponent | null {
   }
   const title = getStringProp(meta, 'title') ?? 'Components/Misc/Untitled';
   const componentName =
-    meta.getProperty('component')?.asKind(SyntaxKind.PropertyAssignment)?.getInitializer()?.getText() ??
+    meta
+      .getProperty('component')
+      ?.asKind(SyntaxKind.PropertyAssignment)
+      ?.getInitializer()
+      ?.getText() ??
     title.split('/').pop() ??
     'Component';
 

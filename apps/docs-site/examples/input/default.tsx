@@ -1,6 +1,5 @@
-import { Input } from "@ship-it-ui/ui";
+import { Input } from '@ship-it-ui/ui';
 
 export default function Example() {
-    return <Input placeholder='org.shipit.com' />;
+  return <Input placeholder="org.shipit.com" />;
 }
-

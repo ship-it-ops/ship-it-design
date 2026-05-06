@@ -173,9 +173,7 @@ export const navigation: NavSection[] = [
       },
       {
         label: 'Charts',
-        items: [
-          { title: 'Sparkline', slug: 'patterns/sparkline' },
-        ],
+        items: [{ title: 'Sparkline', slug: 'patterns/sparkline' }],
       },
     ],
   },
@@ -227,9 +225,7 @@ export const navigation: NavSection[] = [
       },
       {
         label: 'Data',
-        items: [
-          { title: 'EntityTable', slug: 'shipit/entity-table' },
-        ],
+        items: [{ title: 'EntityTable', slug: 'shipit/entity-table' }],
       },
     ],
   },

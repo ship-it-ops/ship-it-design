@@ -1,6 +1,5 @@
-import { Switch } from "@ship-it-ui/ui";
+import { Switch } from '@ship-it-ui/ui';
 
 export default function Example() {
-    return <Switch label='Auto-refresh' disabled defaultChecked />;
+  return <Switch label="Auto-refresh" disabled defaultChecked />;
 }
-

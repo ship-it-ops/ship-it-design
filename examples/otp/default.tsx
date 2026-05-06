@@ -1,6 +1,5 @@
-import { OTP } from "@ship-it-ui/ui";
+import { OTP } from '@ship-it-ui/ui';
 
 export default function Example() {
-    return <OTP length={6} />;
+  return <OTP length={6} />;
 }
-

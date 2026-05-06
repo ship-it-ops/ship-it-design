@@ -1,6 +1,5 @@
-import { FAB } from "@ship-it-ui/ui";
+import { FAB } from '@ship-it-ui/ui';
 
 export default function Example() {
-    return <FAB aria-label='Ask anything' icon='✦' />;
+  return <FAB aria-label="Ask anything" icon="✦" />;
 }
-

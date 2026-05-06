@@ -1,6 +1,5 @@
-import { Checkbox } from "@ship-it-ui/ui";
+import { Checkbox } from '@ship-it-ui/ui';
 
 export default function Example() {
-    return <Checkbox label='Ingest PRs' checked='indeterminate' />;
+  return <Checkbox label="Ingest PRs" checked="indeterminate" />;
 }
-

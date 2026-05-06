@@ -1,6 +1,5 @@
-import { Avatar, AvatarGroup } from "@ship-it-ui/ui";
+import { Avatar, AvatarGroup } from '@ship-it-ui/ui';
 
 export default function Example() {
-    return <Avatar name='Priya Khanna' />;
+  return <Avatar name="Priya Khanna" />;
 }
-

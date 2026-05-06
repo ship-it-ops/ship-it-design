@@ -1,6 +1,5 @@
-import { GraphNode, type EntityType } from "@ship-it-ui/shipit";
+import { GraphNode, type EntityType } from '@ship-it-ui/shipit';
 
 export default function Example() {
-    return <GraphNode type='service' label='payment-webhook' />;
+  return <GraphNode type="service" label="payment-webhook" />;
 }
-

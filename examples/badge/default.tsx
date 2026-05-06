@@ -1,6 +1,5 @@
-import { Badge } from "@ship-it-ui/ui";
+import { Badge } from '@ship-it-ui/ui';
 
 export default function Example() {
-    return <Badge variant='accent'>BETA</Badge>;
+  return <Badge variant="accent">BETA</Badge>;
 }
-
