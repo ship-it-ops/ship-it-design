@@ -1,7 +1,7 @@
 'use client';
 
 import * as RadixSlider from '@radix-ui/react-slider';
-import { forwardRef } from 'react';
+import { forwardRef, useCallback, useState } from 'react';
 
 import { cn } from '../../utils/cn';
 
@@ -50,6 +50,7 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
     className,
     value,
     defaultValue,
+    onValueChange,
     thumbLabels,
     'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledBy,
@@ -68,7 +69,30 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
     : defaultValue !== undefined
       ? [defaultValue as unknown as number]
       : undefined;
-  const display = arrValue?.[0] ?? arrDefault?.[0] ?? props.min ?? 0;
+
+  // Uncontrolled tracking so `showValue` follows the thumb as it's dragged.
+  // Without this, `display` is computed once from `defaultValue` and Radix's
+  // own internal state drifts away from what we render. We deliberately do
+  // not useEffect-sync from `arrValue` — that allocates a fresh array per
+  // render and would re-fire on every render, causing an infinite loop.
+  // Instead we read `arrValue` directly in controlled mode and only fall
+  // back to local state when uncontrolled.
+  const isControlled = arrValue !== undefined;
+  const [uncontrolledValue, setUncontrolledValue] = useState<number[] | undefined>(arrDefault);
+  const currentValue = isControlled ? arrValue : uncontrolledValue;
+
+  const wasScalar = !Array.isArray(value ?? defaultValue) && (value ?? defaultValue) !== undefined;
+  const handleValueChange = useCallback(
+    (next: number[]) => {
+      if (!isControlled) setUncontrolledValue(next);
+      if (onValueChange) {
+        onValueChange(wasScalar ? (next[0] ?? 0) : next);
+      }
+    },
+    [isControlled, onValueChange, wasScalar],
+  );
+
+  const display = currentValue?.[0] ?? props.min ?? 0;
 
   // Determine how many thumbs to render. Radix derives the count from the
   // value/defaultValue array length; mirror that here so we can render one
@@ -84,6 +108,7 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
       <RadixSlider.Root
         value={arrValue}
         defaultValue={arrDefault}
+        onValueChange={handleValueChange}
         className="relative flex h-4 flex-1 touch-none items-center select-none"
         {...props}
       >
