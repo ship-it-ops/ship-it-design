@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { Button } from "@ship-it-ui/ui";
 
 export default function Example() {
@@ -20,16 +21,14 @@ export default function Example() {
                 </div>
             ))}
             {variants.map((v) => (
-                <>
-                    <div key={`${v}-label`} className="text-text-muted font-mono text-[11px]">
-                        {v}
-                    </div>
+                <Fragment key={v}>
+                    <div className="text-text-muted font-mono text-[11px]">{v}</div>
                     {(['sm', 'md', 'lg'] as const).map((s) => (
-                        <Button key={`${v}-${s}`} variant={v} size={s} icon={v === 'link' ? undefined : '✦'}>
+                        <Button key={s} variant={v} size={s} icon={v === 'link' ? undefined : '✦'}>
                             Action
                         </Button>
                     ))}
-                </>
+                </Fragment>
             ))}
         </div>
     );
