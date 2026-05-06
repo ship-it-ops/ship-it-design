@@ -1,5 +1,6 @@
-import { Button } from '@ship-it-ui/ui';
+import { Button } from "@ship-it-ui/ui";
 
 export default function Example() {
-  return <Button>Build graph</Button>;
+    return <Button variant='primary' size='md'>Build graph</Button>;
 }
+

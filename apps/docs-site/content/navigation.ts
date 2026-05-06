@@ -77,7 +77,45 @@ export const navigation: NavSection[] = [
         label: 'Inputs',
         items: [
           { title: 'Button', slug: 'components/button' },
-          // TODO: rest of components migrated in a follow-up PR (see plan).
+          { title: 'ButtonGroup', slug: 'components/button-group' },
+          { title: 'Checkbox', slug: 'components/checkbox' },
+          { title: 'FAB', slug: 'components/fab' },
+          { title: 'Field', slug: 'components/field' },
+          { title: 'IconButton', slug: 'components/icon-button' },
+          { title: 'Input', slug: 'components/input' },
+          { title: 'OTP', slug: 'components/otp' },
+          { title: 'Radio', slug: 'components/radio' },
+          { title: 'SearchInput', slug: 'components/search-input' },
+          { title: 'Select', slug: 'components/select' },
+          { title: 'Slider', slug: 'components/slider' },
+          { title: 'SplitButton', slug: 'components/split-button' },
+          { title: 'Switch', slug: 'components/switch' },
+          { title: 'Textarea', slug: 'components/textarea' },
+        ],
+      },
+      {
+        label: 'Display',
+        items: [
+          { title: 'Avatar', slug: 'components/avatar' },
+          { title: 'Badge', slug: 'components/badge' },
+          { title: 'Card', slug: 'components/card' },
+          { title: 'Chip', slug: 'components/chip' },
+          { title: 'Kbd', slug: 'components/kbd' },
+          { title: 'Skeleton', slug: 'components/skeleton' },
+          { title: 'StatusDot', slug: 'components/status-dot' },
+          { title: 'Tag', slug: 'components/tag' },
+        ],
+      },
+      {
+        label: 'Overlays',
+        items: [
+          { title: 'ContextMenu', slug: 'components/context-menu' },
+          { title: 'Dialog', slug: 'components/dialog' },
+          { title: 'DropdownMenu', slug: 'components/dropdown-menu' },
+          { title: 'HoverCard', slug: 'components/hover-card' },
+          { title: 'Popover', slug: 'components/popover' },
+          { title: 'Toast', slug: 'components/toast' },
+          { title: 'Tooltip', slug: 'components/tooltip' },
         ],
       },
     ],
@@ -87,8 +125,57 @@ export const navigation: NavSection[] = [
     label: 'Patterns',
     groups: [
       {
-        label: 'Coming soon',
-        items: [],
+        label: 'Navigation',
+        items: [
+          { title: 'Breadcrumbs', slug: 'patterns/breadcrumbs' },
+          { title: 'CommandPalette', slug: 'patterns/command-palette' },
+          { title: 'Dots', slug: 'patterns/dots' },
+          { title: 'Pagination', slug: 'patterns/pagination' },
+          { title: 'Stepper', slug: 'patterns/stepper' },
+          { title: 'Tabs', slug: 'patterns/tabs' },
+        ],
+      },
+      {
+        label: 'Forms',
+        items: [
+          { title: 'Combobox', slug: 'patterns/combobox' },
+          { title: 'DatePicker', slug: 'patterns/date-picker' },
+          { title: 'Dropzone', slug: 'patterns/dropzone' },
+          { title: 'FileChip', slug: 'patterns/file-chip' },
+        ],
+      },
+      {
+        label: 'Feedback',
+        items: [
+          { title: 'Alert', slug: 'patterns/alert' },
+          { title: 'Banner', slug: 'patterns/banner' },
+          { title: 'EmptyState', slug: 'patterns/empty-state' },
+          { title: 'Progress', slug: 'patterns/progress' },
+          { title: 'RadialProgress', slug: 'patterns/radial-progress' },
+          { title: 'Spinner', slug: 'patterns/spinner' },
+        ],
+      },
+      {
+        label: 'Data',
+        items: [
+          { title: 'DataTable', slug: 'patterns/data-table' },
+          { title: 'Timeline', slug: 'patterns/timeline' },
+          { title: 'Tree', slug: 'patterns/tree' },
+        ],
+      },
+      {
+        label: 'Layout',
+        items: [
+          { title: 'Menubar', slug: 'patterns/menubar' },
+          { title: 'Sidebar', slug: 'patterns/sidebar' },
+          { title: 'Topbar', slug: 'patterns/topbar' },
+        ],
+      },
+      {
+        label: 'Charts',
+        items: [
+          { title: 'Sparkline', slug: 'patterns/sparkline' },
+        ],
       },
     ],
   },
@@ -97,8 +184,52 @@ export const navigation: NavSection[] = [
     label: 'ShipIt',
     groups: [
       {
-        label: 'Coming soon',
-        items: [],
+        label: 'AI',
+        items: [
+          { title: 'AskBar', slug: 'shipit/ask-bar' },
+          { title: 'Citation', slug: 'shipit/citation' },
+          { title: 'ConfidenceIndicator', slug: 'shipit/confidence-indicator' },
+          { title: 'CopilotMessage', slug: 'shipit/copilot-message' },
+          { title: 'ReasoningBlock', slug: 'shipit/reasoning-block' },
+          { title: 'SuggestionChip', slug: 'shipit/suggestion-chip' },
+          { title: 'ToolCallCard', slug: 'shipit/tool-call-card' },
+        ],
+      },
+      {
+        label: 'Entity',
+        items: [
+          { title: 'EntityBadge', slug: 'shipit/entity-badge' },
+          { title: 'EntityCard', slug: 'shipit/entity-card' },
+          { title: 'EntityListRow', slug: 'shipit/entity-list-row' },
+        ],
+      },
+      {
+        label: 'Graph',
+        items: [
+          { title: 'GraphEdge', slug: 'shipit/graph-edge' },
+          { title: 'GraphInspector', slug: 'shipit/graph-inspector' },
+          { title: 'GraphLegend', slug: 'shipit/graph-legend' },
+          { title: 'GraphMinimap', slug: 'shipit/graph-minimap' },
+          { title: 'GraphNode', slug: 'shipit/graph-node' },
+          { title: 'PathOverlay', slug: 'shipit/path-overlay' },
+        ],
+      },
+      {
+        label: 'Marketing',
+        items: [
+          { title: 'CTAStrip', slug: 'shipit/ctastrip' },
+          { title: 'FeatureGrid', slug: 'shipit/feature-grid' },
+          { title: 'Footer', slug: 'shipit/footer' },
+          { title: 'Hero', slug: 'shipit/hero' },
+          { title: 'PricingCard', slug: 'shipit/pricing-card' },
+          { title: 'Testimonial', slug: 'shipit/testimonial' },
+        ],
+      },
+      {
+        label: 'Data',
+        items: [
+          { title: 'EntityTable', slug: 'shipit/entity-table' },
+        ],
       },
     ],
   },
