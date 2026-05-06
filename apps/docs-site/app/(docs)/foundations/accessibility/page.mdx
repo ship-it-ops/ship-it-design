@@ -9,7 +9,6 @@ applicable.
 
 - **Unit-test `axe` checks.** Each component renders + asserts no violations
   via `vitest-axe`. CI fails on regressions.
-- **Storybook a11y addon.** The panel surfaces issues live as you iterate.
 - **Focus management.** Radix handles focus traps + roving focus on overlays
   and menus; primitive components include `focus-visible:ring-[3px]
 ring-accent-dim` rings.
@@ -23,7 +22,7 @@ ring-accent-dim` rings.
 - **Label icon-only controls.** Pass `aria-label` to `<IconButton>`.
 - **Test with the keyboard.** Tab through your component. If you can't operate
   it without a mouse, it's not ready.
-- **Run the a11y panel** before opening a PR.
+- **Run `pnpm test`** before opening a PR — `vitest-axe` runs against every component's test file and catches the bulk of issues.
 
 ## Recurring axe pitfalls (and the fixes)
 

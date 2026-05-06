@@ -499,7 +499,7 @@ function writeMdxPage(component: MigratedComponent) {
   lines.push(`# ${component.pageTitle}`);
   lines.push('');
   lines.push(
-    `Auto-generated from the legacy Storybook stories. Each example below is a real component instance — flip the theme toggle to see how it adapts.`,
+    `Each example below is a real component instance — flip the theme toggle to see how it adapts.`,
   );
   lines.push('');
   for (const exp of component.exports) {
