@@ -122,7 +122,7 @@ Two-line summary — what it is, when to reach for it.
 ## Accessibility
 
 - Keyboard semantics covered.
-- aria-* contracts.
+- aria-\* contracts.
 
 <EditOnGithub source="apps/docs-site/app/(docs)/components/foo/page.mdx" />
 ```

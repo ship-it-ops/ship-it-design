@@ -32,7 +32,7 @@ treat the docs surface as part of the component's contract, not a follow-up.
    `apps/docs-site/app/(docs)/<section>/<kebab>/page.mdx`. Mirror the shape
    any existing page uses — for example, `app/(docs)/components/button/page.mdx`:
 
-   ````mdx
+   ```mdx
    # Foo
 
    Two-line summary of what this is and when to reach for it.
@@ -54,10 +54,10 @@ treat the docs surface as part of the component's contract, not a follow-up.
    ## Accessibility
 
    - Keyboard semantics covered.
-   - aria-* contracts callouts.
+   - aria-\* contracts callouts.
 
    <EditOnGithub source="apps/docs-site/app/(docs)/components/foo/page.mdx" />
-   ````
+   ```
 
 4. **Register the page** in `apps/docs-site/content/navigation.ts` under the
    matching section/group. The sidebar is filesystem-agnostic — a `page.mdx`
