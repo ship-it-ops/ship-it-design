@@ -1,5 +1,6 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 interface Heading {
@@ -9,23 +10,39 @@ interface Heading {
 }
 
 /**
- * Right-rail table of contents. Reads h2/h3 headings from the article on mount
- * (the `rehype-slug` plugin provides stable IDs) and uses an
+ * Right-rail table of contents. Reads h2/h3 headings from the article on
+ * every route change (rehype-slug provides stable IDs) and uses an
  * IntersectionObserver to highlight whichever is currently in view.
+ *
+ * The component is mounted in the persistent `(docs)` layout, so client-
+ * side navigation keeps the same instance — `pathname` in the deps array
+ * is what re-runs the scan when the user lands on a new page.
  */
 export function TableOfContents() {
+  const pathname = usePathname();
   const [headings, setHeadings] = useState<Heading[]>([]);
   const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
     const article = document.querySelector('article.docs-prose');
-    if (!article) return;
-    const list: Heading[] = Array.from(article.querySelectorAll('h2[id], h3[id]')).map((h) => ({
-      id: h.id,
-      text: h.textContent ?? '',
-      level: h.tagName === 'H2' ? 2 : 3,
-    }));
+    if (!article) {
+      setHeadings([]);
+      return;
+    }
+    const list: Heading[] = Array.from(article.querySelectorAll('h2[id], h3[id]')).map((h) => {
+      // rehype-autolink-headings appends an `<a class="docs-anchor">#</a>`
+      // inside each heading. Clone, strip the anchor, then read textContent
+      // so the TOC label is "Variants" not "Variants#".
+      const clone = h.cloneNode(true) as HTMLElement;
+      clone.querySelectorAll('.docs-anchor').forEach((a) => a.remove());
+      return {
+        id: h.id,
+        text: (clone.textContent ?? '').trim(),
+        level: h.tagName === 'H2' ? 2 : 3,
+      };
+    });
     setHeadings(list);
+    setActive(null);
     if (list.length === 0) return;
 
     const obs = new IntersectionObserver(
@@ -42,7 +59,7 @@ export function TableOfContents() {
       if (el) obs.observe(el);
     });
     return () => obs.disconnect();
-  }, []);
+  }, [pathname]);
 
   if (headings.length === 0) return null;
 
