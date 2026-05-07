@@ -12,17 +12,19 @@ const items: NavBarItem[] = [
 export default function Example() {
   const [active, setActive] = useState('graph');
   return (
-    <NavBar
-      orientation="horizontal"
-      items={items}
-      brand={<span className="text-accent">◆ Ship-It</span>}
-      actions={
-        <button type="button" className="text-text-muted hover:text-text text-[13px]">
-          Account
-        </button>
-      }
-      value={active}
-      onValueChange={setActive}
-    />
+    <div className="w-full">
+      <NavBar
+        orientation="horizontal"
+        items={items}
+        brand={<span className="text-accent">◆ Ship-It</span>}
+        actions={
+          <button type="button" className="text-text-muted hover:text-text text-[13px]">
+            Account
+          </button>
+        }
+        value={active}
+        onValueChange={setActive}
+      />
+    </div>
   );
 }

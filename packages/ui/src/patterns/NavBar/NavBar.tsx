@@ -141,7 +141,11 @@ export const NavBar = forwardRef<HTMLElement, NavBarProps>(function NavBar(
       >
         ☰
       </button>
-      {brand && <div className="flex flex-1 items-center text-[13px] font-medium">{brand}</div>}
+      {brand && (
+        <div className="flex flex-1 items-center text-[13px] font-medium whitespace-nowrap">
+          {brand}
+        </div>
+      )}
       {actions && <div className="flex items-center gap-3">{actions}</div>}
     </div>
   ) : null;
@@ -159,9 +163,15 @@ export const NavBar = forwardRef<HTMLElement, NavBarProps>(function NavBar(
           )}
           {...props}
         >
-          {brand && <div className="text-[13px] font-medium">{brand}</div>}
+          {brand && (
+            <div className="shrink-0 text-[13px] font-medium whitespace-nowrap">{brand}</div>
+          )}
           <RadixNav.Root className="relative flex-1" delayDuration={120}>
-            <RadixNav.List className="flex items-center gap-1">
+            {/* Reset list styling. Consumers may render NavBar inside a
+                typography/prose wrapper (e.g. MDX content) that injects
+                `list-style: disc` and `li { margin }` — neutralize both
+                here so the bar looks the same everywhere. */}
+            <RadixNav.List className="m-0! flex list-none! items-center gap-1 p-0! [&_li]:m-0!">
               {items.map((item) =>
                 item.children?.length ? (
                   <HorizontalDropdown
@@ -347,7 +357,7 @@ function HorizontalDropdown({ item, active, activeId, onActivate }: HorizontalDr
         </span>
       </RadixNav.Trigger>
       <RadixNav.Content className="border-border bg-panel min-w-[220px] rounded-xs border p-2 shadow-lg">
-        <ul className="flex flex-col gap-[2px]">
+        <ul className="m-0! flex list-none! flex-col gap-[2px] p-0! [&_li]:m-0!">
           {item.children!.map((child) => (
             <li key={child.id}>
               <DropdownLink item={child} active={child.id === activeId} onActivate={onActivate} />

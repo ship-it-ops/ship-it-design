@@ -28,12 +28,14 @@ const items: NavBarItem[] = [
 export default function Example() {
   const [active, setActive] = useState('projects');
   return (
-    <NavBar
-      orientation="horizontal"
-      items={items}
-      brand={<span className="text-accent">◆ Ship-It</span>}
-      value={active}
-      onValueChange={setActive}
-    />
+    <div className="w-full">
+      <NavBar
+        orientation="horizontal"
+        items={items}
+        brand={<span className="text-accent">◆ Ship-It</span>}
+        value={active}
+        onValueChange={setActive}
+      />
+    </div>
   );
 }
