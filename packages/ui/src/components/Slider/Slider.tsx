@@ -81,6 +81,12 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
   const [uncontrolledValue, setUncontrolledValue] = useState<number[] | undefined>(arrDefault);
   const currentValue = isControlled ? arrValue : uncontrolledValue;
 
+  // Per-render snapshot of the prop shape — drives whether `onValueChange`
+  // reports a scalar or an array. With both `value` and `defaultValue`
+  // undefined this is `false` (matches Radix's native array shape). The
+  // variable describes *this render*, not a stable identity: if a consumer
+  // later supplies a scalar `value`, the callback shape switches on the
+  // next render to match.
   const wasScalar = !Array.isArray(value ?? defaultValue) && (value ?? defaultValue) !== undefined;
   const handleValueChange = useCallback(
     (next: number[]) => {

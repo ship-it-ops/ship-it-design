@@ -112,7 +112,11 @@ export const NavBar = forwardRef<HTMLElement, NavBarProps>(function NavBar(
   );
 
   const drawerBody = (
-    <nav aria-label="Navigation" className="flex flex-col gap-1">
+    // Distinct aria-label from the desktop <aside>'s <nav> below — when the
+    // drawer is open on a viewport that's resizing past `md`, both navs can
+    // sit in the DOM together. Identical accessible names would trip axe's
+    // `landmark-unique` rule.
+    <nav aria-label="Mobile navigation" className="flex flex-col gap-1">
       {items.map((item) => (
         <VerticalItem
           key={item.id}
@@ -229,7 +233,7 @@ export const NavBar = forwardRef<HTMLElement, NavBarProps>(function NavBar(
         {...props}
       >
         {brand && <div className="px-2 py-1 text-[13px] font-medium">{brand}</div>}
-        <nav aria-label="Navigation" className="flex flex-1 flex-col gap-1 overflow-y-auto">
+        <nav aria-label="Sidebar navigation" className="flex flex-1 flex-col gap-1 overflow-y-auto">
           {items.map((item) => (
             <VerticalItem
               key={item.id}

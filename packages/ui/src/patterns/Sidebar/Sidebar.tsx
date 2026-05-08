@@ -169,7 +169,11 @@ export const NavSection = forwardRef<HTMLDivElement, NavSectionProps>(function N
 ) {
   const isControlled = open !== undefined;
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
-  const isOpen = isControlled ? open : internalOpen;
+  // `open`/`defaultOpen` only matter when `collapsible` is true. A
+  // non-collapsible section has no toggle to recover from a hidden body,
+  // so always render its children regardless of the (possibly stale)
+  // `open` prop a caller may have passed alongside.
+  const isOpen = !collapsible || (isControlled ? open : internalOpen);
 
   const toggle = useCallback(() => {
     const next = !isOpen;
