@@ -43,7 +43,7 @@ export const PricingCard = forwardRef<HTMLDivElement, PricingCardProps>(function
     <div
       ref={ref}
       className={cn(
-        '@container bg-panel flex flex-col gap-5 rounded-lg border p-5 @sm:p-6',
+        'bg-panel @container flex flex-col gap-5 rounded-lg border p-5 @sm:p-6',
         featured ? 'border-accent shadow-lg' : 'border-border',
         className,
       )}

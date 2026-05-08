@@ -3,7 +3,7 @@ import { PricingCard } from '@ship-it-ui/shipit';
 
 export default function Example() {
   return (
-    <div className="grid w-full gap-4 [grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]">
+    <div className="grid w-full [grid-template-columns:repeat(auto-fit,minmax(220px,1fr))] gap-4">
       <PricingCard
         tier="Free"
         price="$0"

@@ -189,7 +189,7 @@ export const NavSection = forwardRef<HTMLDivElement, NavSectionProps>(function N
           onClick={toggle}
           className={cn(
             eyebrowClass,
-            'rounded-xs cursor-pointer outline-none',
+            'cursor-pointer rounded-xs outline-none',
             'focus-visible:ring-accent-dim focus-visible:ring-[3px]',
             'hover:text-text-muted',
           )}
@@ -218,10 +218,7 @@ export const NavSection = forwardRef<HTMLDivElement, NavSectionProps>(function N
       )}
       {isOpen && (
         <div
-          className={cn(
-            'flex flex-col gap-[2px]',
-            indent > 0 && 'border-border ml-2 border-l',
-          )}
+          className={cn('flex flex-col gap-[2px]', indent > 0 && 'border-border ml-2 border-l')}
           style={indent > 0 ? { paddingLeft: indent } : undefined}
         >
           {children}
