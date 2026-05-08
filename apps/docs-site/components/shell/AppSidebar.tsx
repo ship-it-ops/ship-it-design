@@ -3,7 +3,7 @@
 import { IconGlyph } from '@ship-it-ui/icons';
 import { NavItem, NavSection, Sidebar } from '@ship-it-ui/ui';
 import { useRouter, usePathname } from 'next/navigation';
-import type { MouseEvent } from 'react';
+import { useEffect, useState, type MouseEvent } from 'react';
 
 import { navigation } from '@/content/navigation';
 
@@ -13,21 +13,42 @@ import { navigation } from '@/content/navigation';
  * inside it; inner groups stay as static-eyebrow `NavSection`s. Leaves
  * become `NavItem`s. NavItem renders a real `<a>` when `href` is set, so we
  * pass `href` directly and intercept the click for client-side navigation.
+ *
+ * Section-open state is tracked here (not via `defaultOpen`) so that SPA
+ * navigations between top-level sections re-open the new current section —
+ * `AppSidebar` is a persistent client component in App Router and would
+ * otherwise hold the first-mount state forever. The user's manual collapses
+ * are preserved across renders; only a route change into a different
+ * section flips that section back open.
  */
 export function AppSidebar() {
   const router = useRouter();
   const pathname = usePathname() ?? '/';
+  const currentSectionId = navigation.find((s) => pathname.startsWith(`/${s.id}`))?.id;
+
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>(() =>
+    currentSectionId ? { [currentSectionId]: true } : {},
+  );
+
+  useEffect(() => {
+    if (!currentSectionId) return;
+    setOpenSections((prev) =>
+      prev[currentSectionId] ? prev : { ...prev, [currentSectionId]: true },
+    );
+  }, [currentSectionId]);
 
   return (
     <Sidebar width={260} className="overflow-y-auto">
       {navigation.map((section) => {
-        const isCurrentSection = pathname.startsWith(`/${section.id}`);
+        const isCurrentSection = section.id === currentSectionId;
+        const isOpen = openSections[section.id] ?? isCurrentSection;
         return (
           <NavSection
             key={section.id}
             label={section.label}
             collapsible
-            defaultOpen={isCurrentSection}
+            open={isOpen}
+            onOpenChange={(o) => setOpenSections((prev) => ({ ...prev, [section.id]: o }))}
             indent={10}
             icon={section.icon ? <IconGlyph name={section.icon} size={12} /> : undefined}
           >

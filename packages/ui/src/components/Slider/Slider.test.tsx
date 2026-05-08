@@ -1,3 +1,9 @@
+// `fireEvent` is the project-wide exception here: Radix Slider attaches the
+// keydown handler directly to the thumb element, which `userEvent.keyboard`
+// can't reach synchronously in jsdom (the focus + dispatch interleaving
+// races). The keyboard-driven test below uses fireEvent for that single
+// reason — do not add further fireEvent calls without an equivalent
+// justification.
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { axe } from 'vitest-axe';

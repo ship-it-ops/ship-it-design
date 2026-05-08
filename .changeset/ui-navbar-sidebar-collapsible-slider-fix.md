@@ -2,10 +2,16 @@
 '@ship-it-ui/ui': patch
 ---
 
-**`NavBar` pattern (new).** Adds a horizontal/vertical navigation pattern with
-support for groups, submenus, and active-item state. Composes as
-`<NavBar />` with `NavBar.Item`, `NavBar.Group`, and `NavBar.Submenu`
-sub-components. Exported from the package root.
+**`NavBar` pattern (new).** Renders primary app navigation as either a
+horizontal top bar (`orientation="horizontal"`) or a vertical side rail
+(`orientation="vertical"`), driven by a flat `items: NavBarItem[]` tree.
+Items can carry nested `children` to produce dropdowns on horizontal and
+expand-collapse groups on vertical. Below `md` the bar collapses to a
+hamburger that opens a Drawer with the items rendered vertically (set
+`responsive={false}` to opt out). Active state can be controlled
+(`value` + `onValueChange`) or uncontrolled (`defaultValue`); items with
+`href` render as anchors, others as buttons. New exports: `NavBar`,
+`NavBarItem`, `NavBarOrientation`, `NavBarProps`.
 
 **`Sidebar.NavSection` is now collapsible.** Six new optional props on
 `NavSection`, all backwards-compatible (existing consumers keep the static

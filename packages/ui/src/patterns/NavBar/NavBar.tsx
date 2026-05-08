@@ -4,6 +4,7 @@ import * as RadixNav from '@radix-ui/react-navigation-menu';
 import {
   forwardRef,
   useCallback,
+  useRef,
   useState,
   type HTMLAttributes,
   type MouseEvent,
@@ -436,6 +437,13 @@ function VerticalItem({ item, activeId, onActivate }: VerticalItemProps) {
   // Default the group to expanded when a descendant is active; otherwise
   // collapsed. Consumers who want different behavior can rebuild the tree.
   const [open, setOpen] = useState(treeActive);
+  // If the parent later moves activeId into this subtree (e.g. router push
+  // to a descendant route while this group is collapsed), force the group
+  // open so the active item is visible. Open-only: never auto-collapse —
+  // the user may have closed the group deliberately.
+  const wasTreeActive = useRef(treeActive);
+  if (treeActive && !wasTreeActive.current) setOpen(true);
+  wasTreeActive.current = treeActive;
 
   if (!hasChildren) {
     const handleClick = (e: MouseEvent<HTMLElement>) => {
