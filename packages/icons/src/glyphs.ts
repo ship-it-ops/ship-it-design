@@ -88,7 +88,12 @@ export const glyphs = {
   warn: '!',
   warnAlt: '!',
   help: '?',
+  info: 'ⓘ',
   more: '⋯',
+  moreVertical: '⋮',
+  edit: '✎',
+  copy: '⧉',
+  refresh: '↻',
 
   // Interaction
   search: '⌕',
