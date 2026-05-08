@@ -12,17 +12,11 @@ describe('build-css', () => {
     expect(block('color', { textMuted: '#8a8a94' })).toBe('  --color-text-muted: #8a8a94;');
   });
 
-  it('emits dark-default :root, light-overrides, and reduced-motion blocks', () => {
-    const css = buildTokenCss();
-
-    expect(css).toContain(':root {');
-    expect(css).toContain('--accent-h: 200');
-    expect(css).toContain('--color-bg: #0a0a0b;');
-    expect(css).toContain("[data-theme='light']");
-    expect(css).toContain('--color-bg: #fbfbfa;');
-    expect(css).toContain('@media (prefers-reduced-motion: reduce)');
-    expect(css).toContain('--duration-micro: 0ms;');
-    expect(css).toContain('--duration-step: 0ms;');
+  // Snapshot of the full generated CSS. Any unintended drift in token names
+  // or values — added/removed/renamed/recomputed — fails this test. To accept
+  // an intended change, re-run with `pnpm test -- -u` and verify the diff.
+  it('matches the generated tokens.css snapshot', () => {
+    expect(buildTokenCss()).toMatchSnapshot();
   });
 
   it('writes generated CSS to the requested output path', () => {

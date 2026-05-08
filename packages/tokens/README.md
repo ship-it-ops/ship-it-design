@@ -16,16 +16,27 @@ component that uses it.
 
 ## Two layers of color
 
-We use a two-layer color system:
+We use a two-layer color system, both defined in `src/color.ts`:
 
-1. **Primitive** (`colorPrimitive`) — the raw palette: `neutral-50`, `brand-500`, etc.
-   Components must **not** import these directly.
-2. **Semantic** (`colorSemanticLight`, `colorSemanticDark`) — role-based aliases like
-   `bg`, `panel`, `text`, `text-muted`, `border`, `accent`, `ok`, `warn`, `err`
-   (the full set lives in `packages/ui/src/styles/globals.css`). Components import these.
+1. **Primitive** (`colorPrimitive`) — raw OKLCH ramps for the companion palette
+   (`ok`, `warn`, `err`, `purple`, `pink`). Components must **not** import these
+   directly.
+2. **Semantic** (`colorSemanticDark`, `colorSemanticLight`) — the role-based
+   aliases components actually consume: `bg`, `panel`, `panel-2`, `border`,
+   `borderStrong`, `text`, `textMuted`, `textDim`, `accent`, `accentText`,
+   `accentDim`, `accentGlow`, plus the companion palette (`ok`/`warn`/`err`/etc.)
+   and their on-surface foregrounds.
 
-This decoupling means we can reskin the system (swap palettes) without changing a
-single component.
+`scripts/build-css.ts` emits both maps to `styles/tokens.css` — dark on `:root`,
+light overrides on `[data-theme='light']`. `@ship-it-ui/ui/styles/globals.css`
+re-binds those CSS variables into Tailwind v4's `@theme inline` block so utility
+classes like `bg-bg`, `text-text`, `border-border` resolve to them.
+
+A separate runtime knob, `--accent-h`, lets consumers rotate every accent-derived
+OKLCH color by overriding a single CSS variable — no component changes needed.
+
+This decoupling means we can reskin the system (swap palettes, rotate the accent
+hue) without changing a single component.
 
 ## How tokens reach your components
 

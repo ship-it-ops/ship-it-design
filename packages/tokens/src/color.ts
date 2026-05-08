@@ -126,7 +126,10 @@ export const colorSemanticLight = {
   // Avatar fallback L+C — same hue rotation, slightly darker L for contrast against light bg.
   avatarFallbackL: '0.55',
   avatarFallbackC: '0.12',
-} as const;
+  // `satisfies` (instead of a plain annotation) keeps each value's literal type
+  // intact while forcing this map to expose every key in `colorSemanticDark`.
+  // A missing or extra key here is a compile error — the two themes can't drift.
+} as const satisfies Record<keyof typeof colorSemanticDark, string>;
 
 export type ColorSemantic = typeof colorSemanticDark;
 export type ColorSemanticToken = keyof ColorSemantic;
