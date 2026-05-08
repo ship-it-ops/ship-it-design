@@ -62,6 +62,17 @@ describe('NavBar', () => {
       expect(screen.getAllByRole('button', { name: 'Account' }).length).toBeGreaterThan(0);
     });
 
+    it('moves focus between top-level items with arrow keys', async () => {
+      render(<NavBar items={items} responsive={false} />);
+      // Radix NavigationMenu owns roving tabindex on its top-level items;
+      // ArrowRight from a focused item moves focus to the next sibling.
+      const home = screen.getByRole('link', { name: /Home/ });
+      home.focus();
+      expect(home).toHaveFocus();
+      await userEvent.keyboard('{ArrowRight}');
+      expect(screen.getByRole('button', { name: /Graph/ })).toHaveFocus();
+    });
+
     it('has no a11y violations', async () => {
       const { container } = render(
         <NavBar items={items} brand="Ship-It" actions={<button type="button">A</button>} />,

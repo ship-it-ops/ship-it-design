@@ -4,6 +4,7 @@ import * as RadixNav from '@radix-ui/react-navigation-menu';
 import {
   forwardRef,
   useCallback,
+  useEffect,
   useRef,
   useState,
   type HTMLAttributes,
@@ -335,8 +336,12 @@ function HorizontalDropdown({ item, active, activeId, onActivate }: HorizontalDr
   return (
     <RadixNav.Item>
       <RadixNav.Trigger
+        // `group` on the Trigger lets descendants react to the Trigger's
+        // own `data-state` attribute via `group-data-[state=open]:…`.
+        // Without `group`, child variants like `data-[state=open]:rotate-180`
+        // on the chevron span would target the span's own (absent) data-state.
         className={cn(
-          'flex items-center gap-1 rounded-xs px-3 py-[6px] text-[13px] outline-none',
+          'group flex items-center gap-1 rounded-xs px-3 py-[6px] text-[13px] outline-none',
           'transition-colors duration-(--duration-micro)',
           'focus-visible:ring-accent-dim focus-visible:ring-[3px]',
           active ? 'bg-accent-dim text-accent' : 'text-text hover:bg-panel-2',
@@ -352,7 +357,7 @@ function HorizontalDropdown({ item, active, activeId, onActivate }: HorizontalDr
         <span>{item.label}</span>
         <span
           aria-hidden
-          className="ml-1 text-[10px] opacity-70 transition-transform data-[state=open]:rotate-180"
+          className="ml-1 text-[10px] opacity-70 transition-transform group-data-[state=open]:rotate-180"
         >
           ▾
         </span>
@@ -440,10 +445,15 @@ function VerticalItem({ item, activeId, onActivate }: VerticalItemProps) {
   // If the parent later moves activeId into this subtree (e.g. router push
   // to a descendant route while this group is collapsed), force the group
   // open so the active item is visible. Open-only: never auto-collapse —
-  // the user may have closed the group deliberately.
-  const wasTreeActive = useRef(treeActive);
-  if (treeActive && !wasTreeActive.current) setOpen(true);
-  wasTreeActive.current = treeActive;
+  // the user may have closed the group deliberately. Driven from an effect
+  // (not in-render ref mutation) so a discarded concurrent-mode render
+  // can't leave the ref ahead of the committed state and skip the next
+  // legitimate transition.
+  const prevTreeActive = useRef(treeActive);
+  useEffect(() => {
+    if (treeActive && !prevTreeActive.current) setOpen(true);
+    prevTreeActive.current = treeActive;
+  }, [treeActive]);
 
   if (!hasChildren) {
     const handleClick = (e: MouseEvent<HTMLElement>) => {

@@ -5,7 +5,7 @@
 // package, then exits non-zero. Used by .github/workflows/changeset-check.yml.
 
 import { readFileSync, readdirSync, existsSync, appendFileSync } from "node:fs";
-import { execSync } from "node:child_process";
+import { execFileSync } from "node:child_process";
 import { join } from "node:path";
 
 const baseRef = process.env.BASE_REF || "origin/main";
@@ -27,9 +27,14 @@ function discoverPublishablePackages() {
 }
 
 function changedPackageDirs() {
-  const diff = execSync(`git diff --name-only ${baseRef}...HEAD`, {
-    encoding: "utf8",
-  });
+  // execFileSync (not execSync) so `baseRef` never reaches a shell — argv is
+  // passed straight to git. A branch name like `main; rm -rf /` would be
+  // forwarded as a literal ref and rejected by git, never executed.
+  const diff = execFileSync(
+    "git",
+    ["diff", "--name-only", `${baseRef}...HEAD`],
+    { encoding: "utf8" },
+  );
   const dirs = new Set();
   for (const file of diff.split("\n")) {
     if (!file) continue;
