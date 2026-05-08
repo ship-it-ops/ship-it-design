@@ -1,6 +1,13 @@
 'use client';
 
-import { forwardRef, type ButtonHTMLAttributes, type HTMLAttributes, type ReactNode } from 'react';
+import {
+  forwardRef,
+  useCallback,
+  useState,
+  type ButtonHTMLAttributes,
+  type HTMLAttributes,
+  type ReactNode,
+} from 'react';
 
 import { cn } from '../../utils/cn';
 
@@ -121,21 +128,105 @@ NavItem.displayName = 'NavItem';
 export interface NavSectionProps extends HTMLAttributes<HTMLDivElement> {
   /** Eyebrow heading. Rendered uppercase, mono, dim. */
   label: ReactNode;
+  /** Optional leading glyph or icon node next to the eyebrow. */
+  icon?: ReactNode;
   /** Optional trailing element next to the heading (e.g., a `+` add affordance). */
   action?: ReactNode;
+  /**
+   * When true, the eyebrow becomes a button that toggles the body. The body
+   * is hidden when closed. Default `false` — the eyebrow stays static.
+   */
+  collapsible?: boolean;
+  /** Uncontrolled initial open state. Default `true`. Ignored when `open` is provided. */
+  defaultOpen?: boolean;
+  /** Controlled open state. */
+  open?: boolean;
+  /** Fires when the open state changes. */
+  onOpenChange?: (open: boolean) => void;
+  /**
+   * Pixel indent applied to the body. Useful when this section nests other
+   * sections — the indent visually anchors children to the eyebrow above.
+   * A subtle left rail is drawn alongside the indent. Default `0`.
+   */
+  indent?: number;
 }
 
 export const NavSection = forwardRef<HTMLDivElement, NavSectionProps>(function NavSection(
-  { label, action, className, children, ...props },
+  {
+    label,
+    icon,
+    action,
+    collapsible = false,
+    defaultOpen = true,
+    open,
+    onOpenChange,
+    indent = 0,
+    className,
+    children,
+    ...props
+  },
   ref,
 ) {
+  const isControlled = open !== undefined;
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const isOpen = isControlled ? open : internalOpen;
+
+  const toggle = useCallback(() => {
+    const next = !isOpen;
+    if (!isControlled) setInternalOpen(next);
+    onOpenChange?.(next);
+  }, [isOpen, isControlled, onOpenChange]);
+
+  const eyebrowClass =
+    'text-text-dim flex items-center gap-[6px] px-2 pt-2 font-mono text-[9px] tracking-[1.4px] uppercase';
+
   return (
     <div ref={ref} className={cn('flex flex-col gap-1', className)} {...props}>
-      <div className="text-text-dim flex items-center px-2 pt-2 font-mono text-[9px] tracking-[1.4px] uppercase">
-        <span className="flex-1">{label}</span>
-        {action}
-      </div>
-      <div className="flex flex-col gap-[2px]">{children}</div>
+      {collapsible ? (
+        <button
+          type="button"
+          aria-expanded={isOpen}
+          onClick={toggle}
+          className={cn(
+            eyebrowClass,
+            'rounded-xs cursor-pointer outline-none',
+            'focus-visible:ring-accent-dim focus-visible:ring-[3px]',
+            'hover:text-text-muted',
+          )}
+        >
+          {icon != null && (
+            <span aria-hidden className="opacity-80">
+              {icon}
+            </span>
+          )}
+          <span className="flex-1 text-left">{label}</span>
+          {action}
+          <span aria-hidden className="text-[10px] opacity-70">
+            {isOpen ? '▾' : '▸'}
+          </span>
+        </button>
+      ) : (
+        <div className={eyebrowClass}>
+          {icon != null && (
+            <span aria-hidden className="opacity-80">
+              {icon}
+            </span>
+          )}
+          <span className="flex-1">{label}</span>
+          {action}
+        </div>
+      )}
+      {isOpen && (
+        <div
+          className={cn(
+            'flex flex-col gap-[2px]',
+            indent > 0 && 'border-border ml-2 border-l',
+          )}
+          style={indent > 0 ? { paddingLeft: indent } : undefined}
+        >
+          {children}
+        </div>
+      )}
     </div>
   );
 });

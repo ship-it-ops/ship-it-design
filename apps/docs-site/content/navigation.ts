@@ -10,6 +10,8 @@
  * and add an entry to the matching section below.
  */
 
+import type { GlyphName } from '@ship-it-ui/icons';
+
 export interface NavLeaf {
   title: string;
   /** Slug relative to site root, no leading slash. */
@@ -26,6 +28,8 @@ export interface NavSection {
   /** Top-level section, becomes the first slug segment. */
   id: string;
   label: string;
+  /** Glyph rendered next to the section header in the sidebar. */
+  icon?: GlyphName;
   groups: NavGroup[];
 }
 
@@ -33,6 +37,7 @@ export const navigation: NavSection[] = [
   {
     id: 'get-started',
     label: 'Get Started',
+    icon: 'home',
     groups: [
       {
         label: 'Overview',
@@ -47,6 +52,7 @@ export const navigation: NavSection[] = [
   {
     id: 'foundations',
     label: 'Foundations',
+    icon: 'brand',
     groups: [
       {
         label: 'Tokens',
@@ -72,6 +78,7 @@ export const navigation: NavSection[] = [
   {
     id: 'components',
     label: 'Components',
+    icon: 'service',
     groups: [
       {
         label: 'Inputs',
@@ -123,6 +130,7 @@ export const navigation: NavSection[] = [
   {
     id: 'patterns',
     label: 'Patterns',
+    icon: 'graph',
     groups: [
       {
         label: 'Navigation',
@@ -181,6 +189,7 @@ export const navigation: NavSection[] = [
   {
     id: 'shipit',
     label: 'ShipIt',
+    icon: 'sparkle',
     groups: [
       {
         label: 'AI',

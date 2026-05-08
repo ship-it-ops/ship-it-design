@@ -1,13 +1,56 @@
 # Sidebar
 
-Each example below is a real component instance — flip the theme toggle to see how it adapts.
+The `Sidebar` is the layout shell — a fixed-width column with the panel
+background and a right border. Compose with `NavSection` and `NavItem` to get
+the standard ShipIt sidebar shape.
+
+`NavSection` groups a labeled cluster of `NavItem`s under an eyebrow heading.
+By default the eyebrow is static, but pass `collapsible` and the eyebrow
+becomes a button that toggles the body — useful when the navigation gets
+long enough that users want to fold sections away.
 
 ## Default
 
 <LivePreview example="sidebar/default" />
 
+## Collapsible sections
+
+Pass `collapsible` to make a `NavSection` fold its children behind an
+expand/collapse button. The eyebrow becomes a `<button>` with
+`aria-expanded`, the body is removed when closed, and a `▾`/`▸` chevron
+mirrors the state. Use `defaultOpen` for uncontrolled, or `open` +
+`onOpenChange` to control state from a parent.
+
+The optional `icon` slot renders next to the eyebrow — pair it with
+`<IconGlyph />` from `@ship-it-ui/icons` for consistent iconography.
+
+<LivePreview example="sidebar/collapsible" />
+
+## Nested sections
+
+`NavSection` accepts an `indent` prop (in pixels) that pads the body and
+draws a subtle left rail. Use it when one section nests inside another so
+the hierarchy reads at a glance — without the indent, an inner eyebrow is
+visually identical to the outer one.
+
+Compose by setting `indent` on each level: the outer section indents its
+body, the inner section indents its leaves further, and the rails stack
+into a tree.
+
+<LivePreview example="sidebar/nested" />
+
 ## Props
 
+### Sidebar
+
 <PropsTable component="Sidebar" />
+
+### NavSection
+
+<PropsTable component="NavSection" />
+
+### NavItem
+
+<PropsTable component="NavItem" />
 
 <EditOnGithub source="apps/docs-site/app/(docs)/patterns/sidebar/page.mdx" />

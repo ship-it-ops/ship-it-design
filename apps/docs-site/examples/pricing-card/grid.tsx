@@ -3,7 +3,7 @@ import { PricingCard } from '@ship-it-ui/shipit';
 
 export default function Example() {
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-3" style={{ width: 720 }}>
+    <div className="grid w-full gap-4 [grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]">
       <PricingCard
         tier="Free"
         price="$0"
@@ -17,11 +17,8 @@ export default function Example() {
       />
       <PricingCard
         tier="Pro"
-        price={
-          <>
-            $29 <span className="text-text-dim text-[14px] font-normal">/ user / mo</span>
-          </>
-        }
+        price="$29"
+        priceUnit="/ user / mo"
         description="For growing teams."
         features={['Unlimited repos', 'SSO + SCIM', 'Audit log']}
         action={
