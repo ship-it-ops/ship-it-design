@@ -229,6 +229,11 @@ export const NavBar = forwardRef<HTMLElement, NavBarProps>(function NavBar(
       {mobileBar}
       <aside
         ref={ref as React.Ref<HTMLElement>}
+        // Distinguishes this complementary landmark from any other <aside>
+        // (e.g. a docs sidebar) that may sit alongside a vertical NavBar on
+        // the same page — without it, axe's `landmark-unique` rule fires
+        // when both asides land in the DOM.
+        aria-label="Primary navigation"
         style={{ width }}
         className={cn(
           'border-border bg-panel flex h-full flex-col gap-2 border-r p-[14px]',

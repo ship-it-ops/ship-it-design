@@ -3,7 +3,7 @@
 import { IconGlyph } from '@ship-it-ui/icons';
 import { NavItem, NavSection, Sidebar } from '@ship-it-ui/ui';
 import { useRouter, usePathname } from 'next/navigation';
-import { useEffect, useState, type MouseEvent } from 'react';
+import { useEffect, useRef, useState, type MouseEvent } from 'react';
 
 import { navigation } from '@/content/navigation';
 
@@ -29,18 +29,20 @@ export function AppSidebar() {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>(() =>
     currentSectionId ? { [currentSectionId]: true } : {},
   );
-  // Sections the user has explicitly collapsed. We don't auto-reopen these
-  // on subsequent navigations, so a deliberate close survives even when the
-  // user returns to a route inside that section. Re-opening only fires for
-  // sections the user hasn't manually closed.
-  const [userClosed, setUserClosed] = useState<Set<string>>(() => new Set());
+  // Sections the user has explicitly collapsed. Tracked in a ref (not state)
+  // so the auto-open effect doesn't re-fire on every section toggle — the
+  // only thing the effect needs is to read `has(currentSectionId)` at the
+  // moment a new route lands, which a ref provides without a dep entry.
+  // Mutated synchronously in onOpenChange below; reads in the effect see the
+  // latest value because route changes always run after click handlers commit.
+  const userClosedRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
-    if (!currentSectionId || userClosed.has(currentSectionId)) return;
+    if (!currentSectionId || userClosedRef.current.has(currentSectionId)) return;
     setOpenSections((prev) =>
       prev[currentSectionId] ? prev : { ...prev, [currentSectionId]: true },
     );
-  }, [currentSectionId, userClosed]);
+  }, [currentSectionId]);
 
   return (
     <Sidebar width={260} className="overflow-y-auto">
@@ -55,12 +57,8 @@ export function AppSidebar() {
             open={isOpen}
             onOpenChange={(o) => {
               setOpenSections((prev) => ({ ...prev, [section.id]: o }));
-              setUserClosed((prev) => {
-                const next = new Set(prev);
-                if (o) next.delete(section.id);
-                else next.add(section.id);
-                return next;
-              });
+              if (o) userClosedRef.current.delete(section.id);
+              else userClosedRef.current.add(section.id);
             }}
             indent={10}
             icon={section.icon ? <IconGlyph name={section.icon} size={12} /> : undefined}

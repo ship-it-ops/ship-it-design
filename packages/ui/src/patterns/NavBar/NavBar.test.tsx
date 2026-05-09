@@ -108,6 +108,20 @@ describe('NavBar', () => {
       expect(screen.getByText('Profile')).toBeInTheDocument();
     });
 
+    it('auto-expands a previously-collapsed group when value moves into it after mount', () => {
+      // Covers the post-mount sync path in `VerticalItem` — the useEffect
+      // that opens a group when an external `value` change pushes the
+      // active item into a previously-collapsed subtree (e.g. SPA route
+      // change). The other auto-expand test only verifies first-paint.
+      const { rerender } = render(<NavBar orientation="vertical" items={items} value="home" />);
+      const settingsTrigger = screen.getAllByRole('button', { name: /Settings/ })[0]!;
+      expect(settingsTrigger).toHaveAttribute('aria-expanded', 'false');
+
+      rerender(<NavBar orientation="vertical" items={items} value="profile" />);
+      expect(settingsTrigger).toHaveAttribute('aria-expanded', 'true');
+      expect(screen.getByText('Profile')).toBeInTheDocument();
+    });
+
     it('respects controlled value and surfaces aria-current on the active leaf', () => {
       render(<NavBar orientation="vertical" items={items} value="graph" />);
       const graph = screen.getAllByRole('button', { name: /Graph/ })[0]!;
