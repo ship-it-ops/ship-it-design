@@ -24,6 +24,12 @@ describe('PricingCard', () => {
     expect(screen.getByText('recommended')).toBeInTheDocument();
   });
 
+  it('renders priceUnit alongside the price', () => {
+    render(<PricingCard tier="Pro" price="$29" priceUnit="/ user / mo" features={['x']} />);
+    expect(screen.getByText('$29')).toBeInTheDocument();
+    expect(screen.getByText('/ user / mo')).toBeInTheDocument();
+  });
+
   it('has no a11y violations', async () => {
     const { container } = render(
       <PricingCard tier="Pro" price="$29 / mo" features={['Feature one', 'Feature two']} />,

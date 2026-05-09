@@ -56,6 +56,7 @@ export * from './patterns/Dropzone';
 export * from './patterns/EmptyState';
 export * from './patterns/FileChip';
 export * from './patterns/Menubar';
+export * from './patterns/NavBar';
 export * from './patterns/Pagination';
 export * from './patterns/Progress';
 export * from './patterns/RadialProgress';

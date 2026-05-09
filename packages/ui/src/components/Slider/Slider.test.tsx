@@ -1,5 +1,11 @@
-import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+// `fireEvent` is the project-wide exception here: Radix Slider attaches the
+// keydown handler directly to the thumb element, which `userEvent.keyboard`
+// can't reach synchronously in jsdom (the focus + dispatch interleaving
+// races). The keyboard-driven test below uses fireEvent for that single
+// reason — do not add further fireEvent calls without an equivalent
+// justification.
+import { fireEvent, render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 import { axe } from 'vitest-axe';
 
 import { Slider } from './Slider';
@@ -51,6 +57,43 @@ describe('Slider', () => {
     expect(thumbs).toHaveLength(2);
     expect(thumbs[0]).toHaveAccessibleName('Min');
     expect(thumbs[1]).toHaveAccessibleName('Max');
+  });
+
+  it('updates the showValue chip as the thumb moves (uncontrolled)', () => {
+    render(<Slider defaultValue={[10]} showValue aria-label="v" min={0} max={100} step={1} />);
+    expect(screen.getByText('10')).toBeInTheDocument();
+    const thumb = screen.getByRole('slider');
+    thumb.focus();
+    // Radix's keyboard handler updates the value; ArrowRight bumps by `step`.
+    // Using fireEvent here (not userEvent) because userEvent.keyboard hangs
+    // against Radix Slider in jsdom — Radix listens for keydown directly on
+    // the thumb, which fireEvent reaches synchronously.
+    fireEvent.keyDown(thumb, { key: 'ArrowRight' });
+    fireEvent.keyDown(thumb, { key: 'ArrowRight' });
+    expect(screen.getByText('12')).toBeInTheDocument();
+  });
+
+  it('forwards a scalar to consumer onValueChange when input shape was scalar', () => {
+    const onChange = vi.fn();
+    render(<Slider value={5} onValueChange={onChange} aria-label="v" min={0} max={10} step={1} />);
+    fireEvent.keyDown(screen.getByRole('slider'), { key: 'ArrowRight' });
+    expect(onChange).toHaveBeenCalledWith(6);
+  });
+
+  it('forwards an array to consumer onValueChange when input shape was an array', () => {
+    const onChange = vi.fn();
+    render(
+      <Slider
+        value={[20, 80]}
+        onValueChange={onChange}
+        thumbLabels={['Min', 'Max']}
+        min={0}
+        max={100}
+        step={1}
+      />,
+    );
+    fireEvent.keyDown(screen.getAllByRole('slider')[0]!, { key: 'ArrowRight' });
+    expect(onChange).toHaveBeenCalledWith([21, 80]);
   });
 
   it('forwards aria-labelledby to the thumb when no per-thumb label is given', () => {

@@ -61,9 +61,19 @@ jobs:
 
       - uses: ./.github/actions/setup
 
-      - name: Verify a changeset accompanies package changes
-        # Exits non-zero when packages have changed without a corresponding
-        # `.changeset/*.md` file. Ignores the `docs` app (excluded in
-        # .changeset/config.json's `ignore` list) and any package marked
-        # `private: true`.
+      - name: Identify packages missing a changeset
+        # Lists every publishable package touched on the PR branch that has no
+        # corresponding `.changeset/*.md` entry, prints them as ::error::
+        # annotations, and writes the same list to the workflow summary so the
+        # PR author can see exactly which packages need an entry. Ignores the
+        # `docs` app (excluded via .changeset/config.json's `ignore` list) and
+        # any package marked `private: true`.
+        env:
+          BASE_REF: origin/${{ github.event.pull_request.base.ref }}
+        run: node .github/scripts/check-changesets.mjs
+
+      - name: Validate changeset frontmatter
+        # Backstop: catches malformed or empty changesets that the
+        # missing-entry analyzer above doesn't model (e.g. unknown package
+        # names, bad bump types). Skipped if the prior step already failed.
         run: pnpm changeset status --since=origin/${{ github.event.pull_request.base.ref }}
