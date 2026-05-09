@@ -1,5 +1,13 @@
 # @ship-it-ui/icons
 
+## 0.0.3
+
+### Patch Changes
+
+- 597a705: Adds five new glyphs to the `glyphs` map: `info` (ⓘ), `moreVertical` (⋮),
+  `edit` (✎), `copy` (⧉), and `refresh` (↻). Existing glyph names are
+  unchanged.
+
 ## 0.0.2
 
 ### Patch Changes
