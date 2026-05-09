@@ -29,13 +29,18 @@ export function AppSidebar() {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>(() =>
     currentSectionId ? { [currentSectionId]: true } : {},
   );
+  // Sections the user has explicitly collapsed. We don't auto-reopen these
+  // on subsequent navigations, so a deliberate close survives even when the
+  // user returns to a route inside that section. Re-opening only fires for
+  // sections the user hasn't manually closed.
+  const [userClosed, setUserClosed] = useState<Set<string>>(() => new Set());
 
   useEffect(() => {
-    if (!currentSectionId) return;
+    if (!currentSectionId || userClosed.has(currentSectionId)) return;
     setOpenSections((prev) =>
       prev[currentSectionId] ? prev : { ...prev, [currentSectionId]: true },
     );
-  }, [currentSectionId]);
+  }, [currentSectionId, userClosed]);
 
   return (
     <Sidebar width={260} className="overflow-y-auto">
@@ -48,7 +53,15 @@ export function AppSidebar() {
             label={section.label}
             collapsible
             open={isOpen}
-            onOpenChange={(o) => setOpenSections((prev) => ({ ...prev, [section.id]: o }))}
+            onOpenChange={(o) => {
+              setOpenSections((prev) => ({ ...prev, [section.id]: o }));
+              setUserClosed((prev) => {
+                const next = new Set(prev);
+                if (o) next.delete(section.id);
+                else next.add(section.id);
+                return next;
+              });
+            }}
             indent={10}
             icon={section.icon ? <IconGlyph name={section.icon} size={12} /> : undefined}
           >

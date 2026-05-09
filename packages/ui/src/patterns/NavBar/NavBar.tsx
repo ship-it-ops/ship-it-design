@@ -14,7 +14,7 @@ import {
 
 import { Drawer } from '../../components/Dialog/Drawer';
 import { cn } from '../../utils/cn';
-import { NavItem } from '../Sidebar/Sidebar';
+import { NavItem } from '../Sidebar';
 
 /**
  * NavBar — primary app navigation. The same component renders either as a
@@ -52,7 +52,12 @@ export interface NavBarProps extends Omit<HTMLAttributes<HTMLElement>, 'defaultV
   orientation?: NavBarOrientation;
   /** Item tree driving the bar. */
   items: NavBarItem[];
-  /** Brand / logo slot rendered at the start. */
+  /**
+   * Brand / logo slot rendered at the start. When `responsive` is `true`,
+   * `brand` also seeds the mobile Drawer's accessible name, so it should
+   * include text — e.g. `<><Logo /> ShipIt</>` rather than `<Logo />` alone.
+   * Falls back to `'Navigation'` when omitted.
+   */
   brand?: ReactNode;
   /** Trailing slot for secondary actions (avatar, settings, theme toggle, …). */
   actions?: ReactNode;
