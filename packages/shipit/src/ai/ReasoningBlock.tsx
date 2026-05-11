@@ -1,9 +1,9 @@
 'use client';
 
 import { useControllableState } from '@ship-it-ui/ui';
+import { cn } from '@ship-it-ui/ui';
 import { Children, forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-import { cn } from '@ship-it-ui/ui';
 
 /**
  * ReasoningBlock — collapsible "Reasoning · N steps · 1.8s" disclosure. Shows

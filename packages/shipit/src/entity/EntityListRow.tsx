@@ -1,5 +1,6 @@
 'use client';
 
+import { cn } from '@ship-it-ui/ui';
 import {
   forwardRef,
   type ButtonHTMLAttributes,
@@ -8,7 +9,6 @@ import {
   type ReactNode,
 } from 'react';
 
-import { cn } from '@ship-it-ui/ui';
 
 import { getEntityTypeMeta, type EntityType } from './types';
 

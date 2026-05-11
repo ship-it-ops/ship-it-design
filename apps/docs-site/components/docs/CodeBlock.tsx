@@ -1,8 +1,8 @@
 'use client';
 
+import { useToast } from '@ship-it-ui/ui';
 import { useRef, useState, type HTMLAttributes } from 'react';
 
-import { useToast } from '@ship-it-ui/ui';
 
 /**
  * MDX `<pre>` replacement. `rehype-pretty-code` has already converted children

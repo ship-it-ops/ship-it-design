@@ -1,9 +1,9 @@
 'use client';
 
 import { Avatar } from '@ship-it-ui/ui';
+import { cn } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-import { cn } from '@ship-it-ui/ui';
 
 /**
  * Testimonial — pull-quote with author + role. Centered for marketing

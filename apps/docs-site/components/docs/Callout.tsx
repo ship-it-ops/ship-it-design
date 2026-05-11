@@ -1,6 +1,6 @@
+import { Alert } from '@ship-it-ui/ui';
 import type { ReactNode } from 'react';
 
-import { Alert } from '@ship-it-ui/ui';
 
 type Tone = 'note' | 'tip' | 'warn' | 'deprecated';
 

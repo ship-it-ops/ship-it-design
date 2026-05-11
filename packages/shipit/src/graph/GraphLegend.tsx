@@ -1,9 +1,9 @@
 'use client';
 
+import { cn } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 import { getEntityTypeMeta, type EntityType } from '../entity/types';
-import { cn } from '@ship-it-ui/ui';
 
 /**
  * GraphLegend — translucent floating legend panel for the graph viewport.

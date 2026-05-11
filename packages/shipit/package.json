@@ -44,6 +44,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
     "test": "vitest run --passWithNoTests",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",

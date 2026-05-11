@@ -2,7 +2,13 @@
 
 import { IconGlyph, type ConnectorName } from '@ship-it-ui/icons';
 import { cn, formatRelative, StatusDot, type StatusState } from '@ship-it-ui/ui';
-import { forwardRef, type HTMLAttributes, type KeyboardEvent, type ReactNode } from 'react';
+import {
+  forwardRef,
+  type HTMLAttributes,
+  type KeyboardEvent,
+  type MouseEvent,
+  type ReactNode,
+} from 'react';
 
 /**
  * ConnectorCard — integration card for "connector hubs". Renders a connector
@@ -102,20 +108,26 @@ export const ConnectorCard = forwardRef<HTMLDivElement, ConnectorCardProps>(func
         )}
       </div>
       {actions && (
-        <div
-          className="shrink-0"
-          // Stop bubbling so clicks on nested actions don't trigger the card's onClick.
-          onClick={(e) => e.stopPropagation()}
-          onKeyDown={(e) => e.stopPropagation()}
-        >
+        <div data-connector-actions="" className="shrink-0">
           {actions}
         </div>
       )}
     </>
   );
 
+  // Skip card-level activation when the event originated inside the actions
+  // slot so nested buttons don't double-fire as the card's onClick.
+  const isFromActions = (target: EventTarget | null) =>
+    target instanceof Element && target.closest('[data-connector-actions]') !== null;
+
+  const handleCardClick = (event: MouseEvent<HTMLDivElement>) => {
+    if (isFromActions(event.target)) return;
+    onClick?.();
+  };
+
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (!interactive) return;
+    if (isFromActions(event.target)) return;
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       onClick?.();
@@ -127,7 +139,7 @@ export const ConnectorCard = forwardRef<HTMLDivElement, ConnectorCardProps>(func
       ref={ref}
       role={interactive ? 'button' : undefined}
       tabIndex={interactive ? 0 : undefined}
-      onClick={interactive ? onClick : undefined}
+      onClick={interactive ? handleCardClick : undefined}
       onKeyDown={interactive ? handleKeyDown : undefined}
       aria-label={interactive && typeof name === 'string' ? `${name} connector` : undefined}
       className={cn(

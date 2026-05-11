@@ -3,6 +3,7 @@
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 import { cn } from '../../utils/cn';
+
 import { formatRelative } from './formatRelative';
 import type { TimelineEventTone } from './Timeline';
 

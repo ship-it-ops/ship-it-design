@@ -1,8 +1,8 @@
 'use client';
 
+import { Breadcrumbs, Crumb } from '@ship-it-ui/ui';
 import { usePathname } from 'next/navigation';
 
-import { Breadcrumbs, Crumb } from '@ship-it-ui/ui';
 
 import { findLeaf, navigation } from '@/content/navigation';
 

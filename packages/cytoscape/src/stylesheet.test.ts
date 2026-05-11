@@ -22,8 +22,14 @@ const PALETTE: ThemeTokenPalette = {
 
 const LIGHT_PALETTE: ThemeTokenPalette = { ...PALETTE, bg: '#ffffff', panel: '#fafafa' };
 
-function findSelector(styles: ReturnType<typeof buildShipItStylesheet>, selector: string) {
-  return styles.find((s) => s.selector === selector);
+// Narrow the StylesheetJsonBlock union (StylesheetStyle | StylesheetCSS) to the
+// `style`-keyed variant — the builder only ever emits that shape.
+function findSelector(
+  styles: ReturnType<typeof buildShipItStylesheet>,
+  selector: string,
+): { selector: string; style: Record<string, unknown> } | undefined {
+  const block = styles.find((s) => s.selector === selector);
+  return block as { selector: string; style: Record<string, unknown> } | undefined;
 }
 
 describe('buildShipItStylesheet', () => {

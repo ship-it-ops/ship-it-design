@@ -3,8 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { axe } from 'vitest-axe';
 
-import { ThemeToggle } from './ThemeToggle';
 import { THEME_COOKIE_NAME } from './theme-cookie';
+import { ThemeToggle } from './ThemeToggle';
 
 describe('ThemeToggle', () => {
   beforeEach(() => {

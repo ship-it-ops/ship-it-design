@@ -1,8 +1,8 @@
 'use client';
 
+import { cn } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes } from 'react';
 
-import { cn } from '@ship-it-ui/ui';
 
 /**
  * GraphMinimap — miniature scatter of node positions with a translucent

@@ -1,8 +1,8 @@
 'use client';
 
+import { cn } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-import { cn } from '@ship-it-ui/ui';
 
 import { EntityBadge } from './EntityBadge';
 import { getEntityTypeMeta, type EntityType } from './types';

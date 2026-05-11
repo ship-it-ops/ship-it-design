@@ -1,7 +1,7 @@
+import { ToastProvider } from '@ship-it-ui/ui';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
-import { ToastProvider } from '@ship-it-ui/ui';
 
 import { AppShell } from '@/components/shell/AppShell';
 
