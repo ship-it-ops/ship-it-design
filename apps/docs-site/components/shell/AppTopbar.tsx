@@ -2,9 +2,9 @@
 
 import { Badge, Kbd, Topbar } from '@ship-it-ui/ui';
 
-import { SYSTEM_VERSION } from '@/lib/version';
-
 import { ThemeToggle } from './ThemeToggle';
+
+import { SYSTEM_VERSION } from '@/lib/version';
 
 const REPO_URL = 'https://github.com/ship-it-ops/ship-it-design';
 

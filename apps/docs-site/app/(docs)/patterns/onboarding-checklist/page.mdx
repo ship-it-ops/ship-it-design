@@ -1,0 +1,23 @@
+# OnboardingChecklist
+
+Getting-started task list keyed to remote progress. Each item has a `status`
+(`pending` / `in-progress` / `done`) that decides the dot tone, label
+treatment (the `done` row is struck through), and pulse behavior. An
+optional `action` slot — typically a `Button` — sits on the right.
+
+The header shows aggregate progress as a token-styled bar; pass
+`progressLabel` to override the default _N of M complete_ text or
+`hideProgress` to drop the bar entirely.
+
+## Default
+
+Four-step setup. Click handlers (`onItemClick`) make the whole row clickable
+when supplied — useful for jumping to the relevant settings page.
+
+<LivePreview example="onboarding-checklist/default" />
+
+## Props
+
+<PropsTable component="OnboardingChecklist" />
+
+<EditOnGithub source="apps/docs-site/app/(docs)/patterns/onboarding-checklist/page.mdx" />

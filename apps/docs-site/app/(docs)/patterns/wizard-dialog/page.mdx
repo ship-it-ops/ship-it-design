@@ -1,0 +1,56 @@
+# WizardDialog
+
+Modal multi-step flow built on `Dialog` + `Stepper` + Next/Back navigation
+driven by a `steps` array. Each step's `content` can be a node or a render
+function receiving the wizard context — useful for steps that need to
+disable Next from inside, or jump back imperatively.
+
+## Default
+
+Three-step "add connector" flow. The Next button is gated per step via
+`canAdvance`; the last step's Next becomes **Done** and fires `onComplete`,
+where the consumer typically closes the dialog.
+
+<LivePreview example="wizard-dialog/default" />
+
+## Step gating
+
+```tsx
+const steps = [
+  {
+    id: 'name',
+    label: 'Name',
+    content: <Input value={name} onChange={…} />,
+    canAdvance: () => name.trim().length > 0,
+  },
+  // …
+];
+```
+
+Returning `false` from `canAdvance` disables the Next button without
+disabling the step itself — users can still type into the field, edit the
+form, etc.
+
+## Render-function content
+
+Pass a function as `content` to access the wizard context (`goNext`,
+`goBack`, `goTo`, `isFirst`, `isLast`) from inside the step body.
+
+```tsx
+{
+  id: 'review',
+  label: 'Review',
+  content: ({ goBack }) => (
+    <>
+      <Summary />
+      <Button variant="ghost" onClick={goBack}>Edit values</Button>
+    </>
+  ),
+}
+```
+
+## Props
+
+<PropsTable component="WizardDialog" />
+
+<EditOnGithub source="apps/docs-site/app/(docs)/patterns/wizard-dialog/page.mdx" />

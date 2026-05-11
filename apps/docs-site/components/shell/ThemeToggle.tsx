@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
 import { useTheme } from '@ship-it-ui/ui';
+import { useEffect, useState } from 'react';
 
 /**
  * Reuses `useTheme` from `@ship-it-ui/ui` (toggles `[data-theme]` on `<html>`)

@@ -2,7 +2,7 @@ import { DataTable, type DataTableColumn, type DataTableProps } from '@ship-it-u
 import { type Ref } from 'react';
 
 import { EntityBadge } from '../entity/EntityBadge';
-import { ENTITY_GLYPH, ENTITY_TONE_CLASS, type EntityType } from '../entity/types';
+import { getEntityTypeMeta, type EntityType } from '../entity/types';
 
 /**
  * EntityTable — DataTable preset with two ShipIt-aware column helpers:
@@ -39,14 +39,17 @@ export function entityColumn<T extends MinimalEntity>(
     key: options.key ?? 'name',
     header: options.header ?? 'Name',
     accessor: (row) => row.name,
-    cell: (row) => (
-      <span className="flex items-center gap-2 font-mono">
-        <span aria-hidden className={ENTITY_TONE_CLASS[row.type]}>
-          {ENTITY_GLYPH[row.type]}
+    cell: (row) => {
+      const meta = getEntityTypeMeta(row.type);
+      return (
+        <span className="flex items-center gap-2 font-mono" data-entity-type={row.type}>
+          <span aria-hidden className={meta.toneClass}>
+            {meta.glyph}
+          </span>
+          {row.name}
         </span>
-        {row.name}
-      </span>
-    ),
+      );
+    },
   };
 }
 

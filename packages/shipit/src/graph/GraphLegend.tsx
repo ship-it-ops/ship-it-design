@@ -1,30 +1,23 @@
 'use client';
 
+import { cn } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-import { ENTITY_LABEL, type EntityType } from '../entity/types';
-import { cn } from '@ship-it-ui/ui';
+import { getEntityTypeMeta, type EntityType } from '../entity/types';
 
 /**
  * GraphLegend — translucent floating legend panel for the graph viewport.
  * Use the `entries` prop for the canonical entity-type list, or compose
- * children directly for a custom legend.
+ * children directly for a custom legend. Entry colors and labels resolve
+ * through the shared entity-type registry, so consumer-registered types
+ * appear with their own visuals.
  */
-
-const typeColorVar: Record<EntityType, string> = {
-  service: 'var(--color-accent)',
-  person: 'var(--color-purple)',
-  document: 'var(--color-pink)',
-  deployment: 'var(--color-ok)',
-  incident: 'var(--color-warn)',
-  ticket: 'var(--color-text-muted)',
-};
 
 export interface GraphLegendEntry {
   /** Entity type (resolves color + label automatically) or a custom shape. */
   type?: EntityType;
   color?: string;
-  label: ReactNode;
+  label?: ReactNode;
 }
 
 export interface GraphLegendProps extends HTMLAttributes<HTMLDivElement> {
@@ -34,9 +27,9 @@ export interface GraphLegendProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const DEFAULT_ENTRIES: GraphLegendEntry[] = [
-  { type: 'service', label: ENTITY_LABEL.service },
-  { type: 'person', label: ENTITY_LABEL.person },
-  { type: 'document', label: ENTITY_LABEL.document },
+  { type: 'service' },
+  { type: 'person' },
+  { type: 'document' },
 ];
 
 export const GraphLegend = forwardRef<HTMLDivElement, GraphLegendProps>(function GraphLegend(
@@ -59,11 +52,13 @@ export const GraphLegend = forwardRef<HTMLDivElement, GraphLegendProps>(function
       )}
       {children ??
         entries.map((entry, i) => {
-          const color = entry.color ?? (entry.type ? typeColorVar[entry.type] : 'currentColor');
+          const meta = entry.type ? getEntityTypeMeta(entry.type) : undefined;
+          const color = entry.color ?? meta?.colorVar ?? 'currentColor';
+          const label = entry.label ?? meta?.label ?? '';
           return (
             <div key={i} className="flex items-center gap-[6px]">
               <span aria-hidden className="h-2 w-2 rounded-full" style={{ background: color }} />
-              <span>{entry.label}</span>
+              <span>{label}</span>
             </div>
           );
         })}

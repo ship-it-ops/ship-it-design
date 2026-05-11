@@ -1,0 +1,28 @@
+# HealthScore
+
+`RadialProgress` + delta indicator + optional breakdown tooltip. The shape
+generalizes recurring product surfaces — service health, deployment
+confidence, graph health.
+
+Tone is auto-derived from the value (`>= 80` → ok, `>= 50` → accent,
+otherwise warn); pass `tone` to override. The delta sign drives the arrow
+direction and tone (positive → ok, negative → err).
+
+## Default
+
+Three services side-by-side, each with a signed delta vs. last week.
+
+<LivePreview example="health-score/default" />
+
+## With breakdown
+
+When a `breakdown` array is supplied the score wraps in a `HoverCard` that
+reveals per-bucket contributions. Each entry can carry its own tone.
+
+<LivePreview example="health-score/with-breakdown" />
+
+## Props
+
+<PropsTable component="HealthScore" />
+
+<EditOnGithub source="apps/docs-site/app/(docs)/patterns/health-score/page.mdx" />

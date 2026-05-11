@@ -1,11 +1,11 @@
 'use client';
 
+import { Tab, Tabs, TabsContent, TabsList } from '@ship-it-ui/ui';
 import { Suspense } from 'react';
 
-import { Tab, Tabs, TabsContent, TabsList } from '@ship-it-ui/ui';
+import { CodeBlockStatic } from './CodeBlockStatic';
 
 import { examples } from '@/.generated/examples';
-import { CodeBlockStatic } from './CodeBlockStatic';
 
 interface Props {
   /** Slug into the examples registry, e.g. `button/primary`. */

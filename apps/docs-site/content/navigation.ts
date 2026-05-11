@@ -45,6 +45,7 @@ export const navigation: NavSection[] = [
           { title: 'Introduction', slug: 'get-started/introduction' },
           { title: 'Installation', slug: 'get-started/installation' },
           { title: 'Theming', slug: 'get-started/theming' },
+          { title: 'Next.js', slug: 'get-started/next' },
         ],
       },
     ],
@@ -108,6 +109,7 @@ export const navigation: NavSection[] = [
           { title: 'Card', slug: 'components/card' },
           { title: 'Chip', slug: 'components/chip' },
           { title: 'Kbd', slug: 'components/kbd' },
+          { title: 'ScrollArea', slug: 'components/scroll-area' },
           { title: 'Skeleton', slug: 'components/skeleton' },
           { title: 'StatusDot', slug: 'components/status-dot' },
           { title: 'Tag', slug: 'components/tag' },
@@ -150,6 +152,7 @@ export const navigation: NavSection[] = [
           { title: 'DatePicker', slug: 'patterns/date-picker' },
           { title: 'Dropzone', slug: 'patterns/dropzone' },
           { title: 'FileChip', slug: 'patterns/file-chip' },
+          { title: 'FilterPanel', slug: 'patterns/filter-panel' },
         ],
       },
       {
@@ -158,6 +161,7 @@ export const navigation: NavSection[] = [
           { title: 'Alert', slug: 'patterns/alert' },
           { title: 'Banner', slug: 'patterns/banner' },
           { title: 'EmptyState', slug: 'patterns/empty-state' },
+          { title: 'HealthScore', slug: 'patterns/health-score' },
           { title: 'Progress', slug: 'patterns/progress' },
           { title: 'RadialProgress', slug: 'patterns/radial-progress' },
           { title: 'Spinner', slug: 'patterns/spinner' },
@@ -166,6 +170,7 @@ export const navigation: NavSection[] = [
       {
         label: 'Data',
         items: [
+          { title: 'ActivityTimeline', slug: 'patterns/activity-timeline' },
           { title: 'DataTable', slug: 'patterns/data-table' },
           { title: 'Timeline', slug: 'patterns/timeline' },
           { title: 'Tree', slug: 'patterns/tree' },
@@ -183,6 +188,13 @@ export const navigation: NavSection[] = [
       {
         label: 'Charts',
         items: [{ title: 'Sparkline', slug: 'patterns/sparkline' }],
+      },
+      {
+        label: 'Onboarding',
+        items: [
+          { title: 'OnboardingChecklist', slug: 'patterns/onboarding-checklist' },
+          { title: 'WizardDialog', slug: 'patterns/wizard-dialog' },
+        ],
       },
     ],
   },
@@ -235,7 +247,21 @@ export const navigation: NavSection[] = [
       },
       {
         label: 'Data',
-        items: [{ title: 'EntityTable', slug: 'shipit/entity-table' }],
+        items: [
+          { title: 'ConnectorCard', slug: 'shipit/connector-card' },
+          { title: 'EntityTable', slug: 'shipit/entity-table' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'graph',
+    label: 'Graph',
+    icon: 'graph',
+    groups: [
+      {
+        label: 'Engines',
+        items: [{ title: 'Cytoscape adapter', slug: 'graph/cytoscape' }],
       },
     ],
   },

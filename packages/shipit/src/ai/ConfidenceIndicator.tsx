@@ -1,8 +1,7 @@
 'use client';
 
-import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
-
 import { cn } from '@ship-it-ui/ui';
+import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 /**
  * ConfidenceIndicator — horizontal bar + percent + tier label. The tier tone

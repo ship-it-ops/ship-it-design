@@ -1,6 +1,5 @@
-import Link from 'next/link';
-
 import { Badge } from '@ship-it-ui/ui';
+import Link from 'next/link';
 
 import { navigation } from '@/content/navigation';
 import { SYSTEM_VERSION } from '@/lib/version';

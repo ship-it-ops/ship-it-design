@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-
 import { useToast } from '@ship-it-ui/ui';
+import { useEffect, useRef, useState } from 'react';
 
 interface Props {
   source: string;
@@ -76,7 +75,8 @@ export function CodeBlockStatic({ source, language = 'tsx' }: Props) {
       <div
         ref={ref}
         className="overflow-x-auto px-4 py-3 text-[13px] leading-[1.55]"
-        // eslint-disable-next-line react/no-danger -- Shiki output is sanitized HTML.
+        // Shiki output is sanitized HTML; the fallback is HTML-escaped above.
+        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: html ?? `<pre><code>${escapeHtml(source)}</code></pre>`,
         }}

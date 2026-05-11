@@ -1,0 +1,23 @@
+# ConnectorCard
+
+Integration-hub card. Renders a connector logo (via `@ship-it-ui/icons`
+connector glyphs), the connector name, a sync-state dot (with a pulse on
+`syncing`), a relative last-synced timestamp, an optional summary, and an
+actions slot.
+
+When `onClick` is provided the whole card becomes keyboard-focusable
+(`role="button"`, Enter/Space activate). Inner action buttons stop event
+propagation so they don't trigger the card's click.
+
+## Default
+
+Three connectors in three states — connected, syncing, and error. The
+syncing dot pulses to indicate live activity.
+
+<LivePreview example="connector-card/default" />
+
+## Props
+
+<PropsTable component="ConnectorCard" />
+
+<EditOnGithub source="apps/docs-site/app/(docs)/shipit/connector-card/page.mdx" />

@@ -1,0 +1,35 @@
+# FilterPanel
+
+Multi-facet checkbox filter panel. Pass a `facets` array describing each
+facet (label + options + optional collapsibility) and the panel renders a
+header with a reset action, then a labelled checkbox group per facet.
+Counts surface on the right as tabular pills.
+
+Selections are emitted as `Record<facetId, readonly string[]>` and supported
+in both controlled (`value` + `onValueChange`) and uncontrolled
+(`defaultValue`) modes — mirroring `Slider` and `NavBar`.
+
+## Default
+
+Three facets, two of them pre-selected. Counts illuminate the relative size
+of each option's match set; clicking **Reset** clears the selection and fires
+the optional `onReset` callback alongside `onValueChange({})`.
+
+<LivePreview example="filter-panel/default" />
+
+## Controlled
+
+When you need to drive the panel from URL state or another store, pass
+`value` + `onValueChange`. The shape of `value` is the same as the
+`defaultValue` shown above.
+
+```tsx
+const [filters, setFilters] = useState<Record<string, readonly string[]>>({});
+<FilterPanel facets={…} value={filters} onValueChange={setFilters} />;
+```
+
+## Props
+
+<PropsTable component="FilterPanel" />
+
+<EditOnGithub source="apps/docs-site/app/(docs)/patterns/filter-panel/page.mdx" />

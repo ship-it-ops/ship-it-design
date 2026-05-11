@@ -1,11 +1,10 @@
 'use client';
 
+import { cn } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-import { cn } from '@ship-it-ui/ui';
-
 import { EntityBadge } from './EntityBadge';
-import { ENTITY_GLYPH, ENTITY_TONE_BG, ENTITY_TONE_CLASS, type EntityType } from './types';
+import { getEntityTypeMeta, type EntityType } from './types';
 
 /**
  * EntityCard — display card for a graph entity. Plate (icon + tinted bg),
@@ -49,9 +48,11 @@ export const EntityCard = forwardRef<HTMLDivElement, EntityCardProps>(function E
   { type, title, subtitle, description, stats, actions, glyph, className, ...props },
   ref,
 ) {
+  const meta = getEntityTypeMeta(type);
   return (
     <div
       ref={ref}
+      data-entity-type={type}
       className={cn(
         'rounded-base border-border bg-panel flex flex-col gap-3 border p-5',
         className,
@@ -63,11 +64,11 @@ export const EntityCard = forwardRef<HTMLDivElement, EntityCardProps>(function E
           aria-hidden
           className={cn(
             'rounded-base grid h-12 w-12 shrink-0 place-items-center text-[20px]',
-            ENTITY_TONE_BG[type],
-            ENTITY_TONE_CLASS[type],
+            meta.toneBg,
+            meta.toneClass,
           )}
         >
-          {glyph ?? ENTITY_GLYPH[type]}
+          {glyph ?? meta.glyph}
         </span>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">

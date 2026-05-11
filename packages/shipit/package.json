@@ -44,18 +44,21 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
     "test": "vitest run --passWithNoTests",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist .turbo"
   },
   "peerDependencies": {
+    "@ship-it-ui/icons": "workspace:*",
     "@ship-it-ui/ui": "workspace:*",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
   },
   "devDependencies": {
     "@ship-it-ui/eslint-config": "workspace:*",
+    "@ship-it-ui/icons": "workspace:*",
     "@ship-it-ui/tokens": "workspace:*",
     "@ship-it-ui/ui": "workspace:*",
     "@ship-it-ui/tsconfig": "workspace:*",

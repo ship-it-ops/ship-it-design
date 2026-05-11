@@ -16,7 +16,12 @@ const TSCONFIG = resolve(REPO_ROOT, 'packages/ui/tsconfig.json');
 const OUT_DIR = join(APP_ROOT, '.generated');
 const OUT_FILE = join(OUT_DIR, 'docgen.json');
 
-const PACKAGES = [resolve(REPO_ROOT, 'packages/ui/src'), resolve(REPO_ROOT, 'packages/shipit/src')];
+const PACKAGES = [
+  resolve(REPO_ROOT, 'packages/ui/src'),
+  resolve(REPO_ROOT, 'packages/shipit/src'),
+  resolve(REPO_ROOT, 'packages/next/src'),
+  resolve(REPO_ROOT, 'packages/cytoscape/src'),
+];
 
 function listTsx(dir: string, out: string[] = []): string[] {
   let entries;

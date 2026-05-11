@@ -1,0 +1,99 @@
+# Cytoscape adapter
+
+`@ship-it-ui/cytoscape` is a peer-dep adapter — three layered exports that
+let a Cytoscape-driven graph share the design system's color tokens, dark /
+light themes, and entity-type vocabulary without duplicating the
+`getComputedStyle` + `MutationObserver` dance in every app.
+
+## Install
+
+```bash
+pnpm add cytoscape @ship-it-ui/cytoscape
+```
+
+Cytoscape itself is a peer dependency — the adapter does not bundle a
+version or pin to any specific extensions.
+
+## Stylesheet builder
+
+`buildShipItStylesheet(options?)` returns a Cytoscape `StylesheetJson` array
+built from the live token palette. Pass a pre-resolved `palette` for SSR or
+deterministic tests; append app-specific selectors via `extra`.
+
+```ts
+import cytoscape from 'cytoscape';
+import { buildShipItStylesheet } from '@ship-it-ui/cytoscape';
+
+const cy = cytoscape({
+  container: document.getElementById('graph'),
+  elements: [...],
+  style: buildShipItStylesheet(),
+});
+```
+
+The exported `GRAPH_CANVAS_CLASS` constants are the class names the
+stylesheet recognizes (`graph-canvas:path`, `graph-canvas:dim`). Toggle them
+on nodes / edges to drive the on-path and dimmed visuals.
+
+## Theme-aware re-resolver hook
+
+`useShipItStylesheet(cyRef)` re-applies the stylesheet whenever
+`<html data-theme>` flips. It wires a `MutationObserver` against the document
+root (skippable via `observe: false`) and returns a `refresh()` callback for
+manual triggers — useful after a `--color-accent` hue-knob change.
+
+```ts
+const cyRef = useRef<cytoscape.Core | null>(null);
+const { refresh } = useShipItStylesheet(cyRef);
+```
+
+## `<GraphCanvas>` wrapper
+
+`<GraphCanvas engine={cytoscape} …/>` owns the Cytoscape lifecycle, the
+theme ↔ stylesheet sync, and a thin selection API. Pass the imported
+`cytoscape` default export as `engine` — the wrapper never bundles
+Cytoscape itself.
+
+```tsx
+import cytoscape from 'cytoscape';
+import { GraphCanvas } from '@ship-it-ui/cytoscape';
+import { GraphInspector } from '@ship-it-ui/shipit';
+
+<GraphCanvas
+  engine={cytoscape}
+  elements={elements}
+  layout={{ name: 'cose' }}
+  onSelect={(node) => setSelected(node.id())}
+  inspector={selected && <GraphInspector type={…} title={…} />}
+/>;
+```
+
+## Custom entity types
+
+Node colors flow through the entity-type registry exported by
+`@ship-it-ui/shipit`. Register your own types once and they appear in the
+graph without forking the stylesheet:
+
+```ts
+import { registerEntityTypes } from '@ship-it-ui/shipit';
+
+registerEntityTypes({
+  repository: {
+    glyph: '◆',
+    label: 'Repository',
+    toneClass: 'text-accent',
+    toneBg: 'bg-accent-dim',
+    colorVar: 'var(--color-accent)',
+    badgeVariant: 'accent',
+  },
+});
+```
+
+Once registered, nodes with `data.entityType = 'repository'` pick up the
+accent ring automatically — `buildShipItStylesheet` walks the registry on
+every call and emits one `node[entityType = "…"]` selector per registered
+type, so the ring color is driven entirely by the type's `colorVar`. Register
+**before** the first `<GraphCanvas>` mount (or call the imperative handle's
+`refreshStyles()` afterward) so the stylesheet picks up the new entries.
+
+<EditOnGithub source="apps/docs-site/app/(docs)/graph/cytoscape/page.mdx" />

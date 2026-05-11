@@ -1,0 +1,33 @@
+# ActivityTimeline
+
+Typed-event variant of `Timeline`. Each event carries an optional `icon`, an
+`actor` (name + avatar slot), a `title`, an `at` timestamp formatted
+relative to `relativeNow` via the exported `formatRelative` helper, and an
+optional collapsed `payload` preview. Tones drive the marker color and
+match the shared `TimelineEventTone` palette.
+
+## Default
+
+A typical activity feed with deploy, incident, and doc events. Pass
+`relativeNow` for deterministic rendering — useful for SSR snapshots and
+tests where `new Date()` would drift.
+
+<LivePreview example="activity-timeline/default" />
+
+## formatRelative
+
+The same helper used by ActivityTimeline is exported for any surface that
+prints typed timestamps:
+
+```ts
+import { formatRelative } from '@ship-it-ui/ui';
+
+formatRelative(new Date('2026-05-09T12:00:00Z'), new Date('2026-05-10T12:00:00Z'));
+// => "1d ago"
+```
+
+## Props
+
+<PropsTable component="ActivityTimeline" />
+
+<EditOnGithub source="apps/docs-site/app/(docs)/patterns/activity-timeline/page.mdx" />

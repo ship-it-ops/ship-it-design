@@ -1,0 +1,65 @@
+# Next.js (App Router)
+
+`@ship-it-ui/next` is an optional companion package for App Router apps. It
+ships three surfaces:
+
+- `<ThemeBootstrap />` — synchronous inline script that reads the
+  `ship-it-theme` cookie and sets `<html data-theme>` _before_ first paint,
+  killing the dark→light flash for users on the light theme.
+- `getThemeFromCookies(cookies())` — server helper for the App Router
+  `cookies()` store. Use the return value to seed `data-theme` on `<html>`
+  for the first server-rendered frame.
+- `<ThemeToggle />` — a token-styled `Switch` bound to the active theme.
+  Reuses `useTheme` from `@ship-it-ui/ui` for client state and writes the
+  cookie so the next request renders the correct theme synchronously.
+
+## Install
+
+```bash
+pnpm add @ship-it-ui/next
+```
+
+## Wire it up
+
+```tsx
+// app/layout.tsx
+import { cookies } from 'next/headers';
+import { ThemeBootstrap, getThemeFromCookies } from '@ship-it-ui/next';
+import '@ship-it-ui/ui/styles/globals.css';
+
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const theme = getThemeFromCookies(await cookies());
+  return (
+    <html lang="en" data-theme={theme}>
+      <head>
+        <ThemeBootstrap />
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+The bootstrap script runs synchronously, so it executes before the body
+hydrates — no flash. The server-rendered `data-theme` attribute lines up with
+what the script will set, so the cookie + SSR paths agree.
+
+## Drop in the toggle
+
+```tsx
+import { ThemeToggle } from '@ship-it-ui/next';
+
+<ThemeToggle label="Light theme" />;
+```
+
+The toggle writes a year-long cookie (`SameSite=Lax`, non-sensitive). The
+`onThemeChange` callback fires after persistence, which is handy for
+analytics.
+
+## Plain React fallback
+
+`next` is an optional peer dependency — the package works in non-Next React
+apps that adopt the same cookie convention. Just skip `getThemeFromCookies`
+and call `readThemeCookie()` from a top-level effect instead.
+
+<EditOnGithub source="apps/docs-site/app/(docs)/get-started/next/page.mdx" />

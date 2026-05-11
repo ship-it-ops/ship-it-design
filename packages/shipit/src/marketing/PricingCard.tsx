@@ -1,8 +1,7 @@
 'use client';
 
-import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
-
 import { cn } from '@ship-it-ui/ui';
+import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 /**
  * PricingCard — single tier in a pricing table. Shows tier name, price,

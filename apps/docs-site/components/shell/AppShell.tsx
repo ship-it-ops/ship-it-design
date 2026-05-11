@@ -4,6 +4,7 @@ import { useState, type ReactNode } from 'react';
 
 import { AppSidebar } from './AppSidebar';
 import { AppTopbar } from './AppTopbar';
+
 import { DocsSearch } from '@/components/docs/DocsSearch';
 
 /**
