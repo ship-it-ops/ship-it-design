@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import type cytoscape from 'cytoscape';
 import { describe, expect, it, vi } from 'vitest';
+import { axe } from 'vitest-axe';
 
 import { GraphCanvas } from './GraphCanvas';
 
@@ -66,5 +67,25 @@ describe('GraphCanvas', () => {
     const { engine } = makeEngine();
     render(<GraphCanvas engine={engine} elements={[]} inspector={<aside>inspector body</aside>} />);
     expect(screen.getByText('inspector body')).toBeInTheDocument();
+  });
+
+  it('re-wires listeners when the engine prop changes', () => {
+    const { engine: engine1, instances: inst1 } = makeEngine();
+    const { engine: engine2, instances: inst2 } = makeEngine();
+    const onSelect = vi.fn();
+    const { rerender } = render(<GraphCanvas engine={engine1} elements={[]} onSelect={onSelect} />);
+    rerender(<GraphCanvas engine={engine2} elements={[]} onSelect={onSelect} />);
+    expect(inst1[0]!.destroy).toHaveBeenCalled();
+    expect(inst2).toHaveLength(1);
+    const newEvents = inst2[0]!.on.mock.calls.map((call) => call[0]);
+    expect(newEvents).toContain('tap');
+    expect(newEvents).toContain('mouseover');
+    expect(newEvents).toContain('mouseout');
+  });
+
+  it('has no a11y violations', async () => {
+    const { engine } = makeEngine();
+    const { container } = render(<GraphCanvas engine={engine} elements={[]} />);
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

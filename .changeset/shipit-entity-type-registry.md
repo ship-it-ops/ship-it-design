@@ -37,7 +37,11 @@ back to the `service` visuals and forward a `data-entity-type` attribute for
 CSS hooking.
 
 New exports: `getEntityTypeMeta`, `registerEntityType`, `registerEntityTypes`,
-`resetEntityTypeRegistry`, `EntityTypeMeta`, `KnownEntityType`,
-`EntityBadgeVariant`. The legacy `ENTITY_GLYPH`/`ENTITY_LABEL`/
-`ENTITY_TONE_CLASS`/`ENTITY_TONE_BG` records remain for the six built-ins and
-are marked `@deprecated` in favor of `getEntityTypeMeta`.
+`resetEntityTypeRegistry`, `listEntityTypes`, `EntityTypeMeta`,
+`KnownEntityType`, `EntityBadgeVariant`. `listEntityTypes()` returns the
+registry as `[type, meta]` tuples — `@ship-it-ui/cytoscape` consumes it to
+emit one Cytoscape selector per registered type, so registering a custom
+entity type automatically colors the graph node. The legacy
+`ENTITY_GLYPH`/`ENTITY_LABEL`/`ENTITY_TONE_CLASS`/`ENTITY_TONE_BG` records
+remain for the six built-ins and are marked `@deprecated` in favor of
+`getEntityTypeMeta`.
