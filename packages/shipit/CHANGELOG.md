@@ -1,5 +1,78 @@
 # @ship-it-ui/shipit
 
+## 0.0.4
+
+### Patch Changes
+
+- 01246b3: **`EntityType` is now an open string with a runtime registry.** The six
+  built-in types — `service`, `person`, `document`, `deployment`, `incident`,
+  `ticket` — keep their visuals unchanged. Consumers can now extend the
+  vocabulary without a DS PR:
+
+  ```ts
+  import { registerEntityTypes } from '@ship-it-ui/shipit';
+
+  registerEntityTypes({
+    repository: {
+      glyph: '◆',
+      label: 'Repository',
+      toneClass: 'text-accent',
+      toneBg: 'bg-accent-dim',
+      colorVar: 'var(--color-accent)',
+      badgeVariant: 'accent',
+    },
+    pipeline: {
+      glyph: '⇄',
+      label: 'Pipeline',
+      toneClass: 'text-ok',
+      toneBg: 'bg-panel-2',
+      colorVar: 'var(--color-ok)',
+      badgeVariant: 'ok',
+    },
+  });
+  ```
+
+  `EntityBadge`, `EntityCard`, `EntityListRow`, `EntityTable`, `GraphNode`, and
+  `GraphLegend` now resolve glyph / label / color through the registry — pass a
+  registered string for `type` and the visuals match. Unregistered values fall
+  back to the `service` visuals and forward a `data-entity-type` attribute for
+  CSS hooking.
+
+  New exports: `getEntityTypeMeta`, `registerEntityType`, `registerEntityTypes`,
+  `resetEntityTypeRegistry`, `listEntityTypes`, `EntityTypeMeta`,
+  `KnownEntityType`, `EntityBadgeVariant`. `listEntityTypes()` returns the
+  registry as `[type, meta]` tuples — `@ship-it-ui/cytoscape` consumes it to
+  emit one Cytoscape selector per registered type, so registering a custom
+  entity type automatically colors the graph node. The legacy
+  `ENTITY_GLYPH`/`ENTITY_LABEL`/`ENTITY_TONE_CLASS`/`ENTITY_TONE_BG` records
+  remain for the six built-ins and are marked `@deprecated` in favor of
+  `getEntityTypeMeta`.
+
+- 01246b3: **`ActivityTimeline` variant alongside `Timeline`.** Typed-event timeline
+  with `icon`, `actor` (name + avatar slot), `title`, `at` timestamp, and an
+  optional collapsed `payload` preview. Renders relative timestamps via the new
+  exported `formatRelative(date, now?)` helper. Pass `relativeNow` for
+  deterministic SSR / test output. Reuses the shared marker tones from
+  `Timeline`.
+
+  **`ConnectorCard` composite for integration hubs (shipit).** Logo (sourced
+  from `@ship-it-ui/icons` connector glyphs) + name + status dot + relative
+  last-synced timestamp + summary + actions slot. Status drives the dot tone
+  (`connected` → ok, `syncing` → sync + pulse, `error` → err,
+  `disconnected` → off). When `onClick` is provided the entire card becomes
+  keyboard-focusable (`role="button"`, Enter/Space activate); the card's
+  own click and key handlers ignore events that originate inside the
+  actions slot (matched via a `data-connector-actions` marker), so nested
+  action buttons fire on their own without double-triggering the card.
+
+  The package now lists `@ship-it-ui/icons` as a peer dependency.
+
+- Updated dependencies [01246b3]
+- Updated dependencies [01246b3]
+- Updated dependencies [01246b3]
+  - @ship-it-ui/icons@0.0.4
+  - @ship-it-ui/ui@0.0.4
+
 ## 0.0.3
 
 ### Patch Changes

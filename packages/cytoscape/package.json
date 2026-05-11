@@ -1,6 +1,6 @@
 {
   "name": "@ship-it-ui/cytoscape",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Cytoscape adapter for the Ship-It design system. Token-driven stylesheet, theme-aware re-resolver hook, and a `<GraphCanvas>` wrapper that owns the data-theme ↔ stylesheet ↔ inspector dance.",
   "license": "MIT",
   "homepage": "https://ship-it-ops.github.io/ship-it-design/",
