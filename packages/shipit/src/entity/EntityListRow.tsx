@@ -57,10 +57,7 @@ function RowInner({
   return (
     <>
       {!hideGlyph && (
-        <span
-          aria-hidden
-          className={cn('font-mono text-[14px] leading-none', typeMeta.toneClass)}
-        >
+        <span aria-hidden className={cn('font-mono text-[14px] leading-none', typeMeta.toneClass)}>
           {typeMeta.glyph}
         </span>
       )}

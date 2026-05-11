@@ -7,9 +7,5 @@
   },
   "include": ["src"],
   "exclude": ["dist", "node_modules", "**/*.stories.tsx"],
-  "references": [
-    { "path": "../tokens" },
-    { "path": "../ui" },
-    { "path": "../shipit" }
-  ]
+  "references": [{ "path": "../tokens" }, { "path": "../ui" }, { "path": "../shipit" }]
 }

@@ -2,12 +2,7 @@
 
 import { IconGlyph, type ConnectorName } from '@ship-it-ui/icons';
 import { cn, formatRelative, StatusDot, type StatusState } from '@ship-it-ui/ui';
-import {
-  forwardRef,
-  type HTMLAttributes,
-  type KeyboardEvent,
-  type ReactNode,
-} from 'react';
+import { forwardRef, type HTMLAttributes, type KeyboardEvent, type ReactNode } from 'react';
 
 /**
  * ConnectorCard — integration card for "connector hubs". Renders a connector
@@ -21,7 +16,10 @@ import {
 
 export type ConnectorStatus = 'connected' | 'syncing' | 'error' | 'disconnected';
 
-export interface ConnectorCardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title' | 'onClick'> {
+export interface ConnectorCardProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'title' | 'onClick'
+> {
   /** Connector name keyed into `@ship-it-ui/icons` connectorGlyphs. */
   connector: ConnectorName | (string & {});
   /** Display name shown next to the logo. */
@@ -135,7 +133,7 @@ export const ConnectorCard = forwardRef<HTMLDivElement, ConnectorCardProps>(func
       className={cn(
         'rounded-base border-border bg-panel flex items-start gap-3 border p-4 text-left',
         interactive &&
-          'cursor-pointer transition-colors duration-(--duration-micro) hover:bg-panel-2 outline-none focus-visible:ring-[3px] focus-visible:ring-accent-dim',
+          'hover:bg-panel-2 focus-visible:ring-accent-dim cursor-pointer transition-colors duration-(--duration-micro) outline-none focus-visible:ring-[3px]',
         className,
       )}
       {...props}

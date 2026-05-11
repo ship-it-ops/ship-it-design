@@ -67,7 +67,7 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(function S
       {showVertical && (
         <RadixScrollArea.Scrollbar
           orientation="vertical"
-          className={cn(scrollbarBase, 'h-full w-[10px] bg-panel-2/40 hover:bg-panel-2/80')}
+          className={cn(scrollbarBase, 'bg-panel-2/40 hover:bg-panel-2/80 h-full w-[10px]')}
         >
           <RadixScrollArea.Thumb className={thumbBase} />
         </RadixScrollArea.Scrollbar>
@@ -75,14 +75,15 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(function S
       {showHorizontal && (
         <RadixScrollArea.Scrollbar
           orientation="horizontal"
-          className={cn(scrollbarBase, 'h-[10px] w-full flex-col bg-panel-2/40 hover:bg-panel-2/80')}
+          className={cn(
+            scrollbarBase,
+            'bg-panel-2/40 hover:bg-panel-2/80 h-[10px] w-full flex-col',
+          )}
         >
           <RadixScrollArea.Thumb className={thumbBase} />
         </RadixScrollArea.Scrollbar>
       )}
-      {orientation === 'both' && (
-        <RadixScrollArea.Corner className="bg-panel-2/60" />
-      )}
+      {orientation === 'both' && <RadixScrollArea.Corner className="bg-panel-2/60" />}
     </RadixScrollArea.Root>
   );
 });

@@ -22,10 +22,7 @@ const PALETTE: ThemeTokenPalette = {
 
 const LIGHT_PALETTE: ThemeTokenPalette = { ...PALETTE, bg: '#ffffff', panel: '#fafafa' };
 
-function findSelector(
-  styles: ReturnType<typeof buildShipItStylesheet>,
-  selector: string,
-) {
+function findSelector(styles: ReturnType<typeof buildShipItStylesheet>, selector: string) {
   return styles.find((s) => s.selector === selector);
 }
 

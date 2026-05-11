@@ -41,8 +41,7 @@ export function ThemeToggle({
     [setTheme, onThemeChange],
   );
 
-  const accessibleName =
-    ariaLabel ?? (typeof label === 'string' ? label : 'Toggle theme');
+  const accessibleName = ariaLabel ?? (typeof label === 'string' ? label : 'Toggle theme');
 
   return (
     <span className="inline-flex items-center gap-2">

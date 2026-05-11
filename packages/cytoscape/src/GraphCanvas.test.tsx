@@ -64,13 +64,7 @@ describe('GraphCanvas', () => {
 
   it('renders the inspector slot', () => {
     const { engine } = makeEngine();
-    render(
-      <GraphCanvas
-        engine={engine}
-        elements={[]}
-        inspector={<aside>inspector body</aside>}
-      />,
-    );
+    render(<GraphCanvas engine={engine} elements={[]} inspector={<aside>inspector body</aside>} />);
     expect(screen.getByText('inspector body')).toBeInTheDocument();
   });
 });

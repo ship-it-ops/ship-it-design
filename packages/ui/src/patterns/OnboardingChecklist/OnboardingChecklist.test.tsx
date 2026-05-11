@@ -3,10 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { axe } from 'vitest-axe';
 
-import {
-  OnboardingChecklist,
-  type OnboardingItem,
-} from './OnboardingChecklist';
+import { OnboardingChecklist, type OnboardingItem } from './OnboardingChecklist';
 
 const ITEMS: OnboardingItem[] = [
   { id: 'connect', label: 'Connect your repo', status: 'done' },

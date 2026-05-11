@@ -1,12 +1,7 @@
 'use client';
 
 import * as RadixDialog from '@radix-ui/react-dialog';
-import {
-  useCallback,
-  useMemo,
-  useState,
-  type ReactNode,
-} from 'react';
+import { useCallback, useMemo, useState, type ReactNode } from 'react';
 
 import { Button } from '../../components/Button';
 import { DialogContent, DialogRoot } from '../../components/Dialog';
@@ -125,10 +120,7 @@ export function WizardDialog({
     [safeCurrent, total, goNext, goBack, goTo],
   );
 
-  const stepperSteps = useMemo(
-    () => steps.map((s) => ({ id: s.id, label: s.label })),
-    [steps],
-  );
+  const stepperSteps = useMemo(() => steps.map((s) => ({ id: s.id, label: s.label })), [steps]);
 
   if (!step) return null;
 
@@ -158,20 +150,10 @@ export function WizardDialog({
               {cancelLabel}
             </Button>
           )}
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={goBack}
-            disabled={ctx.isFirst}
-          >
+          <Button type="button" variant="secondary" onClick={goBack} disabled={ctx.isFirst}>
             {backLabel}
           </Button>
-          <Button
-            type="button"
-            variant="primary"
-            onClick={handlePrimary}
-            disabled={!canAdvance}
-          >
+          <Button type="button" variant="primary" onClick={handlePrimary} disabled={!canAdvance}>
             {ctx.isLast ? completeLabel : nextLabel}
           </Button>
         </div>
@@ -181,9 +163,7 @@ export function WizardDialog({
 }
 
 function WizardTitle({ children }: { children: ReactNode }) {
-  return (
-    <RadixDialog.Title className="mb-2 text-[16px] font-medium">{children}</RadixDialog.Title>
-  );
+  return <RadixDialog.Title className="mb-2 text-[16px] font-medium">{children}</RadixDialog.Title>;
 }
 function WizardDescription({ children }: { children: ReactNode }) {
   return (

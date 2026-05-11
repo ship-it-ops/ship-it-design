@@ -45,8 +45,10 @@ export interface GraphCanvasHandle {
   refreshStyles: () => void;
 }
 
-export interface GraphCanvasProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelect' | 'children'> {
+export interface GraphCanvasProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'onSelect' | 'children'
+> {
   /** Cytoscape factory. Pass the imported `cytoscape` default export. */
   engine: CytoscapeEngine;
   /** Graph elements (nodes + edges). Passed straight through to Cytoscape. */

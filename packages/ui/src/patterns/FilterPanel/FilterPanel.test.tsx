@@ -61,12 +61,7 @@ describe('FilterPanel', () => {
   });
 
   it('renders counts when supplied', () => {
-    render(
-      <FilterPanel
-        facets={FACETS}
-        counts={{ environment: { prod: 42, staging: 7 } }}
-      />,
-    );
+    render(<FilterPanel facets={FACETS} counts={{ environment: { prod: 42, staging: 7 } }} />);
     expect(screen.getByText('42')).toBeInTheDocument();
     expect(screen.getByText('7')).toBeInTheDocument();
   });

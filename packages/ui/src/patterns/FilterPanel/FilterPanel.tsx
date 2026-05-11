@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  forwardRef,
-  useCallback,
-  useState,
-  type HTMLAttributes,
-  type ReactNode,
-} from 'react';
+import { forwardRef, useCallback, useState, type HTMLAttributes, type ReactNode } from 'react';
 
 import { Badge } from '../../components/Badge';
 import { Button } from '../../components/Button';
@@ -43,8 +37,10 @@ export interface FilterFacet {
 
 export type FilterPanelValue = Record<string, ReadonlyArray<string>>;
 
-export interface FilterPanelProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'onReset' | 'defaultValue' | 'title'> {
+export interface FilterPanelProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'onReset' | 'defaultValue' | 'title'
+> {
   facets: ReadonlyArray<FilterFacet>;
   /** Controlled selection map keyed by facet id. */
   value?: FilterPanelValue;
@@ -212,9 +208,7 @@ function FilterFacetGroup({ facet, selected, counts, onToggle }: FilterFacetGrou
               <li key={option.value} className="flex items-center gap-2 px-1 py-[3px]">
                 <Checkbox
                   checked={isSelected}
-                  onCheckedChange={(next) =>
-                    onToggle(facet.id, option.value, next === true)
-                  }
+                  onCheckedChange={(next) => onToggle(facet.id, option.value, next === true)}
                   label={option.label}
                 />
                 {typeof count === 'number' && (

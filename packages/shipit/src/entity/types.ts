@@ -27,14 +27,7 @@ export type EntityType = KnownEntityType | (string & {});
  * Variant key for the shared `Badge` component in `@ship-it-ui/ui`. Inlined here
  * to keep `types.ts` free of cross-package value imports.
  */
-export type EntityBadgeVariant =
-  | 'neutral'
-  | 'accent'
-  | 'ok'
-  | 'warn'
-  | 'err'
-  | 'purple'
-  | 'pink';
+export type EntityBadgeVariant = 'neutral' | 'accent' | 'ok' | 'warn' | 'err' | 'purple' | 'pink';
 
 export interface EntityTypeMeta {
   /** Single-character glyph rendered next to the type label. */

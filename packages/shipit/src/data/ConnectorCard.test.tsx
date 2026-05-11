@@ -33,9 +33,7 @@ describe('ConnectorCard', () => {
 
   it('fires onClick when the card is activated', async () => {
     const onClick = vi.fn();
-    render(
-      <ConnectorCard connector="slack" name="Slack" status="connected" onClick={onClick} />,
-    );
+    render(<ConnectorCard connector="slack" name="Slack" status="connected" onClick={onClick} />);
     await userEvent.click(screen.getByRole('button', { name: 'Slack connector' }));
     expect(onClick).toHaveBeenCalledTimes(1);
   });

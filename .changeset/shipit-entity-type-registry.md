@@ -12,14 +12,20 @@ import { registerEntityTypes } from '@ship-it-ui/shipit';
 
 registerEntityTypes({
   repository: {
-    glyph: '◆', label: 'Repository',
-    toneClass: 'text-accent', toneBg: 'bg-accent-dim',
-    colorVar: 'var(--color-accent)', badgeVariant: 'accent',
+    glyph: '◆',
+    label: 'Repository',
+    toneClass: 'text-accent',
+    toneBg: 'bg-accent-dim',
+    colorVar: 'var(--color-accent)',
+    badgeVariant: 'accent',
   },
   pipeline: {
-    glyph: '⇄', label: 'Pipeline',
-    toneClass: 'text-ok', toneBg: 'bg-panel-2',
-    colorVar: 'var(--color-ok)', badgeVariant: 'ok',
+    glyph: '⇄',
+    label: 'Pipeline',
+    toneClass: 'text-ok',
+    toneBg: 'bg-panel-2',
+    colorVar: 'var(--color-ok)',
+    badgeVariant: 'ok',
   },
 });
 ```

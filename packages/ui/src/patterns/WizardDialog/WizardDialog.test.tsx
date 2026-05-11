@@ -29,10 +29,7 @@ describe('WizardDialog', () => {
   });
 
   it('disables Next when canAdvance returns false', () => {
-    const blocked: WizardStep[] = [
-      { ...STEPS[0]!, canAdvance: () => false },
-      ...STEPS.slice(1),
-    ];
+    const blocked: WizardStep[] = [{ ...STEPS[0]!, canAdvance: () => false }, ...STEPS.slice(1)];
     render(<WizardDialog open steps={blocked} />);
     expect(screen.getByRole('button', { name: 'Next' })).toBeDisabled();
   });

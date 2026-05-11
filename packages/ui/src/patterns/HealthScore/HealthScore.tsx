@@ -94,14 +94,8 @@ export const HealthScore = forwardRef<HTMLDivElement, HealthScoreProps>(function
       <RadialProgress value={value} max={max} size={size} tone={resolvedTone} />
       {label && <div className="text-text-muted mt-1 text-[12px] leading-tight">{label}</div>}
       {typeof delta === 'number' && (
-        <div
-          className={cn(
-            'font-mono text-[11px] tabular-nums',
-            toneTextClass[indicatorTone],
-          )}
-        >
-          <span aria-hidden>{deltaGlyph(delta)}</span>{' '}
-          {Math.abs(delta)}
+        <div className={cn('font-mono text-[11px] tabular-nums', toneTextClass[indicatorTone])}>
+          <span aria-hidden>{deltaGlyph(delta)}</span> {Math.abs(delta)}
         </div>
       )}
     </div>
