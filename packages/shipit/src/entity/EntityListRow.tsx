@@ -10,7 +10,7 @@ import {
 
 import { cn } from '@ship-it-ui/ui';
 
-import { ENTITY_GLYPH, ENTITY_TONE_CLASS, type EntityType } from './types';
+import { getEntityTypeMeta, type EntityType } from './types';
 
 /**
  * EntityListRow — compact row for entity lists (e.g., dependents / dependencies
@@ -53,14 +53,15 @@ function RowInner({
   meta,
   hideGlyph,
 }: Pick<EntityListRowCommonProps, 'type' | 'name' | 'relation' | 'meta' | 'hideGlyph'>) {
+  const typeMeta = getEntityTypeMeta(type);
   return (
     <>
       {!hideGlyph && (
         <span
           aria-hidden
-          className={cn('font-mono text-[14px] leading-none', ENTITY_TONE_CLASS[type])}
+          className={cn('font-mono text-[14px] leading-none', typeMeta.toneClass)}
         >
-          {ENTITY_GLYPH[type]}
+          {typeMeta.glyph}
         </span>
       )}
       <span className="text-text min-w-0 flex-1 truncate font-mono text-[12px]">{name}</span>
@@ -81,7 +82,12 @@ export interface EntityListRowDivProps
 export const EntityListRowDiv = forwardRef<HTMLDivElement, EntityListRowDivProps>(
   function EntityListRowDiv({ type, name, relation, meta, hideGlyph, className, ...props }, ref) {
     return (
-      <div ref={ref} className={baseClassNames(false, className)} {...props}>
+      <div
+        ref={ref}
+        data-entity-type={type}
+        className={baseClassNames(false, className)}
+        {...props}
+      >
         <RowInner type={type} name={name} relation={relation} meta={meta} hideGlyph={hideGlyph} />
       </div>
     );
@@ -108,6 +114,7 @@ export const EntityListRowButton = forwardRef<HTMLButtonElement, EntityListRowBu
       <button
         ref={ref}
         type="button"
+        data-entity-type={type}
         onClick={onClick}
         className={baseClassNames(true, className)}
         {...props}

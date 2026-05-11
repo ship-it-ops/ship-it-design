@@ -1,0 +1,26 @@
+# ScrollArea
+
+A token-styled scroll viewport built on `@radix-ui/react-scroll-area`. The
+scrollbars match the design palette (`--color-text-muted` thumb on
+`--color-panel-2` track) and behave the same across platforms instead of
+deferring to the OS default.
+
+## Default
+
+Vertical scroll. Default `type="hover"` — the scrollbar fades in only when
+the pointer is over the area.
+
+<LivePreview example="scroll-area/default" />
+
+## Horizontal
+
+Pass `orientation="horizontal"` for a single horizontal scrollbar, or
+`"both"` to render both axes (the corner cap is drawn automatically).
+
+<LivePreview example="scroll-area/horizontal" />
+
+## Props
+
+<PropsTable component="ScrollArea" />
+
+<EditOnGithub source="apps/docs-site/app/(docs)/components/scroll-area/page.mdx" />

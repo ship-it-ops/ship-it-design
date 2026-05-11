@@ -5,22 +5,13 @@ import { forwardRef, type ReactNode } from 'react';
 
 import { cn } from '@ship-it-ui/ui';
 
-import { ENTITY_GLYPH, ENTITY_LABEL, type EntityType } from './types';
+import { getEntityTypeMeta, type EntityType } from './types';
 
 /**
  * EntityBadge — small chip identifying an entity type. Resolves the canonical
  * glyph + label from the type, but accepts a `label` override for cases where
  * the consumer wants to show the entity's actual name.
  */
-
-const typeVariant: Record<EntityType, BadgeProps['variant']> = {
-  service: 'accent',
-  person: 'neutral',
-  document: 'purple',
-  deployment: 'ok',
-  incident: 'err',
-  ticket: 'warn',
-};
 
 export interface EntityBadgeProps extends Omit<BadgeProps, 'variant'> {
   type: EntityType;
@@ -34,14 +25,21 @@ export const EntityBadge = forwardRef<HTMLSpanElement, EntityBadgeProps>(functio
   { type, label, hideGlyph, className, children, ...props },
   ref,
 ) {
+  const meta = getEntityTypeMeta(type);
   return (
-    <Badge ref={ref} variant={typeVariant[type]} className={cn(className)} {...props}>
+    <Badge
+      ref={ref}
+      variant={meta.badgeVariant}
+      data-entity-type={type}
+      className={cn(className)}
+      {...props}
+    >
       {!hideGlyph && (
         <span aria-hidden className="font-mono">
-          {ENTITY_GLYPH[type]}
+          {meta.glyph}
         </span>
       )}
-      {children ?? label ?? ENTITY_LABEL[type]}
+      {children ?? label ?? meta.label}
     </Badge>
   );
 });

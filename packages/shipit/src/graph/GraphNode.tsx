@@ -2,25 +2,18 @@
 
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-import { ENTITY_GLYPH, type EntityType } from '../entity/types';
+import { getEntityTypeMeta, type EntityType } from '../entity/types';
 import { cn } from '@ship-it-ui/ui';
 
 /**
- * GraphNode — visual representation of a graph node. Six entity-type variants
- * × five states (default, hover, selected, on-path, dimmed). The component
- * itself is presentation-only; pan / zoom / drag is the host's job.
+ * GraphNode — visual representation of a graph node. Resolves color + glyph
+ * from the shared entity-type registry, so consumer-registered types render
+ * with their own visuals. Five states (default, hover, selected, on-path,
+ * dimmed). The component itself is presentation-only; pan / zoom / drag is
+ * the host's job.
  */
 
 export type GraphNodeState = 'default' | 'hover' | 'selected' | 'path' | 'dim';
-
-const typeColorVar: Record<EntityType, string> = {
-  service: 'var(--color-accent)',
-  person: 'var(--color-purple)',
-  document: 'var(--color-pink)',
-  deployment: 'var(--color-ok)',
-  incident: 'var(--color-warn)',
-  ticket: 'var(--color-text-muted)',
-};
 
 export interface GraphNodeProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   type: EntityType;
@@ -39,7 +32,8 @@ export const GraphNode = forwardRef<HTMLDivElement, GraphNodeProps>(function Gra
   { type, state = 'default', glyph, label, size = 52, pathColor, className, style, ...props },
   ref,
 ) {
-  const color = state === 'path' ? (pathColor ?? 'var(--color-purple)') : typeColorVar[type];
+  const meta = getEntityTypeMeta(type);
+  const color = state === 'path' ? (pathColor ?? 'var(--color-purple)') : meta.colorVar;
   // Glow opacity expressed as a percent for color-mix; hover ≈ 50% (was hex 80), default ≈ 25% (was hex 40).
   const glowPct = state === 'hover' ? 50 : 25;
   const opacity = state === 'dim' ? 0.35 : 1;
@@ -70,7 +64,7 @@ export const GraphNode = forwardRef<HTMLDivElement, GraphNodeProps>(function Gra
           opacity,
         }}
       >
-        {glyph ?? ENTITY_GLYPH[type]}
+        {glyph ?? meta.glyph}
       </div>
       {label && <span className="text-text-dim font-mono text-[10px]">{label}</span>}
     </div>
