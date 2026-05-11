@@ -9,7 +9,6 @@ import {
   type ReactNode,
 } from 'react';
 
-
 import { getEntityTypeMeta, type EntityType } from './types';
 
 /**

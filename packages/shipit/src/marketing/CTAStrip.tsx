@@ -3,7 +3,6 @@
 import { cn } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-
 /**
  * CTAStrip — full-width call-to-action band. Title + body + actions, on a
  * gradient panel background. Sits between feature sections and the footer.

@@ -3,7 +3,6 @@
 import { Tab, Tabs, TabsContent, TabsList } from '@ship-it-ui/ui';
 import { Suspense } from 'react';
 
-
 import { CodeBlockStatic } from './CodeBlockStatic';
 
 import { examples } from '@/.generated/examples';

@@ -3,7 +3,6 @@
 import { cn } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-
 /**
  * ConfidenceIndicator — horizontal bar + percent + tier label. The tier tone
  * is derived automatically from the value (high ≥ 95, medium ≥ 80, low ≥ 50,

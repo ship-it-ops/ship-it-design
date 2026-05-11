@@ -4,7 +4,6 @@ import { Badge } from '@ship-it-ui/ui';
 import { cn } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-
 /**
  * ToolCallCard — visual card for a function/tool invocation in the AI
  * conversation. Shows a `TOOL` badge, the tool name, status (running →

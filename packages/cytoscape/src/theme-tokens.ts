@@ -98,17 +98,53 @@ export function resolveEntityColor(type: EntityType, palette: ThemeTokenPalette)
 }
 
 /**
+ * Extract `foo` from `var(--color-foo)` or `var(--color-foo, fallback)`.
+ * Returns `undefined` if the input doesn't match. O(n), no backtracking.
+ */
+function parseColorVarName(value: string): string | undefined {
+  // Strip surrounding whitespace once. `String#trim` is linear, not a regex.
+  let i = 0;
+  while (i < value.length && isWhitespace(value.charCodeAt(i))) i++;
+  if (!value.startsWith('var(', i)) return undefined;
+  i += 4;
+  // Skip whitespace inside the parens.
+  while (i < value.length && isWhitespace(value.charCodeAt(i))) i++;
+  if (!value.startsWith('--color-', i)) return undefined;
+  i += 8;
+  // Read the name: stop at the first whitespace, comma, or `)`.
+  const start = i;
+  while (i < value.length) {
+    const c = value.charCodeAt(i);
+    if (c === CC_COMMA || c === CC_PAREN_CLOSE || isWhitespace(c)) break;
+    i++;
+  }
+  if (i === start) return undefined;
+  // Require a closing `)` somewhere after, so we don't classify malformed
+  // inputs (`var(--color-foo`) as valid references.
+  const close = value.indexOf(')', i);
+  if (close === -1) return undefined;
+  return value.slice(start, i);
+}
+
+const CC_COMMA = 0x2c;
+const CC_PAREN_CLOSE = 0x29;
+
+function isWhitespace(cc: number): boolean {
+  // ASCII whitespace: space, tab, LF, CR, FF, VT.
+  return cc === 0x20 || cc === 0x09 || cc === 0x0a || cc === 0x0d || cc === 0x0c || cc === 0x0b;
+}
+
+/**
  * Map a `var(--color-foo)` reference or a raw color literal to a concrete
  * color string, using the supplied palette. Unrecognized references fall back
  * to `accent`.
  */
 export function resolveColorReference(value: string, palette: ThemeTokenPalette): string {
-  // Single greedy [^)]* covers the optional fallback (`, red`) and any trailing
-  // whitespace. Splitting it into `\s*(?:,\s*[^)]*)?` introduces a polynomial
-  // backtrack on inputs like `var(--color--,     ` (flagged by CodeQL).
-  const match = value.match(/var\(\s*--color-([\w-]+)[^)]*\)/);
-  if (!match) return value;
-  const key = match[1];
+  // Deterministic parser instead of a regex — regex variants with overlapping
+  // quantifiers around the color name produced quadratic backtracking on
+  // adversarial inputs (CodeQL js/polynomial-redos).
+  const key = parseColorVarName(value);
+  if (key === undefined) return value;
   switch (key) {
     case 'bg':
       return palette.bg;

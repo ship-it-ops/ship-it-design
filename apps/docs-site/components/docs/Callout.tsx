@@ -1,7 +1,6 @@
 import { Alert } from '@ship-it-ui/ui';
 import type { ReactNode } from 'react';
 
-
 type Tone = 'note' | 'tip' | 'warn' | 'deprecated';
 
 interface CalloutProps {

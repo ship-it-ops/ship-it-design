@@ -11,7 +11,6 @@ import {
   type ReactNode,
 } from 'react';
 
-
 /**
  * AskBar — the primary "ask anything" input. The leading ✦ glyph + accent
  * caret give it the same identity as the Copilot bubbles. Submit with the

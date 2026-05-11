@@ -3,7 +3,6 @@
 import { cn } from '@ship-it-ui/ui';
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react';
 
-
 /**
  * SuggestionChip — pill-shaped prompt suggestion. The ✦ glyph prefix signals
  * "ask about this" and matches the AskBar's identity.

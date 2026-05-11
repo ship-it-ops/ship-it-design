@@ -4,7 +4,6 @@ import { Badge, type BadgeProps } from '@ship-it-ui/ui';
 import { cn } from '@ship-it-ui/ui';
 import { forwardRef, type ReactNode } from 'react';
 
-
 import { getEntityTypeMeta, type EntityType } from './types';
 
 /**

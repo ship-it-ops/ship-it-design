@@ -3,7 +3,6 @@
 import { useToast } from '@ship-it-ui/ui';
 import { useEffect, useRef, useState } from 'react';
 
-
 interface Props {
   source: string;
   language?: string;
@@ -76,7 +75,6 @@ export function CodeBlockStatic({ source, language = 'tsx' }: Props) {
       <div
         ref={ref}
         className="overflow-x-auto px-4 py-3 text-[13px] leading-[1.55]"
-         
         dangerouslySetInnerHTML={{
           __html: html ?? `<pre><code>${escapeHtml(source)}</code></pre>`,
         }}

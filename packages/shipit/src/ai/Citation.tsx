@@ -3,7 +3,6 @@
 import { cn } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-
 /**
  * Citation — superscript-style numbered chip + source label, used in answer
  * bodies to point back to the document/line that supports the claim.

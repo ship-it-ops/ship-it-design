@@ -3,7 +3,6 @@
 import { useTheme } from '@ship-it-ui/ui';
 import { useEffect, useState } from 'react';
 
-
 /**
  * Reuses `useTheme` from `@ship-it-ui/ui` (toggles `[data-theme]` on `<html>`)
  * and persists the choice to `localStorage`. The root layout runs an inline

@@ -3,7 +3,6 @@
 import { cn } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-
 /**
  * Hero — landing-page top section. Optional eyebrow / pill above the headline,
  * a large heading (children of `<h1>`), a body description, and an action row.

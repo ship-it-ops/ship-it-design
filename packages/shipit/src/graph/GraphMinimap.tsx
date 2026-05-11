@@ -3,7 +3,6 @@
 import { cn } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes } from 'react';
 
-
 /**
  * GraphMinimap — miniature scatter of node positions with a translucent
  * rectangle marking the current viewport. Coordinates are normalized to

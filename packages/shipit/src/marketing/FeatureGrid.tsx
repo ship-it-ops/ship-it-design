@@ -3,7 +3,6 @@
 import { cn } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-
 /**
  * FeatureGrid — responsive grid of feature tiles. Each tile shows a glyph,
  * title, body description.

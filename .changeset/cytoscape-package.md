@@ -33,7 +33,8 @@ Also exported: `readThemeTokens`, `resolveCssVar`, `resolveColorReference`,
 registered entity types to colors — register custom types once via
 `registerEntityType` and they appear in the graph automatically.
 
-The `var(--color-…)` parser in `resolveColorReference` uses a single
-non-backtracking pattern (`[^)]*` for the optional fallback) — earlier
-drafts had a polynomial-regex shape that CodeQL flagged on inputs like
-`var(--color--,                ` with no closing paren.
+The `var(--color-…)` parser in `resolveColorReference` is a hand-written
+deterministic O(n) walk over the input (no regex). Earlier regex-based
+drafts had overlapping quantifiers around the color name that CodeQL
+flagged as quadratic backtracking on adversarial inputs like
+`var(--color---------` with no closing paren (CodeQL js/polynomial-redos).

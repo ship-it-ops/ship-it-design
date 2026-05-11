@@ -4,7 +4,6 @@ import { Avatar } from '@ship-it-ui/ui';
 import { cn } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
-
 /**
  * CopilotMessage — chat bubble for the AI conversation. Two roles:
  * `user` (right-aligned implicit, panel-2 background) and `assistant`

@@ -4,7 +4,6 @@ import { CommandPalette, EmptyState, Kbd } from '@ship-it-ui/ui';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 
-
 interface SearchEntry {
   id: string;
   title: string;
