@@ -32,3 +32,8 @@ Also exported: `readThemeTokens`, `resolveCssVar`, `resolveColorReference`,
 `ShipItStylesheetBlock`. The package depends on `@ship-it-ui/shipit` to map
 registered entity types to colors — register custom types once via
 `registerEntityType` and they appear in the graph automatically.
+
+The `var(--color-…)` parser in `resolveColorReference` uses a single
+non-backtracking pattern (`[^)]*` for the optional fallback) — earlier
+drafts had a polynomial-regex shape that CodeQL flagged on inputs like
+`var(--color--,                ` with no closing paren.

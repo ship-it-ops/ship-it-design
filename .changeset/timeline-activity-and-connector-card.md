@@ -15,7 +15,9 @@ from `@ship-it-ui/icons` connector glyphs) + name + status dot + relative
 last-synced timestamp + summary + actions slot. Status drives the dot tone
 (`connected` → ok, `syncing` → sync + pulse, `error` → err,
 `disconnected` → off). When `onClick` is provided the entire card becomes
-keyboard-focusable (`role="button"`, Enter/Space activate) — inner action
-buttons stop event propagation so they don't trigger the card's click.
+keyboard-focusable (`role="button"`, Enter/Space activate); the card's
+own click and key handlers ignore events that originate inside the
+actions slot (matched via a `data-connector-actions` marker), so nested
+action buttons fire on their own without double-triggering the card.
 
 The package now lists `@ship-it-ui/icons` as a peer dependency.
