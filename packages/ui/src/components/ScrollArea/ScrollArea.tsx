@@ -1,7 +1,7 @@
 'use client';
 
 import * as RadixScrollArea from '@radix-ui/react-scroll-area';
-import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
+import { forwardRef, type HTMLAttributes, type ReactNode, type Ref } from 'react';
 
 import { cn } from '../../utils/cn';
 
@@ -26,6 +26,12 @@ export interface ScrollAreaProps extends Omit<HTMLAttributes<HTMLDivElement>, 'o
   scrollHideDelay?: number;
   /** Class applied to the inner viewport rather than the outer root. */
   viewportClassName?: string;
+  /**
+   * Ref to the inner viewport (the scrollable element). Useful when a consumer
+   * wants to drive scroll position imperatively without losing the outer-root
+   * ref forwarded as `ref`.
+   */
+  viewportRef?: Ref<HTMLDivElement>;
   /** Document direction for RTL handling. */
   dir?: 'ltr' | 'rtl';
   children?: ReactNode;
@@ -43,6 +49,7 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(function S
     scrollHideDelay = 600,
     className,
     viewportClassName,
+    viewportRef,
     children,
     ...props
   },
@@ -53,13 +60,14 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(function S
 
   return (
     <RadixScrollArea.Root
+      ref={ref}
       type={type}
       scrollHideDelay={scrollHideDelay}
       className={cn('relative overflow-hidden', className)}
       {...props}
     >
       <RadixScrollArea.Viewport
-        ref={ref}
+        ref={viewportRef}
         className={cn('h-full w-full rounded-[inherit]', viewportClassName)}
       >
         {children}

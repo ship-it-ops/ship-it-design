@@ -37,6 +37,44 @@ describe('OnboardingChecklist', () => {
     expect(inProgress.getAttribute('aria-current')).toBe('step');
   });
 
+  it('does not bubble action clicks to the row when both action and onItemClick are present', async () => {
+    const onItemClick = vi.fn();
+    const onAction = vi.fn();
+    render(
+      <OnboardingChecklist
+        onItemClick={onItemClick}
+        items={[
+          {
+            id: 'invite',
+            label: 'Invite your team',
+            status: 'in-progress',
+            action: <button onClick={onAction}>Open invite</button>,
+          },
+        ]}
+      />,
+    );
+    await userEvent.click(screen.getByRole('button', { name: 'Open invite' }));
+    expect(onAction).toHaveBeenCalledTimes(1);
+    expect(onItemClick).not.toHaveBeenCalled();
+  });
+
+  it('has no a11y violations even when items combine action + onItemClick', async () => {
+    const { container } = render(
+      <OnboardingChecklist
+        onItemClick={() => {}}
+        items={[
+          {
+            id: 'invite',
+            label: 'Invite your team',
+            status: 'in-progress',
+            action: <button>Open invite</button>,
+          },
+        ]}
+      />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
   it('has no a11y violations', async () => {
     const { container } = render(<OnboardingChecklist items={ITEMS} />);
     expect(await axe(container)).toHaveNoViolations();

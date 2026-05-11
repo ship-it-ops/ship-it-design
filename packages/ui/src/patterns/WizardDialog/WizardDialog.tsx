@@ -1,7 +1,7 @@
 'use client';
 
 import * as RadixDialog from '@radix-ui/react-dialog';
-import { useCallback, useMemo, useState, type ReactNode } from 'react';
+import { forwardRef, useCallback, useMemo, useState, type ReactNode } from 'react';
 
 import { Button } from '../../components/Button';
 import { DialogContent, DialogRoot } from '../../components/Dialog';
@@ -76,22 +76,25 @@ export interface WizardDialogProps {
   onCancel?: () => void;
 }
 
-export function WizardDialog({
-  open,
-  defaultOpen,
-  onOpenChange,
-  steps,
-  initialStep = 0,
-  onComplete,
-  title,
-  description,
-  width = 560,
-  nextLabel = 'Next',
-  completeLabel = 'Done',
-  backLabel = 'Back',
-  cancelLabel,
-  onCancel,
-}: WizardDialogProps) {
+export const WizardDialog = forwardRef<HTMLDivElement, WizardDialogProps>(function WizardDialog(
+  {
+    open,
+    defaultOpen,
+    onOpenChange,
+    steps,
+    initialStep = 0,
+    onComplete,
+    title,
+    description,
+    width = 560,
+    nextLabel = 'Next',
+    completeLabel = 'Done',
+    backLabel = 'Back',
+    cancelLabel,
+    onCancel,
+  },
+  ref,
+) {
   const [current, setCurrent] = useState(initialStep);
 
   const total = steps.length;
@@ -137,7 +140,7 @@ export function WizardDialog({
 
   return (
     <DialogRoot open={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
-      <DialogContent width={width}>
+      <DialogContent ref={ref} width={width}>
         {title && <WizardTitle>{title}</WizardTitle>}
         {description && <WizardDescription>{description}</WizardDescription>}
         <div className="mb-5">
@@ -160,7 +163,7 @@ export function WizardDialog({
       </DialogContent>
     </DialogRoot>
   );
-}
+});
 
 function WizardTitle({ children }: { children: ReactNode }) {
   return <RadixDialog.Title className="mb-2 text-[16px] font-medium">{children}</RadixDialog.Title>;

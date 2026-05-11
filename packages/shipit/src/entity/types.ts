@@ -123,6 +123,15 @@ export function getEntityTypeMeta(type: EntityType): EntityTypeMeta {
   return registry.get(type) ?? FALLBACK;
 }
 
+/**
+ * Snapshot every registered entity type as `[type, meta]` tuples. Used by
+ * downstream packages (e.g. `@ship-it-ui/cytoscape`) to enumerate types when
+ * emitting per-type styles. Cheap — just `Array.from(map)`.
+ */
+export function listEntityTypes(): ReadonlyArray<readonly [string, EntityTypeMeta]> {
+  return Array.from(registry.entries());
+}
+
 /** Test-only helper: drop all consumer registrations and re-seed the built-ins. */
 export function resetEntityTypeRegistry(): void {
   registry.clear();

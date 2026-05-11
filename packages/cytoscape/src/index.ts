@@ -16,6 +16,7 @@ export {
   buildShipItStylesheet,
   GRAPH_CANVAS_CLASS,
   type BuildStylesheetOptions,
+  type ShipItStylesheetBlock,
 } from './stylesheet';
 
 export {

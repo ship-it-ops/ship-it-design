@@ -2,13 +2,7 @@
 
 import { IconGlyph, type ConnectorName } from '@ship-it-ui/icons';
 import { cn, formatRelative, StatusDot, type StatusState } from '@ship-it-ui/ui';
-import {
-  forwardRef,
-  type HTMLAttributes,
-  type KeyboardEvent,
-  type MouseEvent,
-  type ReactNode,
-} from 'react';
+import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 /**
  * ConnectorCard — integration card for "connector hubs". Renders a connector
@@ -42,6 +36,12 @@ export interface ConnectorCardProps extends Omit<
   actions?: ReactNode;
   /** Click handler. When provided, the card becomes a button. */
   onClick?: () => void;
+  /**
+   * Accessible name override. Required when `onClick` is set *and* `name` is
+   * not a string — without it the button has no accessible name (axe
+   * `button-name`). Optional otherwise.
+   */
+  accessibleName?: string;
 }
 
 const statusDot: Record<ConnectorStatus, StatusState> = {
@@ -68,6 +68,7 @@ export const ConnectorCard = forwardRef<HTMLDivElement, ConnectorCardProps>(func
     summary,
     actions,
     onClick,
+    accessibleName,
     className,
     ...props
   },
@@ -76,7 +77,11 @@ export const ConnectorCard = forwardRef<HTMLDivElement, ConnectorCardProps>(func
   const interactive = typeof onClick === 'function';
   const time = lastSyncedAt ? formatRelative(lastSyncedAt, relativeNow ?? new Date()) : '';
 
-  const inner = (
+  // The clickable label region (logo + name + status + sync time) is rendered
+  // as a button when interactive; the `actions` slot sits beside it as a
+  // sibling so any nested button stays a peer of the row button instead of a
+  // descendant (avoiding axe `nested-interactive`).
+  const labelBlock = (
     <>
       <span
         aria-hidden
@@ -107,50 +112,41 @@ export const ConnectorCard = forwardRef<HTMLDivElement, ConnectorCardProps>(func
           </div>
         )}
       </div>
-      {actions && (
-        <div data-connector-actions="" className="shrink-0">
-          {actions}
-        </div>
-      )}
     </>
   );
 
-  // Skip card-level activation when the event originated inside the actions
-  // slot so nested buttons don't double-fire as the card's onClick.
-  const isFromActions = (target: EventTarget | null) =>
-    target instanceof Element && target.closest('[data-connector-actions]') !== null;
+  const labelRegionClass = cn(
+    'flex flex-1 items-start gap-3 rounded-md p-1 text-left transition-colors duration-(--duration-micro)',
+    interactive &&
+      'hover:bg-panel-2 focus-visible:ring-accent-dim cursor-pointer outline-none focus-visible:ring-[3px]',
+  );
 
-  const handleCardClick = (event: MouseEvent<HTMLDivElement>) => {
-    if (isFromActions(event.target)) return;
-    onClick?.();
-  };
-
-  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (!interactive) return;
-    if (isFromActions(event.target)) return;
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      onClick?.();
-    }
-  };
+  const labelRegion = interactive ? (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={
+        accessibleName ?? (typeof name === 'string' ? `${name} connector` : statusLabel[status])
+      }
+      className={labelRegionClass}
+    >
+      {labelBlock}
+    </button>
+  ) : (
+    <div className={labelRegionClass}>{labelBlock}</div>
+  );
 
   return (
     <div
       ref={ref}
-      role={interactive ? 'button' : undefined}
-      tabIndex={interactive ? 0 : undefined}
-      onClick={interactive ? handleCardClick : undefined}
-      onKeyDown={interactive ? handleKeyDown : undefined}
-      aria-label={interactive && typeof name === 'string' ? `${name} connector` : undefined}
       className={cn(
-        'rounded-base border-border bg-panel flex items-start gap-3 border p-4 text-left',
-        interactive &&
-          'hover:bg-panel-2 focus-visible:ring-accent-dim cursor-pointer transition-colors duration-(--duration-micro) outline-none focus-visible:ring-[3px]',
+        'rounded-base border-border bg-panel flex items-start gap-2 border p-3',
         className,
       )}
       {...props}
     >
-      {inner}
+      {labelRegion}
+      {actions && <div className="shrink-0 self-center pr-1">{actions}</div>}
     </div>
   );
 });

@@ -96,12 +96,7 @@ export const OnboardingChecklist = forwardRef<HTMLElement, OnboardingChecklistPr
         <ul className="m-0 flex list-none flex-col gap-1 p-0">
           {items.map((item) => {
             const interactive = typeof onItemClick === 'function';
-            const baseClass = cn(
-              'flex w-full items-start gap-3 rounded-md px-2 py-2 text-left transition-colors duration-(--duration-micro)',
-              interactive &&
-                'cursor-pointer outline-none hover:bg-panel-2 focus-visible:ring-[3px] focus-visible:ring-accent-dim',
-            );
-            const inner = (
+            const labelBlock = (
               <>
                 <StatusDot
                   state={statusDot[item.status]}
@@ -119,23 +114,31 @@ export const OnboardingChecklist = forwardRef<HTMLElement, OnboardingChecklistPr
                     </span>
                   )}
                 </div>
-                {item.action && <div className="shrink-0">{item.action}</div>}
               </>
             );
+            const labelRegionClass = cn(
+              'flex flex-1 items-start gap-3 rounded-md px-2 py-2 text-left transition-colors duration-(--duration-micro)',
+              interactive &&
+                'cursor-pointer outline-none hover:bg-panel-2 focus-visible:ring-[3px] focus-visible:ring-accent-dim',
+            );
+            // The label region is the clickable target; the `action` slot
+            // renders as a sibling so any nested button stays a peer of the
+            // row button (avoiding axe `nested-interactive`).
             return (
-              <li key={item.id}>
+              <li key={item.id} className="flex items-start gap-2">
                 {interactive ? (
                   <button
                     type="button"
                     aria-current={item.status === 'in-progress' ? 'step' : undefined}
                     onClick={() => onItemClick(item.id)}
-                    className={baseClass}
+                    className={labelRegionClass}
                   >
-                    {inner}
+                    {labelBlock}
                   </button>
                 ) : (
-                  <div className={baseClass}>{inner}</div>
+                  <div className={labelRegionClass}>{labelBlock}</div>
                 )}
+                {item.action && <div className="shrink-0 self-center">{item.action}</div>}
               </li>
             );
           })}

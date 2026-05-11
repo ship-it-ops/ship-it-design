@@ -1,3 +1,4 @@
+import { listEntityTypes } from '@ship-it-ui/shipit';
 import type cytoscape from 'cytoscape';
 
 import { readThemeTokens, resolveColorReference, type ThemeTokenPalette } from './theme-tokens';
@@ -56,30 +57,14 @@ export function buildShipItStylesheet(
         shape: 'round-rectangle',
       },
     },
-    {
-      selector: 'node[entityType = "service"]',
-      style: { 'border-color': color('var(--color-accent)') },
-    },
-    {
-      selector: 'node[entityType = "person"]',
-      style: { 'border-color': color('var(--color-purple)') },
-    },
-    {
-      selector: 'node[entityType = "document"]',
-      style: { 'border-color': color('var(--color-pink)') },
-    },
-    {
-      selector: 'node[entityType = "deployment"]',
-      style: { 'border-color': color('var(--color-ok)') },
-    },
-    {
-      selector: 'node[entityType = "incident"]',
-      style: { 'border-color': color('var(--color-warn)') },
-    },
-    {
-      selector: 'node[entityType = "ticket"]',
-      style: { 'border-color': color('var(--color-text-muted)') },
-    },
+    // One selector per entity type registered with @ship-it-ui/shipit. Built-in
+    // types are seeded automatically; custom types registered via
+    // `registerEntityType(...)` pick up their `colorVar` here without a docs
+    // patch or a forked stylesheet.
+    ...listEntityTypes().map<cytoscape.StylesheetJsonBlock>(([type, meta]) => ({
+      selector: `node[entityType = "${escapeCytoscapeAttr(type)}"]`,
+      style: { 'border-color': color(meta.colorVar) },
+    })),
     {
       selector: 'node:selected',
       style: {
@@ -133,3 +118,12 @@ export const GRAPH_CANVAS_CLASS = {
   path: 'graph-canvas:path',
   dim: 'graph-canvas:dim',
 } as const;
+
+// Cytoscape's attribute selector accepts a double-quoted string. Escape
+// embedded backslashes and double quotes so a malformed (or hostile)
+// registered key can't break out of the selector. The grammar
+// (https://js.cytoscape.org/#selectors/data) is more permissive than CSS, but
+// these two characters are the only ones that would change selector semantics.
+function escapeCytoscapeAttr(value: string): string {
+  return value.replace(/[\\"]/g, (c) => `\\${c}`);
+}

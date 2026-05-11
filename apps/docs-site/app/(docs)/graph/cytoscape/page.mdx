@@ -90,6 +90,10 @@ registerEntityTypes({
 ```
 
 Once registered, nodes with `data.entityType = 'repository'` pick up the
-accent ring automatically.
+accent ring automatically — `buildShipItStylesheet` walks the registry on
+every call and emits one `node[entityType = "…"]` selector per registered
+type, so the ring color is driven entirely by the type's `colorVar`. Register
+**before** the first `<GraphCanvas>` mount (or call the imperative handle's
+`refreshStyles()` afterward) so the stylesheet picks up the new entries.
 
 <EditOnGithub source="apps/docs-site/app/(docs)/graph/cytoscape/page.mdx" />

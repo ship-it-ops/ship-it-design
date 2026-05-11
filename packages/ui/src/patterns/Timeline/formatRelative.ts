@@ -5,7 +5,9 @@
  * `Intl.RelativeTimeFormat` instead.
  *
  * The `now` argument is injectable so callers can render deterministically in
- * tests and during SSR. Falsy or unparseable inputs return an empty string.
+ * tests and during SSR. Invalid or unparseable inputs return an empty string
+ * (note: `0` is a valid timestamp — the Unix epoch — and renders as a real
+ * relative time).
  */
 
 const SECOND = 1_000;

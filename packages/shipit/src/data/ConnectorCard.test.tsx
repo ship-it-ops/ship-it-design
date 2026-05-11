@@ -55,6 +55,33 @@ describe('ConnectorCard', () => {
     expect(onClick).not.toHaveBeenCalled();
   });
 
+  it('has no a11y violations when interactive + actions are combined', async () => {
+    const { container } = render(
+      <ConnectorCard
+        connector="github"
+        name="GitHub"
+        status="connected"
+        onClick={() => {}}
+        actions={<button>Manage</button>}
+      />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('uses the accessibleName fallback when name is not a string', async () => {
+    const { container } = render(
+      <ConnectorCard
+        connector="github"
+        name={<span>GitHub</span>}
+        status="connected"
+        onClick={() => {}}
+        accessibleName="GitHub connector"
+      />,
+    );
+    expect(screen.getByRole('button', { name: 'GitHub connector' })).toBeInTheDocument();
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
   it('has no a11y violations', async () => {
     const { container } = render(
       <ConnectorCard

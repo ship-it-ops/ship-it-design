@@ -1,7 +1,7 @@
 'use client';
 
 import type cytoscape from 'cytoscape';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 
 import { buildShipItStylesheet, type BuildStylesheetOptions } from './stylesheet';
 
@@ -34,7 +34,14 @@ export function useShipItStylesheet(
   cyRef: { current: cytoscape.Core | null },
   options: UseShipItStylesheetOptions = {},
 ): UseShipItStylesheetReturn {
-  const { observe = true, ...buildOptions } = options;
+  const { observe = true, palette, extra } = options;
+  // Memoize the build options against their flat constituents so callers that
+  // pass `options` inline (a fresh object each render) don't churn `apply` /
+  // disconnect+reconnect the MutationObserver on every render.
+  const buildOptions = useMemo<BuildStylesheetOptions>(
+    () => ({ palette, extra }),
+    [palette, extra],
+  );
 
   const apply = useCallback(() => {
     const cy = cyRef.current;

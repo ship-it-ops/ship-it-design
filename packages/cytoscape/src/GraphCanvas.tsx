@@ -128,7 +128,9 @@ export const GraphCanvas = forwardRef<GraphCanvasHandle, GraphCanvasProps>(funct
 
   const { refresh: refreshStyles } = useShipItStylesheet(cyRef, styleOptions);
 
-  // Wire selection events.
+  // Wire selection events. `engine` is in the deps so the listeners re-bind
+  // whenever the upstream effect destroys + recreates the Cytoscape instance —
+  // without it, an `engine` swap would leave the new `cy` without handlers.
   useEffect(() => {
     const cy = cyRef.current;
     if (!cy) return undefined;
@@ -154,12 +156,22 @@ export const GraphCanvas = forwardRef<GraphCanvasHandle, GraphCanvasProps>(funct
       cy.off('mouseover', 'node', handleEnter);
       cy.off('mouseout', 'node', handleLeave);
     };
-  }, [onSelect, onClearSelection, onNodeHover, onNodeLeave]);
+  }, [engine, onSelect, onClearSelection, onNodeHover, onNodeLeave]);
 
-  useImperativeHandle(forwardedRef, () => ({
-    cy: cyRef.current,
-    refreshStyles,
-  }));
+  // Expose the imperative handle via getters so consumers always read the live
+  // `cyRef.current`. Snapshotting `cyRef.current` here would freeze it at
+  // `null` because the instance is assigned inside an effect that runs *after*
+  // the initial render — Copilot/Claude both flagged this.
+  useImperativeHandle(
+    forwardedRef,
+    (): GraphCanvasHandle => ({
+      get cy() {
+        return cyRef.current;
+      },
+      refreshStyles,
+    }),
+    [refreshStyles],
+  );
 
   return (
     <div
