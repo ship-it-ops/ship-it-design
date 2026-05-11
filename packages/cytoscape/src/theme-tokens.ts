@@ -103,7 +103,10 @@ export function resolveEntityColor(type: EntityType, palette: ThemeTokenPalette)
  * to `accent`.
  */
 export function resolveColorReference(value: string, palette: ThemeTokenPalette): string {
-  const match = value.match(/var\(\s*--color-([\w-]+)\s*(?:,\s*[^)]*)?\)/);
+  // Single greedy [^)]* covers the optional fallback (`, red`) and any trailing
+  // whitespace. Splitting it into `\s*(?:,\s*[^)]*)?` introduces a polynomial
+  // backtrack on inputs like `var(--color--,     ` (flagged by CodeQL).
+  const match = value.match(/var\(\s*--color-([\w-]+)[^)]*\)/);
   if (!match) return value;
   const key = match[1];
   switch (key) {
