@@ -96,13 +96,17 @@ export const NotifRow = forwardRef<HTMLDivElement, NotifRowProps>(function Notif
       <a
         // Same cast pattern as the `<button>` branch below: `forwardRef` types
         // this component for `HTMLDivElement` (the default-render case), but
-        // when we swap to `<a>` the ref slot expects `HTMLAnchorElement`.
+        // when we swap to `<a>` the ref slot expects `HTMLAnchorElement`. The
+        // `{...props}` spread carries forwarded HTML attributes — `id`,
+        // `data-*`, `aria-*`, `onFocus`, etc. — that consumers pass to the
+        // polymorphic root.
         ref={ref as unknown as React.Ref<HTMLAnchorElement>}
         href={href}
         className={cn(
           baseClass,
           'text-text focus-visible:ring-accent-dim no-underline outline-none focus-visible:ring-[3px]',
         )}
+        {...(props as React.HTMLAttributes<HTMLAnchorElement>)}
       >
         {content}
       </a>
@@ -119,13 +123,15 @@ export const NotifRow = forwardRef<HTMLDivElement, NotifRowProps>(function Notif
         // `forwardRef` types this component for `HTMLDivElement` (the default
         // rendering); when we swap to `<button>` for the tappable variant the
         // ref slot expects `HTMLButtonElement`. Cast through `unknown` because
-        // these two element types don't overlap.
+        // these two element types don't overlap. `{...props}` carries
+        // forwarded HTML attributes — `id`, `data-*`, `aria-*`, etc.
         ref={ref as unknown as React.Ref<HTMLButtonElement>}
         onClick={onClick as unknown as React.MouseEventHandler<HTMLButtonElement>}
         className={cn(
           baseClass,
           'focus-visible:ring-accent-dim text-left outline-none focus-visible:ring-[3px]',
         )}
+        {...(props as React.HTMLAttributes<HTMLButtonElement>)}
       >
         {content}
       </button>
