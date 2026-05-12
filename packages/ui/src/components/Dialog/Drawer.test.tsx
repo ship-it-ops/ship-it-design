@@ -67,12 +67,15 @@ describe('Drawer', () => {
   });
 
   it('has no a11y violations when open', async () => {
-    const { container } = render(
+    render(
       <Drawer open title="Filters">
         <p>body</p>
       </Drawer>,
     );
-    expect(await axe(container)).toHaveNoViolations();
+    // Radix portals `Content` outside the RTL render root, so scanning
+    // `container` would walk an empty wrapper and pass trivially. Scan the
+    // whole document body to actually exercise the portaled dialog tree.
+    expect(await axe(document.body)).toHaveNoViolations();
   });
 
   describe('side="bottom" (bottom sheet)', () => {
@@ -125,12 +128,14 @@ describe('Drawer', () => {
     });
 
     it('has no a11y violations when open as a bottom sheet', async () => {
-      const { container } = render(
+      render(
         <Drawer open side="bottom" title="Filters">
           <p>body</p>
         </Drawer>,
       );
-      expect(await axe(container)).toHaveNoViolations();
+      // Same reason as the desktop variant above — scan the document body,
+      // not the RTL `container` wrapper, because Radix portals `Content`.
+      expect(await axe(document.body)).toHaveNoViolations();
     });
   });
 });
