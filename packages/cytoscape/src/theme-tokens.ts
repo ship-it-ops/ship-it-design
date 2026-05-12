@@ -44,6 +44,54 @@ export function resolveCssVar(name: string, fallback = ''): string {
   return trimmed.length > 0 ? trimmed : fallback;
 }
 
+// Lazily-created 1×1 canvas used by `toSrgb` to coerce browser-parseable color
+// strings (oklch, lab, lch, named, etc.) into a plain `rgb()` / `rgba()` that
+// cytoscape's color parser accepts. Created on first use; the same canvas is
+// reused across calls so we don't allocate per token.
+let coerceCanvas: HTMLCanvasElement | null = null;
+
+/**
+ * Coerce an arbitrary CSS color string into an sRGB `rgb()` / `rgba()` string
+ * via canvas pixel readback. Cytoscape's color parser doesn't accept modern
+ * color functions (`oklch(...)`, `lab(...)`), and Tailwind v4 compiles every
+ * `--color-*` token to `oklch(...)` — so when `readThemeTokens` reads those
+ * tokens with `getComputedStyle`, the resulting palette would produce 70+
+ * console warnings and silently fall back to defaults on every cytoscape
+ * mount. Coercing once at the boundary fixes both the warnings and the
+ * fallback colors.
+ *
+ * The implementation deliberately uses `fillRect` + `getImageData` rather
+ * than reading `ctx.fillStyle` back — modern Chromium returns the literal
+ * `oklch(...)` string from `ctx.fillStyle`, so the readback is the only
+ * reliable way to force the browser's color pipeline to rasterize the value
+ * down to sRGB.
+ */
+export function toSrgb(value: string): string {
+  if (!value || typeof document === 'undefined') return value;
+  // Fast path: already a parser-friendly value. Skips both the canvas
+  // allocation and the readback round-trip for the common case where tokens
+  // are already authored as `#xxx`, `rgb(...)`, `rgba(...)`, or `hsl(...)`.
+  if (/^#|^rgb\(|^rgba\(|^hsl\(|^hsla\(/i.test(value)) return value;
+  coerceCanvas ??= document.createElement('canvas');
+  coerceCanvas.width = 1;
+  coerceCanvas.height = 1;
+  const ctx = coerceCanvas.getContext('2d', { willReadFrequently: true });
+  if (!ctx) return value;
+  ctx.clearRect(0, 0, 1, 1);
+  // Two assignments so an unparseable `value` falls back to the seeded `#000`
+  // instead of inheriting a stale fillStyle from a previous call.
+  ctx.fillStyle = '#000';
+  ctx.fillStyle = value;
+  ctx.fillRect(0, 0, 1, 1);
+  const data = ctx.getImageData(0, 0, 1, 1).data;
+  const r = data[0];
+  const g = data[1];
+  const b = data[2];
+  const a = data[3];
+  if (r === undefined || g === undefined || b === undefined || a === undefined) return value;
+  return a === 255 ? `rgb(${r}, ${g}, ${b})` : `rgba(${r}, ${g}, ${b}, ${a / 255})`;
+}
+
 export interface ThemeTokenPalette {
   /** Surface backgrounds. */
   bg: string;
@@ -66,23 +114,28 @@ export interface ThemeTokenPalette {
   pink: string;
 }
 
-/** Read the canonical Ship-It color tokens from the document root. */
+/**
+ * Read the canonical Ship-It color tokens from the document root, coerced to
+ * sRGB. The `toSrgb` wrapper exists because Tailwind v4 compiles every
+ * `--color-*` token to `oklch(...)`, which cytoscape's color parser rejects —
+ * see {@link toSrgb} for the full reasoning.
+ */
 export function readThemeTokens(): ThemeTokenPalette {
   return {
-    bg: resolveCssVar('--color-bg', DEFAULT_FALLBACK.bg),
-    panel: resolveCssVar('--color-panel', DEFAULT_FALLBACK.panel),
-    panel2: resolveCssVar('--color-panel-2', DEFAULT_FALLBACK['panel-2']),
-    border: resolveCssVar('--color-border', DEFAULT_FALLBACK.border),
-    borderStrong: resolveCssVar('--color-border-strong', DEFAULT_FALLBACK['border-strong']),
-    text: resolveCssVar('--color-text', DEFAULT_FALLBACK.text),
-    textMuted: resolveCssVar('--color-text-muted', DEFAULT_FALLBACK['text-muted']),
-    textDim: resolveCssVar('--color-text-dim', DEFAULT_FALLBACK['text-dim']),
-    accent: resolveCssVar('--color-accent', DEFAULT_FALLBACK.accent),
-    ok: resolveCssVar('--color-ok', DEFAULT_FALLBACK.ok),
-    warn: resolveCssVar('--color-warn', DEFAULT_FALLBACK.warn),
-    err: resolveCssVar('--color-err', DEFAULT_FALLBACK.err),
-    purple: resolveCssVar('--color-purple', DEFAULT_FALLBACK.purple),
-    pink: resolveCssVar('--color-pink', DEFAULT_FALLBACK.pink),
+    bg: toSrgb(resolveCssVar('--color-bg', DEFAULT_FALLBACK.bg)),
+    panel: toSrgb(resolveCssVar('--color-panel', DEFAULT_FALLBACK.panel)),
+    panel2: toSrgb(resolveCssVar('--color-panel-2', DEFAULT_FALLBACK['panel-2'])),
+    border: toSrgb(resolveCssVar('--color-border', DEFAULT_FALLBACK.border)),
+    borderStrong: toSrgb(resolveCssVar('--color-border-strong', DEFAULT_FALLBACK['border-strong'])),
+    text: toSrgb(resolveCssVar('--color-text', DEFAULT_FALLBACK.text)),
+    textMuted: toSrgb(resolveCssVar('--color-text-muted', DEFAULT_FALLBACK['text-muted'])),
+    textDim: toSrgb(resolveCssVar('--color-text-dim', DEFAULT_FALLBACK['text-dim'])),
+    accent: toSrgb(resolveCssVar('--color-accent', DEFAULT_FALLBACK.accent)),
+    ok: toSrgb(resolveCssVar('--color-ok', DEFAULT_FALLBACK.ok)),
+    warn: toSrgb(resolveCssVar('--color-warn', DEFAULT_FALLBACK.warn)),
+    err: toSrgb(resolveCssVar('--color-err', DEFAULT_FALLBACK.err)),
+    purple: toSrgb(resolveCssVar('--color-purple', DEFAULT_FALLBACK.purple)),
+    pink: toSrgb(resolveCssVar('--color-pink', DEFAULT_FALLBACK.pink)),
   };
 }
 

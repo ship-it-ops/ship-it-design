@@ -112,7 +112,11 @@ export const NotifRow = forwardRef<HTMLDivElement, NotifRowProps>(function Notif
     return (
       <button
         type="button"
-        ref={ref as React.Ref<HTMLButtonElement> as unknown as React.Ref<HTMLDivElement>}
+        // `forwardRef` types this component for `HTMLDivElement` (the default
+        // rendering); when we swap to `<button>` for the tappable variant the
+        // ref slot expects `HTMLButtonElement`. Cast through `unknown` because
+        // these two element types don't overlap.
+        ref={ref as unknown as React.Ref<HTMLButtonElement>}
         onClick={onClick as unknown as React.MouseEventHandler<HTMLButtonElement>}
         className={cn(
           baseClass,

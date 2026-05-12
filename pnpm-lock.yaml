@@ -50,6 +50,9 @@ importers:
       '@next/mdx':
         specifier: ^15.1.4
         version: 15.5.15(@mdx-js/loader@3.1.1)(@mdx-js/react@3.1.1(@types/react@18.3.28)(react@18.3.1))
+      '@ship-it-ui/cytoscape':
+        specifier: workspace:*
+        version: link:../../packages/cytoscape
       '@ship-it-ui/icons':
         specifier: workspace:*
         version: link:../../packages/icons
@@ -62,6 +65,9 @@ importers:
       '@ship-it-ui/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      cytoscape:
+        specifier: ^3.28.0
+        version: 3.33.3
       flexsearch:
         specifier: ^0.7.43
         version: 0.7.43
@@ -111,6 +117,9 @@ importers:
       '@tailwindcss/postcss':
         specifier: ^4.0.0-beta.3
         version: 4.2.4
+      '@types/cytoscape':
+        specifier: ^3.21.0
+        version: 3.31.0
       '@types/mdx':
         specifier: ^2.0.13
         version: 2.0.13
@@ -2370,6 +2379,10 @@ packages:
 
   '@types/chai@5.2.3':
     resolution: {integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==}
+
+  '@types/cytoscape@3.31.0':
+    resolution: {integrity: sha512-EXHOHxqQjGxLDEh5cP4te6J0bi7LbCzmZkzsR6f703igUac8UGMdEohMyU3GHAayCTZrLQOMnaE/lqB2Ekh8Ww==}
+    deprecated: This is a stub types definition. cytoscape provides its own type definitions, so you do not need this installed.
 
   '@types/debug@4.1.13':
     resolution: {integrity: sha512-KSVgmQmzMwPlmtljOomayoR89W4FynCAi3E8PPs7vmDVPe84hT+vGPKkJfThkmXs0x0jAaa9U8uW8bbfyS2fWw==}
@@ -7100,6 +7113,10 @@ snapshots:
     dependencies:
       '@types/deep-eql': 4.0.2
       assertion-error: 2.0.1
+
+  '@types/cytoscape@3.31.0':
+    dependencies:
+      cytoscape: 3.33.3
 
   '@types/debug@4.1.13':
     dependencies:
