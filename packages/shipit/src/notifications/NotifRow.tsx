@@ -31,7 +31,12 @@ export interface NotifRowProps extends Omit<HTMLAttributes<HTMLDivElement>, 'tit
   isFirst?: boolean;
   /** Round the bottom corners — set when this is the last row in a group. */
   isLast?: boolean;
-  /** Make the whole row tappable; pair with `onClick`. */
+  /**
+   * Navigate when the row is tapped. Renders the row as an `<a>` and wins
+   * over `onClick` for the render shape — but any `onClick` you pass is
+   * still forwarded onto the anchor, which is the right place for
+   * analytics callbacks (the link still navigates).
+   */
   href?: string;
 }
 
@@ -99,9 +104,12 @@ export const NotifRow = forwardRef<HTMLDivElement, NotifRowProps>(function Notif
         // when we swap to `<a>` the ref slot expects `HTMLAnchorElement`. The
         // `{...props}` spread carries forwarded HTML attributes — `id`,
         // `data-*`, `aria-*`, `onFocus`, etc. — that consumers pass to the
-        // polymorphic root.
+        // polymorphic root. `onClick` is forwarded explicitly because it was
+        // destructured out of `props` above; this is the analytics-on-link
+        // pattern (`href` navigates, `onClick` tracks).
         ref={ref as unknown as React.Ref<HTMLAnchorElement>}
         href={href}
+        onClick={onClick as unknown as React.MouseEventHandler<HTMLAnchorElement>}
         className={cn(
           baseClass,
           'text-text focus-visible:ring-accent-dim no-underline outline-none focus-visible:ring-[3px]',

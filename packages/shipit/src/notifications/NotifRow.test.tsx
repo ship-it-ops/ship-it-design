@@ -22,6 +22,17 @@ describe('NotifRow', () => {
     expect(screen.getByRole('link', { name: 'Link row' })).toHaveAttribute('href', '/inbox/123');
   });
 
+  it('forwards onClick onto the link variant (analytics-on-navigation pattern)', async () => {
+    // Regression: a previous version destructured `onClick` out of props but
+    // forwarded it only to the `<button>` branch — `<a>` consumers passing
+    // an analytics tracker silently lost it. Locks the contract that `href`
+    // and `onClick` compose.
+    const tracker = vi.fn();
+    render(<NotifRow title="Link row" href="/inbox/123" onClick={tracker} />);
+    await userEvent.click(screen.getByRole('link', { name: 'Link row' }));
+    expect(tracker).toHaveBeenCalledOnce();
+  });
+
   it('renders as a button when onClick is set, and fires the handler on click', async () => {
     const handler = vi.fn();
     render(<NotifRow title="Tappable" onClick={handler} />);
