@@ -76,7 +76,10 @@ export const Topbar = forwardRef<HTMLElement, TopbarProps>(function Topbar(
           aria-label="Back"
           className={cn(
             'text-text inline-grid place-items-center rounded-md bg-transparent',
-            'hover:bg-panel-2 h-9 w-9',
+            // The back button is only rendered in touch density — use the
+            // touch token (44pt) instead of `h-9 w-9` (36px) so it meets the
+            // HIG minimum the rest of the touch surface enforces.
+            'hover:bg-panel-2 h-touch w-touch',
             'focus-visible:ring-accent-dim outline-none focus-visible:ring-[3px]',
           )}
         >

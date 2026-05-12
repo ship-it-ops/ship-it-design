@@ -20,6 +20,16 @@ describe('PullToRefresh', () => {
     expect(screen.getByRole('status')).toHaveAttribute('aria-busy', 'true');
   });
 
+  it('clears aria-busy when transitioning back to idle', () => {
+    // The component uses `aria-busy={isLoading || undefined}` — absent vs.
+    // present is what assistive tech keys off, so re-rendering to a non-
+    // loading state must remove the attribute, not flip it to "false".
+    const { rerender } = render(<PullToRefresh state="loading" />);
+    expect(screen.getByRole('status')).toHaveAttribute('aria-busy', 'true');
+    rerender(<PullToRefresh state="idle" />);
+    expect(screen.getByRole('status')).not.toHaveAttribute('aria-busy');
+  });
+
   it('allows a custom label override', () => {
     render(<PullToRefresh state="loading" label="Syncing graph…" />);
     expect(screen.getByText('Syncing graph…')).toBeInTheDocument();

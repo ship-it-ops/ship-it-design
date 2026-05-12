@@ -47,7 +47,6 @@
     "@ship-it-ui/eslint-config": "workspace:*",
     "@ship-it-ui/tsconfig": "workspace:*",
     "@tailwindcss/postcss": "^4.0.0-beta.3",
-    "@types/cytoscape": "^3.21.0",
     "@types/mdx": "^2.0.13",
     "@types/node": "^22.10.0",
     "@types/react": "^18.3.12",

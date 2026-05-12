@@ -94,6 +94,10 @@ export const NotifRow = forwardRef<HTMLDivElement, NotifRowProps>(function Notif
   if (href) {
     return (
       <a
+        // Same cast pattern as the `<button>` branch below: `forwardRef` types
+        // this component for `HTMLDivElement` (the default-render case), but
+        // when we swap to `<a>` the ref slot expects `HTMLAnchorElement`.
+        ref={ref as unknown as React.Ref<HTMLAnchorElement>}
         href={href}
         className={cn(
           baseClass,

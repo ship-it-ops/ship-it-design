@@ -142,7 +142,14 @@ export const TabBar = forwardRef<HTMLElement, TabBarProps>(function TabBar(
                 </span>
               )}
             </span>
-            <span className="text-[10px] font-medium tracking-tight">{item.label}</span>
+            <span className="text-[10px] font-medium tracking-tight">
+              {item.label}
+              {/* Badge count is rendered inside an aria-hidden subtree above, so
+                  AT users never hear it from the icon. Inline it into the
+                  accessible name so screen readers announce e.g. "Graph, 3
+                  unread" instead of just "Graph". */}
+              {item.badge != null && <span className="sr-only">, {item.badge} unread</span>}
+            </span>
           </button>
         );
       })}
