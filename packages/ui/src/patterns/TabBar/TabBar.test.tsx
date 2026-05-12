@@ -46,6 +46,28 @@ describe('TabBar', () => {
     expect(ask).toBeInTheDocument();
   });
 
+  it('gives the elevated item an accessible name even when the label is JSX', () => {
+    // Regression: an earlier version conditioned `aria-label` on
+    // `typeof label === 'string'`, so a ReactNode label silently produced a
+    // nameless button (icon was `aria-hidden`, no visible text). Switching to
+    // an inner `sr-only` span fixes both cases.
+    const jsxItems: TabBarItem[] = [
+      { id: 'home', label: 'Home', icon: <span>⌂</span> },
+      {
+        id: 'ask',
+        label: (
+          <>
+            Ask <span>✦</span>
+          </>
+        ),
+        icon: <span>✦</span>,
+        elevated: true,
+      },
+    ];
+    render(<TabBar items={jsxItems} defaultValue="home" />);
+    expect(screen.getByRole('button', { name: /Ask/ })).toBeInTheDocument();
+  });
+
   it('renders inside a nav landmark', () => {
     render(<TabBar items={items} defaultValue="home" />);
     expect(screen.getByRole('navigation', { name: 'Primary' })).toBeInTheDocument();

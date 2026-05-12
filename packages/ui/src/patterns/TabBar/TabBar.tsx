@@ -96,7 +96,6 @@ export const TabBar = forwardRef<HTMLElement, TabBarProps>(function TabBar(
               <button
                 type="button"
                 aria-current={isActive ? 'page' : undefined}
-                aria-label={typeof item.label === 'string' ? item.label : undefined}
                 disabled={item.disabled}
                 onClick={(e) => handleSelect(item.id, e)}
                 // Negative margin lifts the elevated pill above the bar's top edge.
@@ -110,6 +109,12 @@ export const TabBar = forwardRef<HTMLElement, TabBarProps>(function TabBar(
                 )}
               >
                 <span aria-hidden>{item.icon}</span>
+                {/* Accessible name. `aria-label` only works for string labels;
+                    when `label` is a ReactNode (e.g. an icon + counter), an
+                    sr-only text node is the only reliable way to give the
+                    button a name regardless of label shape. Same pattern the
+                    non-elevated branch uses. */}
+                <span className="sr-only">{item.label}</span>
               </button>
             </div>
           );

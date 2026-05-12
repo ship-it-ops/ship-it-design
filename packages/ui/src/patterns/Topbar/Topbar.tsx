@@ -25,12 +25,16 @@ export interface TopbarProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> 
   /** Left-of-title slot — typically a logo or breadcrumbs. */
   leading?: ReactNode;
   /**
-   * When set, renders a 36×36 back-arrow button at the start (before `leading`)
-   * that fires this handler. Use `back={true}` for no-op visuals and wire your
-   * own router push via `onBack` if needed.
+   * Renders the back-arrow button at the start (before `leading`). Pass
+   * `back={true}` for the declarative form and wire the handler via `onBack`,
+   * or pass `back={handler}` directly. Touch-density only; ignored on
+   * desktop density.
    */
   back?: boolean | MouseEventHandler<HTMLButtonElement>;
-  /** Explicit click handler for the back button — overrides a function passed to `back`. */
+  /**
+   * Handler for the back button when `back={true}`. Ignored when `back` is
+   * itself a function — in that case `back` is the handler.
+   */
   onBack?: MouseEventHandler<HTMLButtonElement>;
   /** Right-side action group. Rendered with `gap-3` (desktop) or `gap-1` (touch). */
   actions?: ReactNode;
