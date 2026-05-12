@@ -33,8 +33,18 @@ const iconButtonStyles = cva(
         md: 'h-[32px] w-[32px] text-[13px] rounded-md',
         lg: 'h-[38px] w-[38px] text-[15px] rounded-[7px]',
       },
+      density: {
+        comfortable: '',
+        touch: '',
+      },
     },
-    defaultVariants: { variant: 'secondary', size: 'md' },
+    compoundVariants: [
+      // Mobile density — 44pt minimum touch target, circular tap.
+      { size: 'sm', density: 'touch', class: 'h-[36px] w-[36px] text-[14px] rounded-full' },
+      { size: 'md', density: 'touch', class: 'h-touch w-touch text-[16px] rounded-full' },
+      { size: 'lg', density: 'touch', class: 'h-[52px] w-[52px] text-[18px] rounded-full' },
+    ],
+    defaultVariants: { variant: 'secondary', size: 'md', density: 'comfortable' },
   },
 );
 
@@ -52,14 +62,14 @@ export interface IconButtonProps
 }
 
 export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
-  { variant, size, icon, type, className, ...props },
+  { variant, size, density, icon, type, className, ...props },
   ref,
 ) {
   return (
     <button
       ref={ref}
       type={type ?? 'button'}
-      className={cn(iconButtonStyles({ variant, size }), className)}
+      className={cn(iconButtonStyles({ variant, size, density }), className)}
       {...props}
     >
       {icon}

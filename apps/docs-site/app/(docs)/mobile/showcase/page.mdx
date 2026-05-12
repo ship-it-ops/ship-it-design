@@ -1,0 +1,26 @@
+# Mobile screen showcase
+
+Two example screens assembled from real `@ship-it-ui/ui` and
+`@ship-it-ui/shipit` components at `density="touch"`, wrapped in an iPhone
+bezel for visual context. Both are stitched together from the same primitives
+documented elsewhere in this site — they're not bespoke screen implementations.
+
+The remaining four screens (Ask, Graph, Entity detail, Search/Command) from
+the [Mobile Library](https://api.anthropic.com/v1/design/h/NH8v2gJz8Ks-czb1IHFEqQ?open_file=Mobile+Library.html)
+follow the same pattern; build them up from the documented mobile patterns +
+touch-density primitives.
+
+## Home
+
+`LargeTitle` + touch-density `AskBar` + two touch-density `Card`s + `TabBar`.
+
+<LivePreview example="mobile-screens/home" height={920} />
+
+## Inbox
+
+`Topbar density="touch"` (with eyebrow + actions) + `Tabs variant="pill"` +
+`NotifRow` group + `TabBar`.
+
+<LivePreview example="mobile-screens/inbox" height={920} />
+
+<EditOnGithub source="apps/docs-site/app/(docs)/mobile/showcase/page.mdx" />

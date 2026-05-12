@@ -8,6 +8,11 @@ import { cn } from '../../utils/cn';
 export interface CheckboxProps extends Omit<RadixCheckbox.CheckboxProps, 'asChild' | 'children'> {
   /** Optional inline label rendered to the right of the box. */
   label?: ReactNode;
+  /**
+   * `'comfortable'` (default) renders the desktop checkbox. `'touch'` bumps the
+   * box to 22×22 inside a 44pt-min row so the whole label is tappable.
+   */
+  density?: 'comfortable' | 'touch';
 }
 
 /**
@@ -15,16 +20,18 @@ export interface CheckboxProps extends Omit<RadixCheckbox.CheckboxProps, 'asChil
  * in select-all rows.
  */
 export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(function Checkbox(
-  { label, className, id: idProp, ...props },
+  { label, density = 'comfortable', className, id: idProp, ...props },
   ref,
 ) {
   const reactId = useId();
   const id = idProp ?? `cb-${reactId}`;
+  const isTouch = density === 'touch';
 
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-2 select-none',
+        'inline-flex items-center select-none',
+        isTouch ? 'min-h-touch gap-3' : 'gap-2',
         props.disabled && 'cursor-not-allowed opacity-40',
         className,
       )}
@@ -33,8 +40,9 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(function Ch
         ref={ref}
         id={id}
         className={cn(
-          'grid h-4 w-4 place-items-center rounded-xs',
-          'bg-panel border-border-strong border',
+          'grid place-items-center',
+          isTouch ? 'h-[22px] w-[22px] rounded-sm border-[1.5px]' : 'h-4 w-4 rounded-xs border',
+          'bg-panel border-border-strong',
           'data-[state=checked]:bg-accent data-[state=checked]:border-accent',
           'data-[state=indeterminate]:bg-accent data-[state=indeterminate]:border-accent',
           'transition-[background,border-color] duration-(--duration-micro)',
@@ -42,12 +50,17 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(function Ch
         )}
         {...props}
       >
-        <RadixCheckbox.Indicator className="text-on-accent text-[11px] leading-none">
+        <RadixCheckbox.Indicator
+          className={cn('text-on-accent leading-none', isTouch ? 'text-[14px]' : 'text-[11px]')}
+        >
           {props.checked === 'indeterminate' ? '−' : '✓'}
         </RadixCheckbox.Indicator>
       </RadixCheckbox.Root>
       {label && (
-        <label htmlFor={id} className="cursor-pointer text-[13px]">
+        <label
+          htmlFor={id}
+          className={cn('cursor-pointer', isTouch ? 'text-m-body' : 'text-[13px]')}
+        >
           {label}
         </label>
       )}

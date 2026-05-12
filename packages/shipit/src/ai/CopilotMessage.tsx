@@ -19,11 +19,60 @@ export interface CopilotMessageProps extends HTMLAttributes<HTMLDivElement> {
   avatar?: ReactNode;
   /** Streaming caret at the end of the body. */
   streaming?: boolean;
+  /**
+   * `'comfortable'` (default) renders the desktop bubble. `'touch'` switches
+   * to the mobile chat layout: user bubbles right-aligned on `bg-accent`,
+   * assistant bubbles left-aligned on `bg-panel`, larger 15px text, and a
+   * max-width that keeps bubbles within 85% of the viewport.
+   */
+  density?: 'comfortable' | 'touch';
 }
 
 export const CopilotMessage = forwardRef<HTMLDivElement, CopilotMessageProps>(
-  function CopilotMessage({ role, avatar, streaming, className, children, ...props }, ref) {
+  function CopilotMessage(
+    { role, avatar, streaming, density = 'comfortable', className, children, ...props },
+    ref,
+  ) {
     const isAssistant = role === 'assistant';
+    const isTouch = density === 'touch';
+
+    if (isTouch) {
+      // Mobile layout: no side avatar; bubbles align to one side or the other.
+      return (
+        <div
+          ref={ref}
+          className={cn(
+            'flex flex-col gap-[6px]',
+            isAssistant ? 'items-start' : 'items-end',
+            className,
+          )}
+          data-role={role}
+          {...props}
+        >
+          {isAssistant && (
+            <div className="text-m-eyebrow text-accent inline-flex items-center gap-[6px] font-mono tracking-wide uppercase">
+              <span aria-hidden>✦</span>
+              {streaming ? 'thinking' : 'ShipIt'}
+            </div>
+          )}
+          <div
+            className={cn(
+              'rounded-m-card text-m-body max-w-[85%] px-[14px] py-3 leading-normal',
+              isAssistant ? 'bg-panel border-border border' : 'bg-accent text-on-accent',
+            )}
+          >
+            {children}
+            {streaming && (
+              <span
+                aria-hidden
+                className="bg-accent ml-[2px] inline-block h-4 w-px animate-[ship-pulse_1s_infinite] align-middle"
+              />
+            )}
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div
         ref={ref}

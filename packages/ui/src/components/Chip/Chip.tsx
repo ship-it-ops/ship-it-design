@@ -12,6 +12,11 @@ export interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
    * Mirrors the `Tag` API — pass `onRemove` and the X is rendered automatically.
    */
   onRemove?: () => void;
+  /**
+   * `'comfortable'` (default) renders the desktop chip at 26px tall.
+   * `'touch'` swaps to a roomier 32px chip with larger text for mobile filter strips.
+   */
+  density?: 'comfortable' | 'touch';
   children: ReactNode;
 }
 
@@ -21,27 +26,38 @@ export interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
  * and slightly more decorative.
  */
 export const Chip = forwardRef<HTMLSpanElement, ChipProps>(function Chip(
-  { icon, onRemove, className, children, ...props },
+  { icon, onRemove, density = 'comfortable', className, children, ...props },
   ref,
 ) {
+  const isTouch = density === 'touch';
   return (
     <span
       ref={ref}
       className={cn(
-        'inline-flex h-[26px] items-center gap-[6px] py-[4px] pr-1 pl-[10px] font-sans text-[12px]',
+        'inline-flex items-center gap-[6px] font-sans',
+        isTouch
+          ? 'text-m-mono h-8 py-[5px] pr-[6px] pl-3'
+          : 'h-[26px] py-[4px] pr-1 pl-[10px] text-[12px]',
         'bg-panel-2 text-text border-border rounded-full border',
         className,
       )}
       {...props}
     >
-      {icon && <span className="text-text-dim inline-flex text-[10px]">{icon}</span>}
+      {icon && (
+        <span className={cn('text-text-dim inline-flex', isTouch ? 'text-[12px]' : 'text-[10px]')}>
+          {icon}
+        </span>
+      )}
       {children}
       {onRemove && (
         <button
           type="button"
           onClick={onRemove}
           aria-label="Remove"
-          className="bg-panel text-text-dim hover:text-text grid h-[18px] w-[18px] place-items-center rounded-full text-[10px] leading-none"
+          className={cn(
+            'bg-panel text-text-dim hover:text-text grid place-items-center rounded-full leading-none',
+            isTouch ? 'h-[22px] w-[22px] text-[12px]' : 'h-[18px] w-[18px] text-[10px]',
+          )}
         >
           ×
         </button>

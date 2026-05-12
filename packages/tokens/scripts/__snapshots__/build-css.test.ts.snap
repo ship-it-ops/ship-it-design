@@ -122,6 +122,33 @@ exports[`build-css > matches the generated tokens.css snapshot 1`] = `
   --z-popover: 1400;
   --z-toast: 1500;
   --z-tooltip: 1600;
+
+  /* Mobile — touch targets (Apple HIG min 44pt) */
+  --touch-min: 44px;
+  --touch-comfortable: 48px;
+
+  /* Mobile — layout dimensions */
+  --row-h: 56px;
+  --row-h-lg: 64px;
+  --tabbar-h: 64px;
+  --navbar-h: 56px;
+  --screen-pad: 16px;
+  --screen-pad-lg: 20px;
+
+  /* Mobile — bumped type scale (body 13→15, h1 34→30) */
+  --font-size-m-eyebrow: 11px;
+  --font-size-m-mono: 12px;
+  --font-size-m-body: 15px;
+  --font-size-m-body-lg: 17px;
+  --font-size-m-h4: 19px;
+  --font-size-m-h3: 23px;
+  --font-size-m-h2: 26px;
+  --font-size-m-h1: 30px;
+
+  /* Mobile — radii */
+  --radius-m-tab: 12px;
+  --radius-m-card: 16px;
+  --radius-m-sheet: 20px;
 }
 
 [data-theme='light'] {

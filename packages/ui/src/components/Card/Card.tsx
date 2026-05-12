@@ -6,7 +6,7 @@ import { forwardRef, type AnchorHTMLAttributes, type HTMLAttributes, type ReactN
 import { cn } from '../../utils/cn';
 
 const cardStyles = cva(
-  'block bg-panel border border-border rounded-base transition-[border-color,transform,box-shadow] duration-(--duration-step)',
+  'block bg-panel border border-border transition-[border-color,transform,box-shadow] duration-(--duration-step)',
   {
     variants: {
       variant: {
@@ -18,8 +18,12 @@ const cardStyles = cva(
         true: 'cursor-pointer hover:border-border-strong hover:-translate-y-px hover:shadow',
         false: '',
       },
+      density: {
+        comfortable: 'rounded-base',
+        touch: 'rounded-m-card',
+      },
     },
-    defaultVariants: { variant: 'default', interactive: false },
+    defaultVariants: { variant: 'default', interactive: false, density: 'comfortable' },
   },
 );
 
@@ -62,6 +66,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
   {
     variant,
     interactive,
+    density,
     title,
     description,
     actions,
@@ -108,7 +113,11 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
       onKeyDown={handleKeyDown}
       role={isInteractive ? 'button' : undefined}
       tabIndex={isInteractive ? 0 : undefined}
-      className={cn(cardStyles({ variant, interactive: wantsInteractive }), 'p-[18px]', className)}
+      className={cn(
+        cardStyles({ variant, interactive: wantsInteractive, density }),
+        density === 'touch' ? 'p-4' : 'p-[18px]',
+        className,
+      )}
       {...props}
     >
       {(title || actions) && (
@@ -157,7 +166,7 @@ export interface CardLinkProps
  * instead, or use the plain `<Card>` for non-link cards.
  */
 export const CardLink = forwardRef<HTMLAnchorElement, CardLinkProps>(function CardLink(
-  { variant, title, description, footer, className, children, href, ...props },
+  { variant, density, title, description, footer, className, children, href, ...props },
   ref,
 ) {
   return (
@@ -165,8 +174,9 @@ export const CardLink = forwardRef<HTMLAnchorElement, CardLinkProps>(function Ca
       ref={ref}
       href={href}
       className={cn(
-        cardStyles({ variant, interactive: true }),
-        'focus-visible:ring-accent-dim p-[18px] no-underline outline-none focus-visible:ring-[3px]',
+        cardStyles({ variant, interactive: true, density }),
+        'focus-visible:ring-accent-dim no-underline outline-none focus-visible:ring-[3px]',
+        density === 'touch' ? 'p-4' : 'p-[18px]',
         className,
       )}
       {...props}

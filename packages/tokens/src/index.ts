@@ -7,3 +7,4 @@ export * from './motion';
 export * from './elevation';
 export * from './breakpoint';
 export * from './z-index';
+export * from './mobile';
