@@ -216,7 +216,7 @@ jobs:
           # MCP tool, which is allow-listed below.
           use_sticky_comment: true
           claude_args: |
-            --allowed-tools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr comment:*),Bash(gh pr list:*),Bash(gh run view:*),Bash(gh run list:*)"
+            --allowed-tools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr comment:*),Bash(gh pr list:*),Bash(gh pr checks:*),Bash(gh run view:*),Bash(gh run list:*),Bash(gh api:*)"
           prompt: |
             Review this pull request as the most senior engineer on the
             ShipIt design-system team. Use `create_inline_comment` for
@@ -368,6 +368,49 @@ jobs:
             ```
 
             Verdict is one of `LGTM`, `LGTM with nits`, `Needs work`.
+
+            ## When to approve
+
+            If the verdict is **`LGTM`** or **`LGTM with nits`** *and* CI on
+            the PR head is green, submit a real GitHub approval review
+            instead of leaving the verdict in the sticky summary alone:
+
+            ```bash
+            PR=$(gh pr view --json number -q .number)
+            gh api "repos/$GITHUB_REPOSITORY/pulls/$PR/reviews" \
+              -X POST \
+              -f event=APPROVE \
+              -f body="LGTM — <one-line reason>. See the review summary above for details."
+            ```
+
+            **All of these must hold before you approve.** If any fails,
+            skip the approval and let the sticky summary stand:
+
+            1. **Zero Must-fix items.** Should-fix items also block
+               approval — those are ship-blockers by definition.
+            2. **Nits are fine.** They don't block.
+            3. **CI is green on the head commit.** Run
+               `gh pr checks --watch=false` (or `gh run list --branch
+               <head-ref> --limit 5`) and confirm. If you can't determine
+               status, do not approve.
+            4. **Diff is non-trivial.** Don't approve an empty / pure-revert
+               PR — let a human handle it.
+            5. **Not your own work.** If the PR author is `claude[bot]` or
+               your prior turn pushed commits to the branch in this same
+               session, do not self-approve.
+            6. **No `chore(release): version packages` PRs** (Changesets
+               release PRs need a human signoff regardless of CI).
+
+            Never use `REQUEST_CHANGES` — Must/Should-fix comments already
+            communicate severity to the human reviewer, and blocking
+            merges from a bot is poor ergonomics in repos with branch
+            protection. `event=APPROVE` or `event=COMMENT` (default for
+            sticky-only feedback) are the only events to use.
+
+            On a re-review pass where prior rounds flagged items and the
+            author resolved them, an approval is the right close-out
+            signal — better than just removing the items from the sticky
+            summary.
 
             ## What NOT to comment on
 
