@@ -10,20 +10,37 @@ export interface SwitchProps extends Omit<RadixSwitch.SwitchProps, 'asChild' | '
   label?: ReactNode;
   /** Visual size. Default `md`. */
   size?: 'sm' | 'md';
+  /**
+   * `'comfortable'` (default) renders the desktop switch. `'touch'` swaps to the
+   * mobile track/thumb dimensions (50×30) for thumb-friendly toggling.
+   */
+  density?: 'comfortable' | 'touch';
 }
 
 const trackClasses = {
-  sm: 'h-4 w-7',
-  md: 'h-5 w-9',
+  comfortable: {
+    sm: 'h-4 w-7',
+    md: 'h-5 w-9',
+  },
+  touch: {
+    sm: 'h-[26px] w-[44px]',
+    md: 'h-[30px] w-[50px]',
+  },
 } as const;
 
 const thumbClasses = {
-  sm: 'h-3 w-3 data-[state=checked]:translate-x-3',
-  md: 'h-4 w-4 data-[state=checked]:translate-x-4',
+  comfortable: {
+    sm: 'h-3 w-3 data-[state=checked]:translate-x-3',
+    md: 'h-4 w-4 data-[state=checked]:translate-x-4',
+  },
+  touch: {
+    sm: 'h-[22px] w-[22px] data-[state=checked]:translate-x-[18px]',
+    md: 'h-[26px] w-[26px] data-[state=checked]:translate-x-5',
+  },
 } as const;
 
 export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(function Switch(
-  { label, size = 'md', className, id: idProp, ...props },
+  { label, size = 'md', density = 'comfortable', className, id: idProp, ...props },
   ref,
 ) {
   const reactId = useId();
@@ -45,7 +62,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(function Switch
           'bg-panel-2 border-border data-[state=checked]:bg-accent data-[state=checked]:border-accent',
           'focus-visible:ring-accent-dim outline-none focus-visible:ring-[3px]',
           'disabled:cursor-not-allowed',
-          trackClasses[size],
+          trackClasses[density][size],
         )}
         {...props}
       >
@@ -53,12 +70,15 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(function Switch
           className={cn(
             'bg-text absolute top-1/2 left-[1px] -translate-y-1/2 rounded-full shadow-sm',
             'data-[state=checked]:bg-on-accent transition-transform duration-(--duration-micro)',
-            thumbClasses[size],
+            thumbClasses[density][size],
           )}
         />
       </RadixSwitch.Root>
       {label && (
-        <label htmlFor={id} className="cursor-pointer text-[13px]">
+        <label
+          htmlFor={id}
+          className={cn('cursor-pointer', density === 'touch' ? 'text-m-body' : 'text-[13px]')}
+        >
           {label}
         </label>
       )}

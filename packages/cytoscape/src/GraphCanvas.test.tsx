@@ -83,6 +83,25 @@ describe('GraphCanvas', () => {
     expect(newEvents).toContain('mouseout');
   });
 
+  it('mounts the cytoscape container with inline position/inset so it survives the runtime CSS reset', () => {
+    // Regression: cytoscape injects `.__________cytoscape_container { position: relative }`
+    // at init time. With Tailwind v4 emitting `.absolute`/`.inset-0` into
+    // `@layer utilities`, the unlayered runtime rule wins and the canvas
+    // collapses to 0×0 in a static-height parent. Inline styles outrank both.
+    const { engine } = makeEngine();
+    const { container } = render(
+      <div style={{ height: 0 }}>
+        <GraphCanvas engine={engine} elements={[]} />
+      </div>,
+    );
+    const region = container.querySelector('[role="region"]') as HTMLElement;
+    const mount = region.firstElementChild as HTMLElement;
+    expect(mount.style.position).toBe('absolute');
+    // jsdom serializes `inset: 0` to per-side offsets — accept either form.
+    const inset = mount.style.inset || mount.style.top;
+    expect(inset).toMatch(/^0(px)?$/);
+  });
+
   it('has no a11y violations', async () => {
     const { engine } = makeEngine();
     const { container } = render(<GraphCanvas engine={engine} elements={[]} />);

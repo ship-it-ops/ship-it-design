@@ -14,6 +14,16 @@ pnpm add cytoscape @ship-it-ui/cytoscape
 Cytoscape itself is a peer dependency — the adapter does not bundle a
 version or pin to any specific extensions.
 
+## End-to-end example
+
+A real explorer — 12 nodes across six entity types, 14 edges (solid /
+on-path / dimmed), force-directed layout, click to inspect. Pan with drag,
+zoom with scroll. The visual vocabulary (glyphs, entity colors, edge
+states) flows entirely from the registry — no consumer-side stylesheet
+overrides.
+
+<LivePreview example="cytoscape/interactive-graph" />
+
 ## Stylesheet builder
 
 `buildShipItStylesheet(options?)` returns a Cytoscape `StylesheetJson` array

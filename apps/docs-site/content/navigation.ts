@@ -72,6 +72,7 @@ export const navigation: NavSection[] = [
           { title: 'Layout', slug: 'foundations/layout' },
           { title: 'Accessibility', slug: 'foundations/accessibility' },
           { title: 'Voice & Content', slug: 'foundations/voice-and-content' },
+          { title: 'Touch & density', slug: 'foundations/touch', badge: 'mobile' },
         ],
       },
     ],
@@ -196,6 +197,14 @@ export const navigation: NavSection[] = [
           { title: 'WizardDialog', slug: 'patterns/wizard-dialog' },
         ],
       },
+      {
+        label: 'Mobile',
+        items: [
+          { title: 'LargeTitle', slug: 'patterns/large-title', badge: 'mobile' },
+          { title: 'PullToRefresh', slug: 'patterns/pull-to-refresh', badge: 'mobile' },
+          { title: 'TabBar', slug: 'patterns/tab-bar', badge: 'mobile' },
+        ],
+      },
     ],
   },
   {
@@ -251,6 +260,21 @@ export const navigation: NavSection[] = [
           { title: 'ConnectorCard', slug: 'shipit/connector-card' },
           { title: 'EntityTable', slug: 'shipit/entity-table' },
         ],
+      },
+      {
+        label: 'Notifications',
+        items: [{ title: 'NotifRow', slug: 'shipit/notif-row', badge: 'mobile' }],
+      },
+    ],
+  },
+  {
+    id: 'mobile',
+    label: 'Mobile',
+    icon: 'home',
+    groups: [
+      {
+        label: 'Showcase',
+        items: [{ title: 'Screen showcase', slug: 'mobile/showcase' }],
       },
     ],
   },

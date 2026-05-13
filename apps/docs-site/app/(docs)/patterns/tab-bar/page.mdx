@@ -1,0 +1,41 @@
+# TabBar
+
+Mobile bottom navigation. Renders an evenly-spaced row of 4–5 items at the
+bottom of a screen. One slot can be marked `elevated` to render as a focal
+pill (the center "Ask" action in the ShipIt mobile design). Each slot meets
+the 44pt minimum touch target.
+
+Pair with `pb-[env(safe-area-inset-bottom)]` on the surrounding scroll area to
+respect the iOS home indicator. The bar already inherits that inset.
+
+## Default
+
+A 5-slot ShipIt bar with a center Ask action and a badge on Graph.
+
+<LivePreview example="tab-bar/default" />
+
+## Controlled vs uncontrolled
+
+Active state can be controlled (`value` + `onValueChange`) or uncontrolled
+(`defaultValue`). The shape mirrors `NavBar`.
+
+```tsx
+// Controlled
+const [active, setActive] = useState('home');
+<TabBar items={items} value={active} onValueChange={setActive} />;
+
+// Uncontrolled
+<TabBar items={items} defaultValue="home" onValueChange={trackTabUsage} />;
+```
+
+## Elevated center action
+
+Set `elevated: true` on the center item to render it as a 52×52 pill that
+lifts above the bar with a shadow — the focal action treatment used for "Ask"
+in the Mobile Library. Only one item should set this.
+
+## Props
+
+<PropsTable component="TabBar" />
+
+<EditOnGithub source="apps/docs-site/app/(docs)/patterns/tab-bar/page.mdx" />

@@ -39,6 +39,12 @@ export interface AskBarProps extends Omit<
   disabled?: boolean;
   /** Pixel max-width. Default 620. */
   maxWidth?: number | string;
+  /**
+   * `'comfortable'` (default) renders the desktop ask bar. `'touch'` swaps to
+   * the mobile composer: larger text, 44pt send button, ⌘↵ hint hidden (no
+   * hardware keyboard), and scope chips wrap to a second row.
+   */
+  density?: 'comfortable' | 'touch';
 }
 
 export const AskBar = forwardRef<HTMLFormElement, AskBarProps>(function AskBar(
@@ -52,12 +58,14 @@ export const AskBar = forwardRef<HTMLFormElement, AskBarProps>(function AskBar(
     submitLabel = 'Ask',
     disabled,
     maxWidth = 620,
+    density = 'comfortable',
     className,
     children,
     ...props
   },
   ref,
 ) {
+  const isTouch = density === 'touch';
   const [value, setValue] = useControllableState<string>({
     value: valueProp,
     defaultValue: defaultValue ?? '',
@@ -88,16 +96,17 @@ export const AskBar = forwardRef<HTMLFormElement, AskBarProps>(function AskBar(
       ref={ref}
       role="search"
       onSubmit={handleSubmit}
-      style={{ maxWidth }}
+      style={{ maxWidth: isTouch ? undefined : maxWidth }}
       className={cn(
-        'border-border-strong bg-panel w-full rounded-xl border p-[14px] shadow',
+        'border-border-strong bg-panel w-full border',
+        isTouch ? 'rounded-m-card p-3' : 'rounded-xl p-[14px] shadow',
         'focus-within:border-accent focus-within:ring-accent-dim focus-within:ring-[3px]',
         className,
       )}
       {...props}
     >
-      <div className="mb-[10px] flex items-start gap-[10px]">
-        <span aria-hidden className="text-accent text-[16px]">
+      <div className={cn('flex items-start gap-[10px]', isTouch ? 'mb-2' : 'mb-[10px]')}>
+        <span aria-hidden className={cn('text-accent', isTouch ? 'text-[18px]' : 'text-[16px]')}>
           ✦
         </span>
         <textarea
@@ -109,26 +118,33 @@ export const AskBar = forwardRef<HTMLFormElement, AskBarProps>(function AskBar(
           aria-label={placeholder}
           rows={1}
           className={cn(
-            'text-text flex-1 resize-none border-0 bg-transparent text-[14px] leading-[1.5] outline-none',
+            'text-text flex-1 resize-none border-0 bg-transparent leading-[1.5] outline-none',
             'placeholder:text-text-dim',
+            isTouch ? 'text-m-body' : 'text-[14px]',
           )}
         />
         {streaming && (
           <span
             aria-hidden
-            className="bg-accent mt-[3px] inline-block h-4 w-px animate-[ship-pulse_1s_infinite]"
+            className={cn(
+              'bg-accent mt-[3px] inline-block w-px animate-[ship-pulse_1s_infinite]',
+              isTouch ? 'h-5' : 'h-4',
+            )}
           />
         )}
       </div>
       <div className="flex flex-wrap items-center gap-[6px]">
         {children}
         <div className="ml-auto flex items-center gap-2">
-          <span aria-hidden className="text-text-dim font-mono text-[11px]">
-            ⌘↵
-          </span>
+          {!isTouch && (
+            <span aria-hidden className="text-text-dim font-mono text-[11px]">
+              ⌘↵
+            </span>
+          )}
           <Button
             type="submit"
-            size="sm"
+            size={isTouch ? 'md' : 'sm'}
+            density={isTouch ? 'touch' : undefined}
             variant="primary"
             disabled={disabled || !(value ?? '').trim()}
           >

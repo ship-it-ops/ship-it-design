@@ -1,0 +1,22 @@
+# LargeTitle
+
+iOS-style oversized headline block — small uppercase mono eyebrow above a 30px
+headline, with an optional trailing slot (avatar, icon button) on the right.
+Place at the top of a scrolling mobile screen.
+
+For the scroll-revealing iOS pattern (the LargeTitle scrolls under a sticky
+header), pair this with `<Topbar density="touch" />` above it and hide the
+Topbar title via `IntersectionObserver` until the LargeTitle scrolls out of
+view. The DOM order is `Topbar → LargeTitle → list/grid`.
+
+## Default
+
+A morning greeting with a date eyebrow and avatar in the trailing slot.
+
+<LivePreview example="large-title/default" />
+
+## Props
+
+<PropsTable component="LargeTitle" />
+
+<EditOnGithub source="apps/docs-site/app/(docs)/patterns/large-title/page.mdx" />

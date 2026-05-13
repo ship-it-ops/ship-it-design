@@ -1,0 +1,53 @@
+# PullToRefresh
+
+Controlled visual indicator for the pull-to-refresh interaction — the rotating
+arrow + label that appears at the top of a scrolling list as the user pulls.
+
+This is the **visual primitive only**. The gesture (touch tracking, threshold
+detection, async refresh) is left to the consumer because that wiring is
+app-specific (router refresh, query invalidation, route reload). Drive the
+indicator by passing the current `state`.
+
+## Default
+
+Click the state buttons to flip through the four indicator states.
+
+<LivePreview example="pull-to-refresh/default" />
+
+## States
+
+| State     | Behavior                                                                            |
+| --------- | ----------------------------------------------------------------------------------- |
+| `idle`    | Arrow vertical, label "Pull to refresh". The default.                               |
+| `pulling` | Arrow rotates 90°. Use while the user is dragging but hasn't crossed the threshold. |
+| `ready`   | Arrow flips upside-down, label switches to "Release to refresh".                    |
+| `loading` | Arrow spins. `aria-busy` is set; pair with `aria-live="polite"` (already wired).    |
+
+## Wiring the gesture
+
+Hook this up to `touchstart` / `touchmove` / `touchend` (or your preferred
+gesture lib) and translate the pull distance into the four states:
+
+```tsx
+const [state, setState] = useState<PullToRefreshState>('idle');
+
+const onTouchMove = (e) => {
+  const delta = e.touches[0].clientY - startY;
+  if (delta < 16) setState('idle');
+  else if (delta < 80) setState('pulling');
+  else setState('ready');
+};
+
+const onTouchEnd = async () => {
+  if (state !== 'ready') return setState('idle');
+  setState('loading');
+  await refresh();
+  setState('idle');
+};
+```
+
+## Props
+
+<PropsTable component="PullToRefresh" />
+
+<EditOnGithub source="apps/docs-site/app/(docs)/patterns/pull-to-refresh/page.mdx" />

@@ -24,7 +24,8 @@ pnpm add @ship-it-ui/next
 ```tsx
 // app/layout.tsx
 import { cookies } from 'next/headers';
-import { ThemeBootstrap, getThemeFromCookies } from '@ship-it-ui/next';
+import { ThemeBootstrap } from '@ship-it-ui/next';
+import { getThemeFromCookies } from '@ship-it-ui/next/server';
 import '@ship-it-ui/ui/styles/globals.css';
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -39,6 +40,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   );
 }
 ```
+
+> Import `getThemeFromCookies` from `@ship-it-ui/next/server` — the root
+> entrypoint includes client components (`<ThemeToggle />`) and is tagged
+> `'use client'`, so calling its server helpers from a server layout would
+> turn them into client-reference proxies. The `/server` subpath ships just
+> the cookie helpers and is safe to import anywhere.
 
 The bootstrap script runs synchronously, so it executes before the body
 hydrates — no flash. The server-rendered `data-theme` attribute lines up with

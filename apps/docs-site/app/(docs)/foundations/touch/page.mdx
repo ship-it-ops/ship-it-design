@@ -1,0 +1,71 @@
+# Touch & density
+
+The desktop tokens are designed for cursor input — small click targets, dense
+information. The mobile design canvas adds a parallel set of **touch tokens**
+that bump dimensions to thumb-friendly sizes (44pt minimum tap target per
+Apple HIG), grow the type scale for one-arm reading, and round corners
+slightly more for the iOS feel.
+
+## Touch tokens
+
+Generated from `packages/tokens/src/mobile.ts`. Available as raw CSS
+variables (`var(--touch-min)`) and as Tailwind utilities.
+
+| Token              | CSS var                     | Tailwind                                         | Use                            |
+| ------------------ | --------------------------- | ------------------------------------------------ | ------------------------------ |
+| Min tap            | `--touch-min: 44px`         | `h-touch`, `w-touch`, `min-h-touch`              | Smallest acceptable tap target |
+| Comfortable tap    | `--touch-comfortable: 48px` | `h-touch-comfortable`, `min-h-touch-comfortable` | Default for primary actions    |
+| Row                | `--row-h: 56px`             | `h-row`                                          | List row height                |
+| Row (large)        | `--row-h-lg: 64px`          | `h-row-lg`                                       | Featured list row              |
+| Nav bar            | `--navbar-h: 56px`          | `h-navbar`                                       | Mobile in-app top header       |
+| Tab bar            | `--tabbar-h: 64px`          | `h-tabbar`                                       | Bottom tab bar                 |
+| Screen pad         | `--screen-pad: 16px`        | `px-screen`                                      | Default screen edge padding    |
+| Screen pad (large) | `--screen-pad-lg: 20px`     | `px-screen-lg`                                   | Comfortable screen padding     |
+
+## Mobile type scale
+
+Bumped against desktop for thumb readability. `body` 13→15, `h1` 34→30 (down
+to fit a 390-wide screen), eyebrow 10→11, mono 11→12.
+
+| Token                   | Tailwind         | Px  | vs desktop |
+| ----------------------- | ---------------- | --- | ---------- |
+| `--font-size-m-eyebrow` | `text-m-eyebrow` | 11  | +1         |
+| `--font-size-m-mono`    | `text-m-mono`    | 12  | +1         |
+| `--font-size-m-body`    | `text-m-body`    | 15  | +2         |
+| `--font-size-m-body-lg` | `text-m-body-lg` | 17  | +2         |
+| `--font-size-m-h4`      | `text-m-h4`      | 19  | +1         |
+| `--font-size-m-h3`      | `text-m-h3`      | 23  | +1         |
+| `--font-size-m-h2`      | `text-m-h2`      | 26  | -2         |
+| `--font-size-m-h1`      | `text-m-h1`      | 30  | -4         |
+
+## Mobile radii
+
+Slightly larger than desktop — touch surfaces look right when corners feel
+"cushion-y".
+
+| Token              | Tailwind          | Px  |
+| ------------------ | ----------------- | --- |
+| `--radius-m-tab`   | `rounded-m-tab`   | 12  |
+| `--radius-m-card`  | `rounded-m-card`  | 16  |
+| `--radius-m-sheet` | `rounded-m-sheet` | 20  |
+
+## The `density` prop
+
+Most interactive primitives accept `density?: 'comfortable' | 'touch'`
+(default `'comfortable'`). Passing `density="touch"` swaps the dimensions to
+the mobile tokens above without changing the visual variant.
+
+```tsx
+// Same Button, two surfaces:
+<Button variant="primary" size="md">Save</Button>
+<Button variant="primary" size="md" density="touch">Save</Button>
+```
+
+Currently density-aware: `Button`, `IconButton`, `Input`, `SearchInput`,
+`Switch`, `Checkbox`, `Card`, `Chip`, `Topbar`, plus the shipit composites
+`AskBar` and `CopilotMessage`. The remaining interactive primitives will
+gain density in a follow-up — for now use the mobile-only patterns
+(`TabBar`, `LargeTitle`, `PullToRefresh`, `Drawer side="bottom"`,
+`NotifRow`) for surfaces that need touch dimensions today.
+
+<EditOnGithub source="apps/docs-site/app/(docs)/foundations/touch/page.mdx" />

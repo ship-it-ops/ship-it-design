@@ -24,3 +24,6 @@ export * from './marketing';
 
 // Data composites
 export * from './data';
+
+// Notifications (mobile-only domain composites)
+export * from './notifications';

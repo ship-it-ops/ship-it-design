@@ -146,6 +146,32 @@
   --z-popover: var(--z-popover);
   --z-toast: var(--z-toast);
   --z-tooltip: var(--z-tooltip);
+
+  /* Mobile — touch & layout dimensions bridge into Tailwind's spacing scale
+   * so `h-row`, `h-tabbar`, `min-h-touch`, `p-screen` etc. resolve cleanly. */
+  --spacing-touch: var(--touch-min);
+  --spacing-touch-comfortable: var(--touch-comfortable);
+  --spacing-row: var(--row-h);
+  --spacing-row-lg: var(--row-h-lg);
+  --spacing-tabbar: var(--tabbar-h);
+  --spacing-navbar: var(--navbar-h);
+  --spacing-screen: var(--screen-pad);
+  --spacing-screen-lg: var(--screen-pad-lg);
+
+  /* Mobile — bumped type scale. Use as `text-m-body`, `text-m-h1`, etc. */
+  --text-m-eyebrow: var(--font-size-m-eyebrow);
+  --text-m-mono: var(--font-size-m-mono);
+  --text-m-body: var(--font-size-m-body);
+  --text-m-body-lg: var(--font-size-m-body-lg);
+  --text-m-h4: var(--font-size-m-h4);
+  --text-m-h3: var(--font-size-m-h3);
+  --text-m-h2: var(--font-size-m-h2);
+  --text-m-h1: var(--font-size-m-h1);
+
+  /* Mobile — radii. Use as `rounded-m-tab`, `rounded-m-card`, `rounded-m-sheet`. */
+  --radius-m-tab: var(--radius-m-tab);
+  --radius-m-card: var(--radius-m-card);
+  --radius-m-sheet: var(--radius-m-sheet);
 }
 
 @layer base {

@@ -22,8 +22,19 @@ const inputWrapperStyles = cva(
         default: 'bg-panel border-border focus-within:border-accent focus-within:ring-accent-dim',
         err: 'bg-panel border-err focus-within:border-err focus-within:ring-err/30',
       },
+      density: {
+        comfortable: '',
+        touch: '',
+      },
     },
-    defaultVariants: { size: 'md', tone: 'default' },
+    compoundVariants: [
+      // Mobile density — 52px standard input height (MInput in the canvas);
+      // sm collapses to 44pt min, lg pushes to 56pt for prominent forms.
+      { size: 'sm', density: 'touch', class: 'h-touch px-3 text-m-body rounded-m-tab' },
+      { size: 'md', density: 'touch', class: 'h-[52px] px-[14px] text-m-body rounded-m-tab' },
+      { size: 'lg', density: 'touch', class: 'h-row px-4 text-m-body-lg rounded-m-tab' },
+    ],
+    defaultVariants: { size: 'md', tone: 'default', density: 'comfortable' },
   },
 );
 
@@ -42,13 +53,13 @@ export interface InputProps
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
-  { size, tone, icon, trailing, error, width, className, style, disabled, ...props },
+  { size, tone, density, icon, trailing, error, width, className, style, disabled, ...props },
   ref,
 ) {
   const computedTone = error ? 'err' : tone;
   return (
     <div
-      className={cn(inputWrapperStyles({ size, tone: computedTone }), className)}
+      className={cn(inputWrapperStyles({ size, tone: computedTone, density }), className)}
       style={{ width, ...style }}
     >
       {icon && <span className="text-text-dim leading-none">{icon}</span>}

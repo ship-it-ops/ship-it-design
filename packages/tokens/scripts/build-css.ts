@@ -33,12 +33,16 @@ import {
   elevation,
   fontFamily,
   fontSize,
+  fontSizeMobile,
   fontWeight,
   lineHeight,
+  mobileLayout,
   radius,
+  radiusMobile,
   shadowDark,
   shadowLight,
   spacing,
+  touch,
   tracking,
   zIndex,
 } from '../src/index.js';
@@ -47,14 +51,29 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUTPUT_PATH = resolve(__dirname, '../styles/tokens.css');
 
 // camelCase → kebab-case. Keep digits attached to the preceding letter so `h4`
-// stays `h4`, not `h-4`. Only insert a hyphen at lowercase→uppercase boundaries.
-export const kebab = (s: string): string => s.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+// stays `h4`, not `h-4`. Insert a hyphen before every uppercase letter so
+// adjacent humps (`rowHLg` → `row-h-lg`) split correctly.
+export const kebab = (s: string): string =>
+  s
+    .replace(/([A-Z])/g, '-$1')
+    .replace(/^-/, '')
+    .toLowerCase();
 
 type TokenValue = string | number;
 
 export const block = (prefix: string, obj: Record<string, TokenValue>): string =>
   Object.entries(obj)
     .map(([k, v]) => `  --${prefix}-${kebab(String(k))}: ${v};`)
+    .join('\n');
+
+/**
+ * Same as `block()` but without a prefix segment — emits `--{kebab(key)}` directly.
+ * Used for mobile layout tokens (`--row-h`, `--tabbar-h`, …) that the design
+ * canvas defines with no namespace prefix.
+ */
+export const blockNoPrefix = (obj: Record<string, TokenValue>): string =>
+  Object.entries(obj)
+    .map(([k, v]) => `  --${kebab(String(k))}: ${v};`)
     .join('\n');
 
 /**
@@ -110,6 +129,18 @@ export const buildTokenCss = (): string => {
     '',
     '  /* Z-index */',
     block('z', zIndex),
+    '',
+    '  /* Mobile — touch targets (Apple HIG min 44pt) */',
+    block('touch', touch),
+    '',
+    '  /* Mobile — layout dimensions */',
+    blockNoPrefix(mobileLayout),
+    '',
+    '  /* Mobile — bumped type scale (body 13→15, h1 34→30) */',
+    block('font-size-m', fontSizeMobile),
+    '',
+    '  /* Mobile — radii */',
+    block('radius-m', radiusMobile),
   ].join('\n');
 
   const lightOverrides = [

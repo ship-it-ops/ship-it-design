@@ -37,14 +37,29 @@ const buttonStyles = cva(
         md: 'h-[32px] px-3 text-[12px] gap-[6px] rounded-md',
         lg: 'h-[38px] px-4 text-[13px] gap-[7px] rounded-[7px]',
       },
+      density: {
+        comfortable: '',
+        touch: '',
+      },
       fullWidth: {
         true: 'w-full',
         false: '',
       },
     },
+    compoundVariants: [
+      // Mobile density — bumps every size to meet 44pt minimum touch target.
+      {
+        size: 'sm',
+        density: 'touch',
+        class: 'h-[36px] px-[14px] text-[13px] gap-[7px] rounded-base',
+      },
+      { size: 'md', density: 'touch', class: 'h-touch px-[18px] text-m-body gap-2 rounded-base' },
+      { size: 'lg', density: 'touch', class: 'h-[52px] px-[22px] text-[16px] gap-2 rounded-base' },
+    ],
     defaultVariants: {
       variant: 'primary',
       size: 'md',
+      density: 'comfortable',
       fullWidth: false,
     },
   },
@@ -76,13 +91,17 @@ export interface ButtonProps
   asChild?: boolean;
 }
 
-/** Pixel size of the icon/spinner inside each button size. */
-const iconSize = { sm: 11, md: 12, lg: 13 } as const;
+/** Pixel size of the icon/spinner inside each button size, per density. */
+const iconSize = {
+  comfortable: { sm: 11, md: 12, lg: 13 },
+  touch: { sm: 13, md: 15, lg: 16 },
+} as const;
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   {
     variant,
     size,
+    density,
     fullWidth,
     icon,
     trailing,
@@ -97,8 +116,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   ref,
 ) {
   const isDisabled = disabled || loading;
-  const iconPx = iconSize[size ?? 'md'];
-  const composedClassName = cn(buttonStyles({ variant, size, fullWidth }), className);
+  const iconPx = iconSize[density ?? 'comfortable'][size ?? 'md'];
+  const composedClassName = cn(buttonStyles({ variant, size, density, fullWidth }), className);
 
   // asChild defers all rendering to the consumer's element. We just decorate it
   // with Button styles — Slot requires exactly one child, so icon/trailing/loading

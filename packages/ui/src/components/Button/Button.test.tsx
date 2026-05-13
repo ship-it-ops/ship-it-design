@@ -89,6 +89,17 @@ describe('Button', () => {
     expect(link).not.toHaveAttribute('type');
   });
 
+  it('applies touch-density classes when density="touch"', () => {
+    render(
+      <Button size="md" density="touch">
+        Tap me
+      </Button>,
+    );
+    const button = screen.getByRole('button', { name: 'Tap me' });
+    // 44pt (h-touch) minimum at md size meets the Apple HIG touch target.
+    expect(button.className).toContain('h-touch');
+  });
+
   it('has no accessibility violations for button and asChild link variants', async () => {
     const { container } = render(
       <>

@@ -1,0 +1,41 @@
+# NotifRow
+
+Single row in the mobile Inbox / notification list. Tone-colored unread dot
+on the left, title + body block in the middle, relative time on the right.
+Pair with `isFirst` / `isLast` so the row group rounds its outer corners
+like an iOS grouped list.
+
+NotifRow is mobile-only — desktop notifications live inside the
+CommandPalette flyout. There is no desktop sibling.
+
+## Default
+
+Three rows in a single group: an error monitor, an ownership warning, and a
+successful deploy.
+
+<LivePreview example="notif-row/default" />
+
+## Tones
+
+The unread dot color is driven by `tone`:
+
+| Tone                | Use for                                |
+| ------------------- | -------------------------------------- |
+| `err`               | Firing monitors, failed deploys        |
+| `warn`              | Ownership gaps, drift, missing data    |
+| `ok`                | Successful deploys, syncs, completions |
+| `neutral` (default) | Mentions, replies, generic activity    |
+
+When `unread` is false the dot fades to `border-strong` so the read state is
+glanceable.
+
+## Linkable rows
+
+Pass `href` to render the row as an `<a>` instead of a `<div>` — the entire
+row becomes the tap target. Keyboard focus + a 3px focus ring are wired in.
+
+## Props
+
+<PropsTable component="NotifRow" />
+
+<EditOnGithub source="apps/docs-site/app/(docs)/shipit/notif-row/page.mdx" />

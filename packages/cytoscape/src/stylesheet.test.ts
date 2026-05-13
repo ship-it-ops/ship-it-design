@@ -67,4 +67,46 @@ describe('buildShipItStylesheet', () => {
   it('exposes the class-name constants the stylesheet recognizes', () => {
     expect(GRAPH_CANVAS_CLASS).toEqual({ path: 'graph-canvas:path', dim: 'graph-canvas:dim' });
   });
+
+  it('uses a static font-family stack (no `var(...)` for cytoscape to choke on)', () => {
+    const styles = buildShipItStylesheet({ palette: PALETTE });
+    const base = findSelector(styles, 'node');
+    expect(base?.style['font-family']).toMatch(/ui-monospace/);
+    expect(String(base?.style['font-family'])).not.toMatch(/var\(/);
+  });
+
+  it('renders entity glyphs as SVG data-URL backgrounds by default', () => {
+    const styles = buildShipItStylesheet({ palette: PALETTE });
+    const service = findSelector(styles, 'node[entityType = "service"]');
+    expect(service?.style['background-image']).toMatch(/^data:image\/svg\+xml/);
+    expect(service?.style['background-fit']).toBe('contain');
+    expect(service?.style['background-clip']).toBe('none');
+    // The `service` glyph is ◇ (U+25C7), which URL-encodes to %E2%97%87.
+    expect(String(service?.style['background-image'])).toContain('%E2%97%87');
+  });
+
+  it('falls back to a border-only per-type rule when renderGlyphs is false', () => {
+    const styles = buildShipItStylesheet({ palette: PALETTE, renderGlyphs: false });
+    const service = findSelector(styles, 'node[entityType = "service"]');
+    expect(service?.style).toEqual({ 'border-color': PALETTE.accent });
+    expect(service?.style['background-image']).toBeUndefined();
+  });
+
+  it('sets the default node size to 52×52 (matches <GraphNode>)', () => {
+    const styles = buildShipItStylesheet({ palette: PALETTE });
+    const base = findSelector(styles, 'node');
+    expect(base?.style.width).toBe(52);
+    expect(base?.style.height).toBe(52);
+  });
+
+  it('emits no `oklch(` or `var(` substrings anywhere in the stylesheet', () => {
+    // Regression for the consumer report: cytoscape's color parser rejects
+    // both `oklch(...)` (Tailwind v4's default for `--color-*` tokens) and
+    // raw `var(...)` references. With the sRGB coercion in `readThemeTokens`
+    // and the static font-family in the base block, neither should appear in
+    // the final stylesheet JSON, regardless of palette.
+    const serialized = JSON.stringify(buildShipItStylesheet({ palette: PALETTE }));
+    expect(serialized).not.toMatch(/oklch\(/);
+    expect(serialized).not.toMatch(/var\(/);
+  });
 });

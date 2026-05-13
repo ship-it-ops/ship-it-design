@@ -180,7 +180,15 @@ export const GraphCanvas = forwardRef<GraphCanvasHandle, GraphCanvasProps>(funct
       className={['relative h-full w-full', className].filter(Boolean).join(' ')}
       {...props}
     >
-      <div ref={containerRef} className="absolute inset-0" />
+      {/*
+       * Inline styles, not Tailwind utilities. Cytoscape injects an unlayered
+       * `.__________cytoscape_container { position: relative }` stylesheet at
+       * init time, and Tailwind v4 emits `.absolute`/`.inset-0` into
+       * `@layer utilities` — unlayered rules outrank layered ones regardless
+       * of source order, so the canvas would collapse to 0×0 in a static-
+       * height parent. Inline styles win against both.
+       */}
+      <div ref={containerRef} style={{ position: 'absolute', inset: 0 }} />
       {inspector && <div className="absolute top-4 right-4 z-10">{inspector}</div>}
     </div>
   );
