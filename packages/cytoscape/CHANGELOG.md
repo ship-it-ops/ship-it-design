@@ -1,5 +1,23 @@
 # @ship-it-ui/cytoscape
 
+## 0.0.4
+
+### Patch Changes
+
+- 659db3e: Default cytoscape edges now draw in `--color-accent` rather than
+  `--color-border`. The previous tone was the same as surface-divider lines
+  and made edges almost invisible against the panel background on dark
+  themes; the canonical `<GraphEdge edgeStyle="solid">` in the docs already
+  drew in accent, so the adapter now matches it. Apps that intentionally
+  want subdued edges can still override via `buildShipItStylesheet({ extra })`.
+- 659db3e: Fix entity glyphs not painting on the Cytoscape canvas. The SVG data-URL
+  emitted by `buildShipItStylesheet`'s `background-image` carried only a
+  `viewBox` attribute; Cytoscape rasterises canvas background-images through
+  `<img>`, which treats a `viewBox`-only `<svg>` as 0×0 intrinsic dimensions
+  and renders nothing. Added explicit `width='52' height='52'` to match the
+  existing viewBox so the glyph paints at the node's full size (with
+  `background-fit: contain` unchanged).
+
 ## 0.0.3
 
 ### Patch Changes
