@@ -45,6 +45,46 @@ The exported `GRAPH_CANVAS_CLASS` constants are the class names the
 stylesheet recognizes (`graph-canvas:path`, `graph-canvas:dim`). Toggle them
 on nodes / edges to drive the on-path and dimmed visuals.
 
+### Adapter edges vs. `<GraphEdge>`
+
+The two surfaces are parallel, not 1:1. `<GraphEdge>` is an SVG primitive
+with four visual variants (`solid` / `dashed` / `highlighted` / `dim`); the
+cytoscape adapter exposes **state classes** (`graph-canvas:path`,
+`graph-canvas:dim`) tuned for in-canvas readability. If you need
+SVG-styled annotations drawn over a cytoscape graph (animated highlights,
+preview paths), layer `<PathOverlay>` on top rather than trying to express
+those variants through the stylesheet.
+
+### Extending the stylesheet
+
+`options.extra` appends raw blocks after the built-in selectors — that's the
+intended path for app-specific looks like dashed relationships, custom node
+chrome, or extra `:selected` states. Toggle the class on the cytoscape
+element to apply it.
+
+```ts
+import cytoscape from 'cytoscape';
+import { buildShipItStylesheet } from '@ship-it-ui/cytoscape';
+
+const cy = cytoscape({
+  container: document.getElementById('graph'),
+  elements: [...],
+  style: buildShipItStylesheet({
+    extra: [
+      {
+        selector: 'edge.relationship-dashed',
+        style: {
+          'line-style': 'dashed',
+          'line-dash-pattern': [4, 3],
+        },
+      },
+    ],
+  }),
+});
+
+cy.getElementById('edge-1').addClass('relationship-dashed');
+```
+
 ## Theme-aware re-resolver hook
 
 `useShipItStylesheet(cyRef)` re-applies the stylesheet whenever

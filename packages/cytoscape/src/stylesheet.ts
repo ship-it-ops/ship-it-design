@@ -108,11 +108,15 @@ export function buildShipItStylesheet(
       style: { opacity: 0.35 },
     },
     {
+      // Default edges tone with `accent` so they read against the panel
+      // background — matches `<GraphEdge edgeStyle="solid">` in the docs.
+      // Pre-fix the line drew in `palette.border` (the same tone as
+      // surface-divider lines) and effectively disappeared on dark themes.
       selector: 'edge',
       style: {
         width: 1,
-        'line-color': palette.border,
-        'target-arrow-color': palette.border,
+        'line-color': palette.accent,
+        'target-arrow-color': palette.accent,
         'target-arrow-shape': 'triangle',
         'arrow-scale': 0.8,
         'curve-style': 'bezier',
@@ -180,7 +184,7 @@ function glyphDataUrl(glyph: string, color: string): string {
   const safeGlyph = escapeXml(glyph);
   const safeColor = escapeXml(color);
   const svg =
-    `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 52 52'>` +
+    `<svg xmlns='http://www.w3.org/2000/svg' width='52' height='52' viewBox='0 0 52 52'>` +
     `<text x='26' y='34' text-anchor='middle' ` +
     `font-family='ui-monospace,SFMono-Regular,monospace' ` +
     `font-size='26' fill='${safeColor}'>${safeGlyph}</text>` +

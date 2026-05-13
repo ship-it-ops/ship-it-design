@@ -58,6 +58,17 @@ describe('buildShipItStylesheet', () => {
     expect(styles.some((s) => s.selector.includes('graph-canvas'))).toBe(true);
   });
 
+  it('draws default edges in accent, not border-grey', () => {
+    // Regression for the consumer report: pre-fix the default `edge` selector
+    // used `palette.border`, which is the same tone as surface dividers and
+    // made edges almost invisible on dark backgrounds. Default edges should
+    // tone with accent so they match `<GraphEdge edgeStyle="solid">`.
+    const styles = buildShipItStylesheet({ palette: PALETTE });
+    const edge = findSelector(styles, 'edge');
+    expect(edge?.style['line-color']).toBe(PALETTE.accent);
+    expect(edge?.style['target-arrow-color']).toBe(PALETTE.accent);
+  });
+
   it('appends extra entries after the base stylesheet', () => {
     const extra = [{ selector: 'node.custom', style: { 'border-color': '#fff' } }];
     const styles = buildShipItStylesheet({ palette: PALETTE, extra });
@@ -83,6 +94,13 @@ describe('buildShipItStylesheet', () => {
     expect(service?.style['background-clip']).toBe('none');
     // The `service` glyph is ◇ (U+25C7), which URL-encodes to %E2%97%87.
     expect(String(service?.style['background-image'])).toContain('%E2%97%87');
+    // The emitted SVG must carry explicit `width`/`height` attributes in
+    // addition to `viewBox` — Cytoscape's canvas renderer rasterises the
+    // background-image through an `<img>`, which treats a `viewBox`-only
+    // `<svg>` as 0×0 and paints nothing.
+    const encoded = String(service?.style['background-image']);
+    expect(encoded).toContain("width%3D'52'");
+    expect(encoded).toContain("height%3D'52'");
   });
 
   it('falls back to a border-only per-type rule when renderGlyphs is false', () => {

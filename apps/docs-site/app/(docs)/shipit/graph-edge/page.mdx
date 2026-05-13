@@ -10,4 +10,16 @@ Each example below is a real component instance — flip the theme toggle to see
 
 <PropsTable component="GraphEdge" />
 
+## Not the same surface as the cytoscape adapter
+
+`<GraphEdge>` is an SVG primitive — drop it inside a parent `<svg>` to
+draw a single styled line or curve. The `@ship-it-ui/cytoscape` adapter is
+a separate rendering surface: cytoscape paints edges into its own canvas
+using a stylesheet keyed on **state classes** (`graph-canvas:path`,
+`graph-canvas:dim`), not the four `edgeStyle` variants here. To draw
+GraphEdge-styled lines over a cytoscape graph (animated highlights,
+preview paths, ad-hoc annotations), layer `<PathOverlay>` on top of the
+canvas rather than trying to express these variants through the cytoscape
+stylesheet.
+
 <EditOnGithub source="apps/docs-site/app/(docs)/shipit/graph-edge/page.mdx" />
