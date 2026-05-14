@@ -14,9 +14,15 @@ import { getEntityTypeMeta, type EntityType } from './types';
 /**
  * EntityListRow — compact row for entity lists (e.g., dependents / dependencies
  * panels on a detail page). Glyph dot + name + optional relation pill +
- * optional trailing meta.
+ * optional trailing meta + optional trailing `actions` slot.
  *
  * Renders as a button when `onClick` is supplied; otherwise a plain row.
+ *
+ * When `actions` is provided, the interactive label region (button or div) is
+ * wrapped in an outer container and `actions` renders as a peer sibling — so
+ * any nested `<button>` in the slot stays a peer of the row button instead of
+ * a descendant (avoiding axe `nested-interactive`). When `actions` is absent,
+ * the rendered structure is unchanged from the original single-element form.
  *
  * For strongly-typed refs use the specialized exports `EntityListRowDiv`
  * (non-interactive) and `EntityListRowButton` (interactive). The default
@@ -32,14 +38,20 @@ interface EntityListRowCommonProps {
   relation?: ReactNode;
   /** Trailing meta line (e.g., a timestamp). */
   meta?: ReactNode;
+  /**
+   * Trailing action slot — typically a `Button` or `DropdownMenu` trigger.
+   * Rendered as a peer sibling of the row's interactive region.
+   */
+  actions?: ReactNode;
   /** When true, hides the leading glyph dot. */
   hideGlyph?: boolean;
 }
 
-const baseClassNames = (interactive: boolean, className?: string) =>
+const dividerClass = 'border-b border-border last:border-0';
+
+const labelClass = (interactive: boolean, className?: string) =>
   cn(
     'flex w-full items-center gap-3 border-0 bg-transparent px-2 py-2 text-left',
-    'border-b border-border last:border-0',
     interactive &&
       'cursor-pointer outline-none transition-colors duration-(--duration-micro) hover:bg-panel-2 focus-visible:ring-[3px] focus-visible:ring-accent-dim',
     className,
@@ -76,12 +88,36 @@ export interface EntityListRowDivProps
 
 /** Non-interactive row. Use this when you have a static list of entities. */
 export const EntityListRowDiv = forwardRef<HTMLDivElement, EntityListRowDivProps>(
-  function EntityListRowDiv({ type, name, relation, meta, hideGlyph, className, ...props }, ref) {
+  function EntityListRowDiv(
+    { type, name, relation, meta, hideGlyph, actions, className, ...props },
+    ref,
+  ) {
+    if (actions) {
+      return (
+        <div
+          ref={ref}
+          data-entity-type={type}
+          className={cn('flex w-full items-center gap-1', dividerClass, className)}
+          {...props}
+        >
+          <div className={labelClass(false)}>
+            <RowInner
+              type={type}
+              name={name}
+              relation={relation}
+              meta={meta}
+              hideGlyph={hideGlyph}
+            />
+          </div>
+          <div className="shrink-0 self-center pr-1">{actions}</div>
+        </div>
+      );
+    }
     return (
       <div
         ref={ref}
         data-entity-type={type}
-        className={baseClassNames(false, className)}
+        className={cn(labelClass(false), dividerClass, className)}
         {...props}
       >
         <RowInner type={type} name={name} relation={relation} meta={meta} hideGlyph={hideGlyph} />
@@ -103,16 +139,35 @@ export interface EntityListRowButtonProps
 /** Interactive row rendered as a `<button>`. Use this when the row navigates. */
 export const EntityListRowButton = forwardRef<HTMLButtonElement, EntityListRowButtonProps>(
   function EntityListRowButton(
-    { type, name, relation, meta, hideGlyph, className, onClick, ...props },
+    { type, name, relation, meta, hideGlyph, actions, className, onClick, ...props },
     ref,
   ) {
+    if (actions) {
+      return (
+        <div
+          data-entity-type={type}
+          className={cn('flex w-full items-stretch gap-1', dividerClass, className)}
+        >
+          <button ref={ref} type="button" onClick={onClick} className={labelClass(true)} {...props}>
+            <RowInner
+              type={type}
+              name={name}
+              relation={relation}
+              meta={meta}
+              hideGlyph={hideGlyph}
+            />
+          </button>
+          <div className="shrink-0 self-center pr-1">{actions}</div>
+        </div>
+      );
+    }
     return (
       <button
         ref={ref}
         type="button"
         data-entity-type={type}
         onClick={onClick}
-        className={baseClassNames(true, className)}
+        className={cn(labelClass(true), dividerClass, className)}
         {...props}
       >
         <RowInner type={type} name={name} relation={relation} meta={meta} hideGlyph={hideGlyph} />
@@ -134,6 +189,12 @@ export interface EntityListRowProps extends Omit<
   relation?: ReactNode;
   /** Trailing meta line (e.g., a timestamp). */
   meta?: ReactNode;
+  /**
+   * Trailing action slot — typically a `Button` or `DropdownMenu` trigger.
+   * Rendered as a peer sibling of the row's interactive region so any nested
+   * `<button>` in the slot avoids `nested-interactive` a11y failures.
+   */
+  actions?: ReactNode;
   /** When provided, the row becomes a clickable button. */
   onClick?: MouseEventHandler<HTMLButtonElement>;
   /** When true, hides the leading glyph dot. */
@@ -151,6 +212,7 @@ export function EntityListRow({
   relation,
   meta,
   hideGlyph,
+  actions,
   onClick,
   className,
   ...props
@@ -163,6 +225,7 @@ export function EntityListRow({
         relation={relation}
         meta={meta}
         hideGlyph={hideGlyph}
+        actions={actions}
         onClick={onClick}
         className={className}
         {...(props as Omit<
@@ -179,6 +242,7 @@ export function EntityListRow({
       relation={relation}
       meta={meta}
       hideGlyph={hideGlyph}
+      actions={actions}
       className={className}
       {...(props as Omit<HTMLAttributes<HTMLDivElement>, 'title' | 'name'>)}
     />

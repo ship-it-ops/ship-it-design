@@ -11,7 +11,12 @@
  *      this file is hand-authored and survives.
  */
 
-export { IconGlyph, type IconGlyphProps } from './IconGlyph';
+export {
+  IconGlyph,
+  DynamicIconGlyph,
+  type IconGlyphProps,
+  type DynamicIconGlyphProps,
+} from './IconGlyph';
 export {
   glyphs,
   connectorGlyphs,

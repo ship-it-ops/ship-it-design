@@ -8,12 +8,23 @@ import { cn } from '../../utils/cn';
 /**
  * Tooltip — small, transient label that appears on hover/focus.
  *
- * Wrap your app once in `<TooltipProvider>` (Radix's provider) for shared delay
- * configuration; a single tooltip can be used standalone via `<Tooltip>` shorthand.
+ * Two surfaces:
+ *
+ * - `<SimpleTooltip content="…">` is the one-liner. Pass a `content` prop and a
+ *   single trigger child; it bundles its own `TooltipProvider`. Use this for
+ *   ad-hoc tooltips on icon buttons and standalone widgets.
+ * - `<Tooltip>` is the Radix root for composition. Pair it with
+ *   `<TooltipTrigger>` and `<TooltipContent>` and wrap your subtree in a
+ *   shared `<TooltipProvider>` when you have many tooltips that should share
+ *   delay configuration (lists, toolbars, command palettes).
+ *
+ * Naming follows the rest of this library (`Dialog`, `Popover`, …): the root
+ * component takes the unqualified name; convenience helpers carry a
+ * qualifying prefix.
  */
 
 export const TooltipProvider = RadixTooltip.Provider;
-export const TooltipRoot = RadixTooltip.Root;
+export const Tooltip = RadixTooltip.Root;
 export const TooltipTrigger = RadixTooltip.Trigger;
 export const TooltipPortal = RadixTooltip.Portal;
 export const TooltipArrow = RadixTooltip.Arrow;
@@ -40,7 +51,7 @@ export const TooltipContent = forwardRef<HTMLDivElement, RadixTooltip.TooltipCon
 
 TooltipContent.displayName = 'TooltipContent';
 
-export interface TooltipProps {
+export interface SimpleTooltipProps {
   /** Tooltip text/content. */
   content: ReactNode;
   /** Trigger element — usually a Button or IconButton. */
@@ -52,16 +63,22 @@ export interface TooltipProps {
 }
 
 /**
- * One-liner tooltip wrapper. Wraps a trigger child with the full Radix stack.
- * For composition (multiple triggers in a list), use the lower-level exports.
+ * One-liner tooltip — bundles its own `TooltipProvider`. For composition
+ * (multiple triggers in a list, shared delay config), use the lower-level
+ * `Tooltip` + `TooltipTrigger` + `TooltipContent` primitives.
  */
-export function Tooltip({ content, children, side = 'top', delayDuration = 400 }: TooltipProps) {
+export function SimpleTooltip({
+  content,
+  children,
+  side = 'top',
+  delayDuration = 400,
+}: SimpleTooltipProps) {
   return (
     <TooltipProvider delayDuration={delayDuration}>
-      <TooltipRoot>
+      <Tooltip>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
         <TooltipContent side={side}>{content}</TooltipContent>
-      </TooltipRoot>
+      </Tooltip>
     </TooltipProvider>
   );
 }

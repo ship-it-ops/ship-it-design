@@ -1,17 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
-import { IconGlyph } from './IconGlyph';
+import { DynamicIconGlyph, IconGlyph } from './IconGlyph';
 
 describe('IconGlyph', () => {
   it('renders the glyph for a known name', () => {
     render(<IconGlyph name="ask" data-testid="icon" />);
     expect(screen.getByTestId('icon').textContent).toBe('✦');
-  });
-
-  it('falls back to the name itself when unknown', () => {
-    render(<IconGlyph name="totally-not-real-glyph" data-testid="icon" />);
-    expect(screen.getByTestId('icon').textContent).toBe('totally-not-real-glyph');
   });
 
   it('is aria-hidden when no label is provided (decorative use)', () => {
@@ -33,5 +28,17 @@ describe('IconGlyph', () => {
   it('resolves connector glyphs when kind="connector"', () => {
     render(<IconGlyph name="github" kind="connector" data-testid="icon" />);
     expect(screen.getByTestId('icon').textContent).toBe('⎈');
+  });
+});
+
+describe('DynamicIconGlyph', () => {
+  it('renders the glyph for a known name', () => {
+    render(<DynamicIconGlyph name="ask" data-testid="icon" />);
+    expect(screen.getByTestId('icon').textContent).toBe('✦');
+  });
+
+  it('falls back to the name itself when unknown', () => {
+    render(<DynamicIconGlyph name="totally-not-real-glyph" data-testid="icon" />);
+    expect(screen.getByTestId('icon').textContent).toBe('totally-not-real-glyph');
   });
 });
