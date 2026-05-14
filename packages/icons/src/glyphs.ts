@@ -77,6 +77,8 @@ export const glyphs = {
   sort: '⇅',
   caretLeft: '‹',
   caretRight: '›',
+  caretUp: '▴',
+  caretDown: '⌄',
 
   // Status & actions
   confirm: '✓',
