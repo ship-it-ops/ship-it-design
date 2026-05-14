@@ -1,6 +1,6 @@
 {
   "name": "@ship-it-ui/shipit",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "ShipIt-AI domain composites: AI surfaces, knowledge-graph chrome, entity displays, and marketing components — built on @ship-it-ui/ui.",
   "license": "MIT",
   "homepage": "https://ship-it-ops.github.io/ship-it-design/",
