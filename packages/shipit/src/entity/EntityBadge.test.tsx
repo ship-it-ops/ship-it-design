@@ -19,4 +19,10 @@ describe('EntityBadge', () => {
     const { container } = render(<EntityBadge type="document" />);
     expect(await axe(container)).toHaveNoViolations();
   });
+
+  it('forwards `size` to the underlying Badge', () => {
+    render(<EntityBadge type="service" size="sm" data-testid="badge" />);
+    // Small-size class from badgeStyles (`h-[18px]`) lands on the rendered span.
+    expect(screen.getByTestId('badge').className).toMatch(/h-\[18px\]/);
+  });
 });

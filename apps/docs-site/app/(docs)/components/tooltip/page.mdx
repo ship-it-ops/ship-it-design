@@ -2,6 +2,8 @@
 
 Each example below is a real component instance — flip the theme toggle to see how it adapts.
 
+Two surfaces: `SimpleTooltip` is the one-liner used in the examples below — it bundles its own `TooltipProvider` and takes a `content` prop. For composition (shared provider, many triggers, async content), reach for the lower-level `Tooltip` + `TooltipTrigger` + `TooltipContent` primitives instead.
+
 ## Basic
 
 <LivePreview example="tooltip/basic" />
@@ -12,6 +14,6 @@ Each example below is a real component instance — flip the theme toggle to see
 
 ## Props
 
-<PropsTable component="Tooltip" />
+<PropsTable component="SimpleTooltip" />
 
 <EditOnGithub source="apps/docs-site/app/(docs)/components/tooltip/page.mdx" />

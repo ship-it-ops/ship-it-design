@@ -1,7 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest';
 
 import {
-  ENTITY_GLYPH,
   ENTITY_LABEL,
   ENTITY_TONE_BG,
   ENTITY_TONE_CLASS,
@@ -23,15 +22,24 @@ describe('entity type registry', () => {
     expect(getEntityTypeMeta('person').badgeVariant).toBe('neutral');
   });
 
+  it('built-ins all carry an iconName for SVG rendering', () => {
+    expect(getEntityTypeMeta('service').iconName).toBe('service');
+    expect(getEntityTypeMeta('person').iconName).toBe('person');
+    expect(getEntityTypeMeta('document').iconName).toBe('document');
+    expect(getEntityTypeMeta('deployment').iconName).toBe('deployment');
+    expect(getEntityTypeMeta('incident').iconName).toBe('incident');
+    expect(getEntityTypeMeta('ticket').iconName).toBe('ticket');
+  });
+
   it('falls back to the service meta for unknown types', () => {
     const fallback = getEntityTypeMeta('repository');
     expect(fallback.label).toBe('Service');
-    expect(fallback.glyph).toBe('◇');
+    expect(fallback.iconName).toBe('service');
   });
 
   it('registers a new type', () => {
     registerEntityType('repository', {
-      glyph: '◆',
+      iconName: 'brand',
       label: 'Repository',
       toneClass: 'text-accent',
       toneBg: 'bg-accent-dim',
@@ -40,13 +48,13 @@ describe('entity type registry', () => {
     });
     const meta = getEntityTypeMeta('repository');
     expect(meta.label).toBe('Repository');
-    expect(meta.glyph).toBe('◆');
+    expect(meta.iconName).toBe('brand');
   });
 
   it('bulk-registers a map of types', () => {
     registerEntityTypes({
       pipeline: {
-        glyph: '⇄',
+        iconName: 'bolt',
         label: 'Pipeline',
         toneClass: 'text-ok',
         toneBg: 'bg-panel-2',
@@ -54,7 +62,7 @@ describe('entity type registry', () => {
         badgeVariant: 'ok',
       },
       monitor: {
-        glyph: '◉',
+        iconName: 'target',
         label: 'Monitor',
         toneClass: 'text-warn',
         toneBg: 'bg-panel-2',
@@ -68,7 +76,7 @@ describe('entity type registry', () => {
 
   it('lets a registered type override a built-in', () => {
     registerEntityType('service', {
-      glyph: '★',
+      iconName: 'brand',
       label: 'Service (custom)',
       toneClass: 'text-pink',
       toneBg: 'bg-panel-2',
@@ -80,7 +88,7 @@ describe('entity type registry', () => {
 
   it('resetEntityTypeRegistry restores the built-ins', () => {
     registerEntityType('service', {
-      glyph: '!',
+      iconName: 'warn',
       label: 'Overwritten',
       toneClass: 'text-pink',
       toneBg: 'bg-panel-2',
@@ -92,7 +100,6 @@ describe('entity type registry', () => {
   });
 
   it('keeps the deprecated record exports for built-ins', () => {
-    expect(ENTITY_GLYPH.service).toBe('◇');
     expect(ENTITY_LABEL.incident).toBe('Incident');
     expect(ENTITY_TONE_CLASS.deployment).toBe('text-ok');
     expect(ENTITY_TONE_BG.ticket).toContain('color-mix');

@@ -1,10 +1,10 @@
 export {
   Tooltip,
   TooltipProvider,
-  TooltipRoot,
   TooltipTrigger,
   TooltipPortal,
   TooltipContent,
   TooltipArrow,
-  type TooltipProps,
+  SimpleTooltip,
+  type SimpleTooltipProps,
 } from './Tooltip';

@@ -1,24 +1,35 @@
 /**
  * Public icon exports.
  *
- * Two systems live side-by-side:
+ * `<IconGlyph name="…" />` is the primary consumer surface — it renders an
+ * inline SVG from `src/icon-data.ts` (auto-generated from the Iconify manifest
+ * in `src/icon-manifest.ts`). `<DynamicIconGlyph>` accepts arbitrary runtime
+ * names and falls back to rendering the literal string when no icon is
+ * registered.
  *
- *   1. `IconGlyph` + `glyphs` + `connectorGlyphs` — the canonical glyph vocabulary
- *      (unicode characters rendered as styled text). This is what most components use.
+ * For non-React rendering surfaces (cytoscape `background-image`, canvas,
+ * Mermaid), call `iconToSvgDataUrl(name, options)` to get a ready
+ * `data:image/svg+xml;…` URL.
  *
- *   2. SVG-based React components — generated from `src/svg/*.svg` by SVGR
- *      (`scripts/build.ts`). Auto-regenerated into `src/svg-icons.ts` on every build;
- *      this file is hand-authored and survives.
+ * The SVGR pipeline under `scripts/build.ts` is still wired — drop a file in
+ * `src/svg/` and it becomes a React component on the next build.
  */
 
-export { IconGlyph, type IconGlyphProps } from './IconGlyph';
 export {
-  glyphs,
-  connectorGlyphs,
-  resolveGlyph,
-  type GlyphName,
+  IconGlyph,
+  DynamicIconGlyph,
+  type IconGlyphProps,
+  type DynamicIconGlyphProps,
+} from './IconGlyph';
+export {
+  connectorManifest,
+  glyphManifest,
   type ConnectorName,
-} from './glyphs';
+  type GlyphName,
+  type IconRef,
+} from './icon-manifest';
+export { iconData, type IconData } from './icon-data';
+export { iconToSvgDataUrl } from './icon-to-data-url';
 
 export type { SVGProps } from 'react';
 

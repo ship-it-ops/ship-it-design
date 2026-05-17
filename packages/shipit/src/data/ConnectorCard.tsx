@@ -1,6 +1,6 @@
 'use client';
 
-import { IconGlyph, type ConnectorName } from '@ship-it-ui/icons';
+import { DynamicIconGlyph, type ConnectorName } from '@ship-it-ui/icons';
 import { cn, formatRelative, StatusDot, type StatusState } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
@@ -87,7 +87,7 @@ export const ConnectorCard = forwardRef<HTMLDivElement, ConnectorCardProps>(func
         aria-hidden
         className="bg-panel-2 grid h-10 w-10 shrink-0 place-items-center rounded-md font-mono text-[16px]"
       >
-        <IconGlyph name={connector} kind="connector" />
+        <DynamicIconGlyph name={connector} kind="connector" />
       </span>
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">

@@ -1,5 +1,6 @@
 'use client';
 
+import { DynamicIconGlyph } from '@ship-it-ui/icons';
 import { cn } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
@@ -68,7 +69,7 @@ export const EntityCard = forwardRef<HTMLDivElement, EntityCardProps>(function E
             meta.toneClass,
           )}
         >
-          {glyph ?? meta.glyph}
+          {glyph ?? <DynamicIconGlyph name={meta.iconName} size={20} />}
         </span>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">

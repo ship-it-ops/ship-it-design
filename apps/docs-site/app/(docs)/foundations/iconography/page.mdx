@@ -1,101 +1,48 @@
+import { IconGlyph, connectorManifest, glyphManifest } from '@ship-it-ui/icons';
+import { IconCatalog } from '@/components/docs/IconCatalog';
+
 # Iconography
 
-The icon vocabulary is **typographic glyphs** — Unicode characters rendered at
-text weight, monochromatic, always centered in a generous square. Never
-tinted, never gradient. No Lucide, no FontAwesome.
+The icon vocabulary is **inline SVG via `<IconGlyph>`** — every name resolves
+to an Iconify-sourced SVG (Lucide for UI primitives, Phosphor for soft
+variants, simple-icons for brand logos). Rendered at text weight,
+monochromatic, in `currentColor`, always centered in a generous square.
 
-This keeps the system small (zero icon font, zero per-icon SVG payload), and
-it sets a quiet engineering-console tone — the graph stays the focus, not the
-chrome.
+The names live in `packages/icons/src/icon-manifest.ts`; swap a single tuple
+there to change the icon everywhere it's used. Generated SVG bodies are
+materialised into `src/icon-data.ts` at build time so the runtime has zero
+network dependency. **This page is derived from the live manifest** — adding
+a new glyph in `icon-manifest.ts` makes it appear here on the next build.
 
 ## Full inventory
 
-export const glyphs = [
-  { g: '◆', n: 'brand' },
-  { g: '◇', n: 'service' },
-  { g: '○', n: 'person' },
-  { g: '▤', n: 'document' },
-  { g: '▢', n: 'file' },
-  { g: '↑', n: 'deploy' },
-  { g: '↓', n: 'download' },
-  { g: '→', n: 'next' },
-  { g: '←', n: 'prev' },
-  { g: '✦', n: 'ask / ai' },
-  { g: '✓', n: 'confirm' },
-  { g: '×', n: 'close' },
-  { g: '+', n: 'add' },
-  { g: '−', n: 'remove' },
-  { g: '⌕', n: 'search' },
-  { g: '⌘', n: 'cmd' },
-  { g: '⚙', n: 'settings' },
-  { g: '⋯', n: 'more' },
-  { g: '⋮', n: 'more-vertical' },
-  { g: '✎', n: 'edit' },
-  { g: '⧉', n: 'copy' },
-  { g: '↻', n: 'refresh' },
-  { g: 'ⓘ', n: 'info' },
-  { g: '!', n: 'warn / incident' },
-  { g: '?', n: 'help' },
-  { g: '⌂', n: 'home' },
-  { g: '◱', n: 'fit-view' },
-  { g: '▸', n: 'expand' },
-  { g: '▾', n: 'collapse' },
-  { g: '↗', n: 'external' },
-  { g: '@', n: 'mention' },
-  { g: '#', n: 'tag' },
-  { g: '~', n: 'approx' },
-  { g: '↵', n: 'enter' },
-  { g: '⇧', n: 'shift' },
-  { g: '⌥', n: 'option' },
-  { g: '⎋', n: 'escape' },
-  { g: '⏻', n: 'power' },
-  { g: '◉', n: 'live / record' },
-  { g: '◐', n: 'half' },
-  { g: '▪', n: 'dot' },
-  { g: '≡', n: 'menu' },
-  { g: '⇅', n: 'sort' },
-  { g: '∞', n: 'infinite' },
-  { g: '§', n: 'section' },
-  { g: '‹', n: 'left' },
-  { g: '›', n: 'right' },
-];
+export const glyphItems = Object.keys(glyphManifest)
+  .sort()
+  .map((name) => ({ name }));
 
-<div style={{ display: 'grid', gridTemplateColumns: 'repeat(8, 1fr)', gap: 8 }}>
-  {glyphs.map((x) => (
-    <div
-      key={x.g + x.n}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: 4,
-        padding: '10px 6px',
-        background: 'var(--color-panel-2)',
-        border: '1px solid var(--color-border)',
-        borderRadius: 8,
-      }}
-    >
-      <div style={{ fontSize: 22, color: 'var(--color-text)', lineHeight: 1 }}>{x.g}</div>
-      <div
-        style={{
-          fontSize: 9,
-          color: 'var(--color-text-dim)',
-          fontFamily: 'var(--font-family-mono)',
-          textAlign: 'center',
-        }}
-      >
-        {x.n}
-      </div>
-    </div>
-  ))}
-</div>
+<IconCatalog items={glyphItems} pageSize={64} searchPlaceholder="Search glyphs…" />
+
+## Connector logos
+
+Brand marks for first-class data sources. Use `<IconGlyph kind="connector" />`.
+
+export const connectorItems = Object.keys(connectorManifest)
+  .sort()
+  .map((name) => ({ name, kind: 'connector' }));
+
+<IconCatalog
+  items={connectorItems}
+  pageSize={64}
+  searchPlaceholder="Search connectors…"
+  columns={5}
+/>
 
 ## Sizes
 
 <div style={{ display: 'flex', gap: 18, alignItems: 'center', padding: '12px 0' }}>
   {[12, 14, 16, 20, 24, 32, 48].map((s) => (
     <div key={s} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-      <div style={{ fontSize: s, color: 'var(--color-text)' }}>✦</div>
+      <IconGlyph name="ask" size={s} style={{ color: 'var(--color-text)' }} />
       <span
         style={{
           fontSize: 9,
@@ -113,7 +60,7 @@ export const glyphs = [
 
 <div style={{ display: 'flex', gap: 14, alignItems: 'flex-end' }}>
   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-    <span style={{ fontSize: 20 }}>✦</span>
+    <IconGlyph name="ask" size={20} />
     <span
       style={{
         fontSize: 10,
@@ -125,7 +72,7 @@ export const glyphs = [
     </span>
   </div>
   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-    <span style={{ fontSize: 20, color: 'var(--color-text-dim)' }}>✦</span>
+    <IconGlyph name="ask" size={20} style={{ color: 'var(--color-text-dim)' }} />
     <span
       style={{
         fontSize: 10,
@@ -137,7 +84,7 @@ export const glyphs = [
     </span>
   </div>
   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-    <span style={{ fontSize: 20, color: 'var(--color-accent)' }}>✦</span>
+    <IconGlyph name="ask" size={20} style={{ color: 'var(--color-accent)' }} />
     <span
       style={{
         fontSize: 10,
@@ -161,7 +108,7 @@ export const glyphs = [
         color: 'var(--color-accent)',
       }}
     >
-      ✦
+      <IconGlyph name="ask" size={14} />
     </div>
     <span
       style={{
@@ -185,7 +132,7 @@ export const glyphs = [
         placeItems: 'center',
       }}
     >
-      ✦
+      <IconGlyph name="ask" size={14} />
     </div>
     <span
       style={{
@@ -209,10 +156,9 @@ export const glyphs = [
         color: 'var(--color-accent)',
         display: 'grid',
         placeItems: 'center',
-        fontSize: 16,
       }}
     >
-      ✦
+      <IconGlyph name="ask" size={16} />
     </div>
     <span
       style={{
@@ -231,10 +177,17 @@ export const glyphs = [
 ```tsx
 import { IconGlyph } from '@ship-it-ui/icons';
 
-<IconGlyph name="ask" size={14} />          // 14px ✦
-<IconGlyph name="service" size={22} />      // 22px ◇
+<IconGlyph name="ask" size={14} />
+<IconGlyph name="service" size={22} />
+<IconGlyph kind="connector" name="github" size={20} />
 ```
 
-For a component-internal default (a Button's caret, a Banner's leading mark,
-etc.) the glyph string is fine inline — `IconGlyph` is the centralized API
-when you need the canonical sizing + a11y attributes.
+`<IconGlyph>` is the canonical surface — it handles sizing, ARIA, and
+`currentColor` propagation. For runtime-computed names use
+`<DynamicIconGlyph>`, which accepts any string and falls back to centered
+SVG text when no icon is registered.
+
+For non-React surfaces (cytoscape `background-image`, canvas, Mermaid), call
+`iconToSvgDataUrl(name, { color, size })` for a ready
+`data:image/svg+xml;…` URL — used internally by the cytoscape adapter to
+paint entity glyphs on graph nodes.

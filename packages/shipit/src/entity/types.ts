@@ -30,8 +30,17 @@ export type EntityType = KnownEntityType | (string & {});
 export type EntityBadgeVariant = 'neutral' | 'accent' | 'ok' | 'warn' | 'err' | 'purple' | 'pink';
 
 export interface EntityTypeMeta {
-  /** Single-character glyph rendered next to the type label. */
-  glyph: string;
+  /**
+   * Icon name in `@ship-it-ui/icons`. Entity components (`EntityBadge`,
+   * `EntityListRow`, `EntityCard`, `GraphNode`, `EntityTable`) and the
+   * cytoscape adapter render the SVG icon from `icon-data.ts`. Pass the string
+   * name (e.g. `'service'`, `'rocket'`) — type-checking against `GlyphName`
+   * happens at the registration call site, not here, to keep this interface
+   * importable from packages that don't depend on `@ship-it-ui/icons`. Names
+   * not registered in the icon manifest fall back to centered-text rendering
+   * inside the icon's SVG, so a typo is visible but won't crash.
+   */
+  iconName: string;
   /** Human-readable type name (e.g. `'Service'`). */
   label: string;
   /** Tailwind text-color class for the glyph and accent text. */
@@ -46,7 +55,7 @@ export interface EntityTypeMeta {
 
 const BUILTIN_META: Record<KnownEntityType, EntityTypeMeta> = {
   service: {
-    glyph: '◇',
+    iconName: 'service',
     label: 'Service',
     toneClass: 'text-accent',
     toneBg: 'bg-accent-dim',
@@ -54,7 +63,7 @@ const BUILTIN_META: Record<KnownEntityType, EntityTypeMeta> = {
     badgeVariant: 'accent',
   },
   person: {
-    glyph: '○',
+    iconName: 'person',
     label: 'Person',
     toneClass: 'text-text-muted',
     toneBg: 'bg-panel-2',
@@ -62,7 +71,7 @@ const BUILTIN_META: Record<KnownEntityType, EntityTypeMeta> = {
     badgeVariant: 'neutral',
   },
   document: {
-    glyph: '▤',
+    iconName: 'document',
     label: 'Document',
     toneClass: 'text-purple',
     toneBg: 'bg-[color-mix(in_oklab,var(--color-purple),transparent_85%)]',
@@ -70,7 +79,7 @@ const BUILTIN_META: Record<KnownEntityType, EntityTypeMeta> = {
     badgeVariant: 'purple',
   },
   deployment: {
-    glyph: '↑',
+    iconName: 'deployment',
     label: 'Deployment',
     toneClass: 'text-ok',
     toneBg: 'bg-[color-mix(in_oklab,var(--color-ok),transparent_85%)]',
@@ -78,7 +87,7 @@ const BUILTIN_META: Record<KnownEntityType, EntityTypeMeta> = {
     badgeVariant: 'ok',
   },
   incident: {
-    glyph: '◎',
+    iconName: 'incident',
     label: 'Incident',
     toneClass: 'text-err',
     toneBg: 'bg-[color-mix(in_oklab,var(--color-err),transparent_85%)]',
@@ -86,7 +95,7 @@ const BUILTIN_META: Record<KnownEntityType, EntityTypeMeta> = {
     badgeVariant: 'err',
   },
   ticket: {
-    glyph: '▢',
+    iconName: 'ticket',
     label: 'Ticket',
     toneClass: 'text-warn',
     toneBg: 'bg-[color-mix(in_oklab,var(--color-warn),transparent_85%)]',
@@ -139,19 +148,6 @@ export function resetEntityTypeRegistry(): void {
     registry.set(key, BUILTIN_META[key]);
   }
 }
-
-/**
- * @deprecated Prefer `getEntityTypeMeta(type).glyph`. Retained for the six
- * built-in types so existing consumers keep working.
- */
-export const ENTITY_GLYPH: Record<KnownEntityType, string> = {
-  service: BUILTIN_META.service.glyph,
-  person: BUILTIN_META.person.glyph,
-  document: BUILTIN_META.document.glyph,
-  deployment: BUILTIN_META.deployment.glyph,
-  incident: BUILTIN_META.incident.glyph,
-  ticket: BUILTIN_META.ticket.glyph,
-};
 
 /** @deprecated Prefer `getEntityTypeMeta(type).label`. */
 export const ENTITY_LABEL: Record<KnownEntityType, string> = {

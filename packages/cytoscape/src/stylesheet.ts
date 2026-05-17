@@ -1,3 +1,4 @@
+import { iconToSvgDataUrl } from '@ship-it-ui/icons';
 import { listEntityTypes } from '@ship-it-ui/shipit';
 import type cytoscape from 'cytoscape';
 
@@ -83,7 +84,7 @@ export function buildShipItStylesheet(
         style: renderGlyphs
           ? {
               'border-color': c,
-              'background-image': glyphDataUrl(meta.glyph, c),
+              'background-image': iconToSvgDataUrl(meta.iconName, { color: c }),
               'background-fit': 'contain',
               'background-clip': 'none',
             }
@@ -155,39 +156,4 @@ export const GRAPH_CANVAS_CLASS = {
 // these two characters are the only ones that would change selector semantics.
 function escapeCytoscapeAttr(value: string): string {
   return value.replace(/[\\"]/g, (c) => `\\${c}`);
-}
-
-const XML_ESCAPES: Record<string, string> = {
-  '<': '&lt;',
-  '>': '&gt;',
-  '&': '&amp;',
-  '"': '&quot;',
-  "'": '&apos;',
-};
-
-function escapeXml(value: string): string {
-  return value.replace(/[<>&"']/g, (c) => XML_ESCAPES[c] ?? c);
-}
-
-/**
- * Build a `data:image/svg+xml;...` URL containing the entity glyph centered
- * in a 52×52 viewBox, filled with `color`. Cytoscape draws this as the
- * node's `background-image`, on top of the panel-colored fill, beneath the
- * entity-color border. Glyphs are single unicode characters from the
- * `EntityTypeMeta.glyph` registry (◇ ○ ▤ ↑ ◎ ▢ …).
- *
- * `y='34'` lands the visual centre of typical box-drawing / shape glyphs on
- * the geometric centre of the node — `y='26'` (true centre) sits the
- * baseline at the centre and the glyph reads as if it's floating above.
- */
-function glyphDataUrl(glyph: string, color: string): string {
-  const safeGlyph = escapeXml(glyph);
-  const safeColor = escapeXml(color);
-  const svg =
-    `<svg xmlns='http://www.w3.org/2000/svg' width='52' height='52' viewBox='0 0 52 52'>` +
-    `<text x='26' y='34' text-anchor='middle' ` +
-    `font-family='ui-monospace,SFMono-Regular,monospace' ` +
-    `font-size='26' fill='${safeColor}'>${safeGlyph}</text>` +
-    `</svg>`;
-  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
