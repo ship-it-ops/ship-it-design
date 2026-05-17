@@ -1,5 +1,26 @@
 # @ship-it-ui/cytoscape
 
+## 0.0.6
+
+### Patch Changes
+
+- 0318497: Route per-entity-type `background-image` styles through
+  `iconToSvgDataUrl()` from `@ship-it-ui/icons` instead of the hand-rolled
+  `glyphDataUrl()`. Entity types now paint with real Iconify SVGs inside
+  cytoscape nodes.
+
+  Adds `@ship-it-ui/icons` as a peer dependency (and devDependency for local
+  builds). No cytoscape API change.
+
+- Updated dependencies [0318497]
+- Updated dependencies [0318497]
+- Updated dependencies [0318497]
+- Updated dependencies [0318497]
+- Updated dependencies [0318497]
+  - @ship-it-ui/icons@0.0.6
+  - @ship-it-ui/shipit@0.0.7
+  - @ship-it-ui/ui@0.0.6
+
 ## 0.0.5
 
 ### Patch Changes
