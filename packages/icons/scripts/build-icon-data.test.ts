@@ -5,17 +5,20 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
 import { connectorManifest, glyphManifest } from '../src/icon-manifest';
-import { buildIconData, renderIconDataModule, resolveIcon } from './build-icon-data';
+import { buildIconData, formatIconData, resolveIcon } from './build-icon-data';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ICON_DATA_FILE = resolve(__dirname, '../src/icon-data.ts');
 
 describe('build-icon-data', () => {
-  it('committed icon-data.ts is byte-identical to a fresh regenerate', () => {
+  it('committed icon-data.ts is byte-identical to a fresh regenerate', async () => {
     // Regression for "edit the manifest, forget to run codegen, ship stale
-    // icons" — CI now catches that drift before merge.
+    // icons" — CI now catches that drift before merge. We compare against the
+    // Prettier-formatted output (same formatter that pre-commit hooks /
+    // editor save runs against the committed file) so this test agrees with
+    // what's actually on disk.
     const committed = readFileSync(ICON_DATA_FILE, 'utf8');
-    const fresh = renderIconDataModule(buildIconData());
+    const fresh = await formatIconData(ICON_DATA_FILE, buildIconData());
     expect(fresh).toBe(committed);
   });
 

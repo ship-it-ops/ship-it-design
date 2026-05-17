@@ -20,6 +20,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { getIconData, iconToSVG } from '@iconify/utils';
+import { format as prettierFormat, resolveConfig as prettierResolveConfig } from 'prettier';
 
 import { connectorManifest, glyphManifest, type IconRef } from '../src/icon-manifest';
 
@@ -132,10 +133,30 @@ export function renderIconDataModule(data: Record<string, IconBody>): string {
   );
 }
 
-export function writeIconData(target: string = ICON_DATA_FILE): void {
+/**
+ * Format the rendered TS source through the project's Prettier config so the
+ * committed file is byte-identical to what the drift test regenerates.
+ * Without this, `JSON.stringify` output (double quotes, quoted keys) diverges
+ * from the Prettier-formatted on-disk file (`singleQuote: true`, unquoted
+ * identifier keys) and the drift test fails on CI.
+ */
+export async function formatIconData(
+  target: string,
+  data: Record<string, IconBody>,
+): Promise<string> {
+  const rendered = renderIconDataModule(data);
+  const config = await prettierResolveConfig(target);
+  return prettierFormat(rendered, {
+    ...config,
+    parser: 'typescript',
+    filepath: target,
+  });
+}
+
+export async function writeIconData(target: string = ICON_DATA_FILE): Promise<void> {
   const data = buildIconData();
-  const source = renderIconDataModule(data);
-  writeFileSync(target, source, 'utf8');
+  const formatted = await formatIconData(target, data);
+  writeFileSync(target, formatted, 'utf8');
   // eslint-disable-next-line no-console
   console.log(`✓ Generated ${Object.keys(data).length} icons → ${target}`);
 }
@@ -147,5 +168,5 @@ export function readIconData(source: string = ICON_DATA_FILE): string {
 
 /* v8 ignore next 3 */
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  writeIconData();
+  await writeIconData();
 }
