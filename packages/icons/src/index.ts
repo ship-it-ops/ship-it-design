@@ -21,7 +21,13 @@ export {
   type IconGlyphProps,
   type DynamicIconGlyphProps,
 } from './IconGlyph';
-export type { ConnectorName, GlyphName } from './icon-manifest';
+export {
+  connectorManifest,
+  glyphManifest,
+  type ConnectorName,
+  type GlyphName,
+  type IconRef,
+} from './icon-manifest';
 export { iconData, type IconData } from './icon-data';
 export { iconToSvgDataUrl } from './icon-to-data-url';
 

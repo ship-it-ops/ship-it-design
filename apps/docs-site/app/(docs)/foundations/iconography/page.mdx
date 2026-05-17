@@ -1,4 +1,5 @@
-import { IconGlyph } from '@ship-it-ui/icons';
+import { IconGlyph, connectorManifest, glyphManifest } from '@ship-it-ui/icons';
+import { IconCatalog } from '@/components/docs/IconCatalog';
 
 # Iconography
 
@@ -10,151 +11,31 @@ monochromatic, in `currentColor`, always centered in a generous square.
 The names live in `packages/icons/src/icon-manifest.ts`; swap a single tuple
 there to change the icon everywhere it's used. Generated SVG bodies are
 materialised into `src/icon-data.ts` at build time so the runtime has zero
-network dependency.
+network dependency. **This page is derived from the live manifest** — adding
+a new glyph in `icon-manifest.ts` makes it appear here on the next build.
 
 ## Full inventory
 
-export const inventory = [
-  { name: 'brand', use: 'brand mark' },
-  { name: 'service', use: 'service' },
-  { name: 'person', use: 'person' },
-  { name: 'document', use: 'document' },
-  { name: 'file', use: 'file' },
-  { name: 'ticket', use: 'ticket' },
-  { name: 'deployment', use: 'deployment' },
-  { name: 'ask', use: 'ask / ai' },
-  { name: 'incident', use: 'incident' },
-  { name: 'target', use: 'target' },
-  { name: 'live', use: 'live / record' },
-  { name: 'half', use: 'half' },
-  { name: 'dot', use: 'dot' },
-  { name: 'bolt', use: 'bolt' },
-  { name: 'graph', use: 'graph' },
-  { name: 'schema', use: 'schema' },
-  { name: 'home', use: 'home' },
-  { name: 'fitView', use: 'fit-view' },
-  { name: 'expand', use: 'expand' },
-  { name: 'collapse', use: 'collapse' },
-  { name: 'next', use: 'next' },
-  { name: 'prev', use: 'prev' },
-  { name: 'up', use: 'up' },
-  { name: 'down', use: 'down' },
-  { name: 'upRight', use: 'up-right' },
-  { name: 'downRight', use: 'down-right' },
-  { name: 'external', use: 'external' },
-  { name: 'enter', use: 'enter' },
-  { name: 'sort', use: 'sort' },
-  { name: 'caretLeft', use: 'left' },
-  { name: 'caretRight', use: 'right' },
-  { name: 'caretUp', use: 'caret-up' },
-  { name: 'caretDown', use: 'caret-down' },
-  { name: 'confirm', use: 'confirm' },
-  { name: 'close', use: 'close' },
-  { name: 'add', use: 'add' },
-  { name: 'remove', use: 'remove' },
-  { name: 'warn', use: 'warn' },
-  { name: 'help', use: 'help' },
-  { name: 'info', use: 'info' },
-  { name: 'more', use: 'more' },
-  { name: 'moreVertical', use: 'more-vertical' },
-  { name: 'edit', use: 'edit' },
-  { name: 'copy', use: 'copy' },
-  { name: 'refresh', use: 'refresh' },
-  { name: 'search', use: 'search' },
-  { name: 'cmd', use: 'cmd' },
-  { name: 'shift', use: 'shift' },
-  { name: 'option', use: 'option' },
-  { name: 'escape', use: 'escape' },
-  { name: 'settings', use: 'settings' },
-  { name: 'power', use: 'power' },
-  { name: 'mention', use: 'mention' },
-  { name: 'tag', use: 'tag' },
-  { name: 'approx', use: 'approx' },
-  { name: 'infinite', use: 'infinite' },
-  { name: 'section', use: 'section' },
-  { name: 'kubernetes', use: 'kubernetes' },
-  { name: 'datadog', use: 'datadog' },
-  { name: 'backstage', use: 'backstage' },
-  { name: 'pagerduty', use: 'pagerduty' },
-  { name: 'github', use: 'github' },
-];
+export const glyphItems = Object.keys(glyphManifest)
+  .sort()
+  .map((name) => ({ name }));
 
-<div style={{ display: 'grid', gridTemplateColumns: 'repeat(8, 1fr)', gap: 8 }}>
-  {inventory.map((x) => (
-    <div
-      key={x.name}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: 4,
-        padding: '10px 6px',
-        background: 'var(--color-panel-2)',
-        border: '1px solid var(--color-border)',
-        borderRadius: 8,
-      }}
-    >
-      <IconGlyph name={x.name} size={22} style={{ color: 'var(--color-text)' }} />
-      <div
-        style={{
-          fontSize: 9,
-          color: 'var(--color-text-dim)',
-          fontFamily: 'var(--font-family-mono)',
-          textAlign: 'center',
-        }}
-      >
-        {x.use}
-      </div>
-    </div>
-  ))}
-</div>
+<IconCatalog items={glyphItems} pageSize={64} searchPlaceholder="Search glyphs…" />
 
 ## Connector logos
 
 Brand marks for first-class data sources. Use `<IconGlyph kind="connector" />`.
 
-export const connectors = [
-  'github',
-  'notion',
-  'slack',
-  'linear',
-  'jira',
-  'pagerduty',
-  'confluence',
-  'gdrive',
-  's3',
-  'postgres',
-];
+export const connectorItems = Object.keys(connectorManifest)
+  .sort()
+  .map((name) => ({ name, kind: 'connector' }));
 
-<div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 8 }}>
-  {connectors.map((name) => (
-    <div
-      key={name}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: 4,
-        padding: '10px 6px',
-        background: 'var(--color-panel-2)',
-        border: '1px solid var(--color-border)',
-        borderRadius: 8,
-      }}
-    >
-      <IconGlyph kind="connector" name={name} size={22} style={{ color: 'var(--color-text)' }} />
-      <div
-        style={{
-          fontSize: 9,
-          color: 'var(--color-text-dim)',
-          fontFamily: 'var(--font-family-mono)',
-          textAlign: 'center',
-        }}
-      >
-        {name}
-      </div>
-    </div>
-  ))}
-</div>
+<IconCatalog
+  items={connectorItems}
+  pageSize={64}
+  searchPlaceholder="Search connectors…"
+  columns={5}
+/>
 
 ## Sizes
 

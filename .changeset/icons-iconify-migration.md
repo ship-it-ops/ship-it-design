@@ -21,6 +21,9 @@ width, height }`. Consumers that need to render icons outside React
   to a centered `<text>` glyph for unregistered names.
 - Two new manifest aliases — `deployment` (`lucide:rocket`) and `ticket`
   (`lucide:ticket`) — to give entity-type built-ins clean semantic names.
+- `glyphManifest`, `connectorManifest`, and the `IconRef` type — the raw
+  `[collection, iconName]` map. Useful for enumeration (icon pickers, docs
+  pages) when you need the names in their authored order.
 
 **Removed (breaking for any external consumer)**:
 
