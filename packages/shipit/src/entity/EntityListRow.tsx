@@ -1,5 +1,6 @@
 'use client';
 
+import { DynamicIconGlyph } from '@ship-it-ui/icons';
 import { cn } from '@ship-it-ui/ui';
 import {
   forwardRef,
@@ -68,9 +69,11 @@ function RowInner({
   return (
     <>
       {!hideGlyph && (
-        <span aria-hidden className={cn('font-mono text-[14px] leading-none', typeMeta.toneClass)}>
-          {typeMeta.glyph}
-        </span>
+        <DynamicIconGlyph
+          name={typeMeta.iconName}
+          size={14}
+          className={cn('shrink-0', typeMeta.toneClass)}
+        />
       )}
       <span className="text-text min-w-0 flex-1 truncate font-mono text-[12px]">{name}</span>
       {relation && (

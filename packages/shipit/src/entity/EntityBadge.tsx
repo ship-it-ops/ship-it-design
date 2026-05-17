@@ -1,5 +1,6 @@
 'use client';
 
+import { DynamicIconGlyph } from '@ship-it-ui/icons';
 import { Badge, type BadgeProps } from '@ship-it-ui/ui';
 import { cn } from '@ship-it-ui/ui';
 import { forwardRef, type ReactNode } from 'react';
@@ -33,11 +34,7 @@ export const EntityBadge = forwardRef<HTMLSpanElement, EntityBadgeProps>(functio
       className={cn(className)}
       {...props}
     >
-      {!hideGlyph && (
-        <span aria-hidden className="font-mono">
-          {meta.glyph}
-        </span>
-      )}
+      {!hideGlyph && <DynamicIconGlyph name={meta.iconName} size={11} />}
       {children ?? label ?? meta.label}
     </Badge>
   );

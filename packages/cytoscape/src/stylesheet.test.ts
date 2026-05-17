@@ -86,21 +86,26 @@ describe('buildShipItStylesheet', () => {
     expect(String(base?.style['font-family'])).not.toMatch(/var\(/);
   });
 
-  it('renders entity glyphs as SVG data-URL backgrounds by default', () => {
+  it('renders entity glyphs as Iconify SVG data-URL backgrounds by default', () => {
     const styles = buildShipItStylesheet({ palette: PALETTE });
     const service = findSelector(styles, 'node[entityType = "service"]');
     expect(service?.style['background-image']).toMatch(/^data:image\/svg\+xml/);
     expect(service?.style['background-fit']).toBe('contain');
     expect(service?.style['background-clip']).toBe('none');
-    // The `service` glyph is ◇ (U+25C7), which URL-encodes to %E2%97%87.
-    expect(String(service?.style['background-image'])).toContain('%E2%97%87');
-    // The emitted SVG must carry explicit `width`/`height` attributes in
-    // addition to `viewBox` — Cytoscape's canvas renderer rasterises the
-    // background-image through an `<img>`, which treats a `viewBox`-only
-    // `<svg>` as 0×0 and paints nothing.
-    const encoded = String(service?.style['background-image']);
-    expect(encoded).toContain("width%3D'52'");
-    expect(encoded).toContain("height%3D'52'");
+    const decoded = decodeURIComponent(
+      String(service?.style['background-image']).replace(/^data:image\/svg\+xml;utf8,/, ''),
+    );
+    // Built-ins set `iconName`, so the data URL should embed a real Iconify
+    // SVG body (path/g/circle), not the legacy unicode `<text>` fallback.
+    expect(decoded).toMatch(/<(path|g|circle|rect|polyline)/);
+    expect(decoded).not.toContain('<text');
+    // Explicit width/height are mandatory — cytoscape rasterises canvas
+    // background-images through `<img>`, which treats viewBox-only SVG as
+    // 0×0 intrinsic dimensions and paints nothing.
+    expect(decoded).toMatch(/width='\d+'/);
+    expect(decoded).toMatch(/height='\d+'/);
+    // The wrapper fill should be the resolved entity color (accent for service).
+    expect(decoded).toContain(`fill='${PALETTE.accent}'`);
   });
 
   it('falls back to a border-only per-type rule when renderGlyphs is false', () => {

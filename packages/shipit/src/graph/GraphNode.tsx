@@ -1,5 +1,6 @@
 'use client';
 
+import { DynamicIconGlyph } from '@ship-it-ui/icons';
 import { cn } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
@@ -64,7 +65,7 @@ export const GraphNode = forwardRef<HTMLDivElement, GraphNodeProps>(function Gra
           opacity,
         }}
       >
-        {glyph ?? meta.glyph}
+        {glyph ?? <DynamicIconGlyph name={meta.iconName} size={Math.round(size * 0.42)} />}
       </div>
       {label && <span className="text-text-dim font-mono text-[10px]">{label}</span>}
     </div>

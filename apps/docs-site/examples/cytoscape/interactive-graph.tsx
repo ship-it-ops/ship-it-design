@@ -23,7 +23,7 @@ import { useState } from 'react';
 // six. Each entry follows the same `EntityTypeMeta` shape the built-ins use.
 registerEntityTypes({
   repository: {
-    glyph: '⎇',
+    iconName: 'graph',
     label: 'Repository',
     toneClass: 'text-pink',
     toneBg: 'bg-[color-mix(in_oklab,var(--color-pink),transparent_85%)]',
@@ -31,7 +31,7 @@ registerEntityTypes({
     badgeVariant: 'pink',
   },
   pipeline: {
-    glyph: '⌁',
+    iconName: 'bolt',
     label: 'Pipeline',
     toneClass: 'text-warn',
     toneBg: 'bg-[color-mix(in_oklab,var(--color-warn),transparent_85%)]',
@@ -39,7 +39,7 @@ registerEntityTypes({
     badgeVariant: 'warn',
   },
   monitor: {
-    glyph: '◷',
+    iconName: 'target',
     label: 'Monitor',
     toneClass: 'text-accent',
     toneBg: 'bg-[color-mix(in_oklab,var(--color-accent),transparent_85%)]',

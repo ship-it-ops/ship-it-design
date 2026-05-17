@@ -1,42 +1,54 @@
-import { forwardRef, type CSSProperties, type HTMLAttributes, type Ref } from 'react';
+import { forwardRef, type CSSProperties, type Ref, type SVGAttributes } from 'react';
 
-import { connectorGlyphs, glyphs, type ConnectorName, type GlyphName } from './glyphs';
+import { iconData, type IconData } from './icon-data';
+import type { ConnectorName, GlyphName } from './icon-manifest';
 
-interface IconGlyphBaseProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'children'> {
+interface IconGlyphBaseProps extends Omit<SVGAttributes<SVGSVGElement>, 'children'> {
   /**
-   * Pixel size. Renders as `font-size`, so the glyph inherits color from `currentColor`.
-   * Defaults to `1em` so the glyph follows the surrounding text size when unset.
+   * Pixel size for both `width` and `height`. Accepts a number (rendered as px)
+   * or any CSS length string. Defaults to `1em` so the icon follows the
+   * surrounding text size when unset.
    */
   size?: number | string;
   /**
-   * Accessible label. If provided, the glyph becomes a labelled image to assistive
-   * tech (`role="img"`, `aria-label={label}`). If omitted, the glyph is `aria-hidden`
-   * — use that for decorative usage next to text that already conveys the meaning.
+   * Accessible label. If provided, the icon becomes a labelled image to
+   * assistive tech (`role="img"`, `aria-label={label}`, plus an embedded
+   * `<title>`). If omitted, the icon is `aria-hidden` — use that for
+   * decorative usage next to text that already conveys the meaning.
    */
   label?: string;
   /**
-   * `default` (semantic glyph) or `connector` (connector-specific palette).
+   * `default` (semantic glyph) or `connector` (connector-specific brand logos).
    */
   kind?: 'default' | 'connector';
 }
 
 export interface IconGlyphProps extends IconGlyphBaseProps {
   /**
-   * Semantic glyph name (`ask`, `service`, `incident`, …) or a connector name when
-   * `kind="connector"`. Names are statically checked against the registries in
-   * `glyphs.ts` — typos surface at compile time. For dynamic name strings (server
-   * payloads, plugin-registered keys), use `<DynamicIconGlyph>` instead.
+   * Semantic glyph name (`ask`, `service`, `incident`, …) or a connector name
+   * when `kind="connector"`. Names are statically checked against the manifest
+   * in `icon-manifest.ts` — typos surface at compile time. For dynamic name
+   * strings (server payloads, plugin-registered keys), use
+   * `<DynamicIconGlyph>` instead.
    */
   name: GlyphName | ConnectorName;
 }
 
 export interface DynamicIconGlyphProps extends IconGlyphBaseProps {
   /**
-   * Arbitrary glyph name. The resolver falls back to rendering the literal string
-   * when the name doesn't match a registered glyph, so this is the right escape
-   * hatch when the name is only known at runtime.
+   * Arbitrary glyph name. The renderer looks up the manifest first; unknown
+   * names render as centered `<text>` inside an SVG so the caller still gets
+   * a square icon-shaped element. Reach for this when the name is computed
+   * at runtime; prefer `<IconGlyph>` for static literals.
    */
   name: string;
+}
+
+const FALLBACK_VIEWBOX = '0 0 24 24';
+
+function lookupIcon(name: string, kind: 'default' | 'connector'): IconData | null {
+  const key = kind === 'connector' ? `connector:${name}` : name;
+  return iconData[key] ?? null;
 }
 
 function renderGlyph(
@@ -48,63 +60,95 @@ function renderGlyph(
     style,
     ...rest
   }: IconGlyphBaseProps & { name: string },
-  ref: Ref<HTMLSpanElement>,
+  ref: Ref<SVGSVGElement>,
 ) {
-  const map = kind === 'connector' ? connectorGlyphs : glyphs;
-  const glyph = (map as Record<string, string>)[name] ?? name;
-  const fontSize = typeof size === 'number' ? `${size}px` : size;
-
+  const dimension = typeof size === 'number' ? `${size}px` : size;
   const composedStyle: CSSProperties = {
     display: 'inline-block',
-    lineHeight: 1,
-    fontSize,
+    verticalAlign: 'middle',
     color: 'currentColor',
+    flexShrink: 0,
     ...style,
   };
+  const ariaProps = label
+    ? ({ role: 'img', 'aria-label': label } as const)
+    : ({ 'aria-hidden': true } as const);
 
-  if (label) {
+  const icon = lookupIcon(name, kind);
+  if (icon) {
     return (
-      <span ref={ref} role="img" aria-label={label} style={composedStyle} {...rest}>
-        {glyph}
-      </span>
+      <svg
+        ref={ref}
+        width={dimension}
+        height={dimension}
+        viewBox={icon.viewBox}
+        fill="currentColor"
+        style={composedStyle}
+        {...ariaProps}
+        {...rest}
+      >
+        {label ? <title>{label}</title> : null}
+        <g dangerouslySetInnerHTML={{ __html: icon.body }} />
+      </svg>
     );
   }
 
+  // Unknown name — only reachable via `<DynamicIconGlyph>`. Render the literal
+  // string as centered SVG text so the ref type stays `SVGSVGElement` and the
+  // caller still gets something square-shaped to lay out against.
   return (
-    <span ref={ref} aria-hidden="true" style={composedStyle} {...rest}>
-      {glyph}
-    </span>
+    <svg
+      ref={ref}
+      width={dimension}
+      height={dimension}
+      viewBox={FALLBACK_VIEWBOX}
+      fill="currentColor"
+      style={composedStyle}
+      {...ariaProps}
+      {...rest}
+    >
+      {label ? <title>{label}</title> : null}
+      <text
+        x="12"
+        y="17"
+        textAnchor="middle"
+        fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+        fontSize="18"
+        fill="currentColor"
+      >
+        {name}
+      </text>
+    </svg>
   );
 }
 
 /**
- * Renders a Ship-It glyph as styled text. `name` is statically typed against the
- * `glyphs` / `connectorGlyphs` registries — typos are caught at compile time.
+ * Renders a Ship-It icon as inline SVG. `name` is statically typed against the
+ * manifest in `icon-manifest.ts` — typos are caught at compile time. The SVG
+ * body is sourced from `src/icon-data.ts` (auto-generated from the manifest);
+ * rendered with `fill="currentColor"` so it follows surrounding text color.
  *
  * Usage:
  *   <IconGlyph name="ask" size={14} />                       // decorative
  *   <IconGlyph name="incident" size={20} label="Incident" /> // labelled for screen readers
  *   <IconGlyph name="github" kind="connector" />             // connector glyph
  *
- * For runtime-dynamic names (server payloads, user-registered keys) use
- * `<DynamicIconGlyph>`, which accepts any string and falls back to rendering the
- * literal name when it isn't registered.
+ * For runtime-dynamic names use `<DynamicIconGlyph>`, which accepts any string
+ * and falls back to a centered `<text>` glyph for unregistered names.
  */
-export const IconGlyph = forwardRef<HTMLSpanElement, IconGlyphProps>(
-  function IconGlyph(props, ref) {
-    return renderGlyph(props, ref);
-  },
-);
+export const IconGlyph = forwardRef<SVGSVGElement, IconGlyphProps>(function IconGlyph(props, ref) {
+  return renderGlyph(props, ref);
+});
 
 IconGlyph.displayName = 'IconGlyph';
 
 /**
  * Runtime-dynamic variant of `<IconGlyph>`. Accepts any string for `name` and
- * renders the literal name as a fallback when no glyph is registered. Reach for
- * this when the name is computed at runtime; prefer `<IconGlyph>` for static
- * literals so typos are caught at compile time.
+ * falls back to drawing the literal name as centered SVG text when no icon
+ * is registered. Reach for this when the name is computed at runtime; prefer
+ * `<IconGlyph>` for static literals so typos are caught at compile time.
  */
-export const DynamicIconGlyph = forwardRef<HTMLSpanElement, DynamicIconGlyphProps>(
+export const DynamicIconGlyph = forwardRef<SVGSVGElement, DynamicIconGlyphProps>(
   function DynamicIconGlyph(props, ref) {
     return renderGlyph(props, ref);
   },

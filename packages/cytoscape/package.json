@@ -51,6 +51,7 @@
     "clean": "rm -rf dist .turbo"
   },
   "peerDependencies": {
+    "@ship-it-ui/icons": "workspace:*",
     "@ship-it-ui/shipit": "workspace:*",
     "@ship-it-ui/ui": "workspace:*",
     "cytoscape": "^3.28.0",
@@ -59,6 +60,7 @@
   },
   "devDependencies": {
     "@ship-it-ui/eslint-config": "workspace:*",
+    "@ship-it-ui/icons": "workspace:*",
     "@ship-it-ui/shipit": "workspace:*",
     "@ship-it-ui/tokens": "workspace:*",
     "@ship-it-ui/tsconfig": "workspace:*",

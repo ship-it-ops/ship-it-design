@@ -37,8 +37,10 @@ Tree-shakeable ESM. No runtime CSS-in-JS. No global side effects beyond the
 explicit `@ship-it-ui/ui/styles/globals.css` import. Geist is self-hosted, not
 loaded from a CDN.
 
-## 7. Glyphs, not emoji
+## 7. Icons, not emoji
 
-The icon vocabulary is typographic glyphs (◆ ◇ ○ ▤ ✦ …) rendered at text
-weight, monochromatic, always centered. Never tinted, never gradient. See
+The icon vocabulary is inline SVG via `<IconGlyph>`, sourced from Iconify
+(Lucide for UI primitives, Phosphor for soft variants, simple-icons for
+brand logos). Rendered at text weight, monochromatic, always centered.
+Never tinted in a way that fights `currentColor`, never gradient. See
 **Foundations / Iconography** for the full set.

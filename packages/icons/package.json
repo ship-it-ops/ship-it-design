@@ -41,7 +41,8 @@
     "provenance": true
   },
   "scripts": {
-    "build": "tsx scripts/build.ts && tsup",
+    "build": "tsx scripts/build-icon-data.ts && tsx scripts/build.ts && tsup",
+    "icons:sync": "tsx scripts/build-icon-data.ts",
     "dev": "tsup --watch",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
@@ -54,6 +55,10 @@
     "react": "^18.0.0 || ^19.0.0"
   },
   "devDependencies": {
+    "@iconify-json/lucide": "^1.2.0",
+    "@iconify-json/ph": "^1.2.0",
+    "@iconify-json/simple-icons": "^1.2.0",
+    "@iconify/utils": "^2.1.30",
     "@ship-it-ui/eslint-config": "workspace:*",
     "@ship-it-ui/tsconfig": "workspace:*",
     "@svgr/core": "^8.1.0",

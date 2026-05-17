@@ -1,3 +1,4 @@
+import { DynamicIconGlyph } from '@ship-it-ui/icons';
 import { DataTable, type DataTableColumn, type DataTableProps } from '@ship-it-ui/ui';
 import { type Ref } from 'react';
 
@@ -43,9 +44,7 @@ export function entityColumn<T extends MinimalEntity>(
       const meta = getEntityTypeMeta(row.type);
       return (
         <span className="flex items-center gap-2 font-mono" data-entity-type={row.type}>
-          <span aria-hidden className={meta.toneClass}>
-            {meta.glyph}
-          </span>
+          <DynamicIconGlyph name={meta.iconName} size={14} className={meta.toneClass} />
           {row.name}
         </span>
       );
