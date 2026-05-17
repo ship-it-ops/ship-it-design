@@ -2,7 +2,7 @@
 
 import { IconGlyph } from '@ship-it-ui/icons';
 import { cn } from '@ship-it-ui/ui';
-import { type HTMLAttributes, type ReactNode } from 'react';
+import { forwardRef, useState, type HTMLAttributes, type ReactNode } from 'react';
 
 /**
  * EntityList — bordered/rounded container for `EntityListRow*` children with
@@ -12,7 +12,13 @@ import { type HTMLAttributes, type ReactNode } from 'react';
  * When `collapsible` is set, renders a native `<details>`/`<summary>` so the
  * expand/collapse behaviour is zero-JS and screen-reader-correct out of the
  * box. The caret affordance rotates from down→right via CSS when the section
- * is collapsed.
+ * is collapsed. Initial state is driven by `defaultCollapsed`; subsequent
+ * toggles are tracked in local state via `onToggle` so a parent re-render
+ * doesn't snap the disclosure back to its initial position.
+ *
+ * `ref` is typed as `HTMLElement` because the rendered tag flips between
+ * `<section>` and `<details>` based on `collapsible`. Narrow with a runtime
+ * `instanceof` check if you need element-specific APIs.
  *
  * NOTE on keyboard navigation: an arrow-key / j-k roving-tabindex scheme is
  * intentionally NOT implemented in this initial version. Wiring focus across
@@ -55,25 +61,42 @@ function Rows({ dividers, children }: { dividers: boolean; children: ReactNode }
   return <div className={cn('flex flex-col', dividers && dividerWrapperClasses)}>{children}</div>;
 }
 
-export function EntityList({
-  title,
-  subtitle,
-  framed = true,
-  dividers = true,
-  collapsible,
-  defaultCollapsed = false,
-  className,
-  children,
-  ...props
-}: EntityListProps) {
+export const EntityList = forwardRef<HTMLElement, EntityListProps>(function EntityList(
+  {
+    title,
+    subtitle,
+    framed = true,
+    dividers = true,
+    collapsible,
+    defaultCollapsed = false,
+    className,
+    children,
+    ...props
+  },
+  ref,
+) {
+  // `open` is React state — `<details open={…}>` is a controlled attribute
+  // and React re-applies it on every render. Without local state, any parent
+  // re-render would snap the disclosure back to `!defaultCollapsed`. The
+  // `onToggle` handler fires after the browser flips `open`, so state stays
+  // in sync with native behaviour rather than fighting it.
+  const [open, setOpen] = useState(!defaultCollapsed);
+
   if (collapsible) {
+    // When the summary has no visible label (no title and no subtitle), give
+    // screen readers a fallback name so the disclosure isn't announced as
+    // "Details, button, collapsed" with no context.
+    const fallbackLabel = !title && !subtitle ? 'Toggle section' : undefined;
     return (
       <details
-        open={!defaultCollapsed}
+        ref={ref as React.Ref<HTMLDetailsElement>}
+        open={open}
+        onToggle={(e) => setOpen((e.currentTarget as HTMLDetailsElement).open)}
         className={cn(framed && framedClasses, 'group', className)}
         {...(props as HTMLAttributes<HTMLDetailsElement>)}
       >
         <summary
+          aria-label={fallbackLabel}
           className={cn(
             'border-border flex cursor-pointer list-none items-center gap-2 border-b px-3 py-2',
             'focus-visible:ring-accent-dim outline-none focus-visible:ring-[3px]',
@@ -98,11 +121,15 @@ export function EntityList({
   }
 
   return (
-    <section className={cn(framed && framedClasses, className)} {...props}>
+    <section
+      ref={ref as React.Ref<HTMLElement>}
+      className={cn(framed && framedClasses, className)}
+      {...props}
+    >
       <Header title={title} subtitle={subtitle} />
       <Rows dividers={dividers}>{children}</Rows>
     </section>
   );
-}
+});
 
 EntityList.displayName = 'EntityList';

@@ -39,7 +39,9 @@ export const glyphManifest = {
   // Connectors / sources (semantic glyphs, not brand logos)
   bolt: ['lucide', 'zap'],
   graph: ['lucide', 'git-fork'],
-  schema: ['lucide', 'menu'],
+  // `schema` represents data structure (tables, columns), so a table grid is
+  // a better semantic fit than the hamburger menu glyph.
+  schema: ['lucide', 'table'],
   menu: ['lucide', 'menu'],
 
   // Navigation & layout

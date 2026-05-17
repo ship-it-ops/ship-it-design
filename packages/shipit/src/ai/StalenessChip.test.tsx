@@ -79,14 +79,25 @@ describe('StalenessChip', () => {
 
   it('wires up a tooltip when the prop is provided', () => {
     render(<StalenessChip ageSeconds={120} tooltip="Last refreshed via cron job" />);
-    // The Radix tooltip trigger renders the badge — assert the chip text is still
-    // there and that an aria-describedby was set (Radix sets this on the trigger
-    // when content mounts; existence proves the SimpleTooltip wrapped it).
+    // `SimpleTooltip` wraps the chip in a Radix `TooltipTrigger asChild`; the
+    // chip text stays visible in the same DOM position. We don't assert on
+    // tooltip-internal ARIA here — Radix only attaches `aria-describedby`
+    // once the tooltip content mounts (on hover/focus), and JSDOM doesn't
+    // simulate that without an explicit event.
     expect(screen.getByText('2m ago')).toBeInTheDocument();
   });
 
   it('has no a11y violations', async () => {
     const { container } = render(<StalenessChip ageSeconds={120} prefix="Updated" />);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('has no a11y violations (with tooltip)', async () => {
+    // The tooltip path puts `Badge` inside `TooltipTrigger asChild`, which is
+    // a different DOM shape than the plain chip — axe-check it separately.
+    const { container } = render(
+      <StalenessChip ageSeconds={120} tooltip="Last refreshed via cron job" />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });
