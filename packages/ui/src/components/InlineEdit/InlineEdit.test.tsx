@@ -131,4 +131,32 @@ describe('InlineEdit', () => {
     await userEvent.dblClick(screen.getByRole('button'));
     expect(await axe(container)).toHaveNoViolations();
   });
+
+  it('renders validation error text with a matching id and stays a11y-clean', async () => {
+    const { container } = render(
+      <InlineEdit
+        id="svc-name"
+        value="ok"
+        onValueChange={() => {}}
+        validate={(v) => (v.length < 3 ? 'too short' : null)}
+      />,
+    );
+    await userEvent.dblClick(screen.getByRole('button'));
+    const input = screen.getByRole('textbox');
+    await userEvent.clear(input);
+    await userEvent.type(input, 'ab{Enter}');
+    // The error text must exist in the DOM with the id the input references.
+    const message = screen.getByRole('alert');
+    expect(message).toHaveTextContent('too short');
+    expect(input).toHaveAttribute('aria-errormessage', message.getAttribute('id'));
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('carries the display label onto the input as aria-label', async () => {
+    render(
+      <InlineEdit value="payments" onValueChange={() => {}} aria-label="Rename service payments" />,
+    );
+    await userEvent.dblClick(screen.getByRole('button'));
+    expect(screen.getByRole('textbox')).toHaveAccessibleName('Rename service payments');
+  });
 });

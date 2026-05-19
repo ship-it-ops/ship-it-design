@@ -40,6 +40,13 @@ export interface KeyboardHandlerOptions {
   onEdgeDelete?: (edgeId: string) => void;
   onNodeMove?: (nodeId: string, position: { x: number; y: number }) => void;
   onClearSelection?: () => void;
+  /**
+   * Internal-only hook for the canvas to record an arrow-nudge in its
+   * history stack. Drag moves already have a from/to pair from the
+   * `tapstart` / `tapend` lifecycle; keyboard nudges synthesize their own
+   * frames so the canvas can't recover the `from` after the fact.
+   */
+  onArrowNudge?: (id: string, from: { x: number; y: number }, to: { x: number; y: number }) => void;
   /** Called when ⌘Z / Ctrl+Z is pressed. */
   undo?: () => void;
   /** Called when ⌘⇧Z / Ctrl+Shift+Z is pressed. */
@@ -54,6 +61,7 @@ export function useGraphEditorKeyboard({
   onNodeDelete,
   onEdgeDelete,
   onNodeMove,
+  onArrowNudge,
   onClearSelection,
   undo,
   redo,
@@ -114,7 +122,9 @@ export function useGraphEditorKeyboard({
       event.preventDefault();
       const step = event.shiftKey ? NUDGE_LARGE : NUDGE_BASE;
       const changes = selectedNodes.map((n) => {
-        const nextPos = { x: n.position.x + dx * step, y: n.position.y + dy * step };
+        const from = { x: n.position.x, y: n.position.y };
+        const nextPos = { x: from.x + dx * step, y: from.y + dy * step };
+        onArrowNudge?.(n.id, from, nextPos);
         onNodeMove?.(n.id, nextPos);
         return {
           type: 'position' as const,
@@ -133,6 +143,7 @@ export function useGraphEditorKeyboard({
       onNodeDelete,
       onEdgeDelete,
       onNodeMove,
+      onArrowNudge,
       onClearSelection,
       undo,
       redo,

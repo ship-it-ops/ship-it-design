@@ -48,15 +48,25 @@ function Inner() {
     setElements((prev) => prev.map((el) => (el.data.id === id ? { ...el, position } : el)));
   }, []);
 
-  const handleConnect = useCallback(({ source, target }: { source: string; target: string }) => {
-    const id = `e-${source}-${target}`;
-    setElements((prev) => [...prev, { data: { id, source, target } }]);
-  }, []);
+  const handleConnect = useCallback(
+    ({ id, source, target }: { id: string; source: string; target: string }) => {
+      setElements((prev) => [...prev, { data: { id, source, target } }]);
+    },
+    [],
+  );
 
-  const handleNodeAdd = useCallback((position: { x: number; y: number }) => {
-    const id = `svc-${Math.random().toString(36).slice(2, 7)}`;
-    setElements((prev) => [...prev, { data: { id, label: id, entityType: 'service' }, position }]);
-  }, []);
+  const handleNodeAdd = useCallback(
+    (node: { id: string; position: { x: number; y: number }; data?: Record<string, unknown> }) => {
+      // Empty `data` on fresh adds; populated on undo of a delete.
+      const label = (node.data?.label as string | undefined) ?? node.id;
+      const entityType = (node.data?.entityType as string | undefined) ?? 'service';
+      setElements((prev) => [
+        ...prev,
+        { data: { id: node.id, label, entityType }, position: node.position },
+      ]);
+    },
+    [],
+  );
 
   const handleNodeDelete = useCallback((id: string) => {
     setElements((prev) =>

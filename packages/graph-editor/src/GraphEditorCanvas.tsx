@@ -22,7 +22,6 @@ import {
 import {
   forwardRef,
   useCallback,
-  useEffect,
   useImperativeHandle,
   useMemo,
   useRef,
@@ -32,7 +31,7 @@ import {
 
 import './styles.css';
 
-import { toFlowElements, type GraphElement } from './adapter';
+import { toFlowElements, type GraphElement, type GraphElementsSplit } from './adapter';
 import { DefaultNode } from './DefaultNode';
 import { useHistory, type Command } from './history';
 import { useGraphEditorKeyboard } from './keyboard';
@@ -89,9 +88,20 @@ export interface GraphEditorCanvasProps extends Omit<
   /** Same shape as `<GraphCanvas>`'s `elements`. */
   elements: GraphElement[];
 
-  /* Editing events. */
-  onNodeAdd?: (position: { x: number; y: number }) => void;
-  onConnect?: (conn: { source: string; target: string }) => void;
+  /* Editing events.
+   *
+   * `id` on `onNodeAdd` / `onConnect` is always present and authoritative —
+   * the canvas generates it on user-initiated adds and replays the original
+   * id during undo of a delete, so consumers can use it directly as the
+   * identity in their persisted store.
+   */
+  onNodeAdd?: (node: {
+    id: string;
+    position: { x: number; y: number };
+    /** Empty on fresh adds; populated with the prior node's data on undo. */
+    data?: Record<string, unknown>;
+  }) => void;
+  onConnect?: (edge: { id: string; source: string; target: string }) => void;
   onNodeMove?: (nodeId: string, position: { x: number; y: number }) => void;
   onNodeDelete?: (nodeId: string) => void;
   onEdgeDelete?: (edgeId: string) => void;
@@ -158,21 +168,20 @@ const GraphEditorCanvasInner = forwardRef<GraphEditorCanvasHandle, GraphEditorCa
     const { refresh } = useGraphEditorTheme(wrapperRef);
     const { getViewport, screenToFlowPosition } = useReactFlow();
 
-    const initial = useMemo(() => toFlowElements(elements), [elements]);
-    const [nodes, setNodes, baseOnNodesChange] = useNodesState(initial.nodes);
-    const [edges, setEdges, baseOnEdgesChange] = useEdgesState(initial.edges);
+    // `elements` is read once as the initial value. The canvas is the source
+    // of truth for editing state from this point on; consumers observe via
+    // the event callbacks (`onConnect`, `onNodeMove`, etc.) and persist as
+    // they see fit. To load a different graph, remount via a `key` prop.
+    //
+    // Earlier revisions re-synced state on every `elements` change, but that
+    // clobbered the undo history any time a consumer pushed state back from
+    // an event (the common pattern shown in the docs examples).
+    const initialRef = useRef<GraphElementsSplit | null>(null);
+    if (initialRef.current === null) initialRef.current = toFlowElements(elements);
+    const [nodes, setNodes, baseOnNodesChange] = useNodesState(initialRef.current.nodes);
+    const [edges, setEdges, baseOnEdgesChange] = useEdgesState(initialRef.current.edges);
 
     const history = useHistory({ maxSize: historySize });
-
-    // Re-sync internal RF state on `elements` change. This is a load-style
-    // operation: the history is cleared because previous edits no longer
-    // make sense against a fresh graph.
-    useEffect(() => {
-      const next = toFlowElements(elements);
-      setNodes(next.nodes);
-      setEdges(next.edges);
-      history.reset();
-    }, [elements, setNodes, setEdges, history]);
 
     const nodeTypes = useMemo<NodeTypes>(() => {
       if (!renderNode) return { default: DefaultNode };
@@ -228,7 +237,7 @@ const GraphEditorCanvasInner = forwardRef<GraphEditorCanvasHandle, GraphEditorCa
         };
         setEdges((prev) => [...prev, edge]);
         history.push({ kind: 'add-edge', edge });
-        onConnect?.({ source: connection.source, target: connection.target });
+        onConnect?.({ id, source: connection.source, target: connection.target });
       },
       [setEdges, history, onConnect],
     );
@@ -289,34 +298,56 @@ const GraphEditorCanvasInner = forwardRef<GraphEditorCanvasHandle, GraphEditorCa
       onClearSelection?.();
     }, [onClearSelection]);
 
-    // Forward-direction delete handlers — keyboard.ts calls these via the
-    // standard RF change handlers, but we also need to capture the deleted
-    // entities for history.
-    const deleteSelectedNodes = useCallback(() => {
-      const selected = nodes.filter((n) => n.selected);
-      if (selected.length === 0) return;
-      for (const node of selected) {
-        const incident = edges.filter((e) => e.source === node.id || e.target === node.id);
-        history.push({ kind: 'delete-node', node, incidentEdges: incident });
-        onNodeDelete?.(node.id);
-      }
-      const removedIds = new Set(selected.map((n) => n.id));
-      setNodes((prev) => prev.filter((n) => !removedIds.has(n.id)));
-      setEdges((prev) =>
-        prev.filter((e) => !removedIds.has(e.source) && !removedIds.has(e.target)),
-      );
-    }, [edges, history, nodes, onNodeDelete, setEdges, setNodes]);
+    // Forward-direction delete handler. Combined node + edge so we never
+    // record an incident edge in *both* the node-delete batch and the
+    // standalone edge-delete list — undo would re-add it twice otherwise.
+    const deleteSelected = useCallback(() => {
+      const selectedNodes = nodes.filter((n) => n.selected);
+      const selectedEdges = edges.filter((e) => e.selected);
+      if (selectedNodes.length === 0 && selectedEdges.length === 0) return;
 
-    const deleteSelectedEdges = useCallback(() => {
-      const selected = edges.filter((e) => e.selected);
-      if (selected.length === 0) return;
-      for (const edge of selected) {
+      const removedNodeIds = new Set(selectedNodes.map((n) => n.id));
+      // Edges that disappear *because* their endpoint is being removed. These
+      // ride along inside the `delete-node` command and must not also be
+      // recorded as standalone `delete-edge` commands.
+      const incidentByNodeId = new Map<string, Edge[]>();
+      const incidentEdgeIds = new Set<string>();
+      for (const node of selectedNodes) {
+        const incident = edges.filter((e) => e.source === node.id || e.target === node.id);
+        incidentByNodeId.set(node.id, incident);
+        for (const e of incident) incidentEdgeIds.add(e.id);
+      }
+
+      // History — nodes first (so undo re-adds them before their edges).
+      for (const node of selectedNodes) {
+        history.push({
+          kind: 'delete-node',
+          node,
+          incidentEdges: incidentByNodeId.get(node.id) ?? [],
+        });
+      }
+      for (const edge of selectedEdges) {
+        if (incidentEdgeIds.has(edge.id)) continue; // already captured above
         history.push({ kind: 'delete-edge', edge });
+      }
+
+      // Consumer events — same dedup.
+      for (const node of selectedNodes) onNodeDelete?.(node.id);
+      for (const edge of selectedEdges) {
+        if (incidentEdgeIds.has(edge.id)) continue;
         onEdgeDelete?.(edge.id);
       }
-      const removedIds = new Set(selected.map((e) => e.id));
-      setEdges((prev) => prev.filter((e) => !removedIds.has(e.id)));
-    }, [edges, history, onEdgeDelete, setEdges]);
+
+      // Internal RF state.
+      if (removedNodeIds.size > 0) {
+        setNodes((prev) => prev.filter((n) => !removedNodeIds.has(n.id)));
+      }
+      const droppedEdgeIds = new Set<string>(incidentEdgeIds);
+      for (const e of selectedEdges) droppedEdgeIds.add(e.id);
+      if (droppedEdgeIds.size > 0) {
+        setEdges((prev) => prev.filter((e) => !droppedEdgeIds.has(e.id)));
+      }
+    }, [edges, history, nodes, onEdgeDelete, onNodeDelete, setEdges, setNodes]);
 
     // Undo / redo. When we apply a command (forward or reverse), we mutate
     // internal RF state directly and re-emit the matching consumer event so
@@ -326,7 +357,14 @@ const GraphEditorCanvasInner = forwardRef<GraphEditorCanvasHandle, GraphEditorCa
         switch (command.kind) {
           case 'add-node':
             setNodes((prev) => [...prev, command.node]);
-            onNodeAdd?.(command.node.position);
+            // Replay carries the full node so the consumer can restore the
+            // exact identity + data they previously persisted. Fresh adds
+            // (from `handleAddClick`) pass an empty `data` bag.
+            onNodeAdd?.({
+              id: command.node.id,
+              position: command.node.position,
+              data: (command.node.data ?? {}) as Record<string, unknown>,
+            });
             return;
           case 'delete-node': {
             const removedId = command.node.id;
@@ -338,7 +376,11 @@ const GraphEditorCanvasInner = forwardRef<GraphEditorCanvasHandle, GraphEditorCa
           }
           case 'add-edge':
             setEdges((prev) => [...prev, command.edge]);
-            onConnect?.({ source: command.edge.source, target: command.edge.target });
+            onConnect?.({
+              id: command.edge.id,
+              source: command.edge.source,
+              target: command.edge.target,
+            });
             return;
           case 'delete-edge':
             setEdges((prev) => prev.filter((e) => e.id !== command.edge.id));
@@ -368,18 +410,28 @@ const GraphEditorCanvasInner = forwardRef<GraphEditorCanvasHandle, GraphEditorCa
       if (cmd) applyCommand(cmd);
     }, [history, applyCommand]);
 
-    // Keyboard handler — owns Delete/Arrow/Esc/⌘Z. Delete is wired through
-    // our delete callbacks above so history captures the action.
+    // Keyboard handler — owns Delete/Arrow/Esc/⌘Z. The keyboard hook reports
+    // selection-based removals via `onNodesChange` + `onEdgesChange` in two
+    // separate calls within a single keypress. We re-route the first batch
+    // through `deleteSelected` (which dedupes node + incident-edge
+    // bookkeeping) and let the ref short-circuit the second call so we don't
+    // double-fire history pushes.
+    const deleteFlushedRef = useRef(false);
     const onKeyDown = useGraphEditorKeyboard({
       nodes,
       edges,
       onNodesChange: (changes) => {
-        // Intercept removals so we can push history + fire consumer events.
         const removals = changes.filter((c) => c.type === 'remove');
         if (removals.length > 0) {
-          // Re-route through deleteSelectedNodes which already does the bookkeeping.
-          deleteSelectedNodes();
-          // Re-run remaining changes (selection / position nudges).
+          if (!deleteFlushedRef.current) {
+            deleteSelected();
+            deleteFlushedRef.current = true;
+            // Reset after the current microtask so the next Delete keypress
+            // starts fresh.
+            queueMicrotask(() => {
+              deleteFlushedRef.current = false;
+            });
+          }
           const remaining = changes.filter((c) => c.type !== 'remove');
           if (remaining.length > 0) baseOnNodesChange(remaining);
         } else {
@@ -389,7 +441,13 @@ const GraphEditorCanvasInner = forwardRef<GraphEditorCanvasHandle, GraphEditorCa
       onEdgesChange: (changes) => {
         const removals = changes.filter((c) => c.type === 'remove');
         if (removals.length > 0) {
-          deleteSelectedEdges();
+          if (!deleteFlushedRef.current) {
+            deleteSelected();
+            deleteFlushedRef.current = true;
+            queueMicrotask(() => {
+              deleteFlushedRef.current = false;
+            });
+          }
           const remaining = changes.filter((c) => c.type !== 'remove');
           if (remaining.length > 0) baseOnEdgesChange(remaining);
         } else {
@@ -400,6 +458,9 @@ const GraphEditorCanvasInner = forwardRef<GraphEditorCanvasHandle, GraphEditorCa
       onNodeDelete: undefined,
       onEdgeDelete: undefined,
       onNodeMove,
+      onArrowNudge: (id, from, to) => {
+        history.push({ kind: 'move-node', id, from, to });
+      },
       onClearSelection,
       undo,
       redo,
@@ -413,18 +474,16 @@ const GraphEditorCanvasInner = forwardRef<GraphEditorCanvasHandle, GraphEditorCa
       const vp = getViewport();
       const wrapper = wrapperRef.current;
       const rect = wrapper?.getBoundingClientRect();
-      if (rect) {
-        const centerPx = {
-          x: rect.left + rect.width / 2,
-          y: rect.top + rect.height / 2,
-        };
-        const flow = screenToFlowPosition(centerPx);
-        onNodeAdd?.(flow);
-      } else {
-        // Fallback for headless / pre-mount calls — just emit the inverse
-        // of the viewport offset at unit zoom.
-        onNodeAdd?.({ x: -vp.x, y: -vp.y });
-      }
+      const position = rect
+        ? screenToFlowPosition({
+            x: rect.left + rect.width / 2,
+            y: rect.top + rect.height / 2,
+          })
+        : { x: -vp.x, y: -vp.y };
+      // The canvas owns the id so subsequent events (delete, undo) carry the
+      // same identity the consumer just persisted.
+      const id = `node-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
+      onNodeAdd?.({ id, position, data: {} });
     }, [getViewport, screenToFlowPosition, onNodeAdd]);
 
     useImperativeHandle(forwardedRef, () => ({ refreshStyles: refresh, undo, redo }), [

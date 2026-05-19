@@ -70,7 +70,7 @@ const inputStyles = cva(
 );
 
 type AsElement = 'span' | 'div' | 'h1' | 'h2' | 'h3';
-type Activation = 'dblclick' | 'click' | 'focus';
+type Activation = 'dblclick' | 'click';
 
 export interface InlineEditProps
   extends
@@ -215,25 +215,39 @@ export const InlineEdit = forwardRef<InlineEditHandle, InlineEditProps>(function
   };
 
   if (editing) {
+    const errorId = `${rest.id ?? 'inline-edit'}-error`;
+    // Carry the display element's accessible name onto the input so AT users
+    // still hear what's being edited after the swap. The display falls back
+    // to `Edit ${value}`; once we're inside the editor, the verb is implicit,
+    // so we drop the prefix.
+    const inputAriaLabel = ariaLabel ?? value ?? placeholder;
     return (
-      <input
-        ref={inputRef}
-        type="text"
-        value={draft}
-        onChange={(e) => {
-          setDraft(e.target.value);
-          if (error) setError(null);
-        }}
-        onKeyDown={onInputKeyDown}
-        onBlur={() => {
-          if (commitOnBlur) commit();
-          else cancel();
-        }}
-        placeholder={placeholder}
-        aria-invalid={error ? true : undefined}
-        aria-errormessage={error ? `${rest.id ?? 'inline-edit'}-error` : undefined}
-        className={cn(inputStyles({ size, tone: error ? 'err' : 'default' }), inputClassName)}
-      />
+      <span className="inline-flex flex-col items-stretch gap-1">
+        <input
+          ref={inputRef}
+          type="text"
+          value={draft}
+          onChange={(e) => {
+            setDraft(e.target.value);
+            if (error) setError(null);
+          }}
+          onKeyDown={onInputKeyDown}
+          onBlur={() => {
+            if (commitOnBlur) commit();
+            else cancel();
+          }}
+          placeholder={placeholder}
+          aria-label={inputAriaLabel}
+          aria-invalid={error ? true : undefined}
+          aria-errormessage={error ? errorId : undefined}
+          className={cn(inputStyles({ size, tone: error ? 'err' : 'default' }), inputClassName)}
+        />
+        {error && (
+          <span id={errorId} role="alert" className="text-err text-[11px]">
+            {error}
+          </span>
+        )}
+      </span>
     );
   }
 

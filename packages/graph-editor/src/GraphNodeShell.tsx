@@ -43,11 +43,19 @@ export const GraphNodeShell = forwardRef<HTMLDivElement, GraphNodeShellProps>(
     const glowPct = state === 'hover' ? 50 : 25;
     const opacity = state === 'dim' ? 0.35 : 1;
     const showRing = state === 'selected' || state === 'path';
+    // When `label` is a string we set it as the image's accessible name.
+    // When `label` is a ReactNode (e.g. an `<InlineEdit>`), the inner element
+    // self-describes — applying a stale `"${type} node"` fallback here would
+    // make AT announce the generic phrase before traversing into the child's
+    // own label. We drop `aria-label` in that case and let the child speak.
+    // When `label` is missing entirely, the generic fallback applies.
+    const imgAriaLabel =
+      typeof label === 'string' ? label : label == null ? `${type} node` : undefined;
     return (
       <div
         ref={ref}
         role="img"
-        aria-label={typeof label === 'string' ? label : `${type} node`}
+        aria-label={imgAriaLabel}
         data-state={state}
         data-entity-type={type}
         className={cn('inline-flex flex-col items-center gap-[6px]', className)}

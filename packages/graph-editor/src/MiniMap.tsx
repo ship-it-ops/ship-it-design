@@ -85,11 +85,20 @@ export function GraphEditorMiniMap({
       h: canvasSize.height / z,
     };
     const tl = norm(vp.x, vp.y);
+    const br = norm(vp.x + vp.w, vp.y + vp.h);
+    // Clamp both corners independently into [0, 1] graph-space, then derive
+    // width/height from the clamped corners. Without this, panning past the
+    // node bounding box yielded `width`/`height` > 1, which `<GraphMinimap>`
+    // renders as percentages and ends up overflowing the minimap chrome.
+    const clampedX = Math.max(0, Math.min(1, tl.x));
+    const clampedY = Math.max(0, Math.min(1, tl.y));
+    const clampedRight = Math.max(0, Math.min(1, br.x));
+    const clampedBottom = Math.max(0, Math.min(1, br.y));
     const viewportRect = {
-      x: Math.max(0, Math.min(1, tl.x)),
-      y: Math.max(0, Math.min(1, tl.y)),
-      width: Math.max(0, Math.min(1 - tl.x, vp.w / bbox.width)),
-      height: Math.max(0, Math.min(1 - tl.y, vp.h / bbox.height)),
+      x: clampedX,
+      y: clampedY,
+      width: Math.max(0, clampedRight - clampedX),
+      height: Math.max(0, clampedBottom - clampedY),
     };
     return { points, viewportRect };
   }, [nodes, viewport, canvasSize.width, canvasSize.height]);

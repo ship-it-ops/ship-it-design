@@ -65,11 +65,8 @@ function Inner() {
           onNodeMove={onNodeMove}
           onNodeDelete={onNodeDelete}
           onEdgeDelete={onEdgeDelete}
-          onConnect={({ source, target }) =>
-            setElements((prev) => [
-              ...prev,
-              { data: { id: `e-${source}-${target}`, source, target } },
-            ])
+          onConnect={({ id, source, target }) =>
+            setElements((prev) => [...prev, { data: { id, source, target } }])
           }
         />
       </div>

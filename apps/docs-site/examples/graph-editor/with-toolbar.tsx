@@ -40,11 +40,8 @@ function Inner() {
         onNodeMove={(id, position) =>
           setElements((prev) => prev.map((el) => (el.data.id === id ? { ...el, position } : el)))
         }
-        onConnect={({ source, target }) =>
-          setElements((prev) => [
-            ...prev,
-            { data: { id: `e-${source}-${target}`, source, target } },
-          ])
+        onConnect={({ id, source, target }) =>
+          setElements((prev) => [...prev, { data: { id, source, target } }])
         }
         onNodeDelete={(id) =>
           setElements((prev) =>
