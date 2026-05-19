@@ -1,0 +1,40 @@
+# GraphEditorCanvas
+
+The editing analog of [`GraphCanvas`](/graph/cytoscape). Same `elements[]` shape on the input — swap viewer ↔ editor without reshaping your data. React Flow under the hood; the canvas owns theme-token sync, mini-map, keyboard, and undo/redo so consumers focus on their domain model.
+
+<LivePreview example="graph-editor/default" />
+
+## Toolbar
+
+Pass any React node into the `toolbar` slot. When `toolbar` is omitted and you supply `onNodeAdd`, the editor renders a built-in keyboard-accessible "+ Add" button.
+
+<LivePreview example="graph-editor/with-toolbar" />
+
+## Custom nodes
+
+Pass `renderNode` to override the visual. `<GraphNodeShell>` is re-exported for consumers who want the canonical 52×52 square + selection ring without re-rolling it. Combine with `<InlineEdit>` for rename-in-place.
+
+<LivePreview example="graph-editor/custom-node" />
+
+## Keyboard
+
+The canvas root is `role="application"` and owns its keyboard semantics — `Tab` into it once, then:
+
+<LivePreview example="graph-editor/keyboard" />
+
+## Props
+
+<PropsTable component="GraphEditorCanvas" />
+
+## Accessibility
+
+- Canvas root is `role="application"` with the supplied `aria-label` (default `Graph editor`). One `Tab` brings focus to the canvas; keyboard handlers take over from there.
+- `Delete` / `Backspace` removes selected nodes and edges, firing `onNodeDelete` / `onEdgeDelete` for each. Arrow keys nudge selected nodes (Shift = 32px) and fire `onNodeMove`. `Escape` clears the selection and fires `onClearSelection`.
+- `⌘Z` / `Ctrl+Z` undoes; `⌘⇧Z` / `Ctrl+Shift+Z` redoes. `historySize=0` disables the stack entirely if your consumer manages undo externally.
+- When `toolbar` is omitted and `onNodeAdd` is provided, the canvas renders a real `<button aria-label="Add node">` in the top-left — keyboard-only users can add a node without a pointer.
+
+## Engine
+
+`<GraphEditorCanvas>` uses [React Flow](https://reactflow.dev) (`@xyflow/react`) under the hood. The viewer (`<GraphCanvas>`) uses [Cytoscape.js](https://js.cytoscape.org). They share the `elements[]` shape via a round-trip-tested adapter (`toFlowElements` / `toCytoscapeElements`), and they share token resolution via `@ship-it-ui/graph-tokens`. Consumers who import only the viewer don't pay for React Flow; consumers who import only the editor don't pay for Cytoscape.
+
+<EditOnGithub source="apps/docs-site/app/(docs)/graph/editor/page.mdx" />
