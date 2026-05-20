@@ -34,12 +34,22 @@ export function iconToSvgDataUrl(
 function renderSvg(name: string, color: string, size: number): string {
   const data = iconData[name] ?? iconData[`connector:${name}`];
   if (data) {
-    // Inject a `fill` on the wrapper so monochrome SVGs (most of Lucide) pick
-    // up the requested color. Iconify bodies use `currentColor` or `none`
-    // internally, both of which resolve against the wrapper's `fill`.
+    // Lucide bodies use `stroke="currentColor"` (most icons) and `fill="none"`,
+    // so the wrapper has to set BOTH:
+    //   - `style="color:X"` so `currentColor` references in the body resolve
+    //     to the requested color. This is the load-bearing piece — without
+    //     it `currentColor` inside an `<img src="data:image/svg+xml">`
+    //     resolves to the user-agent default (black), making the icon
+    //     invisible against dark-themed node backgrounds.
+    //   - `fill="X"` for the small subset of icons whose body uses
+    //     `fill="currentColor"` instead of stroke.
+    // Browsers honor inline `style` on inline-document SVGs even when
+    // referenced via `<img>`, so this works for cytoscape, canvas
+    // `drawImage`, and Mermaid image nodes alike.
+    const c = escapeAttr(color);
     return (
       `<svg xmlns='http://www.w3.org/2000/svg' width='${size}' height='${size}' ` +
-      `viewBox='${data.viewBox}' fill='${escapeAttr(color)}'>` +
+      `viewBox='${data.viewBox}' fill='${c}' style='color:${c}'>` +
       data.body +
       `</svg>`
     );
