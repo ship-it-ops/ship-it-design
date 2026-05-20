@@ -288,7 +288,7 @@ export const navigation: NavSection[] = [
         label: 'Engines',
         items: [
           { title: 'Cytoscape adapter', slug: 'graph/cytoscape' },
-          { title: 'GraphEditorCanvas', slug: 'graph/editor' },
+          { title: 'Graph editor canvas', slug: 'graph/editor' },
         ],
       },
     ],

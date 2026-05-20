@@ -34,10 +34,36 @@
   opacity: 1;
 }
 
-/* Match the viewer's selection ring: a 2px accent outline at offset 4. The
-   default RF box-shadow selection visual is suppressed. */
-.react-flow__node.selected {
+/* Reset React Flow's built-in node-default chrome. RF paints every node of
+   type `default` (which is also where our `<DefaultNode>` registers) with a
+   white 150×… box, a 1px border, and 10px of padding — the wrapper that
+   shows around the `<GraphNodeShell>` in screenshots. Our shell already
+   owns the visual, so we strip the wrapper to nothing. The selectors below
+   are scoped to `.ship-graph-editor` so other React Flow surfaces on the
+   same page (if any) aren't affected. */
+.ship-graph-editor .react-flow__node-default,
+.ship-graph-editor .react-flow__node-input,
+.ship-graph-editor .react-flow__node-output,
+.ship-graph-editor .react-flow__node-group {
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  border-radius: 0;
+  width: auto;
+  font-size: inherit;
+  text-align: left;
+}
+
+/* Suppress RF's hover/selected box-shadow on those node types too — our
+   `<GraphNodeShell>` draws its own selection ring. */
+.ship-graph-editor .react-flow__node.selectable:hover,
+.ship-graph-editor .react-flow__node.selectable.selected,
+.ship-graph-editor .react-flow__node.selectable:focus,
+.ship-graph-editor .react-flow__node.selectable:focus-visible,
+.ship-graph-editor .react-flow__node.selected {
   box-shadow: none !important;
+  outline: none;
 }
 
 /* Background dot pattern is opt-in via the `background="dots"` prop. The
