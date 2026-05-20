@@ -1,6 +1,6 @@
 {
   "name": "@ship-it-ui/graph-editor",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Graph-editing canvas for the Ship-It design system. React Flow under the hood; same `elements[]` shape as `@ship-it-ui/cytoscape` so consumers can swap viewer ↔ editor without reshaping data.",
   "license": "MIT",
   "homepage": "https://ship-it-ops.github.io/ship-it-design/",

@@ -1,6 +1,6 @@
 {
   "name": "@ship-it-ui/graph-tokens",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Token-resolution helpers for Ship-It graph adapters. Reads `--color-*` CSS variables at runtime and coerces them to sRGB strings that non-DOM renderers (Cytoscape, React Flow) can parse.",
   "license": "MIT",
   "homepage": "https://ship-it-ops.github.io/ship-it-design/",
