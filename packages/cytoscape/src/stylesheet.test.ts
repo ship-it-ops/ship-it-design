@@ -90,8 +90,15 @@ describe('buildShipItStylesheet', () => {
     const styles = buildShipItStylesheet({ palette: PALETTE });
     const service = findSelector(styles, 'node[entityType = "service"]');
     expect(service?.style['background-image']).toMatch(/^data:image\/svg\+xml/);
-    expect(service?.style['background-fit']).toBe('contain');
+    // `background-fit: none` (not `contain`) + percent width/height pinning
+    // gives the icon breathing room — pre-0.0.7 `contain` made it fill the
+    // node edge-to-edge.
+    expect(service?.style['background-fit']).toBe('none');
     expect(service?.style['background-clip']).toBe('none');
+    expect(service?.style['background-width']).toBe('50%');
+    expect(service?.style['background-height']).toBe('50%');
+    expect(service?.style['background-position-x']).toBe('50%');
+    expect(service?.style['background-position-y']).toBe('50%');
     const decoded = decodeURIComponent(
       String(service?.style['background-image']).replace(/^data:image\/svg\+xml;utf8,/, ''),
     );
@@ -106,6 +113,23 @@ describe('buildShipItStylesheet', () => {
     expect(decoded).toMatch(/height='\d+'/);
     // The wrapper fill should be the resolved entity color (accent for service).
     expect(decoded).toContain(`fill='${PALETTE.accent}'`);
+  });
+
+  it('honors a custom `glyphScale` (clamped into [0, 1])', () => {
+    const at40 = buildShipItStylesheet({ palette: PALETTE, glyphScale: 0.4 });
+    const service40 = findSelector(at40, 'node[entityType = "service"]');
+    expect(service40?.style['background-width']).toBe('40%');
+    expect(service40?.style['background-height']).toBe('40%');
+
+    // Out-of-range values clamp instead of throwing.
+    const at5 = buildShipItStylesheet({ palette: PALETTE, glyphScale: 5 });
+    expect(findSelector(at5, 'node[entityType = "service"]')?.style['background-width']).toBe(
+      '100%',
+    );
+    const atNegative = buildShipItStylesheet({ palette: PALETTE, glyphScale: -1 });
+    expect(
+      findSelector(atNegative, 'node[entityType = "service"]')?.style['background-width'],
+    ).toBe('0%');
   });
 
   it('falls back to a border-only per-type rule when renderGlyphs is false', () => {

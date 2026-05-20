@@ -1,0 +1,40 @@
+# InlineEdit
+
+Display-to-input rename primitive. Click the value (or focus + Enter), type, then `Enter` to commit or `Escape` to cancel.
+
+<LivePreview example="inline-edit/default" />
+
+## Empty state
+
+Shows the `placeholder` until a value is committed.
+
+<LivePreview example="inline-edit/empty" />
+
+## Headings
+
+Use `as="h1" | "h2" | "h3"` to keep heading semantics. The element advertises itself as editable via `aria-roledescription="editable"`.
+
+<LivePreview example="inline-edit/heading" />
+
+## Validation
+
+`validate` runs on commit. Return an error message to reject and keep the editor open; return `null` to accept.
+
+<LivePreview example="inline-edit/validation" />
+
+## Disabled
+
+<LivePreview example="inline-edit/disabled" />
+
+## Props
+
+<PropsTable component="InlineEdit" />
+
+## Accessibility
+
+- The display element is keyboard-focusable. Press `Enter` (or `Space`) to enter edit mode, regardless of the `activate` setting.
+- For non-heading elements (`span`, `div`) `role="button"` is applied so screen readers announce the rename affordance. For headings the implicit heading role wins and `aria-roledescription="editable"` describes the affordance.
+- `Escape` cancels and restores the original value. Blur commits by default — pass `commitOnBlur={false}` to revert instead.
+- The accessible label defaults to `Edit {value}`. Override with `aria-label` for custom phrasing.
+
+<EditOnGithub source="apps/docs-site/app/(docs)/components/inline-edit/page.mdx" />

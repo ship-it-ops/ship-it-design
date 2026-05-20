@@ -16,6 +16,17 @@ describe('iconToSvgDataUrl', () => {
     expect(decoded).toMatch(/<(path|g)/);
   });
 
+  it('sets `style="color:…"` on the wrapper so stroke="currentColor" icons paint in the requested color', () => {
+    // Lucide bodies use `stroke="currentColor"` with `fill="none"`. Inside an
+    // `<img>` background-image the SVG has no inherited `color` cascade, so
+    // `currentColor` resolves to the user-agent default (black) unless the
+    // wrapper explicitly sets `color`. This test guards the dark-theme
+    // regression where node glyphs rendered black against a dark background.
+    const url = iconToSvgDataUrl('service', { size: 52, color: '#5b9cff' });
+    const decoded = decodeURIComponent(url.slice('data:image/svg+xml;utf8,'.length));
+    expect(decoded).toContain("style='color:#5b9cff'");
+  });
+
   it('resolves connector names via the `connector:` namespace', () => {
     const url = iconToSvgDataUrl('connector:github');
     const decoded = decodeURIComponent(url.slice('data:image/svg+xml;utf8,'.length));

@@ -1,7 +1,7 @@
 {
-  "name": "@ship-it-ui/cytoscape",
-  "version": "0.0.6",
-  "description": "Cytoscape adapter for the Ship-It design system. Token-driven stylesheet, theme-aware re-resolver hook, and a `<GraphCanvas>` wrapper that owns the data-theme ↔ stylesheet ↔ inspector dance.",
+  "name": "@ship-it-ui/graph-editor",
+  "version": "0.0.1",
+  "description": "Graph-editing canvas for the Ship-It design system. React Flow under the hood; same `elements[]` shape as `@ship-it-ui/cytoscape` so consumers can swap viewer ↔ editor without reshaping data.",
   "license": "MIT",
   "homepage": "https://ship-it-ops.github.io/ship-it-design/",
   "bugs": {
@@ -10,15 +10,15 @@
   "author": "Ship-It Ops",
   "keywords": [
     "design-system",
-    "cytoscape",
     "graph",
-    "knowledge-graph",
+    "graph-editor",
+    "react-flow",
     "shipit"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ship-it-ops/ship-it-design.git",
-    "directory": "packages/cytoscape"
+    "directory": "packages/graph-editor"
   },
   "type": "module",
   "main": "./dist/index.js",
@@ -29,13 +29,16 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    }
+    },
+    "./styles.css": "./dist/styles.css"
   },
   "files": [
     "dist",
     "README.md"
   ],
-  "sideEffects": false,
+  "sideEffects": [
+    "./dist/styles.css"
+  ],
   "publishConfig": {
     "access": "public",
     "provenance": true
@@ -51,13 +54,13 @@
     "clean": "rm -rf dist .turbo"
   },
   "dependencies": {
-    "@ship-it-ui/graph-tokens": "workspace:*"
+    "@ship-it-ui/graph-tokens": "workspace:*",
+    "@xyflow/react": "^12.3.5"
   },
   "peerDependencies": {
     "@ship-it-ui/icons": "workspace:*",
     "@ship-it-ui/shipit": "workspace:*",
     "@ship-it-ui/ui": "workspace:*",
-    "cytoscape": "^3.28.0",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
   },
@@ -73,7 +76,6 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "axe-core": "^4.10.2",
-    "cytoscape": "^3.30.0",
     "esbuild-plugin-preserve-directives": "^0.0.11",
     "jsdom": "^29.1.1",
     "react": "^18.3.1",

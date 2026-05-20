@@ -24,6 +24,7 @@
     "@mdx-js/react": "^3.1.0",
     "@next/mdx": "^15.1.4",
     "@ship-it-ui/cytoscape": "workspace:*",
+    "@ship-it-ui/graph-editor": "workspace:*",
     "@ship-it-ui/icons": "workspace:*",
     "@ship-it-ui/shipit": "workspace:*",
     "@ship-it-ui/tokens": "workspace:*",

@@ -35,6 +35,13 @@ export interface BuildStylesheetOptions {
    * to the original wireframe (border-only) per-type rule.
    */
   renderGlyphs?: boolean;
+  /**
+   * Fraction of the node that the rendered glyph occupies. Default `0.5` —
+   * matches `<GraphNode>` where the icon is sized at ~42% of the square and
+   * leaves breathing room inside the border. Set to `1` to revert to the
+   * pre-0.0.7 behavior where the glyph filled the node edge-to-edge.
+   */
+  glyphScale?: number;
 }
 
 // Re-export the block type so consumers can declare typed `extra` entries.
@@ -46,6 +53,11 @@ export function buildShipItStylesheet(
   const palette = options.palette ?? readThemeTokens();
   const color = (cssVar: string) => resolveColorReference(cssVar, palette);
   const renderGlyphs = options.renderGlyphs !== false;
+  // Clamp into a sensible range. `0` would hide the glyph entirely; `1` paints
+  // edge-to-edge (the legacy behavior). The default `0.5` matches the 26/52
+  // ratio used by the `<GraphNode>` React component.
+  const glyphScale = Math.max(0, Math.min(1, options.glyphScale ?? 0.5));
+  const glyphSizePct = `${Math.round(glyphScale * 100)}%`;
 
   const base: cytoscape.StylesheetJsonBlock[] = [
     {
@@ -79,16 +91,33 @@ export function buildShipItStylesheet(
     // patch or a forked stylesheet.
     ...listEntityTypes().map<cytoscape.StylesheetJsonBlock>(([type, meta]) => {
       const c = color(meta.colorVar);
+      // Pre-0.0.7 the glyph used `background-fit: contain`, which scales the
+      // image to fill the node edge-to-edge and ignores the painted SVG's
+      // intrinsic size. The icon ended up touching the border on every side
+      // and looked cramped against the 52×52 node. We now set
+      // `background-fit: none` and pin the painted width/height to a
+      // fraction of the node (default 50%), with the image's anchor centered
+      // — that gives the glyph breathing room and visually aligns with the
+      // `<GraphNode>` React component used elsewhere in the design system.
+      //
+      // Cast through `unknown` because `cytoscape.Css.Node` doesn't (yet)
+      // expose `background-width`/`background-height` in its TS types,
+      // though the runtime accepts them per the cytoscape.js reference.
+      const glyphStyle = renderGlyphs
+        ? ({
+            'border-color': c,
+            'background-image': iconToSvgDataUrl(meta.iconName, { color: c }),
+            'background-fit': 'none',
+            'background-clip': 'none',
+            'background-width': glyphSizePct,
+            'background-height': glyphSizePct,
+            'background-position-x': '50%',
+            'background-position-y': '50%',
+          } as unknown as cytoscape.Css.Node)
+        : { 'border-color': c };
       return {
         selector: `node[entityType = "${escapeCytoscapeAttr(type)}"]`,
-        style: renderGlyphs
-          ? {
-              'border-color': c,
-              'background-image': iconToSvgDataUrl(meta.iconName, { color: c }),
-              'background-fit': 'contain',
-              'background-clip': 'none',
-            }
-          : { 'border-color': c },
+        style: glyphStyle,
       };
     }),
     {

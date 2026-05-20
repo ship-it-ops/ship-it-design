@@ -41,3 +41,4 @@ pnpm-debug.log*
 
 # Local files/folders
 .vscode/
+.claude/

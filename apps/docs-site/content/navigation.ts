@@ -91,6 +91,7 @@ export const navigation: NavSection[] = [
           { title: 'FAB', slug: 'components/fab' },
           { title: 'Field', slug: 'components/field' },
           { title: 'IconButton', slug: 'components/icon-button' },
+          { title: 'InlineEdit', slug: 'components/inline-edit' },
           { title: 'Input', slug: 'components/input' },
           { title: 'OTP', slug: 'components/otp' },
           { title: 'Radio', slug: 'components/radio' },
@@ -285,7 +286,10 @@ export const navigation: NavSection[] = [
     groups: [
       {
         label: 'Engines',
-        items: [{ title: 'Cytoscape adapter', slug: 'graph/cytoscape' }],
+        items: [
+          { title: 'Cytoscape adapter', slug: 'graph/cytoscape' },
+          { title: 'Graph editor canvas', slug: 'graph/editor' },
+        ],
       },
     ],
   },
