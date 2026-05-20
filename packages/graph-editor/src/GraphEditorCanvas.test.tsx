@@ -1,5 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import userEvent from '@testing-library/user-event';
+import { describe, expect, it, vi } from 'vitest';
+import { axe } from 'vitest-axe';
 
 import type { GraphElement } from './adapter';
 import { GraphEditorCanvas } from './GraphEditorCanvas';
@@ -114,6 +116,70 @@ describe('GraphEditorCanvas', () => {
         </div>,
       );
       expect(screen.queryByRole('button', { name: 'Add node' })).not.toBeInTheDocument();
+    } finally {
+      restore();
+    }
+  });
+
+  it('inserts a node and fires onNodeAdd when the built-in "+ Add" button is clicked', async () => {
+    const restore = stubBoundingRect();
+    const onNodeAdd = vi.fn();
+    try {
+      const { container } = render(
+        <div style={{ width: 600, height: 400 }}>
+          <GraphEditorCanvas elements={ELEMENTS} onNodeAdd={onNodeAdd} {...CANVAS_DEFAULTS} />
+        </div>,
+      );
+      await userEvent.click(screen.getByRole('button', { name: 'Add node' }));
+      // Three nodes after the click: two in the fixture + the new one.
+      expect(container.querySelectorAll('.react-flow__node')).toHaveLength(3);
+      expect(onNodeAdd).toHaveBeenCalledTimes(1);
+      const payload = onNodeAdd.mock.calls[0]?.[0];
+      expect(payload).toMatchObject({
+        id: expect.any(String),
+        position: expect.objectContaining({ x: expect.any(Number), y: expect.any(Number) }),
+        data: {},
+      });
+    } finally {
+      restore();
+    }
+  });
+
+  it('has no a11y violations in the default state', async () => {
+    const restore = stubBoundingRect();
+    try {
+      const { container } = render(
+        <div style={{ width: 600, height: 400 }}>
+          <GraphEditorCanvas elements={ELEMENTS} {...CANVAS_DEFAULTS} />
+        </div>,
+      );
+      expect(await axe(container)).toHaveNoViolations();
+    } finally {
+      restore();
+    }
+  });
+
+  it('has no a11y violations with inspector slot and the built-in "+ Add" button', async () => {
+    const restore = stubBoundingRect();
+    try {
+      const { container } = render(
+        // `<main>` so the inspector's optional landmark (if a consumer
+        // passes one) has somewhere legitimate to live; without it axe
+        // flags `landmark-complementary-is-top-level`.
+        <main style={{ width: 600, height: 400 }}>
+          <GraphEditorCanvas
+            elements={ELEMENTS}
+            onNodeAdd={() => {}}
+            inspector={
+              <section aria-label="Node inspector" className="bg-panel rounded p-2">
+                Inspector body
+              </section>
+            }
+            {...CANVAS_DEFAULTS}
+          />
+        </main>,
+      );
+      expect(await axe(container)).toHaveNoViolations();
     } finally {
       restore();
     }

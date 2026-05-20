@@ -483,8 +483,15 @@ const GraphEditorCanvasInner = forwardRef<GraphEditorCanvasHandle, GraphEditorCa
       // The canvas owns the id so subsequent events (delete, undo) carry the
       // same identity the consumer just persisted.
       const id = `node-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
+      // Mutate internal RF state and push to history — matches the pattern
+      // in `applyCommand('add-node')` so the node appears immediately and
+      // ⌘Z can undo the add. The consumer callback runs last so persistence
+      // sees the state the canvas already shows.
+      const newNode: Node = { id, position, data: {} };
+      setNodes((prev) => [...prev, newNode]);
+      history.push({ kind: 'add-node', node: newNode });
       onNodeAdd?.({ id, position, data: {} });
-    }, [getViewport, screenToFlowPosition, onNodeAdd]);
+    }, [getViewport, screenToFlowPosition, setNodes, history, onNodeAdd]);
 
     useImperativeHandle(forwardedRef, () => ({ refreshStyles: refresh, undo, redo }), [
       refresh,

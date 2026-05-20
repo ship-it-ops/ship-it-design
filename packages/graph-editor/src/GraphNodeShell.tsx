@@ -43,19 +43,24 @@ export const GraphNodeShell = forwardRef<HTMLDivElement, GraphNodeShellProps>(
     const glowPct = state === 'hover' ? 50 : 25;
     const opacity = state === 'dim' ? 0.35 : 1;
     const showRing = state === 'selected' || state === 'path';
-    // When `label` is a string we set it as the image's accessible name.
-    // When `label` is a ReactNode (e.g. an `<InlineEdit>`), the inner element
-    // self-describes — applying a stale `"${type} node"` fallback here would
-    // make AT announce the generic phrase before traversing into the child's
-    // own label. We drop `aria-label` in that case and let the child speak.
-    // When `label` is missing entirely, the generic fallback applies.
-    const imgAriaLabel =
+    // Accessible-name strategy:
+    //   - string label  → `role="img" aria-label={label}` (the canvas reads
+    //                     as a single named image).
+    //   - no label      → `role="img" aria-label="${type} node"` (generic
+    //                     fallback so the image still has a name).
+    //   - ReactNode lbl → drop `role="img"` entirely. The child element
+    //                     (e.g. `<InlineEdit>`) is self-describing, and a
+    //                     nameless `role="img"` would fail axe's
+    //                     `role-img-alt` rule.
+    const ariaRole: 'img' | undefined =
+      typeof label === 'string' || label == null ? 'img' : undefined;
+    const ariaLabel =
       typeof label === 'string' ? label : label == null ? `${type} node` : undefined;
     return (
       <div
         ref={ref}
-        role="img"
-        aria-label={imgAriaLabel}
+        role={ariaRole}
+        aria-label={ariaLabel}
         data-state={state}
         data-entity-type={type}
         className={cn('inline-flex flex-col items-center gap-[6px]', className)}
