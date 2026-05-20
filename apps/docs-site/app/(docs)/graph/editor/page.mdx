@@ -2,6 +2,14 @@
 
 The editing analog of [`GraphCanvas`](/graph/cytoscape). Same `elements[]` shape on the input — swap viewer ↔ editor without reshaping your data. React Flow under the hood; the canvas owns theme-token sync, mini-map, keyboard, and undo/redo so consumers focus on their domain model.
 
+## Installation
+
+Import the stylesheet **once** at your app entry (Next.js: `app/layout.tsx`; Vite: `main.tsx`; etc.). The component intentionally does not import it itself — Next.js rejects library-internal global CSS, and explicit imports let you control load order against your own theme.
+
+```ts
+import '@ship-it-ui/graph-editor/styles.css';
+```
+
 <LivePreview example="graph-editor/default" />
 
 ## Toolbar

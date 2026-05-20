@@ -29,7 +29,15 @@ import {
   type ReactNode,
 } from 'react';
 
-import './styles.css';
+// NOTE: this file does NOT import `./styles.css`. Stylesheet loading is the
+// consumer's responsibility — Next.js (and other frameworks with strict
+// global-CSS rules) reject library-internal CSS imports. Consumers should
+// add the side-effect import once at their app entry:
+//
+//   import '@ship-it-ui/graph-editor/styles.css';
+//
+// The docs-site examples in `apps/docs-site/examples/graph-editor/*` show
+// the pattern.
 
 import { toFlowElements, type GraphElement, type GraphElementsSplit } from './adapter';
 import { DefaultNode } from './DefaultNode';

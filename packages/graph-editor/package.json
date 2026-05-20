@@ -30,15 +30,14 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
-    "./styles.css": "./dist/index.css"
+    "./styles.css": "./dist/styles.css"
   },
   "files": [
     "dist",
     "README.md"
   ],
   "sideEffects": [
-    "**/*.css",
-    "./dist/index.css"
+    "./dist/styles.css"
   ],
   "publishConfig": {
     "access": "public",
