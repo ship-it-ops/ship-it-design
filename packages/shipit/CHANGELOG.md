@@ -1,5 +1,14 @@
 # @ship-it-ui/shipit
 
+## 0.0.8
+
+### Patch Changes
+
+- Updated dependencies [9da43f1]
+- Updated dependencies [9da43f1]
+  - @ship-it-ui/ui@0.0.7
+  - @ship-it-ui/icons@0.0.7
+
 ## 0.0.7
 
 ### Patch Changes

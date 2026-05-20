@@ -1,5 +1,19 @@
 # @ship-it-ui/cytoscape
 
+## 0.0.7
+
+### Patch Changes
+
+- 9da43f1: Stop letting node glyphs fill the cytoscape node edge-to-edge. The per-entity-type stylesheet block now uses `background-fit: none` (was `contain`) with `background-width` / `background-height` pinned at `50%` and the image centered via `background-position-x` / `background-position-y`. Consumers can override the fraction with the new `glyphScale` option on `buildShipItStylesheet` (default `0.5`, clamped to `[0, 1]`); pass `1` to revert to the legacy edge-to-edge behavior. The visual now matches the `<GraphNode>` React component (≈42% icon inside a 52px square).
+- 9da43f1: Extract token-resolution helpers from `@ship-it-ui/cytoscape` into a new shared package `@ship-it-ui/graph-tokens`. The cytoscape package re-exports the same surface (`readThemeTokens`, `resolveCssVar`, `resolveColorReference`, `toSrgb`, `ThemeTokenPalette`) so existing consumers see no behavior change. `resolveEntityColor` stays in `@ship-it-ui/cytoscape` since it bridges to the `@ship-it-ui/shipit` entity-type registry. The new shared package unblocks engine-agnostic graph adapters (`@ship-it-ui/graph-editor`) that need the same token bridge without pulling in Cytoscape.
+- Updated dependencies [9da43f1]
+- Updated dependencies [9da43f1]
+- Updated dependencies [9da43f1]
+  - @ship-it-ui/ui@0.0.7
+  - @ship-it-ui/graph-tokens@0.0.2
+  - @ship-it-ui/icons@0.0.7
+  - @ship-it-ui/shipit@0.0.8
+
 ## 0.0.6
 
 ### Patch Changes
