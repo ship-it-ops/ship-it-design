@@ -348,6 +348,142 @@ export const glyphManifest = {
   crown: ['lucide', 'crown'],
   waypoints: ['lucide', 'waypoints'],
   handshake: ['lucide', 'handshake'],
+
+  // — Travel & transport: vehicles —
+  car: ['lucide', 'car'],
+  carFront: ['lucide', 'car-front'],
+  carTaxi: ['lucide', 'car-taxi-front'],
+  suv: ['ph', 'jeep'],
+  truck: ['lucide', 'truck'],
+  pickup: ['ph', 'truck'],
+  van: ['ph', 'van'],
+  bus: ['lucide', 'bus'],
+  caravan: ['lucide', 'caravan'],
+  motorcycle: ['ph', 'motorcycle'],
+  scooter: ['ph', 'scooter'],
+  bike: ['lucide', 'bike'],
+  ev: ['lucide', 'car-front'],
+  plane: ['lucide', 'plane'],
+  planeTakeoff: ['lucide', 'plane-takeoff'],
+  planeLanding: ['lucide', 'plane-landing'],
+  train: ['lucide', 'train-front'],
+  tram: ['lucide', 'tram-front'],
+  ship: ['lucide', 'ship'],
+  sailboat: ['lucide', 'sailboat'],
+  ambulance: ['lucide', 'ambulance'],
+  helicopter: ['lucide', 'helicopter'],
+
+  // — Travel & transport: vehicle parts & telematics —
+  steeringWheel: ['ph', 'steering-wheel'],
+  carKey: ['lucide', 'key-round'],
+  gearShift: ['ph', 'gear-six'],
+  engine: ['ph', 'engine'],
+  fuel: ['lucide', 'fuel'],
+  gasPump: ['ph', 'gas-pump'],
+  evCharger: ['lucide', 'plug-zap'],
+  battery: ['lucide', 'battery'],
+  batteryCharging: ['lucide', 'battery-charging'],
+  batteryFull: ['lucide', 'battery-full'],
+  batteryLow: ['lucide', 'battery-low'],
+  seat: ['lucide', 'armchair'],
+  seatbelt: ['ph', 'seatbelt'],
+  camera: ['lucide', 'camera'],
+  snowflake: ['lucide', 'snowflake'],
+  trafficCone: ['lucide', 'traffic-cone'],
+
+  // — Travel & transport: locations (pickup/dropoff) —
+  airport: ['lucide', 'plane'],
+  hotel: ['lucide', 'hotel'],
+  building: ['lucide', 'building'],
+  building2: ['lucide', 'building-2'],
+  trainStation: ['lucide', 'train-track'],
+  busStation: ['lucide', 'bus-front'],
+  ferryTerminal: ['lucide', 'anchor'],
+  parking: ['lucide', 'parking-square'],
+  parkingGarage: ['lucide', 'circle-parking'],
+  gasStation: ['ph', 'gas-pump'],
+  chargingStation: ['lucide', 'plug-zap'],
+  valet: ['lucide', 'key-round'],
+  store: ['lucide', 'store'],
+  landmark: ['lucide', 'landmark'],
+  castle: ['ph', 'castle-turret'],
+  tent: ['lucide', 'tent'],
+  mountain: ['lucide', 'mountain'],
+  palmTree: ['lucide', 'palmtree'],
+  city: ['lucide', 'building-2'],
+
+  // — Travel & transport: trip essentials & artifacts —
+  luggage: ['lucide', 'luggage'],
+  briefcase: ['lucide', 'briefcase'],
+  backpack: ['ph', 'backpack'],
+  passport: ['ph', 'identification-card'],
+  boardingPass: ['ph', 'airplane-tilt'],
+  idCard: ['lucide', 'id-card'],
+  driversLicense: ['lucide', 'contact'],
+  signature: ['lucide', 'signature'],
+  contract: ['lucide', 'file-signature'],
+  agreement: ['lucide', 'file-check'],
+
+  // — Travel & transport: booking lifecycle —
+  carPickup: ['lucide', 'car-front'],
+  carReturn: ['lucide', 'undo-2'],
+  checkin: ['lucide', 'log-in'],
+  checkout: ['lucide', 'log-out'],
+  inspection: ['lucide', 'search-check'],
+  contactless: ['lucide', 'smartphone-nfc'],
+  selfService: ['ph', 'user-gear'],
+
+  // — Travel & transport: safety, insurance, emergency —
+  umbrella: ['lucide', 'umbrella'],
+  firstAid: ['ph', 'first-aid-kit'],
+  sos: ['lucide', 'siren'],
+  roadsideAssistance: ['lucide', 'wrench'],
+  collision: ['ph', 'warning-octagon'],
+  damage: ['ph', 'warning'],
+  verified: ['lucide', 'badge-check'],
+  notVerified: ['lucide', 'badge-x'],
+  shieldHalf: ['lucide', 'shield-half'],
+
+  // — Travel & transport: vehicle features (filter chips) —
+  bluetooth: ['lucide', 'bluetooth'],
+  bluetoothConnected: ['lucide', 'bluetooth-connected'],
+  usb: ['lucide', 'usb'],
+  childSeat: ['ph', 'baby-carriage'],
+  baby: ['lucide', 'baby'],
+  petFriendly: ['lucide', 'paw-print'],
+  smokeFree: ['lucide', 'cigarette-off'],
+  smoking: ['lucide', 'cigarette'],
+
+  // — Travel & transport: weather (trip planning) —
+  sunny: ['lucide', 'sun'],
+  cloudy: ['lucide', 'cloud'],
+  rainy: ['lucide', 'cloud-rain'],
+  snowy: ['lucide', 'cloud-snow'],
+  foggy: ['lucide', 'cloud-fog'],
+  windy: ['lucide', 'wind'],
+  thermometer: ['lucide', 'thermometer'],
+  droplets: ['lucide', 'droplets'],
+  sunrise: ['lucide', 'sunrise'],
+  sunset: ['lucide', 'sunset'],
+
+  // — Travel & transport: people (driver/passenger roles) —
+  driver: ['ph', 'steering-wheel'],
+  passenger: ['lucide', 'user-round'],
+  coDriver: ['lucide', 'user-plus'],
+  chauffeur: ['ph', 'user-gear'],
+
+  // — Travel & transport: map & routing —
+  pickupPin: ['lucide', 'map-pin'],
+  dropoffPin: ['lucide', 'map-pin-check'],
+  oneWay: ['lucide', 'arrow-right'],
+  roundTrip: ['lucide', 'arrow-left-right'],
+
+  // — Travel & transport: commerce (pricing, coupons, refunds) —
+  priceTag: ['lucide', 'tag'],
+  percent: ['lucide', 'percent'],
+  promo: ['lucide', 'badge-percent'],
+  refund: ['lucide', 'undo-2'],
+  piggyBank: ['ph', 'piggy-bank'],
 } as const satisfies Record<string, IconRef>;
 
 export const connectorManifest = {
@@ -490,6 +626,22 @@ export const connectorManifest = {
 
   // Build / dev tools
   vite: ['simple-icons', 'vite'],
+
+  // Consumer payments (wallets, BNPL, P2P, card networks)
+  applePay: ['simple-icons', 'applepay'],
+  googlePay: ['simple-icons', 'googlepay'],
+  venmo: ['simple-icons', 'venmo'],
+  cashApp: ['simple-icons', 'cashapp'],
+  klarna: ['simple-icons', 'klarna'],
+  afterpay: ['simple-icons', 'afterpay'],
+  amex: ['simple-icons', 'americanexpress'],
+  visa: ['simple-icons', 'visa'],
+  mastercard: ['simple-icons', 'mastercard'],
+  discover: ['simple-icons', 'discover'],
+
+  // Mobility / rideshare brands
+  uber: ['simple-icons', 'uber'],
+  lyft: ['simple-icons', 'lyft'],
 } as const satisfies Record<string, IconRef>;
 
 /** Statically-typed semantic icon names — adds compile-time checking to `<IconGlyph name=…>`. */
