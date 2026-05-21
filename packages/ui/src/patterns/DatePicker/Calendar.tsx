@@ -35,16 +35,30 @@ import { cn } from '../../utils/cn';
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
+/** A `{from, to}` date range used by `Calendar` and `DateRangePicker`. */
+export interface DateRange {
+  from?: Date;
+  to?: Date;
+}
+
 export interface CalendarProps extends Omit<
   HTMLAttributes<HTMLDivElement>,
   'onSelect' | 'defaultValue'
 > {
-  /** Currently selected date (controlled). */
+  /** Selection mode. Default `'single'`. */
+  mode?: 'single' | 'range';
+  /** Currently selected date (controlled, single mode). */
   value?: Date;
-  /** Default selected date (uncontrolled). */
+  /** Default selected date (uncontrolled, single mode). */
   defaultValue?: Date;
-  /** Fires with the newly selected date. */
+  /** Fires with the newly selected date (single mode). */
   onValueChange?: (date: Date) => void;
+  /** Currently selected range (controlled, range mode). */
+  range?: DateRange;
+  /** Default range (uncontrolled, range mode). */
+  defaultRange?: DateRange;
+  /** Fires when the range changes (range mode). */
+  onRangeChange?: (range: DateRange) => void;
   /** Currently visible month (0-indexed) and year. */
   month?: number;
   year?: number;
@@ -55,6 +69,20 @@ export interface CalendarProps extends Omit<
   onVisibleMonthChange?: (params: { month: number; year: number }) => void;
   /** Optional disable predicate. */
   isDateDisabled?: (date: Date) => boolean;
+}
+
+function isBefore(a: Date, b: Date): boolean {
+  return a.getTime() < b.getTime();
+}
+
+function isAfter(a: Date, b: Date): boolean {
+  return a.getTime() > b.getTime();
+}
+
+function isBetween(d: Date, a: Date, b: Date): boolean {
+  const lo = isBefore(a, b) ? a : b;
+  const hi = isBefore(a, b) ? b : a;
+  return !isBefore(d, lo) && !isAfter(d, hi);
 }
 
 function isSameDay(a: Date | undefined, b: Date) {
@@ -73,9 +101,13 @@ function clampDay(year: number, month: number, day: number) {
 
 export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(function Calendar(
   {
+    mode = 'single',
     value,
     defaultValue,
     onValueChange,
+    range,
+    defaultRange,
+    onRangeChange,
     month: monthProp,
     year: yearProp,
     defaultMonth,
@@ -100,6 +132,13 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(function Calen
     defaultValue,
     onChange: onValueChange,
   });
+
+  const [selectedRange, setSelectedRange] = useControllableState<DateRange>({
+    value: range,
+    defaultValue: defaultRange ?? {},
+    onChange: onRangeChange,
+  });
+  const [hoveredDate, setHoveredDate] = useState<Date | null>(null);
 
   const initialMonth = defaultMonth ?? defaultValue?.getMonth() ?? today.getMonth();
   const initialYear = defaultYear ?? defaultValue?.getFullYear() ?? today.getFullYear();
@@ -296,11 +335,43 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(function Calen
                 continue;
               }
               const date = new Date(year, month, dayNum);
-              const isSelected = isSameDay(selectedDate, date);
               const isToday = hydrated && isSameDay(today, date);
               const disabled = isDateDisabled?.(date) ?? false;
               const isFocused = dayNum === effectiveFocusDay;
               const day = dayNum;
+
+              // Range-mode selection / hover-preview computation.
+              const from = selectedRange?.from;
+              const to = selectedRange?.to;
+              const isRangeStart = mode === 'range' && from && isSameDay(from, date);
+              const isRangeEnd = mode === 'range' && to && isSameDay(to, date);
+              let isInRange = false;
+              if (mode === 'range' && from && to) {
+                isInRange = isBetween(date, from, to);
+              } else if (mode === 'range' && from && !to && hoveredDate) {
+                isInRange = isBetween(date, from, hoveredDate);
+              }
+              const isSelected =
+                mode === 'single'
+                  ? isSameDay(selectedDate, date)
+                  : Boolean(isRangeStart || isRangeEnd);
+
+              const handleClick = () => {
+                if (mode === 'single') {
+                  setSelectedDate(date);
+                  setFocusedDate(date);
+                  return;
+                }
+                if (!from || (from && to)) {
+                  setSelectedRange({ from: date, to: undefined });
+                } else if (isBefore(date, from)) {
+                  setSelectedRange({ from: date, to: from });
+                } else {
+                  setSelectedRange({ from, to: date });
+                }
+                setFocusedDate(date);
+              };
+
               cells.push(
                 <div key={day} role="gridcell" aria-selected={isSelected}>
                   <button
@@ -313,16 +384,16 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(function Calen
                     aria-current={isToday ? 'date' : undefined}
                     aria-label={date.toDateString()}
                     tabIndex={isFocused ? 0 : -1}
-                    onClick={() => {
-                      setSelectedDate(date);
-                      setFocusedDate(date);
-                    }}
+                    onClick={handleClick}
+                    onMouseEnter={mode === 'range' ? () => setHoveredDate(date) : undefined}
+                    onMouseLeave={mode === 'range' ? () => setHoveredDate(null) : undefined}
                     onKeyDown={(e) => onCellKeyDown(e, day)}
                     className={cn(
                       'w-full cursor-pointer rounded-xs border-0 bg-transparent py-[6px] text-center text-[12px] outline-none',
                       'focus-visible:ring-accent-dim focus-visible:ring-[3px]',
                       'disabled:cursor-not-allowed disabled:opacity-30',
-                      !isSelected && !disabled && 'text-text hover:bg-panel-2',
+                      !isSelected && !isInRange && !disabled && 'text-text hover:bg-panel-2',
+                      isInRange && !isSelected && 'bg-accent-dim text-text',
                       isSelected && 'bg-accent text-on-accent font-semibold',
                       !isSelected && isToday && 'border-border-strong border',
                     )}

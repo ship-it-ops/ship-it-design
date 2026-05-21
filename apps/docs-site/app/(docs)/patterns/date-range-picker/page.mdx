@@ -1,0 +1,33 @@
+# DateRangePicker
+
+A button trigger that opens a popover with one or two adjacent calendars in
+range mode. The anchor of every car-rental booking — pickup → return.
+
+## Two-month (desktop default)
+
+<LivePreview example="date-range-picker/default" />
+
+## Single month (mobile)
+
+<LivePreview example="date-range-picker/single-month" />
+
+## Props
+
+<PropsTable component="DateRangePicker" />
+
+## Selection model
+
+- First click sets `from`.
+- Second click sets `to`. If the user clicks an earlier date than `from`, the
+  two are swapped so the range always reads forward.
+- A third click starts a new range with the third date as `from`.
+- While `from` is set but `to` is not, hover-preview shades the in-progress
+  range using the `accent-dim` token so the user sees the span before
+  committing.
+
+## Composition
+
+The underlying `Calendar` accepts `mode="range"` directly — wrap with a
+`Popover` yourself if you need a custom trigger.
+
+<EditOnGithub source="apps/docs-site/app/(docs)/patterns/date-range-picker/page.mdx" />

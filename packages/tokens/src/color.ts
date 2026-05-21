@@ -76,6 +76,14 @@ export const colorSemanticDark = {
   ctaFrom: 'oklch(0.2 0.08 260)',
   ctaTo: 'oklch(0.16 0.06 300)',
 
+  // Consumer-marketplace semantics (rating/trust/sale). Aliased where the hue matches an
+  // existing companion so divergence is cheap when product needs differ.
+  rating: 'oklch(0.85 0.17 80)',
+  ratingDim: '#2a2a31',
+  verified: colorPrimitive.ok,
+  sale: colorPrimitive.pink,
+  saleText: colorPrimitive.pink,
+
   // Avatar fallback L+C. Hue is derived from name hash at render time.
   avatarFallbackL: '0.4',
   avatarFallbackC: '0.1',
@@ -122,6 +130,14 @@ export const colorSemanticLight = {
   // Marketing surfaces (CTAStrip). Light-theme equivalents look right on a brighter bg.
   ctaFrom: 'oklch(0.96 0.02 260)',
   ctaTo: 'oklch(0.94 0.03 300)',
+
+  // Consumer-marketplace semantics. `rating` drops L for ≥4.5:1 against light bg; the
+  // companion-aliased tokens reuse the light-tuned companion ramps so contrast is consistent.
+  rating: 'oklch(0.6 0.17 80)',
+  ratingDim: '#d6d6d0',
+  verified: 'oklch(0.55 0.17 150)',
+  sale: 'oklch(0.5 0.15 0)',
+  saleText: 'oklch(0.42 0.18 0)',
 
   // Avatar fallback L+C — same hue rotation, slightly darker L for contrast against light bg.
   avatarFallbackL: '0.55',

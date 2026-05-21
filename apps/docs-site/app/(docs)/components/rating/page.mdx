@@ -1,0 +1,47 @@
+# Rating
+
+Star rating for displaying averages or capturing input. Read-only is the
+default — it supports half-step precision for displays of averaged values
+like `4.7`. Interactive ratings step in whole units; half-step input is
+uncommon UX and the radiogroup keyboard model doesn't map cleanly to it.
+
+## Default
+
+<LivePreview example="rating/default" />
+
+## Half-precision (read-only)
+
+<LivePreview example="rating/half" />
+
+## Interactive
+
+Click a star or use Arrow keys / Home / End to set the rating.
+
+<LivePreview example="rating/interactive" />
+
+## Sizes
+
+<LivePreview example="rating/sizes" />
+
+## With trip count
+
+A common composition — pair the stars with the numeric value and a review
+count.
+
+<LivePreview example="rating/with-count" />
+
+## Props
+
+<PropsTable component="Rating" />
+
+## Accessibility
+
+- **Read-only** renders as `role="img"` with an auto-generated `aria-label`
+  ("4.7 out of 5 stars"). Override via the `aria-label` prop.
+- **Interactive** renders as `role="radiogroup"` with one `role="radio"`
+  button per star. Only the selected (or first, when value is `0`) button is
+  in the tab order — Arrow keys move and select; Home / End jump.
+- Pass `aria-label` to the interactive group to describe what is being
+  rated ("Rate your host", "Rate this car").
+
+<EditOnGithub source="apps/docs-site/app/(docs)/components/rating/page.mdx" />

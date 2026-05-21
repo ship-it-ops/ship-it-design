@@ -1,0 +1,28 @@
+# Lightbox
+
+Fullscreen photo viewer. Built on Dialog (focus trap, portal, Escape closes).
+Adds keyboard ←/→ between items and a counter overlay.
+
+## Default
+
+<LivePreview example="lightbox/default" />
+
+## Props
+
+<PropsTable component="Lightbox" />
+
+## Accessibility
+
+- The dialog has `role="dialog"` and a visually hidden title (override via
+  the `title` prop).
+- Keyboard: Escape closes; Left / Right move between items; Tab cycles
+  through the focusable controls (prev, next, close).
+- The active photo is the only one rendered in the viewport — there is no
+  reflow when moving between items.
+
+## Composition
+
+`Lightbox` is the modal _shell_ — pair it with `Carousel` for a listing
+detail's photo gallery: thumbnails in `Carousel`, on-click open `Lightbox`.
+
+<EditOnGithub source="apps/docs-site/app/(docs)/patterns/lightbox/page.mdx" />

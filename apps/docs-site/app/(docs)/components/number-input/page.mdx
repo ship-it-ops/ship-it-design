@@ -1,0 +1,32 @@
+# NumberInput
+
+Numeric input with `−` / `+` stepper buttons. Long-press to repeat. Use for
+small integer or decimal tweaks — guest count, days, child seats, additional
+drivers.
+
+## Default
+
+<LivePreview example="number-input/default" />
+
+## Clamped to a range
+
+<LivePreview example="number-input/clamped" />
+
+## Sizes
+
+<LivePreview example="number-input/sizes" />
+
+## Props
+
+<PropsTable component="NumberInput" />
+
+## Accessibility
+
+- Input is `role="spinbutton"` with `aria-valuenow / valuemin / valuemax`.
+- Stepper buttons are labelled "Increment" / "Decrement" and reference the
+  input via `aria-controls`.
+- Keyboard: Arrow Up / Down step by `step` (default 1). The input itself
+  accepts free typing; the value is clamped on commit.
+- Always pass `aria-label` describing what the number represents.
+
+<EditOnGithub source="apps/docs-site/app/(docs)/components/number-input/page.mdx" />

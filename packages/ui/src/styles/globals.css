@@ -82,6 +82,15 @@
   --color-cta-from: var(--color-cta-from);
   --color-cta-to: var(--color-cta-to);
 
+  /* Consumer-marketplace semantics. `rating` is gold for stars, distinct from
+   * `warn` yellow. `verified` aliases `ok` but is named separately so future
+   * divergence is cheap. `sale`/`saleText` are for promo strike-throughs. */
+  --color-rating: var(--color-rating);
+  --color-rating-dim: var(--color-rating-dim);
+  --color-verified: var(--color-verified);
+  --color-sale: var(--color-sale);
+  --color-sale-text: var(--color-sale-text);
+
   /* Typography — families. */
   --font-sans: var(--font-family-sans);
   --font-mono: var(--font-family-mono);
@@ -96,6 +105,8 @@
   --text-h2: var(--font-size-h2);
   --text-h1: var(--font-size-h1);
   --text-display: var(--font-size-display);
+  --text-display-lg: var(--font-size-display-lg);
+  --text-display-xl: var(--font-size-display-xl);
 
   /* Typography — weights. */
   --font-weight-light: var(--font-weight-light);

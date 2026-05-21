@@ -1,0 +1,45 @@
+# PhoneInput
+
+Country-code `Select` plus a national-number `Input`. Emits an E.164 string
+(`+CC<NSN>`). Used for booking-phone verification and any consumer signup.
+
+## Default
+
+<LivePreview example="phone-input/default" />
+
+## With existing value
+
+The component parses incoming E.164 values back into country + national
+number, so it round-trips cleanly with server state.
+
+<LivePreview example="phone-input/with-default" />
+
+## Props
+
+<PropsTable component="PhoneInput" />
+
+## Country list
+
+The component ships with a curated subset of common origins (~35 countries).
+For a production deployment in many markets, pass a `countries` prop sourced
+from `libphonenumber-js` or `world-countries`:
+
+```tsx
+import { getCountries, getCountryCallingCode } from 'libphonenumber-js';
+const countries = getCountries().map((code) => ({
+  code,
+  name: code,
+  dialCode: getCountryCallingCode(code),
+  flag: codeToFlag(code),
+}));
+<PhoneInput countries={countries} />;
+```
+
+## Accessibility
+
+- Country select has `aria-label="Country"`; national input has its own
+  `aria-label` (override via `aria-label` prop).
+- `type="tel"` + `inputMode="tel"` give mobile keyboards the dial pad.
+- `autoComplete="tel-national"` works with iOS / Android contact autofill.
+
+<EditOnGithub source="apps/docs-site/app/(docs)/patterns/phone-input/page.mdx" />

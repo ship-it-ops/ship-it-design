@@ -1,0 +1,29 @@
+# ReviewCard
+
+A single review feed item — Avatar, Rating, date, body, optional photo
+strip, and a verified-trip badge.
+
+**Distinct from Testimonial**: Testimonial is curated marketing chrome
+(quoted, hero-shaped). ReviewCard is the feed item that goes in a paginated
+list under a listing detail page.
+
+## Default
+
+<LivePreview example="review-card/default" />
+
+## With photos
+
+<LivePreview example="review-card/with-photos" />
+
+## Props
+
+<PropsTable component="ReviewCard" />
+
+## Accessibility
+
+- The card is `<article>` for landmark semantics.
+- Star rating uses the `Rating` primitive in read-only mode (announced as
+  "4.5 out of 5 stars").
+- Date uses `<time>` so screen readers and crawlers can read it as a date.
+
+<EditOnGithub source="apps/docs-site/app/(docs)/patterns/review-card/page.mdx" />

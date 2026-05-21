@@ -1,0 +1,43 @@
+# Map
+
+Thin React wrapper over [MapLibre GL JS](https://maplibre.org/maplibre-gl-js/docs/),
+with styled `MapMarker` overlays that consume design-system tokens.
+
+Shipped as a **separate optional package** — `@ship-it-ui/map`. MapLibre is
+~700 KB; keeping it out of the `@ship-it-ui/ui` bundle means consumers that
+don't need a map don't pay for it.
+
+```bash
+pnpm add @ship-it-ui/map maplibre-gl
+```
+
+## Default
+
+<LivePreview example="map/default" />
+
+## Props
+
+<PropsTable component="Map" />
+
+## Tile provider
+
+The default `tileUrl` is OpenStreetMap raster, so the component renders out
+of the box. **For production traffic, set `tileUrl` to a provider you have an
+agreement with** — OSM's public tile servers are not licensed for high-traffic
+use. Common choices:
+
+- **MapTiler** — `https://api.maptiler.com/maps/streets-v2/256/{z}/{x}/{y}.png?key=<KEY>`
+- **Stadia Maps** — `https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}.png`
+- **Mapbox** — pass a Mapbox style URL via the imperative `raw` handle and
+  call `map.setStyle()`.
+
+## Accessibility
+
+- The container is `role="region"` with the consumer-supplied `aria-label`.
+- Each marker is a focusable `<button>` with an optional `label` (price,
+  count). Click and keyboard activation both fire `onSelect`.
+- The map canvas itself is not keyboard-navigable in MapLibre by default —
+  pair `Map` with an adjacent `List` view (toggle via `SegmentedControl`)
+  so keyboard users have a parallel surface for the same data.
+
+<EditOnGithub source="apps/docs-site/app/(docs)/patterns/map/page.mdx" />
