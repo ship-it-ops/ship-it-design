@@ -1,7 +1,14 @@
 'use client';
 
 import { IconGlyph } from '@ship-it-ui/icons';
-import { forwardRef, useId, type HTMLAttributes, type KeyboardEvent } from 'react';
+import {
+  forwardRef,
+  useEffect,
+  useId,
+  useRef,
+  type HTMLAttributes,
+  type KeyboardEvent,
+} from 'react';
 
 import { useControllableState } from '../../hooks/useControllableState';
 import { cn } from '../../utils/cn';
@@ -71,8 +78,22 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(function Rating(
   const px = sizeMap[size];
   const currentInt = Math.round(current ?? 0);
 
-  const handleSelect = (n: number) => {
+  // Per-star button refs + a flag set by keyboard nav to move DOM focus to
+  // the newly-selected star after re-render. The WAI-ARIA radiogroup pattern
+  // requires arrow keys to change *both* `aria-checked` and `document.activeElement`;
+  // React updating `tabIndex={0}` on a different button does not move focus on its own.
+  const buttonsRef = useRef<(HTMLButtonElement | null)[]>([]);
+  const shouldFocusRef = useRef(false);
+
+  useEffect(() => {
+    if (!shouldFocusRef.current) return;
+    shouldFocusRef.current = false;
+    buttonsRef.current[currentInt - 1]?.focus();
+  }, [currentInt]);
+
+  const handleSelect = (n: number, viaKeyboard = false) => {
     if (readOnly) return;
+    if (viaKeyboard) shouldFocusRef.current = true;
     setCurrent(n);
   };
 
@@ -80,16 +101,16 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(function Rating(
     if (readOnly) return;
     if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
       e.preventDefault();
-      handleSelect(Math.min(max, Math.max(1, currentInt) + 1));
+      handleSelect(Math.min(max, Math.max(1, currentInt) + 1), true);
     } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
       e.preventDefault();
-      handleSelect(Math.max(1, currentInt - 1));
+      handleSelect(Math.max(1, currentInt - 1), true);
     } else if (e.key === 'Home') {
       e.preventDefault();
-      handleSelect(1);
+      handleSelect(1, true);
     } else if (e.key === 'End') {
       e.preventDefault();
-      handleSelect(max);
+      handleSelect(max, true);
     }
   };
 
@@ -144,6 +165,9 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(function Rating(
           <button
             key={i}
             id={`${reactId}-${i}`}
+            ref={(el) => {
+              buttonsRef.current[i] = el;
+            }}
             type="button"
             role="radio"
             aria-checked={selected}

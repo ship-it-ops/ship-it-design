@@ -154,17 +154,24 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
         )}
 
         {showDots && items.length > 1 && (
+          /*
+           * Plain `<button>` + `aria-current` rather than the tabs pattern
+           * (`role="tablist" / "tab"`). The APG carousel pattern recommends
+           * this lighter semantic; the viewport's `aria-live="polite"`
+           * already announces slide changes, so the tabs relationship is
+           * unnecessary — and incomplete here (slides aren't tabpanels and
+           * there's no `aria-controls`).
+           */
           <div
-            role="tablist"
+            role="group"
             aria-label="Choose slide"
             className="absolute bottom-2 left-1/2 inline-flex -translate-x-1/2 gap-1.5 rounded-full bg-black/40 px-2 py-1.5 backdrop-blur"
           >
             {items.map((_, i) => (
               <button
                 key={i}
-                role="tab"
                 type="button"
-                aria-selected={i === activeIdx}
+                aria-current={i === activeIdx ? 'true' : undefined}
                 aria-label={`Go to slide ${i + 1}`}
                 onClick={() => goTo(i)}
                 className={cn(

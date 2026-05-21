@@ -1,7 +1,7 @@
 'use client';
 
 import { DynamicIconGlyph } from '@ship-it-ui/icons';
-import { type ReactNode } from 'react';
+import { forwardRef, type ReactNode } from 'react';
 
 /**
  * MapMarker — DOM marker styled with design-system tokens. Rendered by the
@@ -24,9 +24,13 @@ const variantClasses = {
   sale: 'bg-sale text-on-accent border-sale',
 } as const;
 
-export function MapMarker({ label, icon, variant = 'default', selected, onClick }: MapMarkerProps) {
+export const MapMarker = forwardRef<HTMLButtonElement, MapMarkerProps>(function MapMarker(
+  { label, icon, variant = 'default', selected, onClick },
+  ref,
+) {
   return (
     <button
+      ref={ref}
       type="button"
       onClick={onClick}
       aria-pressed={selected}
@@ -42,4 +46,5 @@ export function MapMarker({ label, icon, variant = 'default', selected, onClick 
       {label && <span>{label}</span>}
     </button>
   );
-}
+});
+MapMarker.displayName = 'MapMarker';
