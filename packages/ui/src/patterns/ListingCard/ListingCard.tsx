@@ -73,38 +73,17 @@ export const ListingCard = forwardRef<HTMLDivElement, ListingCardProps>(function
   },
   ref,
 ) {
-  const headerOverlay = (
-    <>
-      {verified && (
-        <div className="pointer-events-none absolute top-3 left-3 z-10">
-          <Badge variant="ok" size="sm">
-            <IconGlyph name="verified" size={11} /> Verified host
-          </Badge>
-        </div>
-      )}
-      {onFavorite && (
-        <button
-          type="button"
-          aria-label={favorited ? 'Remove from favorites' : 'Save to favorites'}
-          aria-pressed={favorited}
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            onFavorite(!favorited);
-          }}
-          className={cn(
-            'absolute top-3 right-3 z-10 inline-grid h-8 w-8 cursor-pointer place-items-center rounded-full',
-            'bg-panel/85 hover:bg-panel border-border border shadow-sm backdrop-blur',
-            favorited ? 'text-err' : 'text-text-dim hover:text-text',
-          )}
-        >
-          <IconGlyph name="heart" size={16} />
-        </button>
-      )}
-    </>
-  );
-
-  const body = (
+  /*
+   * a11y: when `href` and `onFavorite` are both set we cannot wrap the whole
+   * card in an `<a>` because the favorite `<button>` would become a
+   * descendant of an interactive element (axe: nested-interactive).
+   *
+   * Instead we use the "stretched link" pattern: the `<a>` is rendered as
+   * an `absolute inset-0` sibling underneath the favorite button (z-0 vs
+   * z-20). Pointer events on the card surface hit the link; pointer events
+   * on the heart hit the heart. No nesting, single tab stop per affordance.
+   */
+  return (
     <Card
       ref={ref}
       className={cn('relative overflow-hidden !p-0', className)}
@@ -124,7 +103,13 @@ export const ListingCard = forwardRef<HTMLDivElement, ListingCardProps>(function
             />
           )}
         />
-        {headerOverlay}
+        {verified && (
+          <div className="pointer-events-none absolute top-3 left-3 z-10">
+            <Badge variant="ok" size="sm">
+              <IconGlyph name="verified" size={11} /> Verified host
+            </Badge>
+          </div>
+        )}
       </div>
       <div className="flex flex-col gap-1 p-3">
         {eyebrow && (
@@ -162,21 +147,32 @@ export const ListingCard = forwardRef<HTMLDivElement, ListingCardProps>(function
           <Rating value={rating} max={5} precision="half" size="sm" readOnly className="sr-only" />
         )}
       </div>
+
+      {href && (
+        <a
+          href={href}
+          aria-label={typeof title === 'string' ? title : undefined}
+          className="absolute inset-0 z-0 no-underline"
+        />
+      )}
+
+      {onFavorite && (
+        <button
+          type="button"
+          aria-label={favorited ? 'Remove from favorites' : 'Save to favorites'}
+          aria-pressed={favorited}
+          onClick={() => onFavorite(!favorited)}
+          className={cn(
+            'absolute top-3 right-3 z-20 inline-grid h-8 w-8 cursor-pointer place-items-center rounded-full',
+            'bg-panel/85 hover:bg-panel border-border border shadow-sm backdrop-blur',
+            favorited ? 'text-err' : 'text-text-dim hover:text-text',
+          )}
+        >
+          <IconGlyph name="heart" size={16} />
+        </button>
+      )}
     </Card>
   );
-
-  if (href) {
-    return (
-      <a
-        href={href}
-        className="block no-underline"
-        aria-label={typeof title === 'string' ? title : undefined}
-      >
-        {body}
-      </a>
-    );
-  }
-  return body;
 });
 
 ListingCard.displayName = 'ListingCard';

@@ -4,6 +4,7 @@ import { IconGlyph } from '@ship-it-ui/icons';
 import {
   forwardRef,
   useCallback,
+  useEffect,
   useId,
   useRef,
   type ChangeEvent,
@@ -99,6 +100,11 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(functi
     repeatTimer.current = undefined;
     repeatInterval.current = undefined;
   }, []);
+
+  // Clear any in-flight long-press timers if the component unmounts mid-press
+  // (button held while parent navigates away, etc.). Without this the interval
+  // keeps firing `bump` against a stale `setCurrent` until GC.
+  useEffect(() => () => stopRepeat(), [stopRepeat]);
 
   const startRepeat = (dir: 1 | -1) => {
     bump(dir);

@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
+import { axe } from 'vitest-axe';
 
 import { Lightbox } from './Lightbox';
 
@@ -50,5 +51,12 @@ describe('Lightbox', () => {
       />,
     );
     expect(screen.getByText('2 / 3')).toBeInTheDocument();
+  });
+
+  it('has no a11y violations when open', async () => {
+    const { container } = render(
+      <Lightbox open items={photos} renderItem={(p) => <img alt={`Slide ${p}`} />} />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

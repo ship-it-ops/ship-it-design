@@ -59,4 +59,25 @@ describe('ListingCard', () => {
     );
     expect(await axe(container)).toHaveNoViolations();
   });
+
+  /*
+   * Regression: when both `href` and `onFavorite` were provided, the heart
+   * button used to live inside the wrapping `<a>` — axe flagged
+   * `nested-interactive`. The component now uses a stretched-link pattern
+   * (link as absolute sibling, favorite at higher z-index), so this case
+   * must stay axe-clean.
+   */
+  it('has no a11y violations when href + onFavorite are combined', async () => {
+    const { container } = render(
+      <ListingCard
+        photos={photos}
+        title="Tesla"
+        price="89"
+        href="/cars/123"
+        onFavorite={() => {}}
+        favorited={false}
+      />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
 });

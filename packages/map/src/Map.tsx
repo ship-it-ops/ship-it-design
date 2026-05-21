@@ -16,6 +16,13 @@ import type { LngLat, MapMarkerData } from './types';
  * agreement with (MapTiler, Mapbox via maplibre style URL, Stadia, etc.).
  */
 
+/**
+ * Aliased Map constructor — our exported `Map` component shadows the global
+ * `Map` identifier in this module, so direct `new Map()` would try to
+ * instantiate the React component. `NativeMap` keeps the type-safe path.
+ */
+const NativeMap: MapConstructor = globalThis.Map;
+
 export interface MapHandle {
   /** Re-center the viewport. */
   flyTo(opts: { center: LngLat; zoom?: number }): void;
@@ -64,10 +71,7 @@ export const Map = forwardRef<MapHandle, MapProps>(function Map(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapRef = useRef<any | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const markerRefs = useRef<Map<string, { marker: any; root: Root }>>(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    new (globalThis.Map as any)(),
-  );
+  const markerRefs = useRef(new NativeMap<string, { marker: any; root: Root }>());
 
   useImperativeHandle(
     ref,

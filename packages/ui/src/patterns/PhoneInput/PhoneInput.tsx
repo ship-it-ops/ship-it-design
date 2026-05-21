@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useMemo, useState } from 'react';
+import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Select } from '../../components/Select';
 import { useControllableState } from '../../hooks/useControllableState';
@@ -80,15 +80,43 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(function
   );
   const [national, setNational] = useState<string>(parsed?.national ?? '');
 
+  // Re-sync local country/national whenever the *external* committed value
+  // changes — form resets, route restores, or any controlled-mode update
+  // from above. Without this the visible inputs drift from `value`.
+  //
+  // We guard with `lastEmittedRef` so the effect skips its own emissions:
+  // when the user types `4` the controller calls `setCommitted('+14')`,
+  // which would otherwise re-parse and rewrite `national` to `'4'` on the
+  // next render — fine for digits, but it strips formatting like spaces
+  // and resets the caret. Tracking what we just wrote lets us tell apart
+  // "user typed" from "parent reset the value".
+  const lastEmittedRef = useRef<string>(committed ?? '');
+  useEffect(() => {
+    const current = committed ?? '';
+    if (current === lastEmittedRef.current) return;
+    lastEmittedRef.current = current;
+    const next = parseE164(current, countries);
+    if (next) {
+      setCountry(next.country);
+      setNational(next.national);
+    } else if (current === '') {
+      setNational('');
+    }
+  }, [committed, countries]);
+
   const handleCountry = (code: string) => {
     const next = countries.find((c) => c.code === code) ?? country;
     setCountry(next);
-    setCommitted(toE164(next, national));
+    const emitted = toE164(next, national);
+    lastEmittedRef.current = emitted;
+    setCommitted(emitted);
   };
 
   const handleNational = (raw: string) => {
     setNational(raw);
-    setCommitted(toE164(country, raw));
+    const emitted = toE164(country, raw);
+    lastEmittedRef.current = emitted;
+    setCommitted(emitted);
   };
 
   const selectOptions = useMemo(

@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
+import { axe } from 'vitest-axe';
 
 // Mock MapLibre — the real lib requires WebGL which jsdom doesn't provide.
 vi.mock('maplibre-gl', () => {
@@ -38,5 +39,12 @@ describe('Map', () => {
   it('renders without crashing when no markers are provided', () => {
     render(<Map center={[0, 0]} zoom={5} aria-label="Empty map" />);
     expect(screen.getByRole('region', { name: 'Empty map' })).toBeInTheDocument();
+  });
+
+  it('has no a11y violations', async () => {
+    const { container } = render(
+      <Map center={[-122.4, 37.8]} zoom={12} aria-label="Search results map" />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });
