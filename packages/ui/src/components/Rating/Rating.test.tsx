@@ -29,6 +29,25 @@ describe('Rating', () => {
     expect(handle).toHaveBeenLastCalledWith(2);
   });
 
+  /*
+   * Regression: per the WAI-ARIA radiogroup pattern, arrow keys must move
+   * `document.activeElement` to the newly-selected option in addition to
+   * updating `aria-checked`. Without imperative focus the new star receives
+   * `tabIndex=0` but DOM focus stays on the old button — Tab leaves the
+   * group from the wrong position.
+   */
+  it('moves DOM focus to the newly selected star on arrow nav', async () => {
+    render(<Rating defaultValue={2} aria-label="My rating" />);
+    const two = screen.getByRole('radio', { name: '2 stars' });
+    two.focus();
+    await userEvent.keyboard('{ArrowRight}');
+    expect(document.activeElement).toBe(screen.getByRole('radio', { name: '3 stars' }));
+    await userEvent.keyboard('{End}');
+    expect(document.activeElement).toBe(screen.getByRole('radio', { name: '5 stars' }));
+    await userEvent.keyboard('{Home}');
+    expect(document.activeElement).toBe(screen.getByRole('radio', { name: '1 star' }));
+  });
+
   it('jumps to first/last with Home/End', async () => {
     const handle = vi.fn();
     render(<Rating defaultValue={3} onValueChange={handle} aria-label="My rating" />);

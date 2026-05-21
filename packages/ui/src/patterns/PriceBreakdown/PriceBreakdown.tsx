@@ -82,32 +82,33 @@ export interface PriceBreakdownLineProps extends PriceBreakdownItem {
   className?: string;
 }
 
-export function PriceBreakdownLine({
-  label,
-  subLabel,
-  amount,
-  originalAmount,
-  discount,
-  className,
-}: PriceBreakdownLineProps) {
-  return (
-    <div className={cn('flex items-baseline justify-between gap-3', className)}>
-      <div className="flex min-w-0 flex-col">
-        <span className="text-text text-[13px]">{label}</span>
-        {subLabel && <span className="text-text-dim text-[11px]">{subLabel}</span>}
-      </div>
-      <div className="inline-flex shrink-0 items-baseline gap-2">
-        {originalAmount && (
-          <span className="text-text-dim decoration-sale text-[12px] line-through">
-            {originalAmount}
+export const PriceBreakdownLine = forwardRef<HTMLDivElement, PriceBreakdownLineProps>(
+  function PriceBreakdownLine(
+    { label, subLabel, amount, originalAmount, discount, className },
+    ref,
+  ) {
+    return (
+      <div ref={ref} className={cn('flex items-baseline justify-between gap-3', className)}>
+        <div className="flex min-w-0 flex-col">
+          <span className="text-text text-[13px]">{label}</span>
+          {subLabel && <span className="text-text-dim text-[11px]">{subLabel}</span>}
+        </div>
+        <div className="inline-flex shrink-0 items-baseline gap-2">
+          {originalAmount && (
+            <span className="text-text-dim decoration-sale text-[12px] line-through">
+              {originalAmount}
+            </span>
+          )}
+          <span
+            className={cn('text-[13px] font-medium', discount ? 'text-sale-text' : 'text-text')}
+          >
+            {amount}
           </span>
-        )}
-        <span className={cn('text-[13px] font-medium', discount ? 'text-sale-text' : 'text-text')}>
-          {amount}
-        </span>
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  },
+);
+PriceBreakdownLine.displayName = 'PriceBreakdownLine';
 
 PriceBreakdown.Line = PriceBreakdownLine;

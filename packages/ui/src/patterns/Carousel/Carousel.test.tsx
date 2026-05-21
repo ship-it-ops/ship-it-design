@@ -28,7 +28,7 @@ describe('Carousel', () => {
     expect(handle).toHaveBeenCalledWith(1);
   });
 
-  it('exposes dot tabs with aria-selected', async () => {
+  it('marks the active dot with aria-current', async () => {
     render(
       <Carousel
         items={items}
@@ -37,8 +37,9 @@ describe('Carousel', () => {
         aria-label="Photos"
       />,
     );
-    const tabs = screen.getAllByRole('tab');
-    expect(tabs[1]).toHaveAttribute('aria-selected', 'true');
+    const dots = screen.getAllByRole('button', { name: /Go to slide/ });
+    expect(dots[1]).toHaveAttribute('aria-current', 'true');
+    expect(dots[0]).not.toHaveAttribute('aria-current');
   });
 
   it('has no a11y violations', async () => {
