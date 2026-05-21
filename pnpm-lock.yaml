@@ -699,6 +699,9 @@ importers:
       '@ship-it-ui/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
+      '@ship-it-ui/icons':
+        specifier: workspace:*
+        version: link:../icons
       '@ship-it-ui/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig

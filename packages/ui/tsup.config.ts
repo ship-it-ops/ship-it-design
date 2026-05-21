@@ -17,6 +17,7 @@ export default defineConfig({
     /^react/,
     /^@radix-ui\//,
     /^@fontsource-variable\//,
+    /^@ship-it-ui\//,
     'class-variance-authority',
     'clsx',
     'tailwind-merge',

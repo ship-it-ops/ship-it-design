@@ -65,6 +65,7 @@ export const Map = forwardRef<MapHandle, MapProps>(function Map(
   const mapRef = useRef<any | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const markerRefs = useRef<Map<string, { marker: any; root: Root }>>(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     new (globalThis.Map as any)(),
   );
 
@@ -110,10 +111,11 @@ export const Map = forwardRef<MapHandle, MapProps>(function Map(
       mapRef.current = map;
     })();
 
+    const markersAtMount = markerRefs.current;
     return () => {
       cancelled = true;
       // Tear down markers first so React roots unmount cleanly.
-      markerRefs.current.forEach(({ marker, root }) => {
+      markersAtMount.forEach(({ marker, root }) => {
         try {
           root.unmount();
         } catch {
@@ -121,7 +123,7 @@ export const Map = forwardRef<MapHandle, MapProps>(function Map(
         }
         marker.remove?.();
       });
-      markerRefs.current.clear();
+      markersAtMount.clear();
       mapRef.current?.remove?.();
       mapRef.current = null;
     };

@@ -6,7 +6,6 @@ import {
   useCallback,
   useEffect,
   useRef,
-  useState,
   type HTMLAttributes,
   type ReactNode,
 } from 'react';
@@ -115,17 +114,7 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
         <div
           ref={viewportRef}
           className="flex w-full snap-x snap-mandatory overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          tabIndex={0}
-          aria-label="Slides"
-          onKeyDown={(e) => {
-            if (e.key === 'ArrowRight') {
-              e.preventDefault();
-              goTo(activeIdx + 1);
-            } else if (e.key === 'ArrowLeft') {
-              e.preventDefault();
-              goTo(activeIdx - 1);
-            }
-          }}
+          aria-live="polite"
         >
           {items.map((item, i) => (
             <div

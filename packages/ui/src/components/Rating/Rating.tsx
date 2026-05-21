@@ -131,6 +131,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(function Rating(
       ref={ref}
       role="radiogroup"
       aria-label={ariaLabel ?? 'Rating'}
+      tabIndex={-1}
       className={cn('inline-flex items-center gap-0.5', className)}
       onKeyDown={handleKey}
       {...props}

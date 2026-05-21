@@ -32,7 +32,7 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(function Acc
 });
 Accordion.displayName = 'Accordion';
 
-export interface AccordionItemProps extends RadixAccordion.AccordionItemProps {}
+export type AccordionItemProps = RadixAccordion.AccordionItemProps;
 
 export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(function AccordionItem(
   { className, ...props },
@@ -80,7 +80,7 @@ export const AccordionTrigger = forwardRef<HTMLButtonElement, AccordionTriggerPr
 );
 AccordionTrigger.displayName = 'AccordionTrigger';
 
-export interface AccordionContentProps extends RadixAccordion.AccordionContentProps {}
+export type AccordionContentProps = RadixAccordion.AccordionContentProps;
 
 export const AccordionContent = forwardRef<HTMLDivElement, AccordionContentProps>(
   function AccordionContent({ className, children, ...props }, ref) {
