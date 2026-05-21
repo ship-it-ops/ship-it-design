@@ -1,0 +1,37 @@
+# PriceBreakdown
+
+Labelled line items with optional `subLabel`, `originalAmount` strike-through,
+and a totals row. For booking summaries, checkout sheets, trip receipts.
+
+## Default
+
+<LivePreview example="price-breakdown/default" />
+
+## Promo / discount
+
+`originalAmount` renders a strike-through in the `sale` semantic token.
+Setting `discount` on the amount paints it in `saleText`.
+
+<LivePreview example="price-breakdown/promo" />
+
+## Props
+
+### PriceBreakdown
+
+<PropsTable component="PriceBreakdown" />
+
+### PriceBreakdown.Line
+
+<PropsTable component="PriceBreakdownLine" />
+
+## Composition
+
+```tsx
+<PriceBreakdown total="$316" currency="USD">
+  <PriceBreakdown.Line label="Trip price" subLabel="$89 × 3 nights" amount="$267" />
+  <PriceBreakdown.Line label="Trip discount" amount="−$25" discount />
+  <PriceBreakdown.Line label="Service fee" amount="$32" />
+</PriceBreakdown>
+```
+
+<EditOnGithub source="apps/docs-site/app/(docs)/patterns/price-breakdown/page.mdx" />

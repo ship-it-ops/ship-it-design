@@ -93,9 +93,11 @@ export const navigation: NavSection[] = [
           { title: 'IconButton', slug: 'components/icon-button' },
           { title: 'InlineEdit', slug: 'components/inline-edit' },
           { title: 'Input', slug: 'components/input' },
+          { title: 'NumberInput', slug: 'components/number-input' },
           { title: 'OTP', slug: 'components/otp' },
           { title: 'Radio', slug: 'components/radio' },
           { title: 'SearchInput', slug: 'components/search-input' },
+          { title: 'SegmentedControl', slug: 'components/segmented-control' },
           { title: 'Select', slug: 'components/select' },
           { title: 'Slider', slug: 'components/slider' },
           { title: 'SplitButton', slug: 'components/split-button' },
@@ -106,11 +108,13 @@ export const navigation: NavSection[] = [
       {
         label: 'Display',
         items: [
+          { title: 'Accordion', slug: 'components/accordion' },
           { title: 'Avatar', slug: 'components/avatar' },
           { title: 'Badge', slug: 'components/badge' },
           { title: 'Card', slug: 'components/card' },
           { title: 'Chip', slug: 'components/chip' },
           { title: 'Kbd', slug: 'components/kbd' },
+          { title: 'Rating', slug: 'components/rating' },
           { title: 'ScrollArea', slug: 'components/scroll-area' },
           { title: 'Skeleton', slug: 'components/skeleton' },
           { title: 'StatusDot', slug: 'components/status-dot' },
@@ -152,9 +156,11 @@ export const navigation: NavSection[] = [
         items: [
           { title: 'Combobox', slug: 'patterns/combobox' },
           { title: 'DatePicker', slug: 'patterns/date-picker' },
+          { title: 'DateRangePicker', slug: 'patterns/date-range-picker' },
           { title: 'Dropzone', slug: 'patterns/dropzone' },
           { title: 'FileChip', slug: 'patterns/file-chip' },
           { title: 'FilterPanel', slug: 'patterns/filter-panel' },
+          { title: 'PhoneInput', slug: 'patterns/phone-input' },
         ],
       },
       {
@@ -186,6 +192,25 @@ export const navigation: NavSection[] = [
           { title: 'Sidebar', slug: 'patterns/sidebar' },
           { title: 'Topbar', slug: 'patterns/topbar' },
         ],
+      },
+      {
+        label: 'Media',
+        items: [
+          { title: 'Carousel', slug: 'patterns/carousel' },
+          { title: 'Lightbox', slug: 'patterns/lightbox' },
+        ],
+      },
+      {
+        label: 'Marketplace',
+        items: [
+          { title: 'ListingCard', slug: 'patterns/listing-card' },
+          { title: 'PriceBreakdown', slug: 'patterns/price-breakdown' },
+          { title: 'ReviewCard', slug: 'patterns/review-card' },
+        ],
+      },
+      {
+        label: 'Geo',
+        items: [{ title: 'Map', slug: 'patterns/map' }],
       },
       {
         label: 'Charts',

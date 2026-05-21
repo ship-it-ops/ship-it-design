@@ -1,0 +1,37 @@
+# Accordion
+
+Vertically stacked, collapsible sections. Use `type="single"` for one-open-at-a-time
+(FAQ pages); `"multiple"` when sections are independent (filter groups, listing detail).
+
+## Default — single
+
+<LivePreview example="accordion/default" />
+
+## Multiple sections open
+
+<LivePreview example="accordion/multiple" />
+
+## With leading icons
+
+<LivePreview example="accordion/with-icon" />
+
+## Props
+
+### Accordion
+
+<PropsTable component="Accordion" />
+
+### AccordionTrigger
+
+<PropsTable component="AccordionTrigger" />
+
+## Accessibility
+
+- Each section's trigger toggles `aria-expanded` and exposes the panel via
+  `aria-controls`. Radix handles the wiring.
+- Keyboard: Up / Down move between triggers, Home / End jump to first / last,
+  Enter / Space toggles.
+- Respects `prefers-reduced-motion` — the expand/collapse animation collapses
+  to 1ms.
+
+<EditOnGithub source="apps/docs-site/app/(docs)/components/accordion/page.mdx" />

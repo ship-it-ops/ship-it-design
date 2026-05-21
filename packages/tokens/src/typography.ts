@@ -26,6 +26,8 @@ export const fontSize = {
   h2: '28px',
   h1: '34px',
   display: '56px',
+  displayLg: '72px',
+  displayXl: '96px',
 } as const;
 
 export const fontWeight = {

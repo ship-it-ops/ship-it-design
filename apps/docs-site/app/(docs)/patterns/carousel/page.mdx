@@ -1,0 +1,32 @@
+# Carousel
+
+Horizontal scroll-snap container with prev/next controls and dot indicators.
+Native CSS scroll behavior — no library required. Use for listing photo
+galleries, marketing hero rotators, or feature walkthroughs.
+
+## Default
+
+<LivePreview example="carousel/default" />
+
+## With thumbnails
+
+Listing detail pages typically pair the main viewport with a thumbnail strip.
+
+<LivePreview example="carousel/with-thumbnails" />
+
+## Props
+
+<PropsTable component="Carousel" />
+
+## Accessibility
+
+- The viewport is `role="region"` with `aria-roledescription="carousel"`.
+- Each slide is a `role="group"` with `aria-label="N of M"`.
+- Dot indicators are a `role="tablist"` so screen readers announce
+  "selected" / "not selected".
+- Keyboard: focus the viewport and use Arrow Left / Right to advance. The
+  prev/next buttons are focusable as well.
+- Honor `prefers-reduced-motion`: the scroll uses `behavior: smooth` which
+  collapses to instant under reduced motion via the global CSS rule.
+
+<EditOnGithub source="apps/docs-site/app/(docs)/patterns/carousel/page.mdx" />

@@ -1,0 +1,32 @@
+# ListingCard
+
+A consumer-marketplace card composing photos (`Carousel`), title, `Rating`,
+price, host info, and optional `verified` badge / favorite toggle. Built
+for marketplace grids — search results, related listings, host's other cars.
+
+**Distinct from EntityCard**: EntityCard is dev-tool chrome (service /
+owner / artifact). ListingCard is the consumer card.
+
+## Default
+
+<LivePreview example="listing-card/default" />
+
+## On sale
+
+Pass `originalPrice` to render a strike-through using the `sale` semantic
+token.
+
+<LivePreview example="listing-card/with-sale" />
+
+## Props
+
+<PropsTable component="ListingCard" />
+
+## Composition
+
+The card is a thin assembly over primitives — `Card` for the shell,
+`Carousel` for photos, `Rating` for the star row, `Badge` for verified, and
+`heart` icon for favorite. For unusual layouts, compose the same primitives
+yourself.
+
+<EditOnGithub source="apps/docs-site/app/(docs)/patterns/listing-card/page.mdx" />
