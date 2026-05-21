@@ -1,5 +1,15 @@
 # @ship-it-ui/cytoscape
 
+## 0.0.8
+
+### Patch Changes
+
+- Updated dependencies [e2b569e]
+- Updated dependencies [e2b569e]
+  - @ship-it-ui/icons@0.0.8
+  - @ship-it-ui/ui@0.0.8
+  - @ship-it-ui/shipit@0.0.9
+
 ## 0.0.7
 
 ### Patch Changes
