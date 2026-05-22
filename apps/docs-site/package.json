@@ -30,7 +30,7 @@
     "@ship-it-ui/shipit": "workspace:*",
     "@ship-it-ui/tokens": "workspace:*",
     "@ship-it-ui/ui": "workspace:*",
-    "cytoscape": "^3.28.0",
+    "cytoscape": "^3.33.4",
     "flexsearch": "^0.7.43",
     "github-slugger": "^2.0.0",
     "maplibre-gl": "^4.7.1",

@@ -55,9 +55,9 @@
     "react": "^18.0.0 || ^19.0.0"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.0",
+    "@iconify-json/lucide": "^1.2.109",
     "@iconify-json/ph": "^1.2.0",
-    "@iconify-json/simple-icons": "^1.2.0",
+    "@iconify-json/simple-icons": "^1.2.83",
     "@iconify/utils": "^2.1.30",
     "@ship-it-ui/eslint-config": "workspace:*",
     "@ship-it-ui/tsconfig": "workspace:*",
