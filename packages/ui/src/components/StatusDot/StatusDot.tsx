@@ -7,27 +7,26 @@ import { warnIfInvalidColor } from '../../utils/color-override';
 
 export type StatusState = 'ok' | 'warn' | 'err' | 'off' | 'sync' | 'accent';
 
-type StatusDotPropsBase = Omit<HTMLAttributes<HTMLSpanElement>, 'color'> & {
+/**
+ * State path: use a semantic state.
+ *   <StatusDot state="ok" />
+ *
+ * Color path (escape hatch): pass an arbitrary CSS color. When both are set,
+ * `color` wins at runtime.
+ *   <StatusDot color="#7c3aed" />
+ */
+export interface StatusDotProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'color'> {
+  /** Semantic state. Default `'ok'`. */
+  state?: StatusState;
+  /** Arbitrary CSS color override. When set, replaces the state-derived color. */
+  color?: string;
   /** Optional label rendered next to the dot. */
   label?: ReactNode;
   /** Pulse the dot — used for `sync` state to indicate live activity. */
   pulse?: boolean;
   /** Pixel diameter. Defaults to 8px. */
   size?: number;
-};
-
-/**
- * State path: use a semantic state.
- *   <StatusDot state="ok" />
- *
- * Color path (escape hatch): pass an arbitrary CSS color.
- *   <StatusDot color="#7c3aed" />
- *
- * Setting both is a compile error.
- */
-export type StatusDotProps =
-  | (StatusDotPropsBase & { state?: StatusState; color?: undefined })
-  | (StatusDotPropsBase & { color: string; state?: never });
+}
 
 const stateColor: Record<StatusState, string> = {
   ok: 'bg-ok',

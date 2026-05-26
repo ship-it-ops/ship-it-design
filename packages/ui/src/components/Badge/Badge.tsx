@@ -40,25 +40,23 @@ const badgeStyles = cva('inline-flex items-center font-sans leading-none whitesp
   defaultVariants: { variant: 'neutral', size: 'md' },
 });
 
-type BadgePropsBase = Omit<HTMLAttributes<HTMLSpanElement>, 'color'> & {
-  /** Show a colored leading dot. */
-  dot?: boolean;
-  /** Optional leading icon (defers to children). */
-  icon?: ReactNode;
-} & VariantProps<typeof badgeStyles>;
-
 /**
  * Variant path: use one of the DS semantic variants.
  *   <Badge variant="ok">Done</Badge>
  *
- * Color path (escape hatch): pass an arbitrary CSS color.
+ * Color path (escape hatch): pass an arbitrary CSS color. When both are set,
+ * `color` wins at runtime.
  *   <Badge color="#7c3aed">VIP</Badge>
- *
- * Setting both is a compile error.
  */
-export type BadgeProps =
-  | (BadgePropsBase & { color?: undefined })
-  | (Omit<BadgePropsBase, 'variant'> & { color: string; variant?: never });
+export interface BadgeProps
+  extends Omit<HTMLAttributes<HTMLSpanElement>, 'color'>, VariantProps<typeof badgeStyles> {
+  /** Show a colored leading dot. */
+  dot?: boolean;
+  /** Optional leading icon (defers to children). */
+  icon?: ReactNode;
+  /** Arbitrary CSS color override. When set, replaces the `variant` tint. */
+  color?: string;
+}
 
 const dotColorClass = {
   neutral: 'bg-text-dim',
