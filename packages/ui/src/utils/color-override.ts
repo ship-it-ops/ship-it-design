@@ -24,6 +24,10 @@ const KEYWORDS = new Set([
   'magenta',
 ]);
 
+/**
+ * Pure gating check. Always runs in both dev and prod so the component's
+ * fallback path activates uniformly when the override is unusable.
+ */
 const isValid = (value: string): boolean => {
   const v = value.trim();
   if (!v) return false;
@@ -34,16 +38,19 @@ const isValid = (value: string): boolean => {
 };
 
 /**
- * Dev-mode validator. Logs a warning naming the component and the offending value.
- * Returns false on invalid (component should fall back to the default variant).
- * Production-stripped via the NODE_ENV guard so the function call disappears in optimized builds.
+ * Returns true if the value is a usable CSS color, false otherwise.
+ * In dev, also logs a warning naming the component and the offending value.
+ * In prod, the validator still gates (so invalid colors fall back to the
+ * default variant rather than rendering broken CSS) but the console.warn
+ * call is stripped by the bundler's NODE_ENV dead-code elimination.
  */
 export const warnIfInvalidColor = (value: string, component: string): boolean => {
-  if (process.env.NODE_ENV === 'production') return true;
   if (isValid(value)) return true;
-  console.warn(
-    `[${component}] Invalid color value "${value}". Falling back to the default variant. Use a hex, rgb/rgba, hsl, oklch, lab/lch, color(), color-mix(), or a CSS color keyword.`,
-  );
+  if (process.env.NODE_ENV !== 'production') {
+    console.warn(
+      `[${component}] Invalid color value "${value}". Falling back to the default variant. Use a hex, rgb/rgba, hsl, oklch, lab/lch, color(), color-mix(), or a CSS color keyword.`,
+    );
+  }
   return false;
 };
 

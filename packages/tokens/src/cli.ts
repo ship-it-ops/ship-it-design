@@ -6,9 +6,10 @@
  *   shipit build-tokens [--watch] [--cwd <dir>]
  */
 
-import { existsSync, mkdirSync, watch, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, realpathSync, watch, writeFileSync } from 'node:fs';
 import { dirname, isAbsolute, join, resolve } from 'node:path';
 import { argv, exit } from 'node:process';
+import { pathToFileURL } from 'node:url';
 
 import { createJiti } from 'jiti';
 
@@ -29,7 +30,13 @@ const findConfig = (cwd: string): string | null => {
 };
 
 const loadConfig = async (configPath: string): Promise<ShipItConfig> => {
-  const jiti = createJiti(configPath, { interopDefault: true });
+  // Both caches are disabled so `--watch` mode picks up edits. Without this,
+  // jiti hands back the originally-loaded module on every re-import.
+  const jiti = createJiti(configPath, {
+    interopDefault: true,
+    moduleCache: false,
+    fsCache: false,
+  });
   const mod = (await jiti.import(configPath)) as ShipItConfig | { default: ShipItConfig };
   // Accept both `export default defineConfig(...)` and direct exports.
   return 'default' in mod ? (mod.default as ShipItConfig) : (mod as ShipItConfig);
@@ -95,6 +102,17 @@ const main = async (): Promise<void> => {
 };
 
 // Only run main() when invoked as a binary, not when imported by tests.
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Resolve the symlink because `import.meta.url` is the realpath but
+// `process.argv[1]` is the symlink path (e.g., `node_modules/.bin/shipit`).
+const isDirectInvocation = (): boolean => {
+  if (!process.argv[1]) return false;
+  try {
+    return import.meta.url === pathToFileURL(realpathSync(process.argv[1])).href;
+  } catch {
+    return false;
+  }
+};
+
+if (isDirectInvocation()) {
   void main();
 }

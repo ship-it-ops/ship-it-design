@@ -91,9 +91,9 @@ Some components accept a `color` prop for situations where you legitimately need
 
 **Supported components:** `Badge`, `Tag`, `Chip`, `StatusDot`, `Rating`, `Avatar`.
 
-The `color` prop is **mutually exclusive** with the component's semantic variant prop (`variant` on Badge, `state` on StatusDot) — setting both is a compile error. Invalid colors log a dev-mode warning and fall back to the default variant.
+When both `color` and the semantic variant prop (`variant` on Badge, `state` on StatusDot) are set, `color` takes precedence at runtime — the variant is ignored. The two are not type-level exclusive: passing both typechecks. Invalid colors fall back to the default variant in both dev and prod; in dev, the component also logs a `console.warn` naming the offending value.
 
-The prop is intentionally explicit (rather than overloading `variant`) so it's greppable in PR review and easy to lint against if your team wants to restrict the escape hatch.
+The prop is intentionally a distinct name (rather than overloading `variant`) so it's greppable in PR review and easy to lint against with `no-restricted-syntax` if your team wants to restrict the escape hatch.
 
 ## Foot-guns
 
