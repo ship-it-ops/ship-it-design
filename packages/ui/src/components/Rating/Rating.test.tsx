@@ -80,3 +80,18 @@ describe('Rating', () => {
     expect(await axe(container)).toHaveNoViolations();
   });
 });
+
+describe('Rating color prop', () => {
+  it('applies the provided color to filled stars', () => {
+    const { container } = render(<Rating value={3} readOnly color="#7c3aed" />);
+    const filledStarLayer = container.querySelector('[data-filled-stars]');
+    expect((filledStarLayer as HTMLElement).style.color).toBe('rgb(124, 58, 237)');
+  });
+
+  it('warns on invalid color', () => {
+    const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    render(<Rating value={3} readOnly color="not-a-color" />);
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining('[Rating]'));
+    spy.mockRestore();
+  });
+});

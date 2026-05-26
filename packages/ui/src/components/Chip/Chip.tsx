@@ -3,8 +3,9 @@
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 import { cn } from '../../utils/cn';
+import { tintStyle, warnIfInvalidColor } from '../../utils/color-override';
 
-export interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
+export interface ChipProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'color'> {
   /** Pill-style leading icon (typically a glyph or `@`/`#`). */
   icon?: ReactNode;
   /**
@@ -17,30 +18,33 @@ export interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
    * `'touch'` swaps to a roomier 32px chip with larger text for mobile filter strips.
    */
   density?: 'comfortable' | 'touch';
+  /** Arbitrary CSS color. When set, the default neutral tint is replaced with this color. */
+  color?: string;
   children: ReactNode;
 }
 
-/**
- * Pill-shaped filter chip. Used in command palette tag rows, search filter strips,
- * and AI suggestion lists. Differs from `Tag` by being pill-shaped (full radius)
- * and slightly more decorative.
- */
 export const Chip = forwardRef<HTMLSpanElement, ChipProps>(function Chip(
-  { icon, onRemove, density = 'comfortable', className, children, ...props },
+  { icon, onRemove, density = 'comfortable', color, className, children, style, ...props },
   ref,
 ) {
   const isTouch = density === 'touch';
+  const useColor = color && warnIfInvalidColor(color, 'Chip');
+  const structural = cn(
+    'inline-flex items-center gap-[6px] font-sans rounded-full border',
+    isTouch
+      ? 'text-m-mono h-8 py-[5px] pr-[6px] pl-3'
+      : 'h-[26px] py-[4px] pr-1 pl-[10px] text-[12px]',
+  );
+  const defaultPaint = 'bg-panel-2 text-text border-border';
+
   return (
     <span
       ref={ref}
-      className={cn(
-        'inline-flex items-center gap-[6px] font-sans',
-        isTouch
-          ? 'text-m-mono h-8 py-[5px] pr-[6px] pl-3'
-          : 'h-[26px] py-[4px] pr-1 pl-[10px] text-[12px]',
-        'bg-panel-2 text-text border-border rounded-full border',
-        className,
-      )}
+      className={cn(structural, !useColor && defaultPaint, className)}
+      style={{
+        ...(useColor ? { ...tintStyle(color!), borderColor: 'transparent' } : {}),
+        ...style,
+      }}
       {...props}
     >
       {icon && (

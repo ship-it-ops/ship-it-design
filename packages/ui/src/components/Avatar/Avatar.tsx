@@ -4,6 +4,7 @@ import * as RadixAvatar from '@radix-ui/react-avatar';
 import { forwardRef, type HTMLAttributes } from 'react';
 
 import { cn } from '../../utils/cn';
+import { warnIfInvalidColor } from '../../utils/color-override';
 import { stateLabel } from '../StatusDot/StatusDot';
 
 import { sizePx } from './sizes';
@@ -33,7 +34,7 @@ function hashHue(str: string): number {
   return h;
 }
 
-export interface AvatarProps extends HTMLAttributes<HTMLSpanElement> {
+export interface AvatarProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'color'> {
   /** Display name. Used to derive initials and a deterministic background color. */
   name?: string;
   /** Image source. Falls back to initials if loading fails. */
@@ -44,6 +45,11 @@ export interface AvatarProps extends HTMLAttributes<HTMLSpanElement> {
   status?: AvatarStatus;
   /** Override the auto-generated initials (e.g., for non-Latin scripts). */
   initials?: string;
+  /**
+   * Override the hash-derived fallback background with a literal CSS color value.
+   * Only applies when the initials fallback is shown; image avatars are unaffected.
+   */
+  color?: string;
 }
 
 /**
@@ -52,12 +58,17 @@ export interface AvatarProps extends HTMLAttributes<HTMLSpanElement> {
  * after a load failure.
  */
 export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
-  { name = '?', src, size = 'md', status, initials, className, style, ...props },
+  { name = '?', src, size = 'md', status, initials, color, className, style, ...props },
   ref,
 ) {
   const dim = sizePx[size];
   const hue = hashHue(name);
   const computedInitials = initials ?? initialsFor(name);
+
+  const useColor = color && warnIfInvalidColor(color, 'Avatar');
+  const fallbackBg = useColor
+    ? color
+    : `oklch(var(--color-avatar-fallback-l) var(--color-avatar-fallback-c) ${hue})`;
 
   return (
     <span
@@ -69,9 +80,7 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
       <RadixAvatar.Root
         className="border-border relative inline-flex h-full w-full shrink-0 overflow-hidden rounded-full border"
         style={{
-          background: src
-            ? undefined
-            : `oklch(var(--color-avatar-fallback-l) var(--color-avatar-fallback-c) ${hue})`,
+          background: src ? undefined : fallbackBg,
         }}
       >
         {src && <RadixAvatar.Image src={src} alt={name} className="h-full w-full object-cover" />}
