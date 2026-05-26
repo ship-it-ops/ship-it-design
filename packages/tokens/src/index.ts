@@ -8,3 +8,4 @@ export * from './elevation';
 export * from './breakpoint';
 export * from './z-index';
 export * from './mobile';
+export { defineConfig, type ShipItConfig } from './config';

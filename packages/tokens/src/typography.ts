@@ -56,4 +56,5 @@ export const tracking = {
 
 export type FontSizeToken = keyof typeof fontSize;
 export type FontWeightToken = keyof typeof fontWeight;
+export type LineHeightToken = keyof typeof lineHeight;
 export type TrackingToken = keyof typeof tracking;
