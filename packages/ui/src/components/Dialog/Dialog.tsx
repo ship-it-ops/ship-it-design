@@ -85,7 +85,12 @@ export function Dialog({ title, description, footer, width, children, ...rootPro
   // If consumer passed only children, render in convenience mode.
   return (
     <DialogRoot {...rootProps}>
-      <DialogContent width={width}>
+      <DialogContent
+        width={width}
+        // When the caller omits `description`, pass `aria-describedby={undefined}`
+        // explicitly so Radix's dev-mode a11y check sees the intentional opt-out.
+        {...(description ? {} : { 'aria-describedby': undefined })}
+      >
         {title && (
           <RadixDialog.Title
             className={cn('text-[16px] font-medium', description ? 'mb-[6px]' : 'mb-4')}

@@ -2,6 +2,7 @@
   "name": "ship-it-design",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "description": "Ship-It design system & component library — tokens, icons, and React components consumed by Ship-It front-end apps.",
   "license": "MIT",
   "packageManager": "pnpm@9.12.0",

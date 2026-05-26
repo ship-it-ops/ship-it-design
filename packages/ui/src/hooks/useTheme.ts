@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export type Theme = 'dark' | 'light';
 
@@ -22,12 +22,18 @@ export function useTheme(): {
   // Initialize to 'dark' on both server and client to avoid SSR hydration mismatch.
   // The real DOM value is read post-mount in the effect below.
   const [theme, setThemeState] = useState<Theme>('dark');
+  // Flag the MutationObserver to skip the mutation it's about to see from our
+  // own setter — otherwise the microtask-scheduled observer callback fires
+  // after the click handler returns and trips an act() warning in tests for
+  // a state update that would be a no-op anyway.
+  const internalMutation = useRef(false);
 
   const setTheme = useCallback((next: Theme) => {
     if (typeof document === 'undefined') {
       setThemeState(next);
       return;
     }
+    internalMutation.current = true;
     if (next === 'light') {
       document.documentElement.setAttribute('data-theme', 'light');
     } else {
@@ -46,6 +52,10 @@ export function useTheme(): {
     const initial = document.documentElement.getAttribute('data-theme');
     setThemeState(initial === 'light' ? 'light' : 'dark');
     const observer = new MutationObserver(() => {
+      if (internalMutation.current) {
+        internalMutation.current = false;
+        return;
+      }
       const attr = document.documentElement.getAttribute('data-theme');
       setThemeState(attr === 'light' ? 'light' : 'dark');
     });

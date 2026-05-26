@@ -48,7 +48,6 @@ runs:
         node-version-file: .nvmrc
         cache: pnpm
         registry-url: ${{ inputs.registry-url }}
-        always-auth: ${{ inputs.registry-url != '' }}
 
     - name: Setup Node.js (explicit)
       if: ${{ inputs.node-version != '' }}
@@ -57,7 +56,6 @@ runs:
         node-version: ${{ inputs.node-version }}
         cache: pnpm
         registry-url: ${{ inputs.registry-url }}
-        always-auth: ${{ inputs.registry-url != '' }}
 
     - name: Install dependencies
       if: ${{ inputs.install == 'true' }}
