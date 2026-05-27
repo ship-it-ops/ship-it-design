@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
@@ -103,7 +103,9 @@ describe('InlineEdit', () => {
   it('exposes an imperative `edit()` handle', async () => {
     const ref = createRef<InlineEditHandle>();
     render(<InlineEdit ref={ref} value="api" onValueChange={() => {}} />);
-    ref.current?.edit();
+    act(() => {
+      ref.current?.edit();
+    });
     expect(await screen.findByRole('textbox')).toHaveFocus();
   });
 

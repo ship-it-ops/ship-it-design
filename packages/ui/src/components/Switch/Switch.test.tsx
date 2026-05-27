@@ -7,16 +7,18 @@ import { Switch } from './Switch';
 
 describe('Switch', () => {
   it('toggles on click', async () => {
+    const user = userEvent.setup();
     const handle = vi.fn();
     render(<Switch label="Auto-refresh" onCheckedChange={handle} />);
-    await userEvent.click(screen.getByLabelText('Auto-refresh'));
+    await user.click(screen.getByLabelText('Auto-refresh'));
     expect(handle).toHaveBeenCalledWith(true);
   });
 
   it('does not toggle when disabled', async () => {
+    const user = userEvent.setup();
     const handle = vi.fn();
     render(<Switch label="Auto-refresh" disabled onCheckedChange={handle} />);
-    await userEvent.click(screen.getByLabelText('Auto-refresh'));
+    await user.click(screen.getByLabelText('Auto-refresh'));
     expect(handle).not.toHaveBeenCalled();
   });
 

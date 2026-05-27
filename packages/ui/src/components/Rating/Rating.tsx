@@ -12,6 +12,7 @@ import {
 
 import { useControllableState } from '../../hooks/useControllableState';
 import { cn } from '../../utils/cn';
+import { warnIfInvalidColor } from '../../utils/color-override';
 
 /**
  * Rating — star rating display and input.
@@ -24,7 +25,7 @@ import { cn } from '../../utils/cn';
 
 export interface RatingProps extends Omit<
   HTMLAttributes<HTMLDivElement>,
-  'onChange' | 'defaultValue' | 'role'
+  'color' | 'onChange' | 'defaultValue' | 'role'
 > {
   /** Current rating (controlled). Range `0` … `max`. */
   value?: number;
@@ -45,6 +46,8 @@ export interface RatingProps extends Omit<
   readOnly?: boolean;
   /** Accessible label. For read-only this overrides the auto-generated "X out of Y stars" label. */
   'aria-label'?: string;
+  /** Override the filled-star color. Accepts any CSS color. */
+  color?: string;
 }
 
 const sizeMap = {
@@ -64,10 +67,13 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(function Rating(
     readOnly = false,
     className,
     'aria-label': ariaLabel,
+    color,
     ...props
   },
   ref,
 ) {
+  const useColor = color && warnIfInvalidColor(color, 'Rating');
+
   const [current, setCurrent] = useControllableState<number>({
     value,
     defaultValue: defaultValue ?? 0,
@@ -135,12 +141,18 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(function Rating(
         ))}
         {/* Filled overlay, clipped to fillPct */}
         <div
+          data-filled-stars
           className="pointer-events-none absolute inset-0 inline-flex items-center gap-0.5 overflow-hidden"
-          style={{ width: `${fillPct}%` }}
+          style={{ width: `${fillPct}%`, ...(useColor ? { color } : {}) }}
           aria-hidden
         >
           {Array.from({ length: max }).map((_, i) => (
-            <IconGlyph key={i} name="star" size={px} className="text-rating shrink-0" />
+            <IconGlyph
+              key={i}
+              name="star"
+              size={px}
+              className={cn('shrink-0', !useColor && 'text-rating')}
+            />
           ))}
         </div>
       </div>
@@ -154,6 +166,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(function Rating(
       aria-label={ariaLabel ?? 'Rating'}
       tabIndex={-1}
       className={cn('inline-flex items-center gap-0.5', className)}
+      style={useColor ? { color } : undefined}
       onKeyDown={handleKey}
       {...props}
     >
@@ -178,8 +191,8 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(function Rating(
               'inline-flex shrink-0 cursor-pointer items-center justify-center rounded-sm',
               'focus-visible:ring-accent-dim outline-none focus-visible:ring-[3px]',
               'transition-colors duration-(--duration-micro)',
-              filled ? 'text-rating' : 'text-rating-dim',
-              'hover:text-rating',
+              useColor ? (filled ? '' : 'opacity-30') : filled ? 'text-rating' : 'text-rating-dim',
+              !useColor && 'hover:text-rating',
             )}
           >
             <IconGlyph name="star" size={px} />

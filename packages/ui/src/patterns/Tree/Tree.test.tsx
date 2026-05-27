@@ -1,9 +1,19 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { axe } from 'vitest-axe';
 
 import { Tree, type TreeItem } from './Tree';
+
+// Tree's roving-tabindex pattern calls `setActiveId` from the `onFocus`
+// handler. When a test focuses an element directly with `element.focus()`,
+// that synchronous setState happens outside any test-wide act wrapper. Wrap
+// the focus call here so the resulting state update is tracked.
+function focusInAct(element: HTMLElement): void {
+  act(() => {
+    element.focus();
+  });
+}
 
 const items: TreeItem[] = [
   {
@@ -60,7 +70,7 @@ describe('Tree', () => {
   it('expands with ArrowRight, collapses with ArrowLeft', async () => {
     render(<Tree items={items} defaultValue="src" />);
     const node = screen.getByRole('treeitem', { name: /src/ });
-    node.focus();
+    focusInAct(node);
     await userEvent.keyboard('{ArrowRight}');
     expect(screen.getByText('index.ts')).toBeInTheDocument();
     await userEvent.keyboard('{ArrowLeft}');
@@ -71,7 +81,7 @@ describe('Tree', () => {
     render(<Tree items={items} defaultExpanded={['src']} />);
     // Visible order: src, src/index.ts, src/components, README.md
     const src = screen.getByRole('treeitem', { name: /^src/ });
-    src.focus();
+    focusInAct(src);
 
     await userEvent.keyboard('{ArrowDown}');
     expect(screen.getByRole('treeitem', { name: /index\.ts/ })).toHaveFocus();
@@ -93,7 +103,7 @@ describe('Tree', () => {
   it('ArrowRight on an expanded parent moves focus to the first child', async () => {
     render(<Tree items={items} defaultExpanded={['src']} />);
     const src = screen.getByRole('treeitem', { name: /^src/ });
-    src.focus();
+    focusInAct(src);
     await userEvent.keyboard('{ArrowRight}');
     expect(screen.getByRole('treeitem', { name: /index\.ts/ })).toHaveFocus();
   });
@@ -101,7 +111,7 @@ describe('Tree', () => {
   it('ArrowLeft on a leaf moves focus to its parent', async () => {
     render(<Tree items={items} defaultExpanded={['src']} />);
     const child = screen.getByRole('treeitem', { name: /index\.ts/ });
-    child.focus();
+    focusInAct(child);
     await userEvent.keyboard('{ArrowLeft}');
     expect(screen.getByRole('treeitem', { name: /^src/ })).toHaveFocus();
   });
@@ -109,7 +119,7 @@ describe('Tree', () => {
   it('Home / End jump to first / last visible item', async () => {
     render(<Tree items={items} defaultExpanded={['src']} />);
     const src = screen.getByRole('treeitem', { name: /^src/ });
-    src.focus();
+    focusInAct(src);
     await userEvent.keyboard('{End}');
     expect(screen.getByRole('treeitem', { name: /README\.md/ })).toHaveFocus();
     await userEvent.keyboard('{Home}');
@@ -120,7 +130,7 @@ describe('Tree', () => {
     const onValueChange = vi.fn();
     render(<Tree items={items} defaultExpanded={['src']} onValueChange={onValueChange} />);
     const child = screen.getByRole('treeitem', { name: /index\.ts/ });
-    child.focus();
+    focusInAct(child);
     await userEvent.keyboard('{Enter}');
     expect(onValueChange).toHaveBeenCalledWith('src/index.ts');
   });

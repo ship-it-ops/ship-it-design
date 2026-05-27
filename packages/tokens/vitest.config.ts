@@ -7,7 +7,7 @@ export default defineConfig({
       reporter: ['text', 'json', 'html'],
       reportsDirectory: './coverage',
       all: true,
-      include: ['scripts/build-css.ts'],
+      include: ['scripts/build-css.ts', 'src/emit-css.ts'],
       thresholds: {
         branches: 80,
         functions: 80,

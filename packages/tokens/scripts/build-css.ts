@@ -1,185 +1,28 @@
 /**
  * Generates `styles/tokens.css` from the TypeScript token modules.
- *
- * Emission shape (intentionally matches the handoff's `colors_and_type.css`):
- *
- *   :root {
- *     --accent-h: 200;          // master hue knob
- *     // dark theme + theme-invariant tokens (radius, spacing, motion, type, …)
- *   }
- *
- *   [data-theme='light'] {
- *     // light theme overrides ONLY (color + shadow)
- *   }
- *
- *   @media (prefers-reduced-motion: reduce) {
- *     :root { --duration-micro: 0ms; --duration-step: 0ms; }
- *   }
- *
- * Run via `pnpm --filter @ship-it-ui/tokens build` (also part of top-level `pnpm build`).
+ * Thin caller — the emitter logic lives in `src/emit-css.ts` and is shared
+ * with the consumer `shipit` CLI.
  */
 
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import {
-  accentH,
-  breakpoint,
-  colorSemanticDark,
-  colorSemanticLight,
-  duration,
-  easing,
-  elevation,
-  fontFamily,
-  fontSize,
-  fontSizeMobile,
-  fontWeight,
-  lineHeight,
-  mobileLayout,
-  radius,
-  radiusMobile,
-  shadowDark,
-  shadowLight,
-  spacing,
-  touch,
-  tracking,
-  zIndex,
-} from '../src/index.js';
+import { buildTokenCss } from '../src/emit-css.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUTPUT_PATH = resolve(__dirname, '../styles/tokens.css');
 
-// camelCase → kebab-case. Keep digits attached to the preceding letter so `h4`
-// stays `h4`, not `h-4`. Insert a hyphen before every uppercase letter so
-// adjacent humps (`rowHLg` → `row-h-lg`) split correctly.
-export const kebab = (s: string): string =>
-  s
-    .replace(/([A-Z])/g, '-$1')
-    .replace(/^-/, '')
-    .toLowerCase();
-
-type TokenValue = string | number;
-
-export const block = (prefix: string, obj: Record<string, TokenValue>): string =>
-  Object.entries(obj)
-    .map(([k, v]) => `  --${prefix}-${kebab(String(k))}: ${v};`)
-    .join('\n');
-
-/**
- * Same as `block()` but without a prefix segment — emits `--{kebab(key)}` directly.
- * Used for mobile layout tokens (`--row-h`, `--tabbar-h`, …) that the design
- * canvas defines with no namespace prefix.
- */
-export const blockNoPrefix = (obj: Record<string, TokenValue>): string =>
-  Object.entries(obj)
-    .map(([k, v]) => `  --${kebab(String(k))}: ${v};`)
-    .join('\n');
-
-/**
- * Shadow is special: handoff uses `--shadow` (no suffix) for the base level, plus
- * `--shadow-sm` and `--shadow-lg`. So we emit them explicitly rather than via block().
- */
-export const shadowBlock = (s: { sm: string; base: string; lg: string }): string =>
-  [`  --shadow-sm: ${s.sm};`, `  --shadow: ${s.base};`, `  --shadow-lg: ${s.lg};`].join('\n');
-
-export const buildTokenCss = (): string => {
-  const root = [
-    '  /* Master accent hue — override at runtime to reskin */',
-    `  --accent-h: ${accentH};`,
-    '',
-    '  /* Color (semantic, dark theme — default) */',
-    block('color', colorSemanticDark),
-    '',
-    '  /* Shadow (dark recipe) */',
-    shadowBlock(shadowDark),
-    '',
-    '  /* Typography — families */',
-    block('font-family', fontFamily),
-    '',
-    '  /* Typography — sizes */',
-    block('font-size', fontSize),
-    '',
-    '  /* Typography — weights */',
-    block('font-weight', fontWeight),
-    '',
-    '  /* Typography — line-heights */',
-    block('line-height', lineHeight),
-    '',
-    '  /* Typography — tracking */',
-    block('tracking', tracking),
-    '',
-    '  /* Spacing (4pt base, irregular ramp — handoff skips 7) */',
-    block('space', spacing),
-    '',
-    '  /* Radius */',
-    block('radius', radius),
-    '',
-    '  /* Motion — durations */',
-    block('duration', duration),
-    '',
-    '  /* Motion — easings */',
-    block('easing', easing),
-    '',
-    '  /* Elevation accents (inset highlights for elevated dark surfaces) */',
-    `  --elevation-inset-highlight: ${elevation.insetHighlightDark};`,
-    '',
-    '  /* Breakpoints (informational; Tailwind reads its own config) */',
-    block('breakpoint', breakpoint),
-    '',
-    '  /* Z-index */',
-    block('z', zIndex),
-    '',
-    '  /* Mobile — touch targets (Apple HIG min 44pt) */',
-    block('touch', touch),
-    '',
-    '  /* Mobile — layout dimensions */',
-    blockNoPrefix(mobileLayout),
-    '',
-    '  /* Mobile — bumped type scale (body 13→15, h1 34→30) */',
-    block('font-size-m', fontSizeMobile),
-    '',
-    '  /* Mobile — radii */',
-    block('radius-m', radiusMobile),
-  ].join('\n');
-
-  const lightOverrides = [
-    '  /* Color (semantic, light theme — overrides only) */',
-    block('color', colorSemanticLight),
-    '',
-    '  /* Shadow (light recipe) */',
-    shadowBlock(shadowLight),
-    '',
-    '  /* Elevation: inset highlight is invisible on light surfaces, zero it out */',
-    `  --elevation-inset-highlight: ${elevation.insetHighlightLight};`,
-  ].join('\n');
-
-  return `/* AUTO-GENERATED by scripts/build-css.ts — do not edit by hand. */
-
-:root {
-${root}
-}
-
-[data-theme='light'] {
-${lightOverrides}
-}
-
-@media (prefers-reduced-motion: reduce) {
-  :root {
-    --duration-micro: 0ms;
-    --duration-step: 0ms;
-  }
-}
-`;
-};
-
-export const writeTokenCss = (outputPath = OUTPUT_PATH): void => {
+export const writeTokenCss = (outputPath: string = OUTPUT_PATH): void => {
   mkdirSync(dirname(outputPath), { recursive: true });
   writeFileSync(outputPath, buildTokenCss(), 'utf8');
-  console.log(`✓ tokens.css written → ${outputPath}`);
 };
 
+// Re-export for back-compat with existing tests that import from this path.
+export { block, blockNoPrefix, buildTokenCss, kebab, shadowBlock } from '../src/emit-css.js';
+
 /* v8 ignore next 3 */
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   writeTokenCss();
+  console.log(`✓ wrote ${OUTPUT_PATH}`);
 }

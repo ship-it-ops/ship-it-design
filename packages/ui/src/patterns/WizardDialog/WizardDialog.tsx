@@ -140,8 +140,21 @@ export const WizardDialog = forwardRef<HTMLDivElement, WizardDialogProps>(functi
 
   return (
     <DialogRoot open={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
-      <DialogContent ref={ref} width={width}>
-        {title && <WizardTitle>{title}</WizardTitle>}
+      <DialogContent
+        ref={ref}
+        width={width}
+        // Opt out of Radix's a11y description warning when the caller omits a
+        // visible description (see comment in `Dialog.tsx`).
+        {...(description ? {} : { 'aria-describedby': undefined })}
+      >
+        {title ? (
+          <WizardTitle>{title}</WizardTitle>
+        ) : (
+          // Radix Dialog requires a Title for assistive tech and warns in dev
+          // mode without one. Fall back to a visually-hidden generic title so
+          // the contract is met even when no title prop is supplied.
+          <RadixDialog.Title className="sr-only">Wizard</RadixDialog.Title>
+        )}
         {description && <WizardDescription>{description}</WizardDescription>}
         <div className="mb-5">
           <Stepper steps={stepperSteps} current={safeCurrent} />

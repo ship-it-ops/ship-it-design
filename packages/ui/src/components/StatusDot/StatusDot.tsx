@@ -3,12 +3,23 @@
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 import { cn } from '../../utils/cn';
+import { warnIfInvalidColor } from '../../utils/color-override';
 
 export type StatusState = 'ok' | 'warn' | 'err' | 'off' | 'sync' | 'accent';
 
-export interface StatusDotProps extends HTMLAttributes<HTMLSpanElement> {
-  /** Semantic status. */
+/**
+ * State path: use a semantic state.
+ *   <StatusDot state="ok" />
+ *
+ * Color path (escape hatch): pass an arbitrary CSS color. When both are set,
+ * `color` wins at runtime.
+ *   <StatusDot color="#7c3aed" />
+ */
+export interface StatusDotProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'color'> {
+  /** Semantic state. Default `'ok'`. */
   state?: StatusState;
+  /** Arbitrary CSS color override. When set, replaces the state-derived color. */
+  color?: string;
   /** Optional label rendered next to the dot. */
   label?: ReactNode;
   /** Pulse the dot — used for `sync` state to indicate live activity. */
@@ -35,12 +46,6 @@ const stateText: Record<StatusState, string> = {
   accent: 'text-accent',
 };
 
-/**
- * Human-friendly accessible names for each status. Used as the default
- * `aria-label` when no `label` is provided so screen readers announce
- * "Online" instead of the raw enum token "ok". Exported so other components
- * (e.g., `Avatar`'s status indicator) can reuse the same vocabulary.
- */
 export const stateLabel: Record<StatusState, string> = {
   ok: 'Online',
   warn: 'Warning',
@@ -51,25 +56,31 @@ export const stateLabel: Record<StatusState, string> = {
 };
 
 export const StatusDot = forwardRef<HTMLSpanElement, StatusDotProps>(function StatusDot(
-  { state = 'ok', label, pulse, size = 8, className, ...props },
+  { state = 'ok', color, label, pulse, size = 8, className, ...props },
   ref,
 ) {
+  const useColor = color && warnIfInvalidColor(color, 'StatusDot');
+
   return (
     <span
       ref={ref}
       role={label ? 'status' : 'img'}
-      aria-label={!label ? stateLabel[state] : undefined}
+      aria-label={!label ? (useColor ? 'Status' : stateLabel[state]) : undefined}
       className={cn('inline-flex items-center gap-[6px]', className)}
       {...props}
     >
       <span
         className={cn(
           'inline-block rounded-full',
-          stateColor[state],
+          !useColor && stateColor[state],
+          !useColor && stateText[state],
           pulse && 'animate-[ship-pulse-ring_1.6s_infinite]',
-          stateText[state],
         )}
-        style={{ width: size, height: size }}
+        style={{
+          width: size,
+          height: size,
+          ...(useColor ? { backgroundColor: color, color: color! } : {}),
+        }}
       />
       {label && <span className="text-text-muted text-[12px]">{label}</span>}
     </span>

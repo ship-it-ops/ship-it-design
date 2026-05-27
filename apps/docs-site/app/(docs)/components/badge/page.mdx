@@ -18,6 +18,12 @@ Each example below is a real component instance — flip the theme toggle to see
 
 <LivePreview example="badge/sizes" />
 
+## Custom color
+
+Pass any CSS color via the `color` prop for one-off overrides outside the semantic variants. When set, `color` takes precedence over `variant` at runtime. Invalid colors fall back to the default variant; in dev, a `console.warn` names the offending value.
+
+<LivePreview example="badge/custom-color" />
+
 ## Props
 
 <PropsTable component="Badge" />

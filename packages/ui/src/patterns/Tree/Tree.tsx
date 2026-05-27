@@ -11,6 +11,7 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
 } from 'react';
+import { flushSync } from 'react-dom';
 
 import { useControllableState } from '../../hooks/useControllableState';
 import { cn } from '../../utils/cn';
@@ -149,9 +150,13 @@ export const Tree = forwardRef<HTMLUListElement, TreeProps>(function Tree(
 
   const moveActive = useCallback(
     (id: string) => {
-      setActiveId(id);
-      // Focus on next paint so the DOM reflects any expansion change.
-      queueMicrotask(() => focusItem(id));
+      // flushSync commits the activeId state update inline so the new tab-stop
+      // element is in the DOM before we focus it. The previous approach used
+      // `queueMicrotask` to defer focus past the render, but the microtask
+      // resolved outside React's act() scope in tests — the focus event then
+      // fired `setActiveId` outside act and tripped a warning.
+      flushSync(() => setActiveId(id));
+      focusItem(id);
     },
     [focusItem],
   );

@@ -70,6 +70,23 @@ import '@ship-it-ui/tokens/styles/tokens.css';
    - **minor** — new token added
    - **major** — token renamed or removed (breaking change)
 
+## Consumer customization
+
+App developers consuming this package can re-skin color and typography tokens via a `ship-it.config.ts` file at the consumer's repo root, processed by the `shipit build-tokens` CLI shipped from this package. See [`docs/customizing-tokens.md`](../../docs/customizing-tokens.md) for the full guide.
+
+Quick reference:
+
+```ts
+// ship-it.config.ts
+import { defineConfig } from '@ship-it-ui/tokens/config';
+
+export default defineConfig({
+  accentH: 280,
+  color: { dark: { panel: '#0d0f14' } },
+  typography: { fontFamily: { sans: '"Söhne", system-ui, sans-serif' } },
+});
+```
+
 ## Files
 
 | File                   | Purpose                                                        |

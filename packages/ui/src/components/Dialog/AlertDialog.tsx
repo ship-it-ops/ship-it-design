@@ -50,10 +50,16 @@ export const AlertDialog = forwardRef<HTMLDivElement, AlertDialogProps>(function
           >
             {title}
           </RadixAlert.Title>
-          {description && (
+          {description ? (
             <RadixAlert.Description className="text-text-muted mb-[18px] text-[13px] leading-[1.55]">
               {description}
             </RadixAlert.Description>
+          ) : (
+            // Radix AlertDialog requires a description for screen-reader users
+            // and warns in dev mode when one is missing. When the caller opts
+            // out of a visible description, fall back to the title text in a
+            // visually-hidden Description so the a11y contract is still met.
+            <RadixAlert.Description className="sr-only">{title}</RadixAlert.Description>
           )}
           {children}
           {footer && <div className="mt-5 flex justify-end gap-2">{footer}</div>}

@@ -7,6 +7,24 @@ import 'vitest-axe/extend-expect';
 // vitest-axe registers `toHaveNoViolations` against Vitest's expect.
 expect.extend(axeMatchers);
 
+// Suppress a noisy upstream act() warning from `@radix-ui/react-toast`:
+// `ToastAnnounce` schedules a 1-second `setTimeout` to flip its
+// `isAnnounced` state, and that timer fires after the test body has moved
+// on — outside React's act scope. We can't wrap it from user-land, and
+// using fake timers across every Toast test is invasive. Filter only this
+// exact message so genuine act warnings still surface.
+const originalConsoleError = console.error.bind(console);
+console.error = (...args: unknown[]) => {
+  const first = args[0];
+  if (
+    typeof first === 'string' &&
+    first.includes('An update to ToastAnnounce inside a test was not wrapped in act')
+  ) {
+    return;
+  }
+  originalConsoleError(...args);
+};
+
 // jsdom polyfills — Radix primitives reach for browser APIs jsdom doesn't ship.
 class ResizeObserverMock {
   observe() {}

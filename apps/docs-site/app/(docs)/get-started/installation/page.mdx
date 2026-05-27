@@ -27,3 +27,16 @@ import { Button, Tabs, Toast } from '@ship-it-ui/ui';
 The library ships its own `@source` directives so utility classes used inside
 `@ship-it-ui/ui` get compiled, even when Tailwind's auto-source-detection runs
 from your app root. Nothing extra to configure.
+
+## Optional: customize tokens
+
+If you want to re-skin colors or typography for your app, add a
+`ship-it.config.ts` at your repo root and import the generated override file
+after the global stylesheet. See [Theming](/get-started/theming) for the full
+walkthrough.
+
+```ts
+// app entry
+import '@ship-it-ui/ui/styles/globals.css';
+import './.ship-it/tokens.css'; // only if you have a ship-it.config.ts
+```

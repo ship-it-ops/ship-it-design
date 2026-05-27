@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { axe } from 'vitest-axe';
 
 import { Avatar } from './Avatar';
@@ -36,6 +36,27 @@ describe('Avatar', () => {
 
   it('has no a11y violations', async () => {
     const { container } = render(<Avatar name="Priya Khanna" status="ok" />);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+});
+
+describe('Avatar color prop', () => {
+  it('overrides the hash-derived background with the literal color', () => {
+    const { container } = render(<Avatar name="Alex" color="#7c3aed" />);
+    // The Radix Avatar.Root element carries the background style.
+    const root = container.querySelector('[class*="rounded-full"]');
+    expect((root as HTMLElement).style.background).toBe('rgb(124, 58, 237)');
+  });
+
+  it('warns on invalid color', () => {
+    const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    render(<Avatar name="Alex" color="not-a-color" />);
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining('[Avatar]'));
+    spy.mockRestore();
+  });
+
+  it('has no a11y violations (color path)', async () => {
+    const { container } = render(<Avatar name="Alex" color="#7c3aed" />);
     expect(await axe(container)).toHaveNoViolations();
   });
 });

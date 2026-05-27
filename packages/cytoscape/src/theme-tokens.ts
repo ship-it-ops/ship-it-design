@@ -7,8 +7,8 @@
  * `@ship-it-ui/shipit` entity-type registry.
  */
 
-import { getEntityTypeMeta, type EntityType } from '@ship-it-ui/shipit';
 import { resolveColorReference, type ThemeTokenPalette } from '@ship-it-ui/graph-tokens';
+import { getEntityTypeMeta, type EntityType } from '@ship-it-ui/shipit';
 
 export {
   readThemeTokens,

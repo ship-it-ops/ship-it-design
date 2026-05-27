@@ -166,7 +166,7 @@ export function DataTable<T>(props: DataTableProps<T> & { ref?: Ref<HTMLTableEle
   };
 
   return (
-    <table ref={ref} className={cn('w-full border-collapse text-[12px]', className)}>
+    <table ref={ref} className={cn('relative w-full border-collapse text-[12px]', className)}>
       {caption && <caption className="sr-only">{caption}</caption>}
       <thead className={cn('bg-panel-2', stickyHeader && 'z-raised sticky top-0')}>
         <tr>

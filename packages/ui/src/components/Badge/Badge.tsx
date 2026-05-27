@@ -4,6 +4,18 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 import { cn } from '../../utils/cn';
+import { tintStyle, warnIfInvalidColor } from '../../utils/color-override';
+
+const badgeStructural = cva('inline-flex items-center font-sans leading-none whitespace-nowrap', {
+  variants: {
+    size: {
+      sm: 'h-[18px] px-[6px] py-[1px] text-[10px] gap-1 rounded-full',
+      md: 'h-[22px] px-2 py-[2px] text-[11px] gap-[5px] rounded-full',
+      lg: 'h-[26px] px-[10px] py-[3px] text-[12px] gap-[6px] rounded-full',
+    },
+  },
+  defaultVariants: { size: 'md' },
+});
 
 const badgeStyles = cva('inline-flex items-center font-sans leading-none whitespace-nowrap', {
   variants: {
@@ -28,12 +40,22 @@ const badgeStyles = cva('inline-flex items-center font-sans leading-none whitesp
   defaultVariants: { variant: 'neutral', size: 'md' },
 });
 
+/**
+ * Variant path: use one of the DS semantic variants.
+ *   <Badge variant="ok">Done</Badge>
+ *
+ * Color path (escape hatch): pass an arbitrary CSS color. When both are set,
+ * `color` wins at runtime.
+ *   <Badge color="#7c3aed">VIP</Badge>
+ */
 export interface BadgeProps
-  extends HTMLAttributes<HTMLSpanElement>, VariantProps<typeof badgeStyles> {
+  extends Omit<HTMLAttributes<HTMLSpanElement>, 'color'>, VariantProps<typeof badgeStyles> {
   /** Show a colored leading dot. */
   dot?: boolean;
   /** Optional leading icon (defers to children). */
   icon?: ReactNode;
+  /** Arbitrary CSS color override. When set, replaces the `variant` tint. */
+  color?: string;
 }
 
 const dotColorClass = {
@@ -54,13 +76,41 @@ type BadgeSize = keyof typeof dotSize;
 type BadgeVariant = keyof typeof dotColorClass;
 
 export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
-  { variant = 'neutral', size = 'md', dot, icon, className, children, ...props },
+  { variant = 'neutral', size = 'md', dot, icon, className, children, color, style, ...props },
   ref,
 ) {
   const sz = (size ?? 'md') as BadgeSize;
+  const useColor = color && warnIfInvalidColor(color, 'Badge');
+
+  if (useColor) {
+    return (
+      <span
+        ref={ref}
+        className={cn(badgeStructural({ size }), className)}
+        style={{ ...tintStyle(color!), ...style }}
+        {...props}
+      >
+        {dot && (
+          <span
+            aria-hidden
+            className={cn('inline-block rounded-full', dotSize[sz])}
+            style={{ background: color }}
+          />
+        )}
+        {icon && <span className="inline-flex leading-none">{icon}</span>}
+        {children}
+      </span>
+    );
+  }
+
   const v = (variant ?? 'neutral') as BadgeVariant;
   return (
-    <span ref={ref} className={cn(badgeStyles({ variant, size }), className)} {...props}>
+    <span
+      ref={ref}
+      className={cn(badgeStyles({ variant, size }), className)}
+      style={style}
+      {...props}
+    >
       {dot && (
         <span
           aria-hidden

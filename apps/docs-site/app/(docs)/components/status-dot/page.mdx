@@ -10,6 +10,12 @@ Each example below is a real component instance — flip the theme toggle to see
 
 <LivePreview example="status-dot/all" />
 
+## Custom color
+
+Pass any CSS color via the `color` prop for one-off cases outside the semantic states (`ok` / `warn` / `err` / `off` / `sync` / `accent`). When set, `color` takes precedence over `state` at runtime. Invalid colors fall back to the default state; in dev, a `console.warn` names the offending value.
+
+<LivePreview example="status-dot/custom-color" />
+
 ## Props
 
 <PropsTable component="StatusDot" />
