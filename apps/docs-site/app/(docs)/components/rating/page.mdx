@@ -30,6 +30,12 @@ count.
 
 <LivePreview example="rating/with-count" />
 
+## Custom color
+
+Pass any CSS color via the `color` prop to override the filled-star color (defaults to `--color-rating`). Empty stars dim via opacity when an override is active so the filled/empty contrast is preserved. Invalid colors fall back to the default; in dev, a `console.warn` names the offending value.
+
+<LivePreview example="rating/custom-color" />
+
 ## Props
 
 <PropsTable component="Rating" />

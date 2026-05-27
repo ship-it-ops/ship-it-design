@@ -14,7 +14,7 @@ const { theme, toggle } = useTheme();
 ## Accent
 
 A single `--accent-h` knob drives the accent in both themes. Override it on
-`<html>` (or any ancestor) to recolor:
+`<html>` (or any ancestor) to recolor without touching components:
 
 ```css
 :root {
@@ -25,8 +25,70 @@ A single `--accent-h` knob drives the accent in both themes. Override it on
 }
 ```
 
-## Custom palettes
+## `ship-it.config.ts` — full customization
 
-For full overrides, import `@ship-it-ui/tokens` and re-emit the CSS variables
-you want to change inside your own `@layer base` block. Token names are stable
-across versions; the values are not.
+For everything beyond hue rotation — re-skinning specific roles, swapping the
+font family, overriding light-theme accents — drop a `ship-it.config.ts` at
+your repo root and run the `shipit build-tokens` CLI. The CLI emits a sparse
+override stylesheet you import after `globals.css`.
+
+```ts
+// ship-it.config.ts
+import { defineConfig } from '@ship-it-ui/tokens/config';
+
+export default defineConfig({
+  accentH: 280,
+  color: {
+    dark: { panel: '#0d0f14', ok: 'oklch(0.8 0.18 145)' },
+    light: { accent: 'oklch(0.42 0.14 280)' },
+  },
+  typography: {
+    fontFamily: { sans: '"Söhne", system-ui, sans-serif' },
+    fontSize: { body: '14px', h1: '36px' },
+  },
+});
+```
+
+Run the CLI (wire it into `prebuild` / `predev` for convenience):
+
+```bash
+npx shipit build-tokens         # one-shot
+npx shipit build-tokens --watch # re-emit on config changes during dev
+```
+
+Then add **one extra import** at your app entry, AFTER `globals.css`:
+
+```ts
+import '@ship-it-ui/ui/styles/globals.css'; // DS defaults
+import './.ship-it/tokens.css'; // your overrides (sparse)
+```
+
+CSS variables on `:root` cascade by source order, so the override import
+wins. Commit both `ship-it.config.ts` and the generated `.ship-it/tokens.css`
+— the generated file is small (~10–30 lines) and means a fresh `git clone`
+works without needing to run the CLI first.
+
+The full closed key set, foot-guns (on-color foregrounds, font loading), and
+output-path options are documented in
+[`docs/customizing-tokens.md`](https://github.com/ship-it-ops/ship-it-design/blob/main/docs/customizing-tokens.md).
+
+## Per-component one-off colors
+
+Some components accept a `color` prop for situations where you legitimately
+need a one-off color (a brand tier badge, a per-user avatar accent) without
+adding it to global tokens:
+
+```tsx
+<Badge color="#7c3aed">Premium</Badge>
+<StatusDot color="oklch(0.7 0.2 280)" />
+<Avatar name="Alex" color={user.brandColor} />
+```
+
+Supported: `Badge`, `Tag`, `Chip`, `StatusDot`, `Rating`, `Avatar`. When both
+`color` and the semantic variant (`variant` on Badge, `state` on StatusDot)
+are set, `color` wins at runtime. Invalid colors fall back to the default
+variant; dev builds log a `console.warn` naming the offending value.
+
+The prop is intentionally a distinct name so it's greppable in PR review and
+easy to lint against with `no-restricted-syntax` if your team wants to
+restrict the escape hatch.

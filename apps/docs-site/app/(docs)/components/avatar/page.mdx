@@ -18,6 +18,12 @@ Each example below is a real component instance — flip the theme toggle to see
 
 <LivePreview example="avatar/group" />
 
+## Custom color
+
+Avatar derives its initials-fallback background from a name hash by default. Pass `color` to override the hash with a specific value — useful for per-user brand colors. Image avatars are unaffected (the override only applies to the initials fallback). Invalid colors fall back to the hash; in dev, a `console.warn` names the offending value.
+
+<LivePreview example="avatar/custom-color" />
+
 ## Props
 
 <PropsTable component="Avatar" />
