@@ -21,6 +21,13 @@ export const metadata: Metadata = {
  * (`output: 'export'`) we can't read cookies in the server layout — every page
  * is generated at build time. The cost is one tiny synchronous script tag; the
  * benefit is no flash of dark→light when a user prefers light.
+ *
+ * We deliberately do NOT use `@ship-it-ui/next`'s `<ThemeBootstrap />` here:
+ * it reads the `ship-it-theme` cookie (the right call for runtime apps), but
+ * a static export has no per-request response to set that cookie from, so
+ * persistence falls back to `localStorage`. Runtime consumers should pair
+ * `<ThemeBootstrap />` with `getThemeFromCookies(await cookies())` (see
+ * `/get-started/next`).
  */
 const themeBootstrap = `(function(){try{var t=localStorage.getItem('theme');if(t==='light'){document.documentElement.setAttribute('data-theme','light');}}catch(e){}})();`;
 

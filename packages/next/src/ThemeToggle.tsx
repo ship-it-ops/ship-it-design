@@ -1,7 +1,7 @@
 'use client';
 
 import { Switch, useTheme, type Theme } from '@ship-it-ui/ui';
-import { useCallback, type ReactNode } from 'react';
+import { useCallback, type JSX, type ReactNode } from 'react';
 
 import { writeThemeCookie } from './theme-cookie';
 

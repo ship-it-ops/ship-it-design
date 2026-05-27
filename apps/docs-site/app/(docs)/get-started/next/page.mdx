@@ -6,12 +6,15 @@ ships three surfaces:
 - `<ThemeBootstrap />` — synchronous inline script that reads the
   `ship-it-theme` cookie and sets `<html data-theme>` _before_ first paint,
   killing the dark→light flash for users on the light theme.
-- `getThemeFromCookies(cookies())` — server helper for the App Router
+- `getThemeFromCookies(await cookies())` — server helper for the App Router
   `cookies()` store. Use the return value to seed `data-theme` on `<html>`
   for the first server-rendered frame.
 - `<ThemeToggle />` — a token-styled `Switch` bound to the active theme.
   Reuses `useTheme` from `@ship-it-ui/ui` for client state and writes the
   cookie so the next request renders the correct theme synchronously.
+
+**Baseline:** Next.js 16 / React 19.2. The package's peer range is
+`next ^15.0.0 || ^16.0.0` and `react ^19.0.0`.
 
 ## Install
 
@@ -68,5 +71,48 @@ analytics.
 `next` is an optional peer dependency — the package works in non-Next React
 apps that adopt the same cookie convention. Just skip `getThemeFromCookies`
 and call `readThemeCookie()` from a top-level effect instead.
+
+## Cache Components opt-in (runtime consumers)
+
+If your app deploys to a Next.js runtime (Vercel, Cloudflare, Node, etc.)
+instead of static export, you can wrap the cookie lookup in a Cache
+Components boundary so theme reads are deduplicated and invalidated
+explicitly:
+
+```tsx
+// app/layout.tsx
+'use cache';
+import { cacheLife, cacheTag } from 'next/cache';
+import { cookies } from 'next/headers';
+import { ThemeBootstrap } from '@ship-it-ui/next';
+import { getThemeFromCookies } from '@ship-it-ui/next/server';
+
+async function readTheme() {
+  'use cache';
+  cacheLife('hours');
+  cacheTag('theme');
+  return getThemeFromCookies(await cookies());
+}
+
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const theme = await readTheme();
+  return (
+    <html lang="en" data-theme={theme}>
+      <head>
+        <ThemeBootstrap />
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+`cacheTag('theme')` lets you invalidate cached theme reads from a server
+action (`revalidateTag('theme')`) when a user updates their preference —
+the same cookie write the `<ThemeToggle />` already performs.
+
+The docs site you are reading uses `output: 'export'` (static export to
+GitHub Pages), so Cache Components is a no-op for it. The recipe is here
+for apps that opt in to the runtime.
 
 <EditOnGithub source="apps/docs-site/app/(docs)/get-started/next/page.mdx" />

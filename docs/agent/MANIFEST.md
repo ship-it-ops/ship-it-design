@@ -1,6 +1,6 @@
 # Agent Context
 
-Last updated: 2026-05-21 | Total notes: 28
+Last updated: 2026-05-27 | Total notes: 30
 
 <!--
   This file is the index for `docs/agent/`. Agents read it at session start.
@@ -36,6 +36,7 @@ _None._
 - [v0-changeset-patch-policy](decisions/v0-changeset-patch-policy.md) | decision | active | core | 2026-05-21 | All packages stay patch bumps while v0.0.x
 - [ssr-rsc-support-strategy](decisions/ssr-rsc-support-strategy.md) | decision | active | core | 2026-05-21 | "use client" preserved through tsup; next-helpers package
 - [separate-renderer-packages](decisions/separate-renderer-packages.md) | decision | active | standard | 2026-05-21 | Cytoscape, react-flow, MapLibre as optional packages
+- [next-16-react-19-baseline](decisions/next-16-react-19-baseline.md) | decision | active | core | 2026-05-27 | Next 16 + React 19.2 baseline; React Compiler opt-in
 
 ## Plans
 
@@ -73,3 +74,4 @@ _None._
 - [ci-strict-resolution-masks](scars/ci-strict-resolution-masks.md) | scar | active | standard | 2026-05-21 | pnpm symlinks hide undeclared workspace deps locally
 - [reduced-motion-token-bypass](scars/reduced-motion-token-bypass.md) | scar | active | standard | 2026-05-21 | Literal animate-[…_220ms_…] bypassed token zeroing
 - [icons-readme-codegen-drift](scars/icons-readme-codegen-drift.md) | scar | active | standard | 2026-05-21 | icons README claimed wrong codegen output path
+- [turbopack-mdx-plugin-serialization](scars/turbopack-mdx-plugin-serialization.md) | scar | active | standard | 2026-05-27 | Turbopack needs MDX plugin _names_, not function refs
