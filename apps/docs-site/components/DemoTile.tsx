@@ -36,7 +36,7 @@ export function DemoTile({
   return (
     <div
       className={[
-        'border-border-strong bg-panel-2 text-text flex h-full w-full flex-col items-center justify-center gap-3 overflow-hidden rounded-lg border',
+        'border-border-strong bg-panel-2 text-text flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg border',
         compact ? 'gap-1.5' : 'gap-4',
         className,
       ]
