@@ -17,7 +17,7 @@ export type IconRef = readonly [collection: string, icon: string];
 
 export const glyphManifest = {
   // Brand & entity nodes
-  brand: ['lucide', 'diamond'],
+  brand: ['lucide', 'rocket'],
   service: ['lucide', 'server'],
   serviceOutline: ['lucide', 'server'],
   person: ['lucide', 'user'],

@@ -1,5 +1,6 @@
 'use client';
 
+import { IconGlyph } from '@ship-it-ui/icons';
 import { Badge, Kbd, Topbar } from '@ship-it-ui/ui';
 
 import { ThemeToggle } from './ThemeToggle';
@@ -22,8 +23,8 @@ export function AppTopbar({ onOpenSearch }: Props) {
         </span>
       }
       leading={
-        <span aria-hidden className="text-accent text-[15px]">
-          ◆
+        <span aria-hidden className="text-accent inline-flex">
+          <IconGlyph name="brand" size={16} />
         </span>
       }
       actions={

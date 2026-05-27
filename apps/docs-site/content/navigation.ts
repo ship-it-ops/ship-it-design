@@ -53,7 +53,7 @@ export const navigation: NavSection[] = [
   {
     id: 'foundations',
     label: 'Foundations',
-    icon: 'brand',
+    icon: 'layer',
     groups: [
       {
         label: 'Tokens',

@@ -1,10 +1,19 @@
+import type { GlyphName } from '@ship-it-ui/icons';
 import { Carousel } from '@ship-it-ui/ui';
 
-const slides = [
-  { color: 'oklch(0.7 0.15 30)', label: 'Tesla Model 3' },
-  { color: 'oklch(0.7 0.15 130)', label: 'Jeep Wrangler' },
-  { color: 'oklch(0.7 0.15 230)', label: 'BMW i4' },
-  { color: 'oklch(0.7 0.15 330)', label: 'Ford F-150' },
+import { DemoTile } from '../../components/DemoTile';
+
+interface Slide {
+  icon: GlyphName;
+  title: string;
+  subtitle: string;
+}
+
+const slides: Slide[] = [
+  { icon: 'service', title: 'Tesla Model 3', subtitle: 'Electric · Sedan' },
+  { icon: 'deployment', title: 'Jeep Wrangler', subtitle: '4×4 · SUV' },
+  { icon: 'target', title: 'BMW i4', subtitle: 'Electric · Gran Coupe' },
+  { icon: 'sparkle', title: 'Ford F-150', subtitle: 'Pickup' },
 ];
 
 export default function Example() {
@@ -12,21 +21,7 @@ export default function Example() {
     <Carousel
       items={slides}
       aria-label="Featured vehicles"
-      renderItem={(s) => (
-        <div
-          style={{
-            background: s.color,
-            color: '#0a0a0b',
-            display: 'grid',
-            placeItems: 'center',
-            fontSize: 18,
-            fontWeight: 600,
-            height: '100%',
-          }}
-        >
-          {s.label}
-        </div>
-      )}
+      renderItem={(s) => <DemoTile icon={s.icon} title={s.title} subtitle={s.subtitle} />}
     />
   );
 }

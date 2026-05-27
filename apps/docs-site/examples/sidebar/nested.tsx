@@ -1,11 +1,15 @@
+import { IconGlyph, type GlyphName } from '@ship-it-ui/icons';
+import { NavItem, NavSection, Sidebar } from '@ship-it-ui/ui';
 import { useState } from 'react';
 
-import { NavItem, NavSection, Sidebar } from '@ship-it-ui/ui';
-
-const tree = [
+const tree: Array<{
+  label: string;
+  icon: GlyphName;
+  groups: Array<{ label: string; items: string[] }>;
+}> = [
   {
     label: 'Foundations',
-    icon: '◆',
+    icon: 'brand',
     groups: [
       { label: 'Tokens', items: ['Color', 'Typography', 'Spacing'] },
       { label: 'Guidelines', items: ['Principles', 'Layout', 'Accessibility'] },
@@ -13,7 +17,7 @@ const tree = [
   },
   {
     label: 'Components',
-    icon: '◇',
+    icon: 'layer',
     groups: [
       { label: 'Inputs', items: ['Button', 'Checkbox', 'Input'] },
       { label: 'Display', items: ['Avatar', 'Badge', 'Card'] },
@@ -30,7 +34,7 @@ export default function Example() {
           <NavSection
             key={section.label}
             label={section.label}
-            icon={<span aria-hidden>{section.icon}</span>}
+            icon={<IconGlyph name={section.icon} size={12} />}
             collapsible
             defaultOpen={i === 0}
             indent={10}
