@@ -35,4 +35,9 @@ describe('Chip color prop', () => {
     expect(spy).toHaveBeenCalledWith(expect.stringContaining('[Chip]'));
     spy.mockRestore();
   });
+
+  it('has no a11y violations (color path)', async () => {
+    const { container } = render(<Chip color="#7c3aed">Brand</Chip>);
+    expect(await axe(container)).toHaveNoViolations();
+  });
 });

@@ -94,4 +94,9 @@ describe('Rating color prop', () => {
     expect(spy).toHaveBeenCalledWith(expect.stringContaining('[Rating]'));
     spy.mockRestore();
   });
+
+  it('has no a11y violations (color path)', async () => {
+    const { container } = render(<Rating value={3} readOnly color="#7c3aed" />);
+    expect(await axe(container)).toHaveNoViolations();
+  });
 });

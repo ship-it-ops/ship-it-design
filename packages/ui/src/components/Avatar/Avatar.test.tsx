@@ -54,6 +54,11 @@ describe('Avatar color prop', () => {
     expect(spy).toHaveBeenCalledWith(expect.stringContaining('[Avatar]'));
     spy.mockRestore();
   });
+
+  it('has no a11y violations (color path)', async () => {
+    const { container } = render(<Avatar name="Alex" color="#7c3aed" />);
+    expect(await axe(container)).toHaveNoViolations();
+  });
 });
 
 describe('AvatarGroup', () => {

@@ -44,4 +44,9 @@ describe('Tag color prop', () => {
     expect(spy).toHaveBeenCalledWith(expect.stringContaining('[Tag]'));
     spy.mockRestore();
   });
+
+  it('has no a11y violations (color path)', async () => {
+    const { container } = render(<Tag color="#7c3aed">Brand</Tag>);
+    expect(await axe(container)).toHaveNoViolations();
+  });
 });

@@ -45,4 +45,9 @@ describe('StatusDot color prop', () => {
     expect(spy).toHaveBeenCalledWith(expect.stringContaining('[StatusDot]'));
     spy.mockRestore();
   });
+
+  it('has no a11y violations (color path)', async () => {
+    const { container } = render(<StatusDot color="#7c3aed" label="Premium" />);
+    expect(await axe(container)).toHaveNoViolations();
+  });
 });

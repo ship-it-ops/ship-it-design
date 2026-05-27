@@ -48,4 +48,9 @@ describe('Badge color prop', () => {
     expect(spy).toHaveBeenCalledWith(expect.stringContaining('[Badge]'));
     spy.mockRestore();
   });
+
+  it('has no a11y violations (color path)', async () => {
+    const { container } = render(<Badge color="#7c3aed">VIP</Badge>);
+    expect(await axe(container)).toHaveNoViolations();
+  });
 });
