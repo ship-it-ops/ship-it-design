@@ -242,7 +242,10 @@ export const ListingDetail = forwardRef<HTMLDivElement, ListingDetailProps>(func
         />
         <RadixDialog.Content
           ref={ref}
-          aria-describedby={undefined}
+          // Match `Dialog.tsx` precedent: only opt out of the
+          // aria-describedby link when no description is provided, so the
+          // dialog gets a real accessible description when one exists.
+          {...(description ? {} : { 'aria-describedby': undefined })}
           className={cn(
             'z-modal fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
             'w-[calc(100%-32px)] max-w-[960px]',
@@ -436,9 +439,11 @@ export const ListingDetail = forwardRef<HTMLDivElement, ListingDetailProps>(func
               )}
 
               {description && (
-                <p className={cn('text-text-muted text-[13px] leading-[1.6]', cls.description)}>
-                  {description}
-                </p>
+                <RadixDialog.Description asChild>
+                  <p className={cn('text-text-muted text-[13px] leading-[1.6]', cls.description)}>
+                    {description}
+                  </p>
+                </RadixDialog.Description>
               )}
 
               {!isSpec && (
