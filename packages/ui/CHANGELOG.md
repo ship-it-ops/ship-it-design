@@ -1,5 +1,88 @@
 # @ship-it-ui/ui
 
+## 0.0.10
+
+### Patch Changes
+
+- 1ba01f1: `ListingCard` — two new props:
+  - `onClick` makes the whole card surface clickable via an invisible
+    stretched `<button>` underneath the inner actions. Favorite, CTA, and
+    links keep their own click semantics (no nested-interactive). Pair with
+    a Dialog/Drawer trigger to wire "click card → open detail" without
+    navigating away.
+  - `hoverEffect` picks the visual treatment: `'lift'` (translate + shadow),
+    `'glow'` (accent ring), or `'none'`. Defaults to `'lift'` when the card
+    is interactive (has `onClick` or `href`), otherwise `'none'`.
+
+  In the spec variant, the footer CTA bar is now elevated to `relative z-10`
+  so the inline CTA stays above the stretched click target.
+
+  The card's outer surface gets `isolation: isolate` so child `z-10` elements
+  (flag pill, photo counter, footer CTA, consumer-supplied editable cells)
+  stay scoped to the card and can't bleed over a portaled modal opened from
+  the same page.
+
+  Every section slot still accepts arbitrary `ReactNode`, so consumers can
+  drop `<InlineEdit>` directly into `title`, `meta`, `specs[].value`,
+  `price`, etc. for editable listings.
+
+- 1ba01f1: `ListingCard` and `ListingDetail` now accept a `classNames` slot map for
+  per-section className overrides. Every internal element (root, photos,
+  flag, photoCounter, body, header, title, category, meta, specs grid,
+  each spec cell + label + value, footer, price, priceUnit, cta, favorite,
+  host, features, description, close, overlay, content) is independently
+  styleable without forking. Values are merged with the component's own
+  utilities via `cn()`, so consumers can override, extend, or replace any
+  styling and still inherit the rest.
+
+  Content overrides remain via ReactNode props on every text slot; the
+  slot map is purely for styling.
+
+- 1ba01f1: Add `ListingDetail` pattern — the full marketplace listing popup. Photos
+  on the left (`Carousel`, click to enter fullscreen `Lightbox`), info on
+  the right (title, rating, host, feature chips, description, primary /
+  secondary CTAs). Stacks on narrow viewports.
+
+  Pairs with `ListingCard`: card → detail popup. Replaces the manual
+  Dialog + Carousel + Lightbox + info-layout assembly with a single typed
+  component.
+
+- 1ba01f1: Add `renderPhoto` to `ListingCard` and `ListingDetail`. Lets consumers
+  override the default decorative `<img src>` wrapper with arbitrary
+  ReactNodes — inline SVG that follows `currentColor`, custom video
+  players, masked photos, etc.
+
+  On `ListingDetail`, the override receives a `mode` flag (`'gallery'` |
+  `'lightbox'`) so the same callback can render `object-cover` inline and
+  `object-contain` fullscreen.
+
+  Default behavior unchanged when `renderPhoto` is omitted.
+
+- 1ba01f1: Add `variant="spec"` to `ListingCard` and `ListingDetail` — a
+  product-spec layout for premium / spec-driven inventory. Photo counter,
+  top-left flag pill, three-up stats grid (e.g. `0-60` / `power` / `drive`),
+  and an inline CTA button on a dark footer strip on the card. The detail
+  modal mirrors the same vocabulary at modal scale with a wider spec grid
+  and a single primary action in the bottom CTA bar.
+
+  New shared types: `ListingCardFlag`, `ListingCardSpec`, `ListingCardCta`,
+  `ListingCardVariant`, `ListingDetailVariant`. Default-variant behavior
+  and prop set unchanged.
+
+- 1ba01f1: React 19 baseline. Peer range tightened to `react ^19.0.0` /
+  `react-dom ^19.0.0` (was `^18.0.0 || ^19.0.0`) and dev installs bumped to
+  React 19.2. Drops React 18 from the supported matrix — consumers must be on
+  React 19 to install.
+
+  `@ship-it-ui/ui` also refreshes every `@radix-ui/react-*` dependency to the
+  latest 1.x. Each one now declares explicit React 19 peer support and ships
+  the strict-mode / `forwardRef` compat fixes from the Radix 1.x line. No
+  Radix v2 migration in this release; only patch-level moves within 1.x.
+
+- Updated dependencies [1ba01f1]
+- Updated dependencies [1ba01f1]
+  - @ship-it-ui/icons@0.0.10
+
 ## 0.0.9
 
 ### Patch Changes
