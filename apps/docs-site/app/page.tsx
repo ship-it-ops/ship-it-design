@@ -1,3 +1,4 @@
+import { IconGlyph } from '@ship-it-ui/icons';
 import { Badge } from '@ship-it-ui/ui';
 import Link from 'next/link';
 
@@ -8,8 +9,8 @@ export default function HomePage() {
   return (
     <div className="mx-auto max-w-5xl px-8 py-16">
       <div className="mb-3 flex items-center gap-2">
-        <span aria-hidden className="text-accent text-[18px]">
-          ◆
+        <span aria-hidden className="text-accent inline-flex">
+          <IconGlyph name="brand" size={20} />
         </span>
         <Badge variant="outline">{SYSTEM_VERSION}</Badge>
       </div>

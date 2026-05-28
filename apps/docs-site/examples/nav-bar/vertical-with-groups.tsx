@@ -1,6 +1,6 @@
-import { useState } from 'react';
-
+import { IconGlyph } from '@ship-it-ui/icons';
 import { NavBar, type NavBarItem } from '@ship-it-ui/ui';
+import { useState } from 'react';
 
 const items: NavBarItem[] = [
   { id: 'home', label: 'Home', icon: '⌂', href: '#home' },
@@ -33,7 +33,12 @@ export default function Example() {
       <NavBar
         orientation="vertical"
         items={items}
-        brand={<span className="text-accent">◆ Ship-It</span>}
+        brand={
+          <span className="text-accent inline-flex items-center gap-1.5">
+            <IconGlyph name="brand" size={14} />
+            Ship-It
+          </span>
+        }
         value={active}
         onValueChange={setActive}
       />

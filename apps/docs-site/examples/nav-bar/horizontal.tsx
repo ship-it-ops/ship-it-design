@@ -1,6 +1,6 @@
-import { useState } from 'react';
-
+import { IconGlyph } from '@ship-it-ui/icons';
 import { NavBar, type NavBarItem } from '@ship-it-ui/ui';
+import { useState } from 'react';
 
 const items: NavBarItem[] = [
   { id: 'overview', label: 'Overview', href: '#overview' },
@@ -16,7 +16,12 @@ export default function Example() {
       <NavBar
         orientation="horizontal"
         items={items}
-        brand={<span className="text-accent">◆ Ship-It</span>}
+        brand={
+          <span className="text-accent inline-flex items-center gap-1.5">
+            <IconGlyph name="brand" size={14} />
+            Ship-It
+          </span>
+        }
         actions={
           <button type="button" className="text-text-muted hover:text-text text-[13px]">
             Account

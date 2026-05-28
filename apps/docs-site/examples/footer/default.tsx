@@ -1,3 +1,4 @@
+import { IconGlyph } from '@ship-it-ui/icons';
 import { Footer } from '@ship-it-ui/shipit';
 
 export default function Example() {
@@ -7,12 +8,12 @@ export default function Example() {
         <span className="inline-flex items-center gap-[10px]">
           <span
             aria-hidden
-            className="text-on-accent grid h-6 w-6 place-items-center rounded-md text-[13px]"
+            className="text-on-accent grid h-6 w-6 place-items-center rounded-md"
             style={{
               background: 'linear-gradient(135deg, oklch(0.82 0.12 200), oklch(0.78 0.14 300))',
             }}
           >
-            ◆
+            <IconGlyph name="brand" size={14} />
           </span>
           <span className="text-[13px] font-medium">ShipIt</span>
         </span>

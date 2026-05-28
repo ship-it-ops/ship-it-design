@@ -1,0 +1,52 @@
+# ListingDetail
+
+The full listing popup. Photos on the left (`Carousel`, click to enter
+fullscreen via `Lightbox`), info on the right — title, rating, host,
+feature chips, description, primary/secondary CTAs. Stacks on narrow
+viewports. Built on Radix Dialog so focus trap, Escape, and ARIA
+descriptions come for free.
+
+Pair with `ListingCard`: the card is the grid affordance; `ListingDetail`
+is the modal a user sees after clicking it. Saves consumers from
+hand-assembling Dialog + Carousel + Lightbox + a marketplace info layout.
+
+## Default
+
+<LivePreview example="listing-detail/default" />
+
+## Spec
+
+`variant="spec"` mirrors `ListingCard`'s spec variant at modal scale: a
+flag pill on the photo, photo counter, a larger stats grid in the info
+column, and a dark CTA bar at the bottom with the price + a single
+primary action. Use it as the natural detail view for spec-driven
+cards — clicking "Rent on Turo" on a spec card promotes into this
+popup.
+
+<LivePreview example="listing-detail/spec" />
+
+## Props
+
+<PropsTable component="ListingDetail" />
+
+## Accessibility
+
+- `role="dialog"` with focus trap, Escape closes, Tab cycles controls.
+- The hidden `<DialogTitle>` defaults to the string form of `title`. When
+  `title` is a React node, pass `ariaLabel` explicitly so screen readers
+  still get a real name for the dialog.
+- The gallery is a single `<button>` with `aria-label="Open photo viewer"`
+  — clicking promotes the active photo into a fullscreen `Lightbox`.
+- The `Rating` row uses a visually-hidden `<Rating readOnly />` so the
+  star count and total reviews are announced.
+- Close button is always reachable in the top-right corner — same Radix
+  `Close` plumbing as `Dialog`.
+
+## Composition
+
+`ListingDetail` is an opinionated assembly over `Carousel`, `Lightbox`,
+`Rating`, `Avatar`, `Badge`, and `Button`. If you need an unusual layout
+(e.g. a sticky booking panel, embedded map, host reviews list), drop
+down to those primitives — the source file is a fair reference.
+
+<EditOnGithub source="apps/docs-site/app/(docs)/patterns/listing-detail/page.mdx" />

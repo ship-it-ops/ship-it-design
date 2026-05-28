@@ -1,12 +1,21 @@
 'use client';
 import { useState } from 'react';
+import type { GlyphName } from '@ship-it-ui/icons';
 import { Button, Lightbox } from '@ship-it-ui/ui';
 
-const colors = [
-  'oklch(0.7 0.15 30)',
-  'oklch(0.7 0.15 130)',
-  'oklch(0.7 0.15 230)',
-  'oklch(0.7 0.15 330)',
+import { DemoTile } from '../../components/DemoTile';
+
+interface Slide {
+  icon: GlyphName;
+  title: string;
+  subtitle: string;
+}
+
+const slides: Slide[] = [
+  { icon: 'sparkle', title: 'Ask anything', subtitle: 'AI surface' },
+  { icon: 'service', title: 'Service catalog', subtitle: 'Knowledge graph' },
+  { icon: 'deployment', title: 'Ship it', subtitle: 'Deployments' },
+  { icon: 'target', title: 'Goals', subtitle: 'OKRs · Q3' },
 ];
 
 function Inner() {
@@ -17,17 +26,18 @@ function Inner() {
       <Lightbox
         open={open}
         onOpenChange={setOpen}
-        items={colors}
-        renderItem={(c) => (
-          <div
-            style={{
-              background: c as string,
-              width: '70vmin',
-              height: '50vmin',
-              borderRadius: 8,
-            }}
-          />
-        )}
+        items={slides}
+        renderItem={(item) => {
+          const s = item as Slide;
+          return (
+            <DemoTile
+              icon={s.icon}
+              title={s.title}
+              subtitle={s.subtitle}
+              style={{ width: 'min(70vmin, 720px)', aspectRatio: '16 / 10' }}
+            />
+          );
+        }}
       />
     </>
   );

@@ -53,7 +53,7 @@ export const navigation: NavSection[] = [
   {
     id: 'foundations',
     label: 'Foundations',
-    icon: 'brand',
+    icon: 'layer',
     groups: [
       {
         label: 'Tokens',
@@ -204,6 +204,7 @@ export const navigation: NavSection[] = [
         label: 'Marketplace',
         items: [
           { title: 'ListingCard', slug: 'patterns/listing-card' },
+          { title: 'ListingDetail', slug: 'patterns/listing-detail' },
           { title: 'PriceBreakdown', slug: 'patterns/price-breakdown' },
           { title: 'ReviewCard', slug: 'patterns/review-card' },
         ],

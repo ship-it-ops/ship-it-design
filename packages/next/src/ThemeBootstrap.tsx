@@ -1,3 +1,5 @@
+import type { JSX } from 'react';
+
 import { THEME_COOKIE_NAME } from './theme-cookie';
 
 /**

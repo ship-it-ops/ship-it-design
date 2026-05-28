@@ -1,10 +1,18 @@
+import type { GlyphName } from '@ship-it-ui/icons';
 import { Carousel } from '@ship-it-ui/ui';
 
-const slides = [
-  { color: 'oklch(0.7 0.15 30)', label: 'Front' },
-  { color: 'oklch(0.7 0.15 130)', label: 'Side' },
-  { color: 'oklch(0.7 0.15 230)', label: 'Interior' },
-  { color: 'oklch(0.7 0.15 330)', label: 'Trunk' },
+import { DemoTile } from '../../components/DemoTile';
+
+interface Slide {
+  icon: GlyphName;
+  title: string;
+}
+
+const slides: Slide[] = [
+  { icon: 'service', title: 'Front' },
+  { icon: 'deployment', title: 'Side' },
+  { icon: 'target', title: 'Interior' },
+  { icon: 'sparkle', title: 'Trunk' },
 ];
 
 export default function Example() {
@@ -12,29 +20,9 @@ export default function Example() {
     <Carousel
       items={slides}
       aria-label="Vehicle photos"
-      renderItem={(s) => (
-        <div
-          style={{
-            background: s.color,
-            color: '#0a0a0b',
-            display: 'grid',
-            placeItems: 'center',
-            fontSize: 16,
-            fontWeight: 600,
-            height: '100%',
-          }}
-        >
-          {s.label}
-        </div>
-      )}
+      renderItem={(s) => <DemoTile icon={s.icon} title={s.title} />}
       renderThumbnail={(s) => (
-        <div
-          style={{
-            width: 64,
-            height: 40,
-            background: s.color,
-          }}
-        />
+        <DemoTile icon={s.icon} title={s.title} compact style={{ width: 64, height: 40 }} />
       )}
     />
   );

@@ -18,6 +18,57 @@ token.
 
 <LivePreview example="listing-card/with-sale" />
 
+## Spec
+
+`variant="spec"` swaps the consumer-stay layout for a product-spec card:
+a flag pill top-left, photo counter top-right, a stats grid below the
+title (e.g. `0-60` / `power` / `drive`), and an inline CTA button on a
+dark footer strip. Built for premium or spec-driven inventory.
+
+The default rating / host / favorite slots are ignored in this variant;
+use `flag`, `category`, `meta`, `specs`, `pricePrefix`, and `cta` instead.
+
+<LivePreview example="listing-card/spec" />
+
+## Click & hover
+
+Pass `onClick` to make the whole card surface clickable — an invisible
+stretched `<button>` sits below the inner actions (favorite, CTA, links)
+so those keep their own click semantics. `href` still works for plain
+navigation; if both are set, `onClick` wins.
+
+`hoverEffect` picks the visual treatment. Defaults to `lift` when the
+card is interactive (has `onClick` or `href`), otherwise `none`.
+
+<LivePreview example="listing-card/hover-effects" />
+
+## Editable sections
+
+Every text slot (`title`, `eyebrow`, `category`, `meta`, `specs[].label`,
+`specs[].value`, `price`, `priceUnit`, `pricePrefix`, `host`, `distance`,
+`cta.label`, …) accepts arbitrary `ReactNode`. Drop in `<InlineEdit>`
+to make any cell editable in place. Wrap editor cells in
+`<span className="relative z-10" onClick={(e) => e.stopPropagation()}>`
+when the card also has `onClick`, so dbl-click-to-edit doesn't open
+the detail.
+
+The spec listing-detail example below uses this pattern end-to-end —
+click the card to open the modal; double-click any title / meta / spec /
+price to edit and watch the change flow through.
+
+## Styling customization
+
+Every section is independently styleable via the `classNames` slot map.
+Each key targets one internal element; values are merged with the
+component's own utilities via `cn()` — so consumers can override,
+extend, or replace any styling without forking.
+
+Slots: `root`, `photos`, `flag`, `photoCounter`, `favorite`, `body`,
+`header`, `title`, `eyebrow`, `category`, `meta`, `specs`, `specCell`,
+`specLabel`, `specValue`, `footer`, `price`, `priceUnit`, `cta`.
+
+<LivePreview example="listing-card/customized" />
+
 ## Props
 
 <PropsTable component="ListingCard" />
