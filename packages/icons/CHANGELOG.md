@@ -1,5 +1,25 @@
 # @ship-it-ui/icons
 
+## 0.0.10
+
+### Patch Changes
+
+- 1ba01f1: Brand glyph (`<IconGlyph name="brand" />`) now renders Lucide's `rocket` —
+  Ship-It is a deployment story. Previously rendered Lucide's `diamond`.
+
+  Consumers who rely on the visual identity of the `brand` name will see a
+  different glyph. The shape, viewBox, and component API are unchanged.
+
+- 1ba01f1: React 19 baseline. Peer range tightened to `react ^19.0.0` /
+  `react-dom ^19.0.0` (was `^18.0.0 || ^19.0.0`) and dev installs bumped to
+  React 19.2. Drops React 18 from the supported matrix — consumers must be on
+  React 19 to install.
+
+  `@ship-it-ui/ui` also refreshes every `@radix-ui/react-*` dependency to the
+  latest 1.x. Each one now declares explicit React 19 peer support and ships
+  the strict-mode / `forwardRef` compat fixes from the Radix 1.x line. No
+  Radix v2 migration in this release; only patch-level moves within 1.x.
+
 ## 0.0.9
 
 ### Patch Changes
