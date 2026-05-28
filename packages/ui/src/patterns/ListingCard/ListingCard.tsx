@@ -1,6 +1,7 @@
 'use client';
 
 import { IconGlyph, type GlyphName } from '@ship-it-ui/icons';
+import { cva } from 'class-variance-authority';
 import { forwardRef, useState, type HTMLAttributes, type MouseEvent, type ReactNode } from 'react';
 
 import { Badge } from '../../components/Badge';
@@ -9,6 +10,21 @@ import { Card } from '../../components/Card';
 import { Rating } from '../../components/Rating';
 import { cn } from '../../utils/cn';
 import { Carousel } from '../Carousel';
+
+/**
+ * Hover affordance for the card root. Module-scoped so the cva function is
+ * stable across renders (it's pure config). `none` is the no-affordance
+ * branch — used for static cards (no onClick / href).
+ */
+const hoverVariants = cva('', {
+  variants: {
+    hoverEffect: {
+      lift: 'transition-[transform,box-shadow,border-color] duration-(--duration-micro) hover:-translate-y-px hover:shadow hover:border-border-strong',
+      glow: 'transition-[box-shadow,border-color] duration-(--duration-micro) hover:ring-[3px] hover:ring-accent-dim hover:border-accent',
+      none: '',
+    },
+  },
+});
 
 /**
  * ListingCard — a marketplace card for a single listing.
@@ -227,12 +243,7 @@ export const ListingCard = forwardRef<HTMLDivElement, ListingCardProps>(function
   const stretchedLinkSupported = !isSpec || (!cta && !!href);
   const isInteractive = Boolean(onClick) || Boolean(href);
   const effectiveHover: 'lift' | 'glow' | 'none' = hoverEffect ?? (isInteractive ? 'lift' : 'none');
-  const hoverClass =
-    effectiveHover === 'lift'
-      ? 'transition-[transform,box-shadow,border-color] duration-(--duration-micro) hover:-translate-y-px hover:shadow hover:border-border-strong'
-      : effectiveHover === 'glow'
-        ? 'transition-[box-shadow,border-color] duration-(--duration-micro) hover:ring-[3px] hover:ring-accent-dim hover:border-accent'
-        : '';
+  const hoverClass = hoverVariants({ hoverEffect: effectiveHover });
 
   return (
     <Card
