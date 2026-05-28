@@ -61,6 +61,7 @@ export * from './patterns/DatePicker';
 export * from './patterns/DateRangePicker';
 export * from './patterns/Lightbox';
 export * from './patterns/ListingCard';
+export * from './patterns/ListingDetail';
 export * from './patterns/PhoneInput';
 export * from './patterns/PriceBreakdown';
 export * from './patterns/ReviewCard';

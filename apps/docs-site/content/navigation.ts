@@ -204,6 +204,7 @@ export const navigation: NavSection[] = [
         label: 'Marketplace',
         items: [
           { title: 'ListingCard', slug: 'patterns/listing-card' },
+          { title: 'ListingDetail', slug: 'patterns/listing-detail' },
           { title: 'PriceBreakdown', slug: 'patterns/price-breakdown' },
           { title: 'ReviewCard', slug: 'patterns/review-card' },
         ],
