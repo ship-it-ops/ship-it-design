@@ -12,6 +12,13 @@ hand-assembling Dialog + Carousel + Lightbox + a marketplace info layout.
 
 ## Default
 
+The gallery `Carousel` and the fullscreen `Lightbox` share one
+`galleryIndex` — closing the lightbox lands the gallery on the photo
+you left on, and one `loop` prop drives both surfaces (default `true`,
+matching marketplace expectations). See
+[Carousel → Loop](/patterns/carousel#loop) for the swipe-wrap
+mechanics.
+
 <LivePreview example="listing-detail/default" />
 
 ## Spec

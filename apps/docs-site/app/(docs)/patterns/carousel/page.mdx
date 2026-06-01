@@ -14,6 +14,17 @@ Listing detail pages typically pair the main viewport with a thumbnail strip.
 
 <LivePreview example="carousel/with-thumbnails" />
 
+## Loop
+
+Set `loop` to make arrows, dots, and native swipe wrap continuously —
+"next" on the last slide goes to the first, and vice versa. Under the
+hood, hidden clones of the first / last slide bracket the real items so
+the swipe-past-the-edge feels seamless; `onIndexChange` still only
+emits real indices in `0..items.length - 1`. The marketplace patterns
+(`ListingCard`, `ListingDetail`) opt in by default.
+
+<LivePreview example="carousel/loop" />
+
 ## Props
 
 <PropsTable component="Carousel" />
