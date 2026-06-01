@@ -86,8 +86,8 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
   const viewportRef = useRef<HTMLDivElement | null>(null);
   // Set true immediately before any internal scrollIntoView call so the
   // controlled-sync effect below doesn't fight an animation that just
-  // started — goTo's smooth scroll and the clone-jump's auto scroll both
-  // claim ownership of the next scroll with this ref.
+  // started — goTo's smooth scroll and the clone-jump's instant scroll
+  // both claim ownership of the next scroll with this ref.
   const internalScrollRef = useRef(false);
 
   const activeIdx = active ?? 0;
