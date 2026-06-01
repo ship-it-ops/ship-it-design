@@ -126,11 +126,14 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
         return;
       }
       // Clones live at DOM 0 (mirror of last) and DOM N+1 (mirror of first).
+      // `behavior: 'instant'` (not 'auto') because the viewport has
+      // `scroll-smooth` CSS; per CSSOM-View, `'auto'` would inherit that
+      // and animate the jump, defeating the invisible-loop illusion.
       if (domIdx === 0) {
         const realTwin = node.children[N] as HTMLElement | undefined;
         if (realTwin) {
           internalScrollRef.current = true;
-          realTwin.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
+          realTwin.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'start' });
         }
         if (activeIdx !== N - 1) setActive(N - 1);
         return;
@@ -139,7 +142,7 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
         const realTwin = node.children[1] as HTMLElement | undefined;
         if (realTwin) {
           internalScrollRef.current = true;
-          realTwin.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
+          realTwin.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'start' });
         }
         if (activeIdx !== 0) setActive(0);
         return;
@@ -155,7 +158,9 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
   // outside (controlled `index` prop update — e.g. Lightbox close in
   // ListingDetail pushes back the index it left on). Skipped when the
   // change came from goTo / a clone-jump; those set internalScrollRef
-  // first so their own scroll calls (smooth / auto) own the animation.
+  // first so their own scroll calls own the animation. `behavior:
+  // 'instant'` (not 'auto') because `scroll-smooth` on the viewport
+  // would otherwise animate the sync and make lightbox-close look laggy.
   useEffect(() => {
     if (internalScrollRef.current) {
       internalScrollRef.current = false;
@@ -169,12 +174,14 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
     const currentDom = Math.round(node.scrollLeft / width);
     if (currentDom === targetDom) return;
     const slide = node.children[targetDom] as HTMLElement | undefined;
-    slide?.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
+    slide?.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'start' });
   }, [activeIdx, domIndexFor]);
 
   // On mount with loop, scroll past the leading clone so the user starts
   // on the real `activeIdx`, not the clone-of-last. Layout effect (not
   // useEffect) so the user never sees the wrong frame before paint.
+  // `behavior: 'instant'` is required because `'auto'` would inherit
+  // the viewport's `scroll-smooth` CSS and animate the mount position.
   useLayoutEffect(() => {
     if (!isLooping) return;
     const node = viewportRef.current;
@@ -182,7 +189,7 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
     const slide = node.children[domIndexFor(activeIdx)] as HTMLElement | undefined;
     if (!slide) return;
     internalScrollRef.current = true;
-    slide.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
+    slide.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'start' });
     // Mount-only; the controlled-sync effect above handles activeIdx
     // changes after mount.
     // eslint-disable-next-line react-hooks/exhaustive-deps

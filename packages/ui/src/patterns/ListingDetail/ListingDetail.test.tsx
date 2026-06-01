@@ -114,7 +114,7 @@ describe('ListingDetail', () => {
     // covers: Carousel only scrolled its viewport from inside its own
     // goTo, so closing the lightbox on a different photo used to leave
     // the gallery showing the old slide. With the controlled-sync effect
-    // the viewport now scrolls (behavior: 'auto') whenever the controlled
+    // the viewport now scrolls (behavior: 'instant') whenever the controlled
     // `index` prop changes from outside.
     const scrollSpy = vi.spyOn(Element.prototype, 'scrollIntoView').mockImplementation(() => {});
     const fivePhotos = ['/p1.jpg', '/p2.jpg', '/p3.jpg', '/p4.jpg', '/p5.jpg'];
@@ -138,7 +138,7 @@ describe('ListingDetail', () => {
     const autoCallIndexes: number[] = [];
     scrollSpy.mock.calls.forEach((call, i) => {
       const [opts] = call;
-      if ((opts as ScrollIntoViewOptions | undefined)?.behavior === 'auto') {
+      if ((opts as ScrollIntoViewOptions | undefined)?.behavior === 'instant') {
         autoCallIndexes.push(i);
       }
     });

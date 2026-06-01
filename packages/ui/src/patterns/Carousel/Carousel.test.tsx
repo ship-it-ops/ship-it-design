@@ -64,20 +64,22 @@ describe('Carousel', () => {
       <Carousel items={six} index={5} renderItem={(v) => <div>{v}</div>} aria-label="Photos" />,
     );
 
-    // The sync effect uses behavior: 'auto' — the call we want.
-    const autoCalls = scrollSpy.mock.calls.filter(
-      ([opts]) => (opts as ScrollIntoViewOptions | undefined)?.behavior === 'auto',
+    // The sync effect uses behavior: 'instant' — the call we want.
+    // (`'instant'` not `'auto'` so the viewport's scroll-smooth CSS
+    // doesn't override into an animated sync.)
+    const instantCalls = scrollSpy.mock.calls.filter(
+      ([opts]) => (opts as ScrollIntoViewOptions | undefined)?.behavior === 'instant',
     );
-    expect(autoCalls.length).toBeGreaterThan(0);
+    expect(instantCalls.length).toBeGreaterThan(0);
     // And it should have run on the slide that's now active (DOM index 5
     // when loop is off — which it is here).
-    const autoInvocation =
+    const instantInvocation =
       scrollSpy.mock.instances[
         scrollSpy.mock.calls.findIndex(
-          ([opts]) => (opts as ScrollIntoViewOptions | undefined)?.behavior === 'auto',
+          ([opts]) => (opts as ScrollIntoViewOptions | undefined)?.behavior === 'instant',
         )
       ];
-    expect(autoInvocation).toBe(viewport.children[5]);
+    expect(instantInvocation).toBe(viewport.children[5]);
   });
 
   it('wraps next from the last slide back to the first when loop is on', async () => {
