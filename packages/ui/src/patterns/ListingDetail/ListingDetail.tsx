@@ -93,6 +93,13 @@ export interface ListingDetailProps {
    * placeholders or non-image slides.
    */
   renderPhoto?: (src: string, index: number, mode: 'gallery' | 'lightbox') => ReactNode;
+  /**
+   * Wrap the gallery carousel and the fullscreen lightbox past the
+   * boundaries (next from the last photo goes to the first). Default
+   * `true` — marketplace photo browsing expects looping. One prop
+   * drives both surfaces.
+   */
+  loop?: boolean;
   /** Listing title — e.g. "2023 Tesla Model 3". */
   title: ReactNode;
   /** Optional eyebrow above the title — vehicle type, location. */
@@ -201,6 +208,7 @@ export const ListingDetail = forwardRef<HTMLDivElement, ListingDetailProps>(func
     onOpenChange,
     photos,
     renderPhoto,
+    loop = true,
     title,
     eyebrow,
     description,
@@ -269,6 +277,7 @@ export const ListingDetail = forwardRef<HTMLDivElement, ListingDetailProps>(func
                   items={photos}
                   index={galleryIndex}
                   onIndexChange={setGalleryIndex}
+                  loop={loop}
                   {...(isSpec ? { showDots: false } : {})}
                   aria-label={typeof title === 'string' ? `${title} photos` : 'Listing photos'}
                   renderItem={(src, i) =>
@@ -537,6 +546,7 @@ export const ListingDetail = forwardRef<HTMLDivElement, ListingDetailProps>(func
         items={photos}
         index={galleryIndex}
         onIndexChange={setGalleryIndex}
+        loop={loop}
         title={lightboxTitle}
         renderItem={(src, i) =>
           renderPhoto ? (

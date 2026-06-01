@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { axe } from 'vitest-axe';
 
 import { ListingDetail } from './ListingDetail';
@@ -8,6 +8,10 @@ import { ListingDetail } from './ListingDetail';
 const photos = ['/p1.jpg', '/p2.jpg', '/p3.jpg'];
 
 describe('ListingDetail', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it('renders the title, price, rating, and host when open', () => {
     render(
       <ListingDetail
@@ -103,6 +107,44 @@ describe('ListingDetail', () => {
       />,
     );
     expect(await axe(document.body)).toHaveNoViolations();
+  });
+
+  it('keeps the gallery carousel in sync after navigating inside the lightbox', async () => {
+    // The shared `galleryIndex` already feeds both surfaces. The bug this
+    // covers: Carousel only scrolled its viewport from inside its own
+    // goTo, so closing the lightbox on a different photo used to leave
+    // the gallery showing the old slide. With the controlled-sync effect
+    // the viewport now scrolls (behavior: 'auto') whenever the controlled
+    // `index` prop changes from outside.
+    const scrollSpy = vi.spyOn(Element.prototype, 'scrollIntoView').mockImplementation(() => {});
+    const fivePhotos = ['/p1.jpg', '/p2.jpg', '/p3.jpg', '/p4.jpg', '/p5.jpg'];
+    render(<ListingDetail open photos={fivePhotos} title="Tesla" price="$89" />);
+
+    // jsdom reports clientWidth: 0; force a real value so the sync effect
+    // doesn't bail on the early-return.
+    const viewport = document.querySelector('[aria-live="polite"]') as HTMLElement;
+    Object.defineProperty(viewport, 'clientWidth', { value: 300, configurable: true });
+
+    await userEvent.click(screen.getByRole('button', { name: 'Open photo viewer' }));
+    const lightbox = screen.getByRole('dialog', { name: /Tesla photos/ });
+
+    scrollSpy.mockClear();
+    fireEvent.keyDown(lightbox, { key: 'ArrowRight' });
+    fireEvent.keyDown(lightbox, { key: 'ArrowRight' });
+
+    // Two →: lightbox is on real photo index 2. With ListingDetail's
+    // default `loop=true`, the gallery's DOM child for real idx 2 lives
+    // at viewport.children[3] (a clone of last sits at index 0).
+    const autoCallIndexes: number[] = [];
+    scrollSpy.mock.calls.forEach((call, i) => {
+      const [opts] = call;
+      if ((opts as ScrollIntoViewOptions | undefined)?.behavior === 'auto') {
+        autoCallIndexes.push(i);
+      }
+    });
+    expect(autoCallIndexes.length).toBeGreaterThan(0);
+    const lastAutoCallIndex = autoCallIndexes[autoCallIndexes.length - 1]!;
+    expect(scrollSpy.mock.instances[lastAutoCallIndex]).toBe(viewport.children[3]);
   });
 
   it('passes mode="gallery" to renderPhoto inline and mode="lightbox" when fullscreen opens', async () => {
