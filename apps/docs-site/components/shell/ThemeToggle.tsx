@@ -13,6 +13,11 @@ export function ThemeToggle() {
   const { theme, toggle } = useTheme();
   const [mounted, setMounted] = useState(false);
 
+  // SSR hydration handshake: render a stable placeholder during SSR and
+  // switch to the theme-aware icon only after hydration. The mounted-flag
+  // pattern is the React-canonical way to express this — flagged by
+  // `react-hooks/set-state-in-effect` v7 but intentional here.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), []);
 
   return (

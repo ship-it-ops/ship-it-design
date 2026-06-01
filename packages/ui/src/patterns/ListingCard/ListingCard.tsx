@@ -80,6 +80,12 @@ export interface ListingCardProps extends Omit<
    * placeholders that follow `currentColor`) or non-image slides.
    */
   renderPhoto?: (src: string, index: number) => ReactNode;
+  /**
+   * Wrap the photo carousel past the boundaries (next from the last
+   * photo goes to the first). Default `true` — marketplace photo
+   * browsing expects looping. Pass `false` to restore stop-at-end.
+   */
+  loop?: boolean;
   /** Listing title — e.g. "2023 Tesla Model 3". */
   title: ReactNode;
   /** Optional eyebrow text above the title (location, vehicle type). */
@@ -207,6 +213,7 @@ export const ListingCard = forwardRef<HTMLDivElement, ListingCardProps>(function
     variant = 'default',
     photos,
     renderPhoto,
+    loop = true,
     onClick,
     hoverEffect,
     title,
@@ -263,6 +270,7 @@ export const ListingCard = forwardRef<HTMLDivElement, ListingCardProps>(function
       <div className={cn('relative', cls.photos)}>
         <Carousel
           items={photos}
+          loop={loop}
           {...(isSpec
             ? {
                 index: photoIndex,

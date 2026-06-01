@@ -23,6 +23,13 @@ export function TableOfContents() {
   const [headings, setHeadings] = useState<Heading[]>([]);
   const [active, setActive] = useState<string | null>(null);
 
+  // Reads DOM (external state) after rehype-slug has rendered heading IDs
+  // and subscribes via IntersectionObserver. The synchronous setHeadings
+  // / setActive calls inside this effect mirror the DOM scan that has to
+  // happen post-mount — flagged by `react-hooks/set-state-in-effect` v7
+  // but there's no render-time alternative for "read article headings
+  // after navigation."
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     const article = document.querySelector('article.docs-prose');
     if (!article) {
@@ -60,6 +67,7 @@ export function TableOfContents() {
     });
     return () => obs.disconnect();
   }, [pathname]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   if (headings.length === 0) return null;
 

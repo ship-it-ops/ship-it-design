@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { axe } from 'vitest-axe';
@@ -51,6 +51,65 @@ describe('Lightbox', () => {
       />,
     );
     expect(screen.getByText('2 / 3')).toBeInTheDocument();
+  });
+
+  it('wraps next past the last item when loop is on', async () => {
+    render(
+      <Lightbox
+        open
+        loop
+        items={photos}
+        defaultIndex={2}
+        renderItem={(p) => <img alt={`Slide ${p}`} />}
+      />,
+    );
+    await userEvent.click(screen.getByRole('button', { name: 'Next photo' }));
+    expect(screen.getByText('1 / 3')).toBeInTheDocument();
+  });
+
+  it('wraps prev past index 0 when loop is on', async () => {
+    render(
+      <Lightbox
+        open
+        loop
+        items={photos}
+        defaultIndex={0}
+        renderItem={(p) => <img alt={`Slide ${p}`} />}
+      />,
+    );
+    await userEvent.click(screen.getByRole('button', { name: 'Previous photo' }));
+    expect(screen.getByText('3 / 3')).toBeInTheDocument();
+  });
+
+  it('wraps ←/→ keyboard navigation when loop is on', () => {
+    render(
+      <Lightbox
+        open
+        loop
+        items={photos}
+        defaultIndex={0}
+        renderItem={(p) => <img alt={`Slide ${p}`} />}
+      />,
+    );
+    const dialog = screen.getByRole('dialog');
+    fireEvent.keyDown(dialog, { key: 'ArrowLeft' });
+    expect(screen.getByText('3 / 3')).toBeInTheDocument();
+    fireEvent.keyDown(dialog, { key: 'ArrowRight' });
+    expect(screen.getByText('1 / 3')).toBeInTheDocument();
+  });
+
+  it('keeps prev/next enabled at the boundaries when loop is on', () => {
+    render(
+      <Lightbox
+        open
+        loop
+        items={photos}
+        defaultIndex={0}
+        renderItem={(p) => <img alt={`Slide ${p}`} />}
+      />,
+    );
+    expect(screen.getByRole('button', { name: 'Previous photo' })).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Next photo' })).not.toBeDisabled();
   });
 
   it('has no a11y violations when open', async () => {

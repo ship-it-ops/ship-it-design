@@ -3,7 +3,6 @@
 import {
   forwardRef,
   useCallback,
-  useEffect,
   useMemo,
   useRef,
   useState,
@@ -116,12 +115,13 @@ export const Tree = forwardRef<HTMLUListElement, TreeProps>(function Tree(
   // Roving tabindex: track which item is the focus target.
   const [activeId, setActiveId] = useState<string | null>(null);
 
-  // If activeId is no longer visible (parent collapsed), reset to a sensible default.
-  useEffect(() => {
-    if (activeId && !flatVisible.some((f) => f.id === activeId)) {
-      setActiveId(null);
-    }
-  }, [activeId, flatVisible]);
+  // If activeId is no longer visible (parent collapsed), clear it. Done during
+  // render rather than in an effect — the React-docs-sanctioned "adjusting
+  // state on prop change" pattern; eslint-plugin-react-hooks v7's
+  // `set-state-in-effect` rule (rightly) flags the effect form.
+  if (activeId && !flatVisible.some((f) => f.id === activeId)) {
+    setActiveId(null);
+  }
 
   // The "tab stop" is: explicit activeId if visible, else the selected value if
   // visible, else the first visible item.

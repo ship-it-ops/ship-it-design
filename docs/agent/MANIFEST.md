@@ -1,6 +1,6 @@
 # Agent Context
 
-Last updated: 2026-05-27 | Total notes: 30
+Last updated: 2026-06-01 | Total notes: 32
 
 <!--
   This file is the index for `docs/agent/`. Agents read it at session start.
@@ -55,6 +55,7 @@ _None._
 - [group-data-state-radix](patterns/group-data-state-radix.md) | pattern | active | standard | 2026-05-21 | Radix data-state needs `group` on parent
 - [test-setup-portal-axe](patterns/test-setup-portal-axe.md) | pattern | active | standard | 2026-05-21 | Axe scans document.body to catch Radix portals
 - [theme-tokens-resolution-chain](patterns/theme-tokens-resolution-chain.md) | pattern | active | standard | 2026-05-21 | TS → tokens.css → @theme inline → Tailwind utilities
+- [derive-during-render-stale-clear](patterns/derive-during-render-stale-clear.md) | pattern | active | standard | 2026-06-01 | Clear stale id state during render, not in an effect
 
 ## Open Questions
 
@@ -75,3 +76,4 @@ _None._
 - [reduced-motion-token-bypass](scars/reduced-motion-token-bypass.md) | scar | active | standard | 2026-05-21 | Literal animate-[…_220ms_…] bypassed token zeroing
 - [icons-readme-codegen-drift](scars/icons-readme-codegen-drift.md) | scar | active | standard | 2026-05-21 | icons README claimed wrong codegen output path
 - [turbopack-mdx-plugin-serialization](scars/turbopack-mdx-plugin-serialization.md) | scar | active | standard | 2026-05-27 | Turbopack needs MDX plugin _names_, not function refs
+- [react-hooks-v7-set-state-in-effect-false-positives](scars/react-hooks-v7-set-state-in-effect-false-positives.md) | scar | active | standard | 2026-06-01 | v7 set-state-in-effect fires on SSR mounted-flag and post-nav DOM scans

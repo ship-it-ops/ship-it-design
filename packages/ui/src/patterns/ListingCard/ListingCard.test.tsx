@@ -139,12 +139,27 @@ describe('ListingCard', () => {
     expect(screen.getByRole('button', { name: 'Rent' })).toHaveClass('custom-cta-class');
   });
 
+  it('loops the photo carousel by default and passes loop={false} through', () => {
+    // Marketplace cards opt in to looping by default. The forwarded `loop`
+    // prop on the inner Carousel decides whether prev/next disable at the
+    // boundaries — easiest signal to assert against without touching
+    // internals.
+    const { rerender } = render(<ListingCard photos={photos} title="Tesla" price="89" />);
+    expect(screen.getByRole('button', { name: 'Previous slide' })).not.toBeDisabled();
+
+    rerender(<ListingCard photos={photos} title="Tesla" price="89" loop={false} />);
+    expect(screen.getByRole('button', { name: 'Previous slide' })).toBeDisabled();
+  });
+
   it('uses renderPhoto when provided', () => {
     render(
       <ListingCard
         photos={photos}
         title="Tesla"
         price="89"
+        // Disable loop so the rendered tiles match `photos` order without
+        // clone twins at either end (clones also flow through renderPhoto).
+        loop={false}
         renderPhoto={(src) => <div data-testid="custom-photo">{src}</div>}
       />,
     );
