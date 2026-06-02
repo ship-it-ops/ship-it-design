@@ -23,7 +23,28 @@ the swipe-past-the-edge feels seamless; `onIndexChange` still only
 emits real indices in `0..items.length - 1`. The marketplace patterns
 (`ListingCard`, `ListingDetail`) opt in by default.
 
+`loop` accepts two variants — pass `true` to get the default
+(`"circular"`), or pass `"sweep"` for the alternate motion. Native swipe
+past the edge looks the same in both; the variants only differ on the
+prev/next-arrow wrap step.
+
+### Circular (default)
+
+Boundary arrow clicks smooth-scroll a single slide width through the
+hidden clone, then invisibly snap to the real twin. Feels like an
+endless reel — the motion is always one slide forward / back, regardless
+of strip length.
+
 <LivePreview example="carousel/loop" />
+
+### Sweep
+
+Boundary arrow clicks smooth-scroll the full distance across the strip
+back to the real first / last slide. The transition reads as a wide arc
+across every item between — useful when you want the user to
+re-perceive the intermediate slides on each wrap.
+
+<LivePreview example="carousel/loop-sweep" />
 
 ## Props
 

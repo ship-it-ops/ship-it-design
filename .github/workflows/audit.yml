@@ -8,8 +8,8 @@ name: Weekly audit
 # noisy advisory week or after a chunky dep bump.
 
 on:
-  schedule:
-    - cron: '0 12 * * 1' # Monday 12:00 UTC
+  # schedule:
+  #   - cron: '0 12 * * 1' # Monday 12:00 UTC
   workflow_dispatch:
 
 permissions:

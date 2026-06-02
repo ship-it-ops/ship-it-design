@@ -10,17 +10,21 @@ interface Slide {
 }
 
 const slides: Slide[] = [
-  { icon: 'service', title: 'Tesla Model 3', subtitle: 'Electric · Sedan' },
-  { icon: 'deployment', title: 'Jeep Wrangler', subtitle: '4×4 · SUV' },
-  { icon: 'target', title: 'BMW i4', subtitle: 'Electric · Gran Coupe' },
-  { icon: 'sparkle', title: 'Ford F-150', subtitle: 'Pickup' },
+  {
+    icon: 'service',
+    title: 'Preview deployments',
+    subtitle: 'Per-branch URLs, signed and shareable',
+  },
+  { icon: 'deployment', title: 'Workflows', subtitle: 'Durable steps, retries, and pause/resume' },
+  { icon: 'target', title: 'Observability', subtitle: 'Logs, traces, and runtime metrics' },
+  { icon: 'sparkle', title: 'AI agents', subtitle: 'Ship-It-AI surfaces and copilots' },
 ];
 
 export default function Example() {
   return (
     <Carousel
       items={slides}
-      aria-label="Featured vehicles"
+      aria-label="Featured Ship-It features"
       renderItem={(s) => <DemoTile icon={s.icon} title={s.title} subtitle={s.subtitle} />}
     />
   );

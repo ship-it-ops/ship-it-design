@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 import { ExamplePhoto } from '@/lib/example-photo';
 
-const photos: GlyphName[] = ['car', 'carFront', 'steeringWheel', 'seat'];
+const photos: GlyphName[] = ['home', 'palmTree', 'sun', 'seat'];
 
 function Inner() {
   const [open, setOpen] = useState(false);
@@ -17,12 +17,12 @@ function Inner() {
         <ListingCard
           photos={photos}
           renderPhoto={(name) => <ExamplePhoto icon={name as GlyphName} />}
-          eyebrow="Mid-size SUV · Berkeley"
-          title="2023 Tesla Model Y"
+          eyebrow="Studio · Mill Valley"
+          title="Sun-soaked cabin in Marin"
           rating={4.92}
           reviewCount={238}
-          price="$89"
-          priceUnit="/day"
+          price="$189"
+          priceUnit="/night"
           host="Jamie"
           distance="0.4 mi away"
           verified
@@ -35,27 +35,27 @@ function Inner() {
         renderPhoto={(name, _i, mode) => (
           <ExamplePhoto icon={name as GlyphName} mode={mode === 'lightbox' ? 'contain' : 'cover'} />
         )}
-        eyebrow="Mid-size SUV · Berkeley"
-        title="2023 Tesla Model Y"
+        eyebrow="Studio · Mill Valley"
+        title="Sun-soaked cabin in Marin"
         rating={4.92}
         reviewCount={238}
-        price="$89"
-        priceUnit="/day"
-        originalPrice="$119"
+        price="$189"
+        priceUnit="/night"
+        originalPrice="$229"
         host={{
           name: 'Jamie',
           verified: true,
-          meta: 'Host since 2022 · 312 trips',
+          meta: 'Host since 2022 · 312 stays',
         }}
         features={[
-          { icon: 'seat', label: '5 seats' },
-          { icon: 'fuel', label: 'Electric' },
+          { icon: 'seat', label: 'Sleeps 4' },
+          { icon: 'wifi', label: 'Wi-Fi' },
           { icon: 'snowflake', label: 'A/C' },
           { icon: 'bluetooth', label: 'Bluetooth' },
           { icon: 'usb', label: 'USB' },
           { icon: 'petFriendly', label: 'Pet friendly' },
         ]}
-        description="Long-range RWD. Clean interior, fresh detail. Free supercharging credits included for the first week. Pickup at the Berkeley BART station — 4-minute walk."
+        description="Walk to the redwoods, cell signal at the kitchen counter, hot tub fires up in ten minutes. Self check-in from 3pm — keypad code arrives by text the morning of your stay."
         primaryAction={{ label: 'Book now', onClick: () => {} }}
         secondaryAction={{ label: 'Message host', onClick: () => {} }}
       />

@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 import { ExamplePhoto } from '@/lib/example-photo';
 
-const photos: GlyphName[] = ['car', 'carFront'];
+const photos: GlyphName[] = ['home', 'palmTree'];
 
 function Inner() {
   const [fav, setFav] = useState(false);
@@ -14,12 +14,12 @@ function Inner() {
     <ListingCard
       photos={photos}
       renderPhoto={(name) => <ExamplePhoto icon={name as GlyphName} />}
-      eyebrow="Mid-size SUV"
-      title="2023 Tesla Model Y"
+      eyebrow="Studio · Mill Valley"
+      title="Sun-soaked cabin in Marin"
       rating={4.92}
       reviewCount={238}
-      price="$89"
-      priceUnit="/day"
+      price="$189"
+      priceUnit="/night"
       host="Jamie"
       distance="0.4 mi away"
       verified

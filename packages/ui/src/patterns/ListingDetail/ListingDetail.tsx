@@ -100,9 +100,9 @@ export interface ListingDetailProps {
    * drives both surfaces.
    */
   loop?: boolean;
-  /** Listing title — e.g. "2023 Tesla Model 3". */
+  /** Listing title — e.g. "Sun-soaked cabin in Marin". */
   title: ReactNode;
-  /** Optional eyebrow above the title — vehicle type, location. */
+  /** Optional eyebrow above the title — listing type, location. */
   eyebrow?: ReactNode;
   /** Long-form description body. */
   description?: ReactNode;
@@ -112,9 +112,9 @@ export interface ListingDetailProps {
   /** Total review count, shown next to the rating. */
   reviewCount?: number;
 
-  /** Headline price (e.g. `$89`). */
+  /** Headline price (e.g. `$189`). */
   price: ReactNode;
-  /** Suffix after the price (e.g. `/day`). */
+  /** Suffix after the price (e.g. `/night`). */
   priceUnit?: ReactNode;
   /** Original price for a strike-through; renders only when set. */
   originalPrice?: ReactNode;

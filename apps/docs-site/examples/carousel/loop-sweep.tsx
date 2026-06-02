@@ -24,8 +24,8 @@ export default function Example() {
   return (
     <Carousel
       items={slides}
-      loop
-      aria-label="Featured Ship-It features"
+      loop="sweep"
+      aria-label="Featured Ship-It features, sweep loop"
       renderItem={(s) => <DemoTile icon={s.icon} title={s.title} subtitle={s.subtitle} />}
     />
   );

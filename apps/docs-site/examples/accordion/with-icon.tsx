@@ -3,19 +3,19 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@s
 export default function Example() {
   return (
     <Accordion type="single" collapsible>
-      <AccordionItem value="features">
-        <AccordionTrigger leadingIcon="car">Vehicle features</AccordionTrigger>
-        <AccordionContent>4-door SUV, automatic, AWD.</AccordionContent>
+      <AccordionItem value="regions">
+        <AccordionTrigger leadingIcon="rocket">Deployment regions</AccordionTrigger>
+        <AccordionContent>Edge in 30+ regions, sub-100ms cold start.</AccordionContent>
       </AccordionItem>
-      <AccordionItem value="insurance">
-        <AccordionTrigger leadingIcon="umbrella">Insurance & protection</AccordionTrigger>
+      <AccordionItem value="security">
+        <AccordionTrigger leadingIcon="shield">Security & access</AccordionTrigger>
         <AccordionContent>
-          Basic plan included; premium upgrade available at checkout.
+          SSO, audit logs, and signed deploy tokens — included on every plan.
         </AccordionContent>
       </AccordionItem>
-      <AccordionItem value="pickup">
-        <AccordionTrigger leadingIcon="airport">Pickup options</AccordionTrigger>
-        <AccordionContent>Airport curbside delivery available for a $25 fee.</AccordionContent>
+      <AccordionItem value="notifications">
+        <AccordionTrigger leadingIcon="bell">Notifications</AccordionTrigger>
+        <AccordionContent>Slack, email, or webhook on every deploy and incident.</AccordionContent>
       </AccordionItem>
     </Accordion>
   );

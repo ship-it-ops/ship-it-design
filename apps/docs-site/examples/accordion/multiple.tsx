@@ -4,12 +4,12 @@ export default function Example() {
   return (
     <Accordion type="multiple" defaultValue={['a', 'b']}>
       <AccordionItem value="a">
-        <AccordionTrigger>Vehicle features</AccordionTrigger>
-        <AccordionContent>Bluetooth, USB-C, backup camera, all-wheel drive.</AccordionContent>
+        <AccordionTrigger>What's included</AccordionTrigger>
+        <AccordionContent>Wi-Fi, A/C, full kitchen, parking on-site.</AccordionContent>
       </AccordionItem>
       <AccordionItem value="b">
         <AccordionTrigger>House rules</AccordionTrigger>
-        <AccordionContent>No smoking, no pets, return with the same fuel level.</AccordionContent>
+        <AccordionContent>No smoking, no parties, quiet hours after 10pm.</AccordionContent>
       </AccordionItem>
     </Accordion>
   );
