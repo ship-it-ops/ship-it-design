@@ -238,6 +238,34 @@ describe('Carousel', () => {
     expect(smoothTargets[0]).not.toBe(viewport.children[N + 1]);
   });
 
+  it('sweep variant: prev-arrow wrap targets the real last, not the clone', async () => {
+    const five = ['A', 'B', 'C', 'D', 'E'];
+    const N = five.length;
+    const scrollSpy = vi.spyOn(Element.prototype, 'scrollIntoView').mockImplementation(() => {});
+    const { container } = render(
+      <Carousel
+        items={five}
+        defaultIndex={0}
+        loop="sweep"
+        renderItem={(v) => <div>{v}</div>}
+        aria-label="Photos"
+      />,
+    );
+    const viewport = container.querySelector('[aria-live="polite"]') as HTMLElement;
+    scrollSpy.mockClear();
+    await userEvent.click(screen.getByRole('button', { name: 'Previous slide' }));
+    const smoothTargets = scrollSpy.mock.calls.flatMap((call, i) => {
+      const opts = call[0] as ScrollIntoViewOptions | undefined;
+      return opts?.behavior === 'smooth' ? [scrollSpy.mock.instances[i]] : [];
+    });
+    expect(smoothTargets).toHaveLength(1);
+    // Sweep mode keeps the pre-fix behavior: smooth-scroll all the way
+    // forward to children[N] (the real last), traversing every
+    // intermediate slide. NOT children[0] (the leading clone).
+    expect(smoothTargets[0]).toBe(viewport.children[N]);
+    expect(smoothTargets[0]).not.toBe(viewport.children[0]);
+  });
+
   it('targets the real twin directly for mid-strip dot jumps when loop is on', async () => {
     const five = ['A', 'B', 'C', 'D', 'E'];
     const scrollSpy = vi.spyOn(Element.prototype, 'scrollIntoView').mockImplementation(() => {});
