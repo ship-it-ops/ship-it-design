@@ -4,21 +4,22 @@ export default function Example() {
   return (
     <Accordion type="single" collapsible defaultValue="one">
       <AccordionItem value="one">
-        <AccordionTrigger>What's included in the daily rate?</AccordionTrigger>
+        <AccordionTrigger>What's included in the nightly rate?</AccordionTrigger>
         <AccordionContent>
-          Unlimited mileage, basic protection, and 24/7 roadside assistance.
+          Wi-Fi, all utilities, cleaning, and self check-in via keypad.
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="two">
         <AccordionTrigger>Cancellation policy</AccordionTrigger>
         <AccordionContent>
-          Free cancellation up to 24 hours before pickup. Within 24 hours, a 50% fee applies.
+          Free cancellation up to 48 hours before check-in. Within 48 hours, the first night is
+          non-refundable.
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="three">
-        <AccordionTrigger>Driver requirements</AccordionTrigger>
+        <AccordionTrigger>House rules</AccordionTrigger>
         <AccordionContent>
-          Minimum age 21. Valid driver's license and matching ID required at pickup.
+          No smoking, no parties, quiet hours after 10pm. Pets allowed on request.
         </AccordionContent>
       </AccordionItem>
     </Accordion>

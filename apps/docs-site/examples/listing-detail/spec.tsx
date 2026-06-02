@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 import { ExamplePhoto } from '@/lib/example-photo';
 
-const photos: GlyphName[] = ['car', 'carFront', 'steeringWheel', 'seat', 'gauge'];
+const photos: GlyphName[] = ['mountain', 'home', 'sun', 'palmTree', 'wifi'];
 
 /**
  * Stops a click from bubbling to the card's stretched onClick handler.
@@ -20,15 +20,15 @@ function Inner() {
 
   // Editable fields. Shared between the card and the modal so an edit in
   // either surface flows through to the other.
-  const [title, setTitle] = useState('Chevrolet Corvette Stingray Convertible');
-  const [category, setCategory] = useState('performance');
-  const [meta, setMeta] = useState('LR-001 · 2023');
-  const [zeroSixty, setZeroSixty] = useState('2.9s');
-  const [power, setPower] = useState('495 hp');
-  const [drive, setDrive] = useState('RWD');
-  const [price, setPrice] = useState('$250');
+  const [title, setTitle] = useState('Ridgeline Glass House');
+  const [category, setCategory] = useState('architectural');
+  const [meta, setMeta] = useState('STAY-001 · est. 2019');
+  const [sleeps, setSleeps] = useState('6');
+  const [beds, setBeds] = useState('3');
+  const [baths, setBaths] = useState('2');
+  const [price, setPrice] = useState('$420');
   const [description, setDescription] = useState(
-    'Mid-engine V8 in Torch Red. Stage 2 exhaust, Magnetic Ride Control, head-up display. Convertible top retracts in 16s. Pickup at Berkeley Marina.',
+    'Three-bedroom retreat above the Pacific. Floor-to-ceiling glass on the west wall, wood-burning stove, hot tub on the lower deck. Self check-in from 3pm — keypad code arrives the morning of your stay.',
   );
 
   const editableTitle = (
@@ -58,36 +58,26 @@ function Inner() {
   );
   const editableSpecs = [
     {
-      label: '0-60',
+      label: 'Sleeps',
       value: (
         <span {...editCell} className="relative z-10">
-          <InlineEdit
-            value={zeroSixty}
-            onValueChange={setZeroSixty}
-            size="sm"
-            aria-label="Edit 0-60 time"
-          />
+          <InlineEdit value={sleeps} onValueChange={setSleeps} size="sm" aria-label="Edit sleeps" />
         </span>
       ),
     },
     {
-      label: 'Power',
+      label: 'Beds',
       value: (
         <span {...editCell} className="relative z-10">
-          <InlineEdit value={power} onValueChange={setPower} size="sm" aria-label="Edit power" />
+          <InlineEdit value={beds} onValueChange={setBeds} size="sm" aria-label="Edit beds" />
         </span>
       ),
     },
     {
-      label: 'Drive',
+      label: 'Baths',
       value: (
         <span {...editCell} className="relative z-10">
-          <InlineEdit
-            value={drive}
-            onValueChange={setDrive}
-            size="sm"
-            aria-label="Edit drive layout"
-          />
+          <InlineEdit value={baths} onValueChange={setBaths} size="sm" aria-label="Edit baths" />
         </span>
       ),
     },
@@ -112,8 +102,8 @@ function Inner() {
         specs={editableSpecs}
         pricePrefix="from"
         price={editablePrice}
-        priceUnit="/day"
-        cta={{ label: 'Rent', onClick: () => setOpen(true) }}
+        priceUnit="/night"
+        cta={{ label: 'Book', onClick: () => setOpen(true) }}
       />
       <ListingDetail
         variant="spec"
@@ -129,9 +119,9 @@ function Inner() {
         meta={editableMeta}
         specs={[
           ...editableSpecs,
-          { label: 'Top speed', value: '194 mph' },
-          { label: 'Seats', value: '2' },
-          { label: 'Year', value: '2023' },
+          { label: 'View', value: 'Ocean' },
+          { label: 'Min stay', value: '2 nights' },
+          { label: 'Built', value: '2019' },
         ]}
         description={
           <span {...editCell}>
@@ -145,8 +135,8 @@ function Inner() {
         }
         pricePrefix="from"
         price={editablePrice}
-        priceUnit="/day"
-        cta={{ label: 'Rent', onClick: () => {} }}
+        priceUnit="/night"
+        cta={{ label: 'Book', onClick: () => {} }}
       />
     </div>
   );

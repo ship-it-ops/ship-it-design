@@ -86,14 +86,14 @@ export interface ListingCardProps extends Omit<
    * browsing expects looping. Pass `false` to restore stop-at-end.
    */
   loop?: boolean;
-  /** Listing title — e.g. "2023 Tesla Model 3". */
+  /** Listing title — e.g. "Sun-soaked cabin in Marin". */
   title: ReactNode;
-  /** Optional eyebrow text above the title (location, vehicle type). */
+  /** Optional eyebrow text above the title (location, listing type). */
   eyebrow?: ReactNode;
 
-  /** Headline price (e.g. `89`). */
+  /** Headline price (e.g. `189`). */
   price: ReactNode;
-  /** Price unit suffix (e.g. `/day`). */
+  /** Price unit suffix (e.g. `/night`). */
   priceUnit?: ReactNode;
   /** Original price for sale strike-through. */
   originalPrice?: ReactNode;
@@ -193,7 +193,7 @@ export interface ListingCardProps extends Omit<
     footer: string;
     /** Price text. */
     price: string;
-    /** Price unit (e.g. `/day`). */
+    /** Price unit (e.g. `/night`). */
     priceUnit: string;
     /** CTA button (spec variant). */
     cta: string;

@@ -4,7 +4,7 @@ import { NumberInput } from '@ship-it-ui/ui';
 
 function Inner() {
   const [v, setV] = useState(1);
-  return <NumberInput value={v} onValueChange={setV} aria-label="Additional drivers" />;
+  return <NumberInput value={v} onValueChange={setV} aria-label="Guests" />;
 }
 
 export default function Example() {

@@ -9,17 +9,17 @@ interface Slide {
 }
 
 const slides: Slide[] = [
-  { icon: 'service', title: 'Front' },
-  { icon: 'deployment', title: 'Side' },
-  { icon: 'target', title: 'Interior' },
-  { icon: 'sparkle', title: 'Trunk' },
+  { icon: 'service', title: 'Overview' },
+  { icon: 'deployment', title: 'Build' },
+  { icon: 'target', title: 'Runtime' },
+  { icon: 'sparkle', title: 'Logs' },
 ];
 
 export default function Example() {
   return (
     <Carousel
       items={slides}
-      aria-label="Vehicle photos"
+      aria-label="Deployment screens"
       renderItem={(s) => <DemoTile icon={s.icon} title={s.title} />}
       renderThumbnail={(s) => (
         <DemoTile icon={s.icon} title={s.title} compact style={{ width: 64, height: 40 }} />

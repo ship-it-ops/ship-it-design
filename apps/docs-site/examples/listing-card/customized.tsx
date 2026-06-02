@@ -4,7 +4,7 @@ import { ListingCard } from '@ship-it-ui/ui';
 
 import { ExamplePhoto } from '@/lib/example-photo';
 
-const photos: GlyphName[] = ['car', 'carFront'];
+const photos: GlyphName[] = ['mountain', 'home'];
 
 /**
  * Every section accepts a className override via the `classNames` slot map.
@@ -21,16 +21,16 @@ export default function Example() {
         flag={{ icon: 'flag', label: 'Editor pick', tone: 'accent' }}
         title="Loud title, italic meta"
         category="custom"
-        meta="LR-002 · 2024"
+        meta="STAY-002 · est. 2021"
         specs={[
-          { label: '0-60', value: '2.9s' },
-          { label: 'Power', value: '495 hp' },
-          { label: 'Drive', value: 'RWD' },
+          { label: 'Sleeps', value: '6' },
+          { label: 'Beds', value: '3' },
+          { label: 'Baths', value: '2' },
         ]}
         pricePrefix="from"
-        price="$250"
-        priceUnit="/day"
-        cta={{ label: 'Rent', onClick: () => {} }}
+        price="$420"
+        priceUnit="/night"
+        cta={{ label: 'Book', onClick: () => {} }}
         classNames={{
           title: 'text-[18px] uppercase tracking-wider',
           meta: 'italic font-sans',
@@ -46,15 +46,15 @@ export default function Example() {
         flag={{ icon: 'flame', label: 'Hot', tone: 'pink' }}
         title="Branded surfaces"
         category="theme"
-        meta="LR-003 · 2024"
+        meta="STAY-003 · est. 2022"
         specs={[
-          { label: 'Range', value: '358 mi' },
-          { label: 'Charge', value: '15 min' },
+          { label: 'View', value: 'Ocean' },
+          { label: 'Stay', value: '2-night min' },
         ]}
         pricePrefix="from"
-        price="$179"
-        priceUnit="/day"
-        cta={{ label: 'Rent', onClick: () => {} }}
+        price="$310"
+        priceUnit="/night"
+        cta={{ label: 'Book', onClick: () => {} }}
         classNames={{
           root: 'border-pink',
           footer: 'bg-[color-mix(in_oklab,var(--color-pink),transparent_88%)]',

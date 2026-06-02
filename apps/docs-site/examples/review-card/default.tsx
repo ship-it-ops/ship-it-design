@@ -9,7 +9,7 @@ export default function Example() {
         date="April 2026"
         verified
         subtitle="Member since 2023"
-        body="Honestly the easiest pickup I've ever had. The car was spotless, the keys were waiting, and Priya answered my one question in under two minutes. Would 100% rent from her again on my next trip."
+        body="Place was exactly as described — spotless, well-stocked, and the check-in instructions were the clearest I've gotten. Priya answered my one question about the parking gate in under two minutes. Would stay again next time we're in town."
       />
     </div>
   );

@@ -4,7 +4,7 @@ import { ListingCard } from '@ship-it-ui/ui';
 
 import { ExamplePhoto } from '@/lib/example-photo';
 
-const photos: GlyphName[] = ['car', 'carFront', 'steeringWheel', 'seat', 'gauge'];
+const photos: GlyphName[] = ['mountain', 'home', 'sun', 'palmTree', 'wifi'];
 
 export default function Example() {
   return (
@@ -14,18 +14,18 @@ export default function Example() {
       renderPhoto={(name) => <ExamplePhoto icon={name as GlyphName} />}
       onClick={() => {}}
       flag={{ icon: 'flag', label: 'Flagship', tone: 'purple' }}
-      title="Chevrolet Corvette Stingray Convertible"
-      category="performance"
-      meta="LR-001 · 2023"
+      title="Ridgeline Glass House"
+      category="architectural"
+      meta="STAY-001 · est. 2019"
       specs={[
-        { label: '0-60', value: '2.9s' },
-        { label: 'Power', value: '495 hp' },
-        { label: 'Drive', value: 'RWD' },
+        { label: 'Sleeps', value: '6' },
+        { label: 'Beds', value: '3' },
+        { label: 'Baths', value: '2' },
       ]}
       pricePrefix="from"
-      price="$250"
-      priceUnit="/day"
-      cta={{ label: 'Rent', onClick: () => {} }}
+      price="$420"
+      priceUnit="/night"
+      cta={{ label: 'Book', onClick: () => {} }}
     />
   );
 }

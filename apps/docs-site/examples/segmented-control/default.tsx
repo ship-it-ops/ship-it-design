@@ -7,13 +7,13 @@ function Inner() {
   return (
     <SegmentedControl
       options={[
-        { value: 'day', label: 'Daily' },
-        { value: 'week', label: 'Weekly' },
-        { value: 'month', label: 'Monthly' },
+        { value: 'day', label: 'Day' },
+        { value: 'week', label: 'Week' },
+        { value: 'month', label: 'Month' },
       ]}
       value={v}
       onValueChange={setV}
-      aria-label="Rate period"
+      aria-label="Time range"
     />
   );
 }

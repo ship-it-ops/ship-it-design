@@ -6,14 +6,14 @@ export default function Example() {
       <PriceBreakdown
         items={[
           {
-            label: 'Daily rate',
+            label: 'Nightly rate × 3',
             subLabel: 'SAVE25 promo applied',
-            amount: '$67',
-            originalAmount: '$89',
+            amount: '$425',
+            originalAmount: '$567',
           },
-          { label: 'Service fee', amount: '$32' },
+          { label: 'Service fee', amount: '$48' },
         ]}
-        total="$99"
+        total="$473"
         currency="USD"
       />
     </div>

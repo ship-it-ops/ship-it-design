@@ -23,7 +23,7 @@ export default function Example() {
         rating={4.5}
         date="March 2026"
         verified
-        body="Excellent road trip car. Plenty of room for all our luggage."
+        body="Perfect weekend stay. Plenty of room for the whole family and the view was even better in person."
         photos={photos}
       />
     </div>
