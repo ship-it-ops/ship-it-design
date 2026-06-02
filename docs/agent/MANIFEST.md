@@ -1,6 +1,6 @@
 # Agent Context
 
-Last updated: 2026-06-01 | Total notes: 32
+Last updated: 2026-06-02 | Total notes: 37
 
 <!--
   This file is the index for `docs/agent/`. Agents read it at session start.
@@ -56,6 +56,8 @@ _None._
 - [test-setup-portal-axe](patterns/test-setup-portal-axe.md) | pattern | active | standard | 2026-05-21 | Axe scans document.body to catch Radix portals
 - [theme-tokens-resolution-chain](patterns/theme-tokens-resolution-chain.md) | pattern | active | standard | 2026-05-21 | TS → tokens.css → @theme inline → Tailwind utilities
 - [derive-during-render-stale-clear](patterns/derive-during-render-stale-clear.md) | pattern | active | standard | 2026-06-01 | Clear stale id state during render, not in an effect
+- [goto-in-progress-suppression](patterns/goto-in-progress-suppression.md) | pattern | active | standard | 2026-06-02 | Suppress onScroll setActive during in-flight goTo smooth scroll
+- [selection-ring-on-rendered-child](patterns/selection-ring-on-rendered-child.md) | pattern | active | standard | 2026-06-02 | Apply selection ring to child so it follows consumer shape
 
 ## Open Questions
 
@@ -77,3 +79,6 @@ _None._
 - [icons-readme-codegen-drift](scars/icons-readme-codegen-drift.md) | scar | active | standard | 2026-05-21 | icons README claimed wrong codegen output path
 - [turbopack-mdx-plugin-serialization](scars/turbopack-mdx-plugin-serialization.md) | scar | active | standard | 2026-05-27 | Turbopack needs MDX plugin _names_, not function refs
 - [react-hooks-v7-set-state-in-effect-false-positives](scars/react-hooks-v7-set-state-in-effect-false-positives.md) | scar | active | standard | 2026-06-01 | v7 set-state-in-effect fires on SSR mounted-flag and post-nav DOM scans
+- [scroll-behavior-smooth-overrides-scrollleft-setter](scars/scroll-behavior-smooth-overrides-scrollleft-setter.md) | scar | active | standard | 2026-06-02 | scrollLeft = X animates under scroll-behavior: smooth; use instant
+- [math-round-midpoint-fires-onscroll-edge-mid-animation](scars/math-round-midpoint-fires-onscroll-edge-mid-animation.md) | scar | active | standard | 2026-06-02 | Math.round flips at midpoint and fires edge work mid-flight
+- [docs-site-stale-ui-dist](scars/docs-site-stale-ui-dist.md) | scar | active | standard | 2026-06-02 | docs-site bundles @ship-it-ui/ui from dist, not src

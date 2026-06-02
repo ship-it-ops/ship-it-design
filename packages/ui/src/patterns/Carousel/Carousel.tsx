@@ -102,17 +102,35 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
   // started — goTo's smooth scroll and the clone-jump's instant scroll
   // both claim ownership of the next scroll with this ref.
   const internalScrollRef = useRef(false);
-  // Set true when goTo starts a one-step wrap (prev/next arrow at either
-  // boundary). The smooth-scroll then moves a single slide width through
-  // the adjacent clone rather than rewinding across the whole strip, and
-  // onScroll's non-edge branch suppresses setActive while the animation
-  // passes through intermediate DOM indices that would otherwise overwrite
-  // the optimistic wrap target. Cleared in the edge branch that performs
-  // the invisible clone→real snap — the guaranteed terminator of a wrap
-  // animation. Kept separate from `internalScrollRef` because that ref has
-  // a different lifecycle (the controlled-sync effect resets it on the
+  // Set true when goTo starts a smooth scroll. While set, onScroll's
+  // non-edge branch suppresses setActive — the optimistic activeIdx that
+  // goTo committed is the truth; the intermediate DOM indices the smooth
+  // scroll passes through would otherwise overwrite it (visible as a
+  // counter / indicator flicker, e.g. "2/5 → 1/5 → 2/5" on a single arrow
+  // click because scrollLeft = 1.3*width rounds to domIdx 1 → realIdx 0).
+  //
+  // Cleared when the non-edge branch sees realIdx === activeIdx (the
+  // smooth scroll has landed on the target), or when the wrap edge
+  // branch performs the clone→real snap (the guaranteed terminator of a
+  // wrap animation). A pointerdown listener on the viewport also clears
+  // it, so a user-initiated swipe interrupting an in-flight goTo restores
+  // position tracking immediately.
+  //
+  // Kept separate from `internalScrollRef` because that ref has a
+  // different lifecycle (the controlled-sync effect resets it on the
   // next state-driven run, not on a scroll event).
-  const wrapInProgressRef = useRef(false);
+  const goToInProgressRef = useRef(false);
+  // Tracks the DOM index of an in-flight wrap target (N + 1 for a
+  // forward wrap heading to clone-end, 0 for a backward wrap heading to
+  // clone-start). null otherwise. Used by the next goTo to decide
+  // whether to rebase scrollLeft through the clone bracket before
+  // starting its own smooth scroll — direction-based detection here is
+  // more robust than reading scrollLeft, because an ultra-fast
+  // double-click may fire before the first animation has moved
+  // scrollLeft past its starting integer multiple. Cleared by whichever
+  // event terminates the wrap: the edge branch on natural settle, or
+  // the next goTo when it consumes the rebase.
+  const wrapInFlightRef = useRef<number | null>(null);
 
   const activeIdx = active ?? 0;
   // Real slide index → DOM child index. Identity unless looping (a clone
@@ -125,23 +143,57 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
       setActive(next);
       const node = viewportRef.current;
       if (node) {
-        // Only the one-step prev/next wrap goes through a clone. Mid-strip
-        // jumps (dot clicks, programmatic seeks, multi-step calls) still
-        // target the real twin directly so direction-of-travel matches
-        // user intent — clicking the slide-0 dot from slide N-1 should
-        // long-sweep, not flick through the end clone.
+        const width = node.clientWidth;
+        // Consolidate an in-flight wrap before starting a new smooth
+        // scroll. If a previous goTo started a wrap heading to a clone,
+        // jump to the *opposite* clone (visually identical to where we
+        // are: the source real slide sits next to one clone, its twin
+        // sits next to the other) and then run the new smooth scroll
+        // from there. Without this consolidation the new smooth scroll
+        // would start from clone-end territory and sweep backward
+        // across the entire strip to reach a mid-strip target.
+        // (User-visible symptom: double-clicking next at the last slide
+        // circles to slide 1, then sweeps backward to slide 2 instead
+        // of continuing forward.) Uses `scrollIntoView({instant})`,
+        // not `node.scrollLeft = X`, because the viewport's
+        // `scroll-smooth` CSS turns the latter into another animated
+        // scroll. Direction comes from wrapInFlightRef rather than
+        // scrollLeft so the rebase fires even on an ultra-fast
+        // double-click that beats the first animation frame.
+        if (isLooping && wrapInFlightRef.current !== null && width > 0) {
+          const rebaseTarget =
+            wrapInFlightRef.current === N + 1 ? 0 : wrapInFlightRef.current === 0 ? N + 1 : null;
+          if (rebaseTarget !== null) {
+            const rebaseSlide = node.children[rebaseTarget] as HTMLElement | undefined;
+            if (rebaseSlide) {
+              internalScrollRef.current = true;
+              rebaseSlide.scrollIntoView({
+                behavior: 'instant',
+                block: 'nearest',
+                inline: 'start',
+              });
+            }
+          }
+          wrapInFlightRef.current = null;
+        }
         // Only the "circular" variant routes wrap clicks through the
         // adjacent clone. "Sweep" keeps the pre-fix behavior — the smooth
         // scroll lands directly on the real twin, traversing every
         // intermediate slide. Both modes still rely on the clone bracket
-        // for the native-swipe path.
+        // for the native-swipe path. Mid-strip jumps (dot clicks,
+        // multi-step calls) target the real twin directly in both modes
+        // so direction-of-travel matches user intent — clicking the
+        // slide-0 dot from slide N-1 should long-sweep, not flick
+        // through the end clone.
         const isNextWrap = loopMode === 'circular' && activeIdx === N - 1 && i === activeIdx + 1;
         const isPrevWrap = loopMode === 'circular' && activeIdx === 0 && i === activeIdx - 1;
         const targetDom = isNextWrap ? N + 1 : isPrevWrap ? 0 : domIndexFor(next);
         const slide = node.children[targetDom] as HTMLElement | undefined;
         if (slide) {
           internalScrollRef.current = true;
-          if (isNextWrap || isPrevWrap) wrapInProgressRef.current = true;
+          goToInProgressRef.current = true;
+          if (isNextWrap) wrapInFlightRef.current = N + 1;
+          else if (isPrevWrap) wrapInFlightRef.current = 0;
           slide.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
         }
       }
@@ -160,6 +212,10 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
       if (width === 0) return;
       const domIdx = Math.round(node.scrollLeft / width);
       if (!isLooping) {
+        if (goToInProgressRef.current) {
+          if (domIdx === activeIdx) goToInProgressRef.current = false;
+          return;
+        }
         if (domIdx !== activeIdx) setActive(domIdx);
         return;
       }
@@ -174,41 +230,66 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
       // — i.e., halfway through the wrap animation. Snapping there cancels
       // the smooth scroll mid-flight and the user sees the slide-in get
       // cut off, then a teleport to the real twin. The tolerance check
-      // does not apply to the native-swipe path (`wrapInProgressRef` is
+      // does not apply to the native-swipe path (`goToInProgressRef` is
       // false there) — scroll-snap settles scrollLeft to an exact integer
       // multiple of width before firing, so the round threshold and the
       // settled position coincide.
       if (domIdx === 0) {
-        if (wrapInProgressRef.current && node.scrollLeft > 1) return;
+        if (goToInProgressRef.current && node.scrollLeft > 1) return;
         const realTwin = node.children[N] as HTMLElement | undefined;
         if (realTwin) {
           internalScrollRef.current = true;
           realTwin.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'start' });
         }
         if (activeIdx !== N - 1) setActive(N - 1);
-        wrapInProgressRef.current = false;
+        goToInProgressRef.current = false;
+        wrapInFlightRef.current = null;
         return;
       }
       if (domIdx === N + 1) {
-        if (wrapInProgressRef.current && node.scrollLeft < (N + 1) * width - 1) return;
+        if (goToInProgressRef.current && node.scrollLeft < (N + 1) * width - 1) return;
         const realTwin = node.children[1] as HTMLElement | undefined;
         if (realTwin) {
           internalScrollRef.current = true;
           realTwin.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'start' });
         }
         if (activeIdx !== 0) setActive(0);
-        wrapInProgressRef.current = false;
+        goToInProgressRef.current = false;
+        wrapInFlightRef.current = null;
         return;
       }
-      // Mid-wrap: smooth scroll is traversing intermediate DOM indices on
-      // its way to the clone. Suppress setActive so the optimistic wrap
-      // target survives until the edge-snap commits.
-      if (wrapInProgressRef.current) return;
+      // Mid-strip: smooth scroll is traversing intermediate DOM indices.
+      // While a goTo is in flight, suppress setActive so the optimistic
+      // active (the goTo target) survives the trip — otherwise dot
+      // indicators and consumer-rendered counters (e.g. `ListingCard`'s
+      // X/Y pill) flicker between source and target as scrollLeft
+      // crosses the round threshold. Cleared once realIdx catches up to
+      // activeIdx (the smooth scroll has landed).
       const realIdx = domIdx - 1;
+      if (goToInProgressRef.current) {
+        if (realIdx === activeIdx) goToInProgressRef.current = false;
+        return;
+      }
       if (realIdx !== activeIdx) setActive(realIdx);
     };
+    // Direct viewport interaction (touch/pointer/wheel-drag) means the
+    // user is taking over from any in-flight goTo. Release both guards
+    // so position tracking resumes immediately and the next goTo doesn't
+    // mistake an abandoned wrap target for an active rebase candidate.
+    // Without clearing wrapInFlightRef, a mid-wrap swipe that settles on
+    // a real slide (neither edge branch fires) leaves the ref pointing
+    // at a stale clone; the next arrow click then instant-jumps to the
+    // opposite clone before its smooth scroll, visible as a flash.
+    const onPointerDown = () => {
+      goToInProgressRef.current = false;
+      wrapInFlightRef.current = null;
+    };
     node.addEventListener('scroll', onScroll, { passive: true });
-    return () => node.removeEventListener('scroll', onScroll);
+    node.addEventListener('pointerdown', onPointerDown, { passive: true });
+    return () => {
+      node.removeEventListener('scroll', onScroll);
+      node.removeEventListener('pointerdown', onPointerDown);
+    };
   }, [activeIdx, isLooping, N, setActive]);
 
   // Sync the viewport's scroll position when `active` changes from
@@ -357,17 +438,38 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
         )}
       </div>
 
+      {/*
+        Thumbnail strip uses `p-0.5` so the active thumb's `ring-2` has room
+        to render against the scroll container's edge — without padding the
+        outer side of the ring gets clipped by `overflow-x-auto` (a non-
+        visible overflow on one axis also clips the other), making the first
+        / last selected thumb show only a thin line on one side. The
+        `-mx-0.5` negative margin keeps the strip flush with the viewport's
+        horizontal edges; `mt-1.5` compensates the 2px top padding so the
+        visible gap to the viewport stays at 8px.
+      */}
       {renderThumbnail && (
-        <div className="mt-2 flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="-mx-0.5 mt-1.5 flex gap-2 overflow-x-auto p-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {items.map((item, i) => (
+            // The active ring is applied to the rendered thumbnail (the
+            // button's first child) rather than the button itself, so it
+            // traces whatever border-radius the consumer's thumbnail
+            // already has. Picking a fixed radius here would always be
+            // wrong for one consumer or another — `rounded-lg` thumbs got
+            // a 4px-radius ring; future thumbs could be circular or
+            // square. `box-shadow` (what `ring-2` compiles to) follows
+            // the child's `border-radius` automatically, so this is
+            // self-adjusting.
             <button
               key={i}
               type="button"
               aria-label={`Show slide ${i + 1}`}
               onClick={() => goTo(i)}
+              data-active={i === activeIdx ? 'true' : undefined}
               className={cn(
-                'shrink-0 cursor-pointer overflow-hidden rounded transition-opacity',
-                i === activeIdx ? 'ring-accent opacity-100 ring-2' : 'opacity-60 hover:opacity-100',
+                'shrink-0 cursor-pointer transition-opacity',
+                '[&[data-active]>*]:ring-accent [&[data-active]>*]:ring-2',
+                i === activeIdx ? 'opacity-100' : 'opacity-60 hover:opacity-100',
               )}
             >
               {renderThumbnail(item, i)}
