@@ -131,6 +131,17 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
   // event terminates the wrap: the edge branch on natural settle, or
   // the next goTo when it consumes the rebase.
   const wrapInFlightRef = useRef<number | null>(null);
+  // DOM index of a deliberate clone-position jump that goTo just made via
+  // `scrollIntoView({behavior:'instant'})` to consolidate consecutive wrap
+  // clicks. While set, onScroll suppresses its edge branch at that
+  // domIdx — otherwise the synthetic scroll event from the rebase (and
+  // the first few frames of the new smooth scroll moving away from it,
+  // which still round to the rebase DOM index) get misread as the tail
+  // of a wrap-toward animation, snapping to the wrong twin and setting
+  // activeIdx away from where the new smooth scroll is heading. Cleared
+  // automatically once scrollLeft progresses into a different domIdx
+  // slot, and on pointerdown (user takes over).
+  const rebaseConsumeRef = useRef<number | null>(null);
 
   const activeIdx = active ?? 0;
   // Real slide index → DOM child index. Identity unless looping (a clone
@@ -167,6 +178,12 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
             const rebaseSlide = node.children[rebaseTarget] as HTMLElement | undefined;
             if (rebaseSlide) {
               internalScrollRef.current = true;
+              // Arm the onScroll-side rebase-consume guard BEFORE the
+              // instant scroll fires, so the scroll event it generates
+              // (and the first few frames of the smooth scroll below
+              // moving away from this domIdx) don't trip the edge
+              // branch's wrap-end snap.
+              rebaseConsumeRef.current = rebaseTarget;
               rebaseSlide.scrollIntoView({
                 behavior: 'instant',
                 block: 'nearest',
@@ -234,6 +251,20 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
       // false there) — scroll-snap settles scrollLeft to an exact integer
       // multiple of width before firing, so the round threshold and the
       // settled position coincide.
+      //
+      // Rebase-consume guard: a goTo that consolidated a previous wrap
+      // jumped scrollLeft to a clone via an instant scroll, then started
+      // a forward smooth scroll from there. The resulting scroll events
+      // sit at the rebase domIdx until the smooth scroll progresses far
+      // enough to round into the next slot — we must NOT snap during
+      // that window or activeIdx will jump to the wrong twin (e.g. user
+      // sees slide 5 ↔ slide 1 oscillation after spam-clicking past the
+      // end). Clears as soon as scrollLeft has moved to a different
+      // domIdx.
+      if (rebaseConsumeRef.current !== null) {
+        if (domIdx === rebaseConsumeRef.current) return;
+        rebaseConsumeRef.current = null;
+      }
       if (domIdx === 0) {
         if (goToInProgressRef.current && node.scrollLeft > 1) return;
         const realTwin = node.children[N] as HTMLElement | undefined;
@@ -283,6 +314,7 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
     const onPointerDown = () => {
       goToInProgressRef.current = false;
       wrapInFlightRef.current = null;
+      rebaseConsumeRef.current = null;
     };
     node.addEventListener('scroll', onScroll, { passive: true });
     node.addEventListener('pointerdown', onPointerDown, { passive: true });

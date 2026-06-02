@@ -48,6 +48,9 @@ in the PM audit but not created.
 ## Related
 
 - [[v0-changeset-patch-policy]] — the policy this question would relax.
+- [[internal-dep-cascade-on-publish]] — the publish-fan-out behavior to
+  revisit at the 1.0 cut (flip to `workspace:^` +
+  `updateInternalDependencies: "none"`).
 - [[variant-tone-callback-vocabulary-consolidation]] — a likely
   prerequisite for 1.0.
 - [[audit-2026-05-02-snapshot]] — original audit context.

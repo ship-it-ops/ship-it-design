@@ -1,6 +1,6 @@
 # Agent Context
 
-Last updated: 2026-06-02 | Total notes: 37
+Last updated: 2026-06-02 | Total notes: 39
 
 <!--
   This file is the index for `docs/agent/`. Agents read it at session start.
@@ -37,6 +37,7 @@ _None._
 - [ssr-rsc-support-strategy](decisions/ssr-rsc-support-strategy.md) | decision | active | core | 2026-05-21 | "use client" preserved through tsup; next-helpers package
 - [separate-renderer-packages](decisions/separate-renderer-packages.md) | decision | active | standard | 2026-05-21 | Cytoscape, react-flow, MapLibre as optional packages
 - [next-16-react-19-baseline](decisions/next-16-react-19-baseline.md) | decision | active | core | 2026-05-27 | Next 16 + React 19.2 baseline; React Compiler opt-in
+- [internal-dep-cascade-on-publish](decisions/internal-dep-cascade-on-publish.md) | decision | active | standard | 2026-06-02 | Keep ui-dependent cascade on publish until 1.0
 
 ## Plans
 
@@ -82,3 +83,4 @@ _None._
 - [scroll-behavior-smooth-overrides-scrollleft-setter](scars/scroll-behavior-smooth-overrides-scrollleft-setter.md) | scar | active | standard | 2026-06-02 | scrollLeft = X animates under scroll-behavior: smooth; use instant
 - [math-round-midpoint-fires-onscroll-edge-mid-animation](scars/math-round-midpoint-fires-onscroll-edge-mid-animation.md) | scar | active | standard | 2026-06-02 | Math.round flips at midpoint and fires edge work mid-flight
 - [docs-site-stale-ui-dist](scars/docs-site-stale-ui-dist.md) | scar | active | standard | 2026-06-02 | docs-site bundles @ship-it-ui/ui from dist, not src
+- [rebase-instant-scroll-fires-edge-snap](scars/rebase-instant-scroll-fires-edge-snap.md) | scar | active | standard | 2026-06-02 | scrollIntoView(instant) fires a scroll event you can't distinguish from natural landings

@@ -83,9 +83,10 @@ export interface ListingCardProps extends Omit<
   /**
    * Wrap the photo carousel past the boundaries (next from the last
    * photo goes to the first). Default `true` — marketplace photo
-   * browsing expects looping. Pass `false` to restore stop-at-end.
+   * browsing expects looping. Pass `false` to restore stop-at-end, or
+   * `'circular'` / `'sweep'` to pick the loop variant explicitly.
    */
-  loop?: boolean;
+  loop?: boolean | 'circular' | 'sweep';
   /** Listing title — e.g. "Sun-soaked cabin in Marin". */
   title: ReactNode;
   /** Optional eyebrow text above the title (location, listing type). */
