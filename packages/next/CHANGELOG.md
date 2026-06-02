@@ -1,5 +1,14 @@
 # @ship-it-ui/next
 
+## 0.0.11
+
+### Patch Changes
+
+- Updated dependencies [a8ebcce]
+- Updated dependencies [a8ebcce]
+- Updated dependencies [a8ebcce]
+  - @ship-it-ui/ui@0.0.13
+
 ## 0.0.10
 
 ### Patch Changes

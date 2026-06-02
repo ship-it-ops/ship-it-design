@@ -1,5 +1,78 @@
 # @ship-it-ui/ui
 
+## 0.0.13
+
+### Patch Changes
+
+- a8ebcce: Fix `Carousel` `loop="circular"` direction on consecutive wrap clicks.
+  Double-clicking the next arrow at the last slide previously circled to
+  slide 1 (correct), then immediately swept backward across the entire
+  strip to land on slide 2 (wrong direction). Same symmetric bug on the
+  prev arrow at slide 0.
+
+  Cause: the first click's smooth scroll lands on a clone (`scrollLeft`
+  sits beyond the real-slide range, between `N*width` and `(N+1)*width`).
+  A second `goTo` arriving before that scroll settled would start its
+  smooth scroll from clone territory toward a real mid-strip target,
+  forcing the browser to traverse every intermediate slide backward.
+
+  Fix: when a `goTo` starts a wrap, capture the wrap direction in a ref.
+  The next `goTo` reads this ref at entry and, if non-null, jumps the
+  viewport to the _opposite_ clone via `scrollIntoView({behavior:
+'instant'})` (clone-start for an in-flight next-wrap, clone-end for an
+  in-flight prev-wrap). The jump is invisible because clones render
+  the same content as their twins, and the new smooth scroll then runs
+  forward from a real-strip-adjacent source. `scrollIntoView({instant})`
+  is used rather than `node.scrollLeft = X` so the viewport's CSS
+  `scroll-behavior: smooth` doesn't silently turn the rebase into yet
+  another animated scroll. Direction-based detection (rather than a
+  `scrollLeft` threshold) fires even on an ultra-fast double-click that
+  beats the first animation frame. Single-click behavior and native
+  swipe paths are unchanged.
+
+  The viewport's `pointerdown` listener also clears the wrap-direction
+  ref alongside the goTo-in-progress guard, so a swipe that interrupts
+  a wrap and settles on a real (non-clone) slide doesn't leave the ref
+  pointing at a stale clone — without this clear the next arrow click
+  would instant-jump to the opposite clone before its smooth scroll,
+  visible as a flash.
+
+- a8ebcce: Fix active-index flicker during `Carousel` arrow / dot clicks. Each
+  `goTo` call commits the destination as `activeIdx` optimistically, then
+  starts a smooth scroll — but intermediate scroll events would briefly
+  overwrite the optimistic value as `scrollLeft` crossed the round
+  threshold of the next slide (e.g. `setActive(0)` momentarily during a
+  `goTo(1)` smooth scroll). Dot indicators absorbed this via CSS
+  transition; consumer-rendered counters (notably the X/Y pill on
+  `ListingCard`'s spec variant) showed the flicker as
+  "2/5 → 1/5 → 2/5" within ~150ms.
+
+  The wrap-in-progress guard already shipped for circular loop wraps is
+  now generalized to suppress non-edge `setActive` during any in-flight
+  `goTo` smooth scroll, regardless of variant or wrap status. The guard
+  releases automatically once the scroll lands on the optimistic target
+  (realIdx catches up to activeIdx), and a `pointerdown` listener on the
+  viewport releases it on any direct user interaction so a swipe
+  interrupting the animation tracks the user's chosen position
+  immediately. Native swipe paths are unchanged — the guard is only set
+  by `goTo`.
+
+- a8ebcce: Fix `Carousel` thumbnail-strip active-state ring so it traces the
+  shape of the rendered thumbnail rather than a fixed `rounded` box on
+  the wrapper. The previous implementation hard-coded a 4px-radius ring
+  on the click target, which mismatched any thumbnail with a different
+  radius (e.g. `DemoTile`'s `rounded-lg`) and made the first / last
+  selected thumb's ring appear clipped against the strip's overflow
+  edge.
+
+  The ring is now applied to the wrapper's direct child via a
+  `[&[data-active]>*]:ring-*` variant on a `data-active` attribute.
+  Because `ring-*` compiles to `box-shadow`, the highlight inherits the
+  child's own `border-radius` automatically — works for square, pill,
+  and circular thumbnails with no Carousel-side configuration. The
+  scroll container also picks up `p-0.5 -mx-0.5` so the ring has room
+  to render against the edge without shifting the strip's outer width.
+
 ## 0.0.12
 
 ### Patch Changes
