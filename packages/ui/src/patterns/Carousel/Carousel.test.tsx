@@ -396,6 +396,54 @@ describe('Carousel', () => {
     expect(onChange).toHaveBeenLastCalledWith(3);
   });
 
+  it('clears wrapInFlight on pointerdown so a swipe-interrupted wrap does not rebase the next click', async () => {
+    const scrollSpy = vi.spyOn(Element.prototype, 'scrollIntoView').mockImplementation(() => {});
+    const five = ['A', 'B', 'C', 'D', 'E'];
+    const N = five.length;
+    const { container } = render(
+      <Carousel
+        items={five}
+        defaultIndex={N - 1}
+        loop="circular"
+        renderItem={(v) => <div>{v}</div>}
+        aria-label="Photos"
+      />,
+    );
+    const viewport = container.querySelector('[aria-live="polite"]') as HTMLElement;
+    const width = 300;
+    Object.defineProperty(viewport, 'clientWidth', { value: width, configurable: true });
+
+    // Start a next-wrap: arms wrapInFlightRef at N + 1 (clone-end).
+    await userEvent.click(screen.getByRole('button', { name: 'Next slide' }));
+
+    // User swipes mid-animation. Pointerdown must abandon the wrap.
+    act(() => {
+      viewport.dispatchEvent(new Event('pointerdown'));
+    });
+
+    // Snap settles on a mid-strip real slide (DOM 2) — neither edge
+    // branch fires, so without the pointerdown clear, wrapInFlightRef
+    // would remain stuck at N + 1.
+    Object.defineProperty(viewport, 'scrollLeft', { value: 2 * width, configurable: true });
+    act(() => {
+      viewport.dispatchEvent(new Event('scroll'));
+    });
+
+    scrollSpy.mockClear();
+
+    // Next arrow click. With the bug, the rebase block would instant-
+    // jump to children[0] before its smooth scroll, producing a flash.
+    // With the fix, only the smooth scroll to the new target fires.
+    await userEvent.click(screen.getByRole('button', { name: 'Next slide' }));
+
+    const instantTargets = scrollSpy.mock.calls.flatMap((call, i) => {
+      const opts = call[0] as ScrollIntoViewOptions | undefined;
+      return opts?.behavior === 'instant' ? [scrollSpy.mock.instances[i]] : [];
+    });
+    expect(instantTargets).not.toContain(viewport.children[0]);
+    expect(instantTargets).not.toContain(viewport.children[N + 1]);
+  });
+
   it('sweep variant: next-arrow wrap targets the real first, not the clone', async () => {
     const five = ['A', 'B', 'C', 'D', 'E'];
     const N = five.length;

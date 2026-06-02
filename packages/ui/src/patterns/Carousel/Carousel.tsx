@@ -273,11 +273,16 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
       if (realIdx !== activeIdx) setActive(realIdx);
     };
     // Direct viewport interaction (touch/pointer/wheel-drag) means the
-    // user is taking over from any in-flight goTo. Release the guard so
-    // position tracking resumes immediately, even if the optimistic
-    // target never matches the user's chosen destination.
+    // user is taking over from any in-flight goTo. Release both guards
+    // so position tracking resumes immediately and the next goTo doesn't
+    // mistake an abandoned wrap target for an active rebase candidate.
+    // Without clearing wrapInFlightRef, a mid-wrap swipe that settles on
+    // a real slide (neither edge branch fires) leaves the ref pointing
+    // at a stale clone; the next arrow click then instant-jumps to the
+    // opposite clone before its smooth scroll, visible as a flash.
     const onPointerDown = () => {
       goToInProgressRef.current = false;
+      wrapInFlightRef.current = null;
     };
     node.addEventListener('scroll', onScroll, { passive: true });
     node.addEventListener('pointerdown', onPointerDown, { passive: true });

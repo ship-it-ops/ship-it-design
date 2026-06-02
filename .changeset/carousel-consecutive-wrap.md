@@ -27,3 +27,10 @@ another animated scroll. Direction-based detection (rather than a
 `scrollLeft` threshold) fires even on an ultra-fast double-click that
 beats the first animation frame. Single-click behavior and native
 swipe paths are unchanged.
+
+The viewport's `pointerdown` listener also clears the wrap-direction
+ref alongside the goTo-in-progress guard, so a swipe that interrupts
+a wrap and settles on a real (non-clone) slide doesn't leave the ref
+pointing at a stale clone — without this clear the next arrow click
+would instant-jump to the opposite clone before its smooth scroll,
+visible as a flash.
