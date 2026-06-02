@@ -1,6 +1,6 @@
 # Agent Context
 
-Last updated: 2026-06-02 | Total notes: 36
+Last updated: 2026-06-02 | Total notes: 37
 
 <!--
   This file is the index for `docs/agent/`. Agents read it at session start.
@@ -57,6 +57,7 @@ _None._
 - [theme-tokens-resolution-chain](patterns/theme-tokens-resolution-chain.md) | pattern | active | standard | 2026-05-21 | TS → tokens.css → @theme inline → Tailwind utilities
 - [derive-during-render-stale-clear](patterns/derive-during-render-stale-clear.md) | pattern | active | standard | 2026-06-01 | Clear stale id state during render, not in an effect
 - [goto-in-progress-suppression](patterns/goto-in-progress-suppression.md) | pattern | active | standard | 2026-06-02 | Suppress onScroll setActive during in-flight goTo smooth scroll
+- [selection-ring-on-rendered-child](patterns/selection-ring-on-rendered-child.md) | pattern | active | standard | 2026-06-02 | Apply selection ring to child so it follows consumer shape
 
 ## Open Questions
 

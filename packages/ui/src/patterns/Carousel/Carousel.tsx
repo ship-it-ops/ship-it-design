@@ -433,17 +433,38 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
         )}
       </div>
 
+      {/*
+        Thumbnail strip uses `p-0.5` so the active thumb's `ring-2` has room
+        to render against the scroll container's edge — without padding the
+        outer side of the ring gets clipped by `overflow-x-auto` (a non-
+        visible overflow on one axis also clips the other), making the first
+        / last selected thumb show only a thin line on one side. The
+        `-mx-0.5` negative margin keeps the strip flush with the viewport's
+        horizontal edges; `mt-1.5` compensates the 2px top padding so the
+        visible gap to the viewport stays at 8px.
+      */}
       {renderThumbnail && (
-        <div className="mt-2 flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="-mx-0.5 mt-1.5 flex gap-2 overflow-x-auto p-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {items.map((item, i) => (
+            // The active ring is applied to the rendered thumbnail (the
+            // button's first child) rather than the button itself, so it
+            // traces whatever border-radius the consumer's thumbnail
+            // already has. Picking a fixed radius here would always be
+            // wrong for one consumer or another — `rounded-lg` thumbs got
+            // a 4px-radius ring; future thumbs could be circular or
+            // square. `box-shadow` (what `ring-2` compiles to) follows
+            // the child's `border-radius` automatically, so this is
+            // self-adjusting.
             <button
               key={i}
               type="button"
               aria-label={`Show slide ${i + 1}`}
               onClick={() => goTo(i)}
+              data-active={i === activeIdx ? 'true' : undefined}
               className={cn(
-                'shrink-0 cursor-pointer overflow-hidden rounded transition-opacity',
-                i === activeIdx ? 'ring-accent opacity-100 ring-2' : 'opacity-60 hover:opacity-100',
+                'shrink-0 cursor-pointer transition-opacity',
+                '[&[data-active]>*]:ring-accent [&[data-active]>*]:ring-2',
+                i === activeIdx ? 'opacity-100' : 'opacity-60 hover:opacity-100',
               )}
             >
               {renderThumbnail(item, i)}
