@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { axe } from 'vitest-axe';
@@ -126,6 +126,223 @@ describe('Carousel', () => {
     );
     expect(screen.getByRole('button', { name: 'Previous slide' })).not.toBeDisabled();
     expect(screen.getByRole('button', { name: 'Next slide' })).not.toBeDisabled();
+  });
+
+  it('routes next-arrow wrap through the clone-end, not the real first', async () => {
+    const five = ['A', 'B', 'C', 'D', 'E'];
+    const N = five.length;
+    const scrollSpy = vi.spyOn(Element.prototype, 'scrollIntoView').mockImplementation(() => {});
+    const { container } = render(
+      <Carousel
+        items={five}
+        defaultIndex={N - 1}
+        loop
+        renderItem={(v) => <div>{v}</div>}
+        aria-label="Photos"
+      />,
+    );
+    const viewport = container.querySelector('[aria-live="polite"]') as HTMLElement;
+    scrollSpy.mockClear();
+    await userEvent.click(screen.getByRole('button', { name: 'Next slide' }));
+    const smoothTargets = scrollSpy.mock.calls.flatMap((call, i) => {
+      const opts = call[0] as ScrollIntoViewOptions | undefined;
+      return opts?.behavior === 'smooth' ? [scrollSpy.mock.instances[i]] : [];
+    });
+    expect(smoothTargets).toHaveLength(1);
+    // Wrap target is children[N + 1] (clone of items[0]) so the smooth
+    // scroll moves a single slide forward, not children[1] (real items[0])
+    // which would rewind across the whole strip.
+    expect(smoothTargets[0]).toBe(viewport.children[N + 1]);
+    expect(smoothTargets[0]).not.toBe(viewport.children[1]);
+  });
+
+  it('routes prev-arrow wrap through the clone-start, not the real last', async () => {
+    const five = ['A', 'B', 'C', 'D', 'E'];
+    const N = five.length;
+    const scrollSpy = vi.spyOn(Element.prototype, 'scrollIntoView').mockImplementation(() => {});
+    const { container } = render(
+      <Carousel
+        items={five}
+        defaultIndex={0}
+        loop
+        renderItem={(v) => <div>{v}</div>}
+        aria-label="Photos"
+      />,
+    );
+    const viewport = container.querySelector('[aria-live="polite"]') as HTMLElement;
+    scrollSpy.mockClear();
+    await userEvent.click(screen.getByRole('button', { name: 'Previous slide' }));
+    const smoothTargets = scrollSpy.mock.calls.flatMap((call, i) => {
+      const opts = call[0] as ScrollIntoViewOptions | undefined;
+      return opts?.behavior === 'smooth' ? [scrollSpy.mock.instances[i]] : [];
+    });
+    expect(smoothTargets).toHaveLength(1);
+    expect(smoothTargets[0]).toBe(viewport.children[0]);
+    expect(smoothTargets[0]).not.toBe(viewport.children[N]);
+  });
+
+  it('keeps aria-current on the wrap target during the wrap animation', async () => {
+    vi.spyOn(Element.prototype, 'scrollIntoView').mockImplementation(() => {});
+    const five = ['A', 'B', 'C', 'D', 'E'];
+    const N = five.length;
+    const { container } = render(
+      <Carousel
+        items={five}
+        defaultIndex={N - 1}
+        loop
+        renderItem={(v) => <div>{v}</div>}
+        aria-label="Photos"
+      />,
+    );
+    const viewport = container.querySelector('[aria-live="polite"]') as HTMLElement;
+    Object.defineProperty(viewport, 'clientWidth', { value: 300, configurable: true });
+    await userEvent.click(screen.getByRole('button', { name: 'Next slide' }));
+    // Mid-animation: scrollLeft sits at width * N (the last real slide),
+    // which rounds to DOM index N. Without the wrap-in-progress guard the
+    // non-edge branch would call setActive(N - 1) here and the dot
+    // indicator would flicker back to the previous slide.
+    Object.defineProperty(viewport, 'scrollLeft', { value: 300 * N, configurable: true });
+    act(() => {
+      viewport.dispatchEvent(new Event('scroll'));
+    });
+    const dots = screen.getAllByRole('button', { name: /Go to slide/ });
+    expect(dots[0]).toHaveAttribute('aria-current', 'true');
+    expect(dots[N - 1]).not.toHaveAttribute('aria-current');
+  });
+
+  it('sweep variant: next-arrow wrap targets the real first, not the clone', async () => {
+    const five = ['A', 'B', 'C', 'D', 'E'];
+    const N = five.length;
+    const scrollSpy = vi.spyOn(Element.prototype, 'scrollIntoView').mockImplementation(() => {});
+    const { container } = render(
+      <Carousel
+        items={five}
+        defaultIndex={N - 1}
+        loop="sweep"
+        renderItem={(v) => <div>{v}</div>}
+        aria-label="Photos"
+      />,
+    );
+    const viewport = container.querySelector('[aria-live="polite"]') as HTMLElement;
+    scrollSpy.mockClear();
+    await userEvent.click(screen.getByRole('button', { name: 'Next slide' }));
+    const smoothTargets = scrollSpy.mock.calls.flatMap((call, i) => {
+      const opts = call[0] as ScrollIntoViewOptions | undefined;
+      return opts?.behavior === 'smooth' ? [scrollSpy.mock.instances[i]] : [];
+    });
+    expect(smoothTargets).toHaveLength(1);
+    // Sweep mode keeps the pre-fix behavior: smooth-scroll all the way
+    // back to children[1] (the real first), traversing every intermediate
+    // slide. NOT children[N + 1] (the clone).
+    expect(smoothTargets[0]).toBe(viewport.children[1]);
+    expect(smoothTargets[0]).not.toBe(viewport.children[N + 1]);
+  });
+
+  it('targets the real twin directly for mid-strip dot jumps when loop is on', async () => {
+    const five = ['A', 'B', 'C', 'D', 'E'];
+    const scrollSpy = vi.spyOn(Element.prototype, 'scrollIntoView').mockImplementation(() => {});
+    const { container } = render(
+      <Carousel
+        items={five}
+        defaultIndex={0}
+        loop
+        renderItem={(v) => <div>{v}</div>}
+        aria-label="Photos"
+      />,
+    );
+    const viewport = container.querySelector('[aria-live="polite"]') as HTMLElement;
+    scrollSpy.mockClear();
+    // Jump from slide 0 to slide 2 via its dot — not a wrap step, so the
+    // smooth scroll should still land on the real twin (children[3] when
+    // looping, since DOM 0 is the leading clone).
+    await userEvent.click(screen.getByRole('button', { name: 'Go to slide 3' }));
+    const smoothTargets = scrollSpy.mock.calls.flatMap((call, i) => {
+      const opts = call[0] as ScrollIntoViewOptions | undefined;
+      return opts?.behavior === 'smooth' ? [scrollSpy.mock.instances[i]] : [];
+    });
+    expect(smoothTargets).toHaveLength(1);
+    expect(smoothTargets[0]).toBe(viewport.children[3]);
+  });
+
+  it('defers the clone-end snap until the wrap scroll has fully landed', async () => {
+    const scrollSpy = vi.spyOn(Element.prototype, 'scrollIntoView').mockImplementation(() => {});
+    const five = ['A', 'B', 'C', 'D', 'E'];
+    const N = five.length;
+    const width = 300;
+    const { container } = render(
+      <Carousel
+        items={five}
+        defaultIndex={N - 1}
+        loop
+        renderItem={(v) => <div>{v}</div>}
+        aria-label="Photos"
+      />,
+    );
+    const viewport = container.querySelector('[aria-live="polite"]') as HTMLElement;
+    Object.defineProperty(viewport, 'clientWidth', { value: width, configurable: true });
+    await userEvent.click(screen.getByRole('button', { name: 'Next slide' }));
+
+    // Midway through the wrap animation: scrollLeft rounds to N + 1, but
+    // the smooth scroll hasn't actually landed yet. Snapping here would
+    // cancel the animation and produce the half-slide-then-teleport
+    // flicker the user reported.
+    scrollSpy.mockClear();
+    Object.defineProperty(viewport, 'scrollLeft', {
+      value: (N + 0.6) * width,
+      configurable: true,
+    });
+    act(() => {
+      viewport.dispatchEvent(new Event('scroll'));
+    });
+    const midInstantTargets = scrollSpy.mock.calls.flatMap((call, i) => {
+      const opts = call[0] as ScrollIntoViewOptions | undefined;
+      return opts?.behavior === 'instant' ? [scrollSpy.mock.instances[i]] : [];
+    });
+    expect(midInstantTargets).toHaveLength(0);
+
+    // Animation lands on the clone position. Now the snap should fire.
+    Object.defineProperty(viewport, 'scrollLeft', {
+      value: (N + 1) * width,
+      configurable: true,
+    });
+    act(() => {
+      viewport.dispatchEvent(new Event('scroll'));
+    });
+    const landedInstantTargets = scrollSpy.mock.calls.flatMap((call, i) => {
+      const opts = call[0] as ScrollIntoViewOptions | undefined;
+      return opts?.behavior === 'instant' ? [scrollSpy.mock.instances[i]] : [];
+    });
+    expect(landedInstantTargets[0]).toBe(viewport.children[1]);
+  });
+
+  it('still snaps from clone-end to the real first on native-swipe wrap', () => {
+    const five = ['A', 'B', 'C', 'D', 'E'];
+    const N = five.length;
+    const scrollSpy = vi.spyOn(Element.prototype, 'scrollIntoView').mockImplementation(() => {});
+    const { container } = render(
+      <Carousel
+        items={five}
+        defaultIndex={N - 1}
+        loop
+        renderItem={(v) => <div>{v}</div>}
+        aria-label="Photos"
+      />,
+    );
+    const viewport = container.querySelector('[aria-live="polite"]') as HTMLElement;
+    Object.defineProperty(viewport, 'clientWidth', { value: 300, configurable: true });
+    Object.defineProperty(viewport, 'scrollLeft', { value: 300 * (N + 1), configurable: true });
+    scrollSpy.mockClear();
+    act(() => {
+      viewport.dispatchEvent(new Event('scroll'));
+    });
+    const instantTargets = scrollSpy.mock.calls.flatMap((call, i) => {
+      const opts = call[0] as ScrollIntoViewOptions | undefined;
+      return opts?.behavior === 'instant' ? [scrollSpy.mock.instances[i]] : [];
+    });
+    expect(instantTargets.length).toBeGreaterThan(0);
+    // The snap from clone-end (children[N + 1]) lands on the real first
+    // (children[1]). This is the native-swipe path — must not regress.
+    expect(instantTargets[0]).toBe(viewport.children[1]);
   });
 
   it('renders clone twins around the real slides when loop is on', () => {

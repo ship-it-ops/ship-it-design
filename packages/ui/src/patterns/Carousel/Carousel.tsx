@@ -48,11 +48,21 @@ export interface CarouselProps<T = unknown> extends Omit<
   showArrows?: boolean;
   /**
    * Wrap arrows / dots / native swipe past the boundaries. Default `false`.
-   * When `true`, hidden clones of the first / last slide bracket the real
-   * items so swipe past the end jumps invisibly to the other side.
-   * `onIndexChange` still only emits real indices in `0..items.length - 1`.
+   *
+   * Variants:
+   *  - `"circular"` (or `true`): boundary arrow clicks smooth-scroll a
+   *    single slide width through a hidden clone of the opposite end, then
+   *    invisibly snap to the real twin. Feels like an endless reel — the
+   *    motion is always one slide, regardless of strip length.
+   *  - `"sweep"`: boundary arrow clicks smooth-scroll the full distance
+   *    across the strip back to the real first / last slide. The
+   *    transition reads as a wide arc across every item between.
+   *
+   * Native swipe past the edge always uses the clone-snap (independent of
+   * variant). `onIndexChange` only emits real indices in
+   * `0..items.length - 1`.
    */
-  loop?: boolean;
+  loop?: boolean | 'circular' | 'sweep';
   /** Accessible label for the carousel region. */
   'aria-label'?: string;
 }
@@ -76,7 +86,10 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
   ref,
 ) {
   const N = items.length;
-  const isLooping = loop && N > 1;
+  // `true` aliases to "circular" — the variant shipped as the default loop
+  // behavior. `false` / undefined disables looping entirely.
+  const loopMode: 'circular' | 'sweep' | null = !loop ? null : loop === true ? 'circular' : loop;
+  const isLooping = loopMode !== null && N > 1;
 
   const [active, setActive] = useControllableState<number>({
     value: indexProp,
@@ -89,6 +102,17 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
   // started — goTo's smooth scroll and the clone-jump's instant scroll
   // both claim ownership of the next scroll with this ref.
   const internalScrollRef = useRef(false);
+  // Set true when goTo starts a one-step wrap (prev/next arrow at either
+  // boundary). The smooth-scroll then moves a single slide width through
+  // the adjacent clone rather than rewinding across the whole strip, and
+  // onScroll's non-edge branch suppresses setActive while the animation
+  // passes through intermediate DOM indices that would otherwise overwrite
+  // the optimistic wrap target. Cleared in the edge branch that performs
+  // the invisible clone→real snap — the guaranteed terminator of a wrap
+  // animation. Kept separate from `internalScrollRef` because that ref has
+  // a different lifecycle (the controlled-sync effect resets it on the
+  // next state-driven run, not on a scroll event).
+  const wrapInProgressRef = useRef(false);
 
   const activeIdx = active ?? 0;
   // Real slide index → DOM child index. Identity unless looping (a clone
@@ -101,14 +125,28 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
       setActive(next);
       const node = viewportRef.current;
       if (node) {
-        const slide = node.children[domIndexFor(next)] as HTMLElement | undefined;
+        // Only the one-step prev/next wrap goes through a clone. Mid-strip
+        // jumps (dot clicks, programmatic seeks, multi-step calls) still
+        // target the real twin directly so direction-of-travel matches
+        // user intent — clicking the slide-0 dot from slide N-1 should
+        // long-sweep, not flick through the end clone.
+        // Only the "circular" variant routes wrap clicks through the
+        // adjacent clone. "Sweep" keeps the pre-fix behavior — the smooth
+        // scroll lands directly on the real twin, traversing every
+        // intermediate slide. Both modes still rely on the clone bracket
+        // for the native-swipe path.
+        const isNextWrap = loopMode === 'circular' && activeIdx === N - 1 && i === activeIdx + 1;
+        const isPrevWrap = loopMode === 'circular' && activeIdx === 0 && i === activeIdx - 1;
+        const targetDom = isNextWrap ? N + 1 : isPrevWrap ? 0 : domIndexFor(next);
+        const slide = node.children[targetDom] as HTMLElement | undefined;
         if (slide) {
           internalScrollRef.current = true;
+          if (isNextWrap || isPrevWrap) wrapInProgressRef.current = true;
           slide.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
         }
       }
     },
-    [N, isLooping, domIndexFor, setActive],
+    [N, isLooping, loopMode, domIndexFor, setActive, activeIdx],
   );
 
   // Track the active index from native scroll position. When looping,
@@ -129,24 +167,43 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
       // `behavior: 'instant'` (not 'auto') because the viewport has
       // `scroll-smooth` CSS; per CSSOM-View, `'auto'` would inherit that
       // and animate the jump, defeating the invisible-loop illusion.
+      //
+      // During an in-flight wrap smooth-scroll the edge branch must wait
+      // for the animation to LAND on the clone before snapping. Math.round
+      // crosses the clone DOM index at scrollLeft ≈ (clone ± 0.5) * width
+      // — i.e., halfway through the wrap animation. Snapping there cancels
+      // the smooth scroll mid-flight and the user sees the slide-in get
+      // cut off, then a teleport to the real twin. The tolerance check
+      // does not apply to the native-swipe path (`wrapInProgressRef` is
+      // false there) — scroll-snap settles scrollLeft to an exact integer
+      // multiple of width before firing, so the round threshold and the
+      // settled position coincide.
       if (domIdx === 0) {
+        if (wrapInProgressRef.current && node.scrollLeft > 1) return;
         const realTwin = node.children[N] as HTMLElement | undefined;
         if (realTwin) {
           internalScrollRef.current = true;
           realTwin.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'start' });
         }
         if (activeIdx !== N - 1) setActive(N - 1);
+        wrapInProgressRef.current = false;
         return;
       }
       if (domIdx === N + 1) {
+        if (wrapInProgressRef.current && node.scrollLeft < (N + 1) * width - 1) return;
         const realTwin = node.children[1] as HTMLElement | undefined;
         if (realTwin) {
           internalScrollRef.current = true;
           realTwin.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'start' });
         }
         if (activeIdx !== 0) setActive(0);
+        wrapInProgressRef.current = false;
         return;
       }
+      // Mid-wrap: smooth scroll is traversing intermediate DOM indices on
+      // its way to the clone. Suppress setActive so the optimistic wrap
+      // target survives until the edge-snap commits.
+      if (wrapInProgressRef.current) return;
       const realIdx = domIdx - 1;
       if (realIdx !== activeIdx) setActive(realIdx);
     };
