@@ -1,5 +1,46 @@
 # @ship-it-ui/ui
 
+## 0.0.12
+
+### Patch Changes
+
+- 206fa53: Add named loop variants to `Carousel`. `loop` now accepts
+  `boolean | "circular" | "sweep"`:
+  - `loop="circular"` (or `loop={true}`, the default alias) — boundary
+    arrow clicks smooth-scroll one slide width through a hidden clone of
+    the opposite end, then invisibly snap to the real twin. The motion is
+    always one slide regardless of strip length — an endless-reel feel.
+    This is the behavior shipped in the previous patch and remains the
+    default for `loop={true}`.
+  - `loop="sweep"` — boundary arrow clicks smooth-scroll the full
+    distance across the strip back to the real first / last slide. The
+    transition reads as a wide arc across every item between, useful when
+    you want users to re-perceive intermediate slides on each wrap.
+
+  Native swipe past the edge uses the clone-snap in both variants. No
+  breaking change: existing `loop={true}` / `loop={false}` call sites keep
+  their current behavior.
+
+- 206fa53: Fix `Carousel` `loop` mode so prev/next arrow clicks at the boundaries
+  smooth-scroll a single slide through the adjacent clone instead of
+  rewinding across the whole strip. Previously, clicking "next" on the
+  last real slide would `scrollIntoView` the real first slide and animate
+  backwards through every slide between them (and the symmetric
+  "fast-forward" on prev from the first slide). Now the wrap step targets
+  the clone-twin one slide width away and the existing onScroll edge
+  branch performs the invisible clone→real snap once the animation
+  settles — matching the native-swipe path's "one-slide-and-snap"
+  behavior.
+
+  Also fix a related dot-indicator flicker: while the wrap smooth-scroll
+  traverses intermediate DOM indices, `onScroll`'s non-edge branch no
+  longer overwrites the optimistic active index back to the previous
+  slide.
+
+  Mid-strip jumps (dot clicks across the strip, multi-step `goTo` calls)
+  keep their current behavior — they target the real twin directly so
+  direction-of-travel matches user intent. No API change.
+
 ## 0.0.11
 
 ### Patch Changes
