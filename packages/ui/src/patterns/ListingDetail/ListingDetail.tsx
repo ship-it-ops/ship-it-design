@@ -97,9 +97,11 @@ export interface ListingDetailProps {
    * Wrap the gallery carousel and the fullscreen lightbox past the
    * boundaries (next from the last photo goes to the first). Default
    * `true` — marketplace photo browsing expects looping. One prop
-   * drives both surfaces.
+   * drives both surfaces. Pass `'circular'` or `'sweep'` to pick the
+   * gallery's loop variant explicitly; both forward as truthy to the
+   * lightbox.
    */
-  loop?: boolean;
+  loop?: boolean | 'circular' | 'sweep';
   /** Listing title — e.g. "Sun-soaked cabin in Marin". */
   title: ReactNode;
   /** Optional eyebrow above the title — listing type, location. */
@@ -546,7 +548,7 @@ export const ListingDetail = forwardRef<HTMLDivElement, ListingDetailProps>(func
         items={photos}
         index={galleryIndex}
         onIndexChange={setGalleryIndex}
-        loop={loop}
+        loop={Boolean(loop)}
         title={lightboxTitle}
         renderItem={(src, i) =>
           renderPhoto ? (

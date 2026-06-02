@@ -444,6 +444,90 @@ describe('Carousel', () => {
     expect(instantTargets).not.toContain(viewport.children[N + 1]);
   });
 
+  it('rebase suppresses the wrap-end snap for the synthetic clone-position scroll event', async () => {
+    // Regression: spamming Next 10+ times rapidly through ListingDetail's
+    // controlled gallery used to leave the carousel stuck oscillating
+    // between slides 5 and 1. Root cause was that the rebase consolidation
+    // (instant scroll to the opposite clone before the new smooth scroll)
+    // fires a synthetic scroll event whose scrollLeft sits at the clone
+    // edge — and the edge branch read it as the tail of a wrap-toward
+    // animation, snapping activeIdx to the wrong twin. The rebase-consume
+    // guard skips the edge branch while scrollLeft is parked at the
+    // rebase domIdx and clears once it progresses past.
+    const onChange = vi.fn();
+    vi.spyOn(Element.prototype, 'scrollIntoView').mockImplementation(() => {});
+    const five = ['A', 'B', 'C', 'D', 'E'];
+    const N = five.length;
+    const { container } = render(
+      <Carousel
+        items={five}
+        defaultIndex={N - 1}
+        loop="circular"
+        onIndexChange={onChange}
+        renderItem={(v) => <div>{v}</div>}
+        aria-label="Photos"
+      />,
+    );
+    const viewport = container.querySelector('[aria-live="polite"]') as HTMLElement;
+    const width = 300;
+    Object.defineProperty(viewport, 'clientWidth', { value: width, configurable: true });
+
+    // Click 1: next-wrap from slide N. Arms wrapInFlightRef = N + 1 and
+    // calls setActive(0) — onChange sees 0.
+    await userEvent.click(screen.getByRole('button', { name: 'Next slide' }));
+    expect(onChange).toHaveBeenLastCalledWith(0);
+    onChange.mockClear();
+
+    // Click 2: rebase consolidation. Instant-scrolls to children[0]
+    // (clone-of-last), then smooth-scrolls to children[2] (slide B).
+    // setActive(1) — onChange sees 1.
+    await userEvent.click(screen.getByRole('button', { name: 'Next slide' }));
+    expect(onChange).toHaveBeenLastCalledWith(1);
+    onChange.mockClear();
+
+    // The rebase's instant scroll landed scrollLeft = 0. Simulate the
+    // resulting scroll event. Without the rebase-consume guard, the
+    // edge branch would treat scrollLeft = 0 as a natural wrap-end
+    // landing and call setActive(N - 1) — desyncing activeIdx from the
+    // smooth scroll's actual target (slide B = index 1).
+    Object.defineProperty(viewport, 'scrollLeft', { value: 0, configurable: true });
+    act(() => {
+      viewport.dispatchEvent(new Event('scroll'));
+    });
+    expect(onChange).not.toHaveBeenCalled();
+
+    // The smooth scroll's early frames still round to domIdx = 0 (any
+    // scrollLeft < width / 2). The guard stays armed through those too.
+    Object.defineProperty(viewport, 'scrollLeft', { value: 50, configurable: true });
+    act(() => {
+      viewport.dispatchEvent(new Event('scroll'));
+    });
+    expect(onChange).not.toHaveBeenCalled();
+
+    // Once scrollLeft progresses past width / 2 — domIdx becomes 1 — the
+    // guard clears and the mid-strip branch resumes. goToInProgressRef
+    // still suppresses spurious setActive while realIdx hasn't caught
+    // up to the optimistic activeIdx (= 1).
+    Object.defineProperty(viewport, 'scrollLeft', { value: width, configurable: true });
+    act(() => {
+      viewport.dispatchEvent(new Event('scroll'));
+    });
+    expect(onChange).not.toHaveBeenCalled();
+
+    // And a subsequent scroll past the natural wrap edge (e.g. on the
+    // NEXT wrap cycle, with the guard already cleared) still snaps
+    // normally. Use children-twin snap path to prove the edge branch
+    // is reachable again.
+    Object.defineProperty(viewport, 'scrollLeft', { value: (N + 1) * width, configurable: true });
+    act(() => {
+      viewport.dispatchEvent(new Event('scroll'));
+    });
+    // domIdx = N + 1; goToInProgressRef + scrollLeft check passes (no
+    // tolerance miss); snap to children[1]; setActive(0). activeIdx was
+    // already 1 from click 2, so onChange(0) IS emitted by the snap.
+    expect(onChange).toHaveBeenLastCalledWith(0);
+  });
+
   it('sweep variant: next-arrow wrap targets the real first, not the clone', async () => {
     const five = ['A', 'B', 'C', 'D', 'E'];
     const N = five.length;
