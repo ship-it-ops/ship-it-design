@@ -56,6 +56,7 @@ export * from './patterns/Breadcrumbs';
 export * from './patterns/Carousel';
 export * from './patterns/Combobox';
 export * from './patterns/CommandPalette';
+export * from './patterns/ComparisonTable';
 export * from './patterns/DataTable';
 export * from './patterns/DatePicker';
 export * from './patterns/DateRangePicker';

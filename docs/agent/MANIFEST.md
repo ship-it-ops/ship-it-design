@@ -1,6 +1,6 @@
 # Agent Context
 
-Last updated: 2026-06-02 | Total notes: 39
+Last updated: 2026-06-04 | Total notes: 40
 
 <!--
   This file is the index for `docs/agent/`. Agents read it at session start.
@@ -38,6 +38,7 @@ _None._
 - [separate-renderer-packages](decisions/separate-renderer-packages.md) | decision | active | standard | 2026-05-21 | Cytoscape, react-flow, MapLibre as optional packages
 - [next-16-react-19-baseline](decisions/next-16-react-19-baseline.md) | decision | active | core | 2026-05-27 | Next 16 + React 19.2 baseline; React Compiler opt-in
 - [internal-dep-cascade-on-publish](decisions/internal-dep-cascade-on-publish.md) | decision | active | standard | 2026-06-02 | Keep ui-dependent cascade on publish until 1.0
+- [comparison-table-jsonld-strategy](decisions/comparison-table-jsonld-strategy.md) | decision | active | standard | 2026-06-04 | JSON-LD (not microdata) for design-system structured data
 
 ## Plans
 

@@ -179,6 +179,7 @@ export const navigation: NavSection[] = [
         label: 'Data',
         items: [
           { title: 'ActivityTimeline', slug: 'patterns/activity-timeline' },
+          { title: 'ComparisonTable', slug: 'patterns/comparison-table' },
           { title: 'DataTable', slug: 'patterns/data-table' },
           { title: 'Timeline', slug: 'patterns/timeline' },
           { title: 'Tree', slug: 'patterns/tree' },

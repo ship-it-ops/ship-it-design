@@ -1,0 +1,36 @@
+# ComparisonTable
+
+Row-headed comparison matrix for product, plan, or spec comparisons. Cells accept
+booleans (rendered as check / cross with screen-reader "Yes" / "No"), strings,
+numbers, or `{ value, note }` objects.
+
+By default, every `ComparisonTable` emits a
+`<script type="application/ld+json">` next to the table — one schema.org entity
+per option, with each row contributing a `PropertyValue` under
+`additionalProperty`. Crawlers and AI agents can read the comparison without
+running JavaScript. Pass `schema` to change the `@type` (`Product` by default;
+`Service` and `SoftwareApplication` are common) or `noStructuredData` to opt
+out.
+
+The semantic HTML doubles down on the same goal: every feature row uses
+`<th scope="row">`, every option header uses `<th scope="col">`, the table
+gets a `<caption>`, and featured columns + every cell carry `data-*` hints
+(`data-featured`, `data-cell-type`, `data-cell-value`).
+
+## Basic
+
+<LivePreview example="comparison-table/basic" />
+
+## Featured tier
+
+<LivePreview example="comparison-table/featured" />
+
+## Grouped specs
+
+<LivePreview example="comparison-table/grouped" />
+
+## Props
+
+<PropsTable component="ComparisonTable" />
+
+<EditOnGithub source="apps/docs-site/app/(docs)/patterns/comparison-table/page.mdx" />
