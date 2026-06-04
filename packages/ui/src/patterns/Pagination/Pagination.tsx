@@ -59,39 +59,42 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>(function Pagi
         disabled={page <= 1}
         onClick={() => onPageChange(Math.max(1, page - 1))}
       />
-      {items.map((item, i) => {
-        if (item === 'start-ellipsis' || item === 'end-ellipsis') {
+      <ol role="list" className="m-0 flex list-none items-center gap-1 p-0">
+        {items.map((item, i) => {
+          if (item === 'start-ellipsis' || item === 'end-ellipsis') {
+            return (
+              <li
+                key={`ellipsis-${i}`}
+                aria-hidden
+                className="text-text-dim grid h-[26px] min-w-[26px] place-items-center px-2 font-mono text-[12px]"
+              >
+                …
+              </li>
+            );
+          }
+          const isActive = item === page;
           return (
-            <span
-              key={`ellipsis-${i}`}
-              aria-hidden
-              className="text-text-dim grid h-[26px] min-w-[26px] place-items-center px-2 font-mono text-[12px]"
-            >
-              …
-            </span>
+            <li key={item}>
+              <button
+                type="button"
+                aria-label={`Go to page ${item}`}
+                aria-current={isActive ? 'page' : undefined}
+                onClick={() => onPageChange(item)}
+                className={cn(
+                  'h-[26px] min-w-[26px] rounded-[5px] px-2 font-mono text-[12px] outline-none',
+                  'cursor-pointer transition-colors duration-(--duration-micro)',
+                  'focus-visible:ring-accent-dim focus-visible:ring-[3px]',
+                  isActive
+                    ? 'bg-accent-dim text-accent border-accent border'
+                    : 'text-text-muted hover:bg-panel-2 hover:text-text border border-transparent',
+                )}
+              >
+                {item}
+              </button>
+            </li>
           );
-        }
-        const isActive = item === page;
-        return (
-          <button
-            key={item}
-            type="button"
-            aria-label={`Go to page ${item}`}
-            aria-current={isActive ? 'page' : undefined}
-            onClick={() => onPageChange(item)}
-            className={cn(
-              'h-[26px] min-w-[26px] rounded-[5px] px-2 font-mono text-[12px] outline-none',
-              'cursor-pointer transition-colors duration-(--duration-micro)',
-              'focus-visible:ring-accent-dim focus-visible:ring-[3px]',
-              isActive
-                ? 'bg-accent-dim text-accent border-accent border'
-                : 'text-text-muted hover:bg-panel-2 hover:text-text border border-transparent',
-            )}
-          >
-            {item}
-          </button>
-        );
-      })}
+        })}
+      </ol>
       <IconButton
         size="sm"
         variant="ghost"

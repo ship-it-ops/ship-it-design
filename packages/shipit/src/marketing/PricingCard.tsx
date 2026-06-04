@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@ship-it-ui/ui';
+import { Heading, JsonLd, cn, type HeadingLevel } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 /**
@@ -15,6 +15,12 @@ import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
  * background for the "recommended" tier. Use `priceUnit` for per-period
  * suffixes (e.g. `/ user / mo`) so the unit lays out next to the price
  * baseline-aligned and wraps cleanly when there isn't room.
+ *
+ * Emits a schema.org `Offer` JSON-LD entity when `priceCurrency` is
+ * provided AND a numeric `priceAmount` (or a parseable `price` string like
+ * `"$29"`) is supplied. Cards where the price isn't machine-readable
+ * (e.g. `"Talk to us"`) skip JSON-LD emission unless the consumer passes
+ * `priceAmount` explicitly. Pass `noStructuredData` to opt out entirely.
  */
 
 export interface PricingCardProps extends HTMLAttributes<HTMLDivElement> {
@@ -32,12 +38,128 @@ export interface PricingCardProps extends HTMLAttributes<HTMLDivElement> {
   action?: ReactNode;
   /** Highlight as the recommended tier. */
   featured?: boolean;
+  /**
+   * Heading level for the tier name. Default `'h3'` — pricing tables live
+   * under a section `h2` on most pricing pages.
+   */
+  tierAs?: HeadingLevel;
+  /**
+   * ISO 4217 currency code (e.g. `'USD'`, `'EUR'`). REQUIRED to emit the
+   * `Offer` JSON-LD — without it the script is suppressed.
+   */
+  priceCurrency?: string;
+  /**
+   * Explicit machine-readable price (number). When omitted, parsed from the
+   * visible `price` string by stripping non-numeric characters. Pass this
+   * directly when `price` is JSX or contains unusual formatting.
+   */
+  priceAmount?: number;
+  /**
+   * schema.org `availability` URL, typically `'https://schema.org/InStock'`.
+   */
+  availability?: string;
+  /** Optional URL of the tier's product/checkout page. */
+  url?: string;
+  /** String version of `tier` for the JSON-LD `name`. Required if `tier` is JSX. */
+  tierName?: string;
+  /** String version of `description` for the JSON-LD `description`. */
+  descriptionText?: string;
+  /** Opt out of emitting the `Offer` JSON-LD script. */
+  noStructuredData?: boolean;
+}
+
+function reactNodeToString(node: ReactNode): string | null {
+  if (typeof node === 'string') return node;
+  if (typeof node === 'number') return String(node);
+  return null;
+}
+
+function parsePrice(priceAmount: number | undefined, price: ReactNode): number | null {
+  if (typeof priceAmount === 'number' && Number.isFinite(priceAmount)) {
+    return priceAmount;
+  }
+  const text = reactNodeToString(price);
+  if (!text) return null;
+  // Strip currency symbols / commas / whitespace; keep digits + decimal point.
+  const cleaned = text.replace(/[^\d.]/g, '');
+  if (!cleaned) return null;
+  const n = Number(cleaned);
+  return Number.isFinite(n) ? n : null;
+}
+
+interface OfferSchema {
+  '@context': string;
+  '@type': 'Offer';
+  name: string;
+  description?: string;
+  price: number;
+  priceCurrency: string;
+  availability?: string;
+  url?: string;
+}
+
+function buildOfferSchema(props: PricingCardProps): OfferSchema | null {
+  if (!props.priceCurrency) return null;
+  const name = props.tierName ?? reactNodeToString(props.tier);
+  if (!name) return null;
+  const numericPrice = parsePrice(props.priceAmount, props.price);
+  if (numericPrice === null) return null;
+  const schema: OfferSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Offer',
+    name,
+    price: numericPrice,
+    priceCurrency: props.priceCurrency,
+  };
+  const description = props.descriptionText ?? reactNodeToString(props.description);
+  if (description) {
+    schema.description = description;
+  }
+  if (props.availability) {
+    schema.availability = props.availability;
+  }
+  if (props.url) {
+    schema.url = props.url;
+  }
+  return schema;
 }
 
 export const PricingCard = forwardRef<HTMLDivElement, PricingCardProps>(function PricingCard(
-  { tier, price, priceUnit, description, features, action, featured, className, ...props },
+  {
+    tier,
+    price,
+    priceUnit,
+    description,
+    features,
+    action,
+    featured,
+    tierAs = 'h3',
+    priceCurrency,
+    priceAmount,
+    availability,
+    url,
+    tierName,
+    descriptionText,
+    noStructuredData,
+    className,
+    ...props
+  },
   ref,
 ) {
+  const structuredData = !noStructuredData
+    ? buildOfferSchema({
+        tier,
+        price,
+        features,
+        priceCurrency,
+        priceAmount,
+        availability,
+        url,
+        tierName,
+        description,
+        descriptionText,
+      })
+    : null;
   return (
     <div
       ref={ref}
@@ -48,9 +170,12 @@ export const PricingCard = forwardRef<HTMLDivElement, PricingCardProps>(function
       )}
       {...props}
     >
+      {structuredData && <JsonLd data={structuredData} />}
       <div>
         <div className="mb-1 flex flex-wrap items-center gap-2">
-          <span className="text-[14px] font-medium">{tier}</span>
+          <Heading as={tierAs} className="text-[14px] font-medium">
+            {tier}
+          </Heading>
           {featured && (
             <span className="bg-accent-dim text-accent rounded-full px-[6px] py-[1px] font-mono text-[10px]">
               recommended

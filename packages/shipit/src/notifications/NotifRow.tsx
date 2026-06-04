@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@ship-it-ui/ui';
+import { DateTime, cn } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 /**
@@ -23,6 +23,12 @@ export interface NotifRowProps extends Omit<HTMLAttributes<HTMLDivElement>, 'tit
   body?: ReactNode;
   /** Right-aligned relative time string (e.g. `9:32`, `Mon`). */
   time?: ReactNode;
+  /**
+   * Machine-readable ISO 8601 string or `Date` for the notification's
+   * timestamp. When set, the visible `time` is wrapped in
+   * `<time dateTime="…">` so the row is crawlable / AI-readable.
+   */
+  dateTime?: string | Date;
   /** Coloring of the unread dot. */
   tone?: NotifTone;
   /** When true, render the unread dot. */
@@ -52,6 +58,7 @@ export const NotifRow = forwardRef<HTMLDivElement, NotifRowProps>(function Notif
     title,
     body,
     time,
+    dateTime,
     tone = 'neutral',
     unread,
     isFirst,
@@ -76,11 +83,19 @@ export const NotifRow = forwardRef<HTMLDivElement, NotifRowProps>(function Notif
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline justify-between gap-2">
           <div className="truncate text-[14px] font-medium tracking-tight">{title}</div>
-          {time != null && (
-            <span className="text-text-muted shrink-0 font-mono text-[11px] whitespace-nowrap">
-              {time}
-            </span>
-          )}
+          {time != null &&
+            (dateTime !== undefined ? (
+              <DateTime
+                iso={dateTime}
+                className="text-text-muted shrink-0 font-mono text-[11px] whitespace-nowrap"
+              >
+                {time}
+              </DateTime>
+            ) : (
+              <span className="text-text-muted shrink-0 font-mono text-[11px] whitespace-nowrap">
+                {time}
+              </span>
+            ))}
         </div>
         {body && <div className="text-text-muted mt-[3px] text-[13px] leading-tight">{body}</div>}
       </div>

@@ -3,6 +3,7 @@
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 import { cn } from '../../utils/cn';
+import { Heading, type HeadingLevel } from '../../utils/Heading';
 
 /**
  * LargeTitle — iOS-style oversized headline block. Renders an optional eyebrow
@@ -17,6 +18,11 @@ import { cn } from '../../utils/cn';
 export interface LargeTitleProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   /** Headline text. */
   title: ReactNode;
+  /**
+   * Heading level for the title. Default `'h1'` — this component is intended
+   * as a screen-level header. Lower to `h2`/`h3` for nested usage.
+   */
+  titleAs?: HeadingLevel;
   /** Optional eyebrow label rendered above the title. Small, uppercase, mono. */
   eyebrow?: ReactNode;
   /** Optional right-aligned slot (avatar, settings button, etc.). */
@@ -24,7 +30,7 @@ export interface LargeTitleProps extends Omit<HTMLAttributes<HTMLElement>, 'titl
 }
 
 export const LargeTitle = forwardRef<HTMLElement, LargeTitleProps>(function LargeTitle(
-  { title, eyebrow, trailing, className, ...props },
+  { title, titleAs = 'h1', eyebrow, trailing, className, ...props },
   ref,
 ) {
   return (
@@ -39,7 +45,12 @@ export const LargeTitle = forwardRef<HTMLElement, LargeTitleProps>(function Larg
             {eyebrow}
           </div>
         )}
-        <h1 className="text-m-h1 m-0 truncate leading-tight font-medium tracking-tight">{title}</h1>
+        <Heading
+          as={titleAs}
+          className="text-m-h1 m-0 truncate leading-tight font-medium tracking-tight"
+        >
+          {title}
+        </Heading>
       </div>
       {trailing && <div className="shrink-0">{trailing}</div>}
     </header>

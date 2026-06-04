@@ -3,6 +3,7 @@
 import { forwardRef, type HTMLAttributes, type MouseEventHandler, type ReactNode } from 'react';
 
 import { cn } from '../../utils/cn';
+import { Heading, type HeadingLevel } from '../../utils/Heading';
 
 /**
  * Topbar — slim header strip across the top of an app surface.
@@ -17,6 +18,12 @@ import { cn } from '../../utils/cn';
 export interface TopbarProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   /** Title rendered on the left. */
   title?: ReactNode;
+  /**
+   * Heading level for the page title. Default `'h1'` on touch density (mobile
+   * page header) and `'h2'` on desktop density (in-app chrome where the page
+   * `h1` typically lives in a separate hero/content area).
+   */
+  titleAs?: HeadingLevel;
   /**
    * Eyebrow label rendered above the title (small uppercase mono). Touch density
    * only — silently ignored on desktop density to avoid two header tiers stacking.
@@ -48,6 +55,7 @@ export interface TopbarProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> 
 export const Topbar = forwardRef<HTMLElement, TopbarProps>(function Topbar(
   {
     title,
+    titleAs,
     eyebrow,
     leading,
     back,
@@ -62,6 +70,7 @@ export const Topbar = forwardRef<HTMLElement, TopbarProps>(function Topbar(
 ) {
   const isTouch = density === 'touch';
   const backHandler = typeof back === 'function' ? back : back ? onBack : undefined;
+  const effectiveTitleAs: HeadingLevel = titleAs ?? (isTouch ? 'h1' : 'h2');
 
   return (
     <header
@@ -109,15 +118,17 @@ export const Topbar = forwardRef<HTMLElement, TopbarProps>(function Topbar(
             </div>
           )}
           {title && (
-            <div
+            <Heading
+              as={effectiveTitleAs}
               className={cn(
+                'm-0',
                 isTouch
                   ? 'text-m-body-lg truncate font-semibold tracking-tight'
                   : 'text-[13px] font-medium',
               )}
             >
               {title}
-            </div>
+            </Heading>
           )}
         </div>
       )}

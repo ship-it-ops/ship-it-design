@@ -1,11 +1,12 @@
 'use client';
 
-import { cn } from '@ship-it-ui/ui';
+import { Heading, cn, type HeadingLevel } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 /**
  * Hero — landing-page top section. Optional eyebrow / pill above the headline,
- * a large heading (children of `<h1>`), a body description, and an action row.
+ * a large heading (children of `<h1>` by default), a body description, and an
+ * action row.
  *
  * Designed for marketing surfaces only — do not bring this into the app.
  */
@@ -15,6 +16,12 @@ export interface HeroProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   eyebrow?: ReactNode;
   /** Headline. Pass JSX to highlight a phrase (e.g., `<span className="text-accent">…</span>`). */
   title: ReactNode;
+  /**
+   * Heading level for the title. Default `'h1'` — only override on pages that
+   * already have an `<h1>` elsewhere (e.g., a section hero inside a longer
+   * landing page).
+   */
+  titleAs?: HeadingLevel;
   /** Subheading. */
   description?: ReactNode;
   /** Action buttons row. */
@@ -25,7 +32,7 @@ export interface HeroProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
 }
 
 export const Hero = forwardRef<HTMLElement, HeroProps>(function Hero(
-  { eyebrow, title, description, actions, visual, className, ...props },
+  { eyebrow, title, titleAs = 'h1', description, actions, visual, className, ...props },
   ref,
 ) {
   const hasVisual = visual != null;
@@ -41,14 +48,15 @@ export const Hero = forwardRef<HTMLElement, HeroProps>(function Hero(
     >
       <div className={cn('max-w-[680px]', !hasVisual && 'mx-auto text-center')}>
         {eyebrow}
-        <h1
+        <Heading
+          as={titleAs}
           className={cn(
             'mb-4 text-[44px] leading-[1.05] font-medium tracking-[-1.6px] md:text-[56px]',
             eyebrow && 'mt-5',
           )}
         >
           {title}
-        </h1>
+        </Heading>
         {description && (
           <p className="text-text-muted mb-7 text-[17px] leading-[1.6]">{description}</p>
         )}

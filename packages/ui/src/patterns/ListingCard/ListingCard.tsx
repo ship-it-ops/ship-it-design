@@ -9,7 +9,9 @@ import { Button } from '../../components/Button';
 import { Card } from '../../components/Card';
 import { Rating } from '../../components/Rating';
 import { cn } from '../../utils/cn';
+import { JsonLd } from '../../utils/JsonLd';
 import { Carousel } from '../Carousel';
+import { buildListingSchema } from './listingSchema';
 
 /**
  * Hover affordance for the card root. Module-scoped so the cva function is
@@ -150,6 +152,35 @@ export interface ListingCardProps extends Omit<
   /** Hide the photo counter overlay in `spec` variant. Default `false`. */
   hidePhotoCounter?: boolean;
 
+  // ── structured-data props ──────────────────────────────────────────────
+
+  /**
+   * schema.org `@type` for the JSON-LD entity. Defaults to `'Accommodation'`
+   * for the default variant and `'Product'` for the spec variant. Pass
+   * `'Place'`, `'LodgingBusiness'`, or any string to override.
+   */
+  schema?: 'Accommodation' | 'Product' | 'Place' | 'LodgingBusiness' | (string & {});
+  /**
+   * ISO 4217 currency code (e.g. `'USD'`). REQUIRED to emit the `offers`
+   * block — without it the offer is skipped (the rest of the entity still
+   * emits if `title` resolves to a string).
+   */
+  priceCurrency?: string;
+  /**
+   * Explicit numeric price for JSON-LD. When omitted, parsed from the
+   * visible `price` prop by stripping non-numeric characters. Pass this
+   * when `price` is JSX or not cleanly parseable.
+   */
+  priceAmount?: number;
+  /** Optional URL of the listing detail page — also emitted as the entity `url`. */
+  url?: string;
+  /** String version of `title` for the JSON-LD `name`. Required if `title` is JSX. */
+  titleText?: string;
+  /** String version of `eyebrow` for the JSON-LD `description`. */
+  descriptionText?: string;
+  /** Opt out of emitting the JSON-LD script. */
+  noStructuredData?: boolean;
+
   /**
    * Per-section className overrides. Each key targets a specific element in
    * the rendered tree; values are merged with the component's own utilities
@@ -238,12 +269,37 @@ export const ListingCard = forwardRef<HTMLDivElement, ListingCardProps>(function
     specs,
     cta,
     hidePhotoCounter,
+    schema,
+    priceCurrency,
+    priceAmount,
+    url,
+    titleText,
+    descriptionText,
+    noStructuredData,
     classNames: cls = {},
     className,
     ...props
   },
   ref,
 ) {
+  const structuredData = !noStructuredData
+    ? buildListingSchema({
+        variant,
+        schema,
+        title,
+        titleText,
+        eyebrow,
+        descriptionText,
+        url,
+        photos,
+        price,
+        priceAmount,
+        priceCurrency,
+        rating,
+        reviewCount,
+        specs,
+      })
+    : null;
   // Spec variant controls the carousel index so it can drive the counter.
   const [photoIndex, setPhotoIndex] = useState(0);
   const isSpec = variant === 'spec';
@@ -268,6 +324,7 @@ export const ListingCard = forwardRef<HTMLDivElement, ListingCardProps>(function
       style={{ width }}
       {...props}
     >
+      {structuredData && <JsonLd data={structuredData} />}
       <div className={cn('relative', cls.photos)}>
         <Carousel
           items={photos}

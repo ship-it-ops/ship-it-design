@@ -4,6 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 import { cn } from '../../utils/cn';
+import { Heading, type HeadingLevel } from '../../utils/Heading';
 
 /**
  * EmptyState — placeholder for empty lists, no-results states, and error
@@ -35,6 +36,12 @@ export interface EmptyStateProps extends Omit<HTMLAttributes<HTMLDivElement>, 't
   icon?: ReactNode;
   /** Title heading. */
   title: ReactNode;
+  /**
+   * Heading level for the title. Default `'h3'` — EmptyState typically lives
+   * inside a section that already has an `h2`. Bump to `h2` for top-of-screen
+   * "nothing here" states.
+   */
+  titleAs?: HeadingLevel;
   /** Body description. */
   description?: ReactNode;
   /** Optional primary action (e.g., a Button) below the description. */
@@ -46,7 +53,7 @@ export interface EmptyStateProps extends Omit<HTMLAttributes<HTMLDivElement>, 't
 }
 
 export const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(function EmptyState(
-  { icon, title, description, action, chips, tone, className, ...props },
+  { icon, title, titleAs = 'h3', description, action, chips, tone, className, ...props },
   ref,
 ) {
   return (
@@ -63,7 +70,9 @@ export const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(function E
           {icon}
         </span>
       )}
-      <div className="text-[14px] font-medium">{title}</div>
+      <Heading as={titleAs} className="text-[14px] font-medium">
+        {title}
+      </Heading>
       {description && (
         <div className="text-text-muted max-w-[260px] text-[12px] leading-[1.5]">{description}</div>
       )}

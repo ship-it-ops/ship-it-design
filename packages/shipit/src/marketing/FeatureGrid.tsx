@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@ship-it-ui/ui';
+import { Heading, cn, type HeadingLevel } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 /**
@@ -18,6 +18,11 @@ export interface FeatureGridProps extends HTMLAttributes<HTMLDivElement> {
   features: ReadonlyArray<Feature>;
   /** Columns at the largest breakpoint. Default 3. */
   columns?: 2 | 3 | 4;
+  /**
+   * Heading level for each feature's title. Default `'h3'` — features sit
+   * under a section `h2` on most marketing pages.
+   */
+  featureTitleAs?: HeadingLevel;
 }
 
 const colsClass = {
@@ -27,7 +32,7 @@ const colsClass = {
 } as const;
 
 export const FeatureGrid = forwardRef<HTMLDivElement, FeatureGridProps>(function FeatureGrid(
-  { features, columns = 3, className, ...props },
+  { features, columns = 3, featureTitleAs = 'h3', className, ...props },
   ref,
 ) {
   return (
@@ -41,7 +46,9 @@ export const FeatureGrid = forwardRef<HTMLDivElement, FeatureGridProps>(function
           <div aria-hidden className="text-accent mb-3 text-[22px]">
             {f.glyph}
           </div>
-          <div className="mb-[6px] text-[14px] font-medium">{f.title}</div>
+          <Heading as={featureTitleAs} className="mb-[6px] text-[14px] font-medium">
+            {f.title}
+          </Heading>
           <div className="text-text-muted text-[12px] leading-[1.55]">{f.description}</div>
         </div>
       ))}

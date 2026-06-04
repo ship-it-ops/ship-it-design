@@ -16,3 +16,4 @@ export {
   THEME_COOKIE_MAX_AGE,
   type CookieGetter,
 } from './theme-cookie';
+export { buildMetadata, type BuildMetadataInput } from './metadata';

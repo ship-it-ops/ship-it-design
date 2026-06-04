@@ -224,4 +224,79 @@ describe('ListingDetail', () => {
       expect(await axe(document.body)).toHaveNoViolations();
     });
   });
+
+  describe('structured data', () => {
+    it('emits Accommodation JSON-LD by default and renders outside the portal', () => {
+      const { container } = render(
+        <ListingDetail
+          // Intentionally NOT open — the JSON-LD must still ship to the page.
+          photos={photos}
+          title="Sun-soaked cabin"
+          price="189"
+          rating={4.7}
+          reviewCount={42}
+          url="https://ship.it/cabin"
+        />,
+      );
+      // The script lives in the container (not inside the Radix Portal which
+      // wouldn't be in `container` when the dialog is closed).
+      const script = container.querySelector('script[type="application/ld+json"]')!;
+      expect(script).not.toBeNull();
+      const parsed = JSON.parse(script.textContent ?? '{}');
+      expect(parsed).toMatchObject({
+        '@context': 'https://schema.org',
+        '@type': 'Accommodation',
+        name: 'Sun-soaked cabin',
+        url: 'https://ship.it/cabin',
+        image: photos,
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: 4.7,
+          reviewCount: 42,
+          bestRating: 5,
+        },
+      });
+    });
+
+    it('emits Product JSON-LD for spec variant with additionalProperty from specs', () => {
+      const { container } = render(
+        <ListingDetail
+          variant="spec"
+          photos={photos}
+          title="Corvette"
+          price="$250"
+          priceCurrency="USD"
+          specs={[
+            { label: '0-60', value: '2.9s' },
+            { label: 'Power', value: '495 hp' },
+          ]}
+        />,
+      );
+      const parsed = JSON.parse(
+        container.querySelector('script[type="application/ld+json"]')?.textContent ?? '{}',
+      );
+      expect(parsed['@type']).toBe('Product');
+      expect(parsed.offers).toMatchObject({ price: 250, priceCurrency: 'USD' });
+      expect(parsed.additionalProperty).toEqual([
+        { '@type': 'PropertyValue', name: '0-60', value: '2.9s' },
+        { '@type': 'PropertyValue', name: 'Power', value: '495 hp' },
+      ]);
+    });
+
+    it('omits the JSON-LD script when noStructuredData is set', () => {
+      const { container } = render(
+        <ListingDetail photos={photos} title="X" price="$189" noStructuredData />,
+      );
+      expect(container.querySelector('script[type="application/ld+json"]')).toBeNull();
+    });
+
+    it('escapes </script> in the JSON-LD payload', () => {
+      const { container } = render(
+        <ListingDetail photos={photos} title={'</script><img onerror=alert(1)>'} price="$189" />,
+      );
+      const script = container.querySelector('script[type="application/ld+json"]')!;
+      expect(script.innerHTML).not.toMatch(/<\/script>/i);
+      expect(script.innerHTML).toContain('\\u003c/script>');
+    });
+  });
 });

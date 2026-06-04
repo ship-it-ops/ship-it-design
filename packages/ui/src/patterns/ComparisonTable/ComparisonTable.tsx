@@ -4,6 +4,7 @@ import { IconGlyph, type GlyphName } from '@ship-it-ui/icons';
 import { Fragment, isValidElement, type ReactNode, type Ref } from 'react';
 
 import { cn } from '../../utils/cn';
+import { JsonLd } from '../../utils/JsonLd';
 
 /**
  * ComparisonTable — option-vs-option matrix. Rows are features, columns are
@@ -300,16 +301,11 @@ export function ComparisonTable(props: ComparisonTableProps & { ref?: Ref<HTMLTa
   const totalCols = options.length + 1; // +1 for the row-header column
 
   const structuredData = !noStructuredData ? buildStructuredData(options, rows, schema) : null;
-  // Escape `</` so a user-supplied feature like `</script><img/>` can't break
-  // out of the JSON-LD script tag. Standard Next.js JSON-LD escape recipe.
-  const ldJson =
-    structuredData && structuredData.length > 0
-      ? JSON.stringify(structuredData).replace(/</g, '\\u003c')
-      : null;
+  const hasStructuredData = structuredData !== null && structuredData.length > 0;
 
   return (
     <div className={cn('w-full overflow-x-auto', className)}>
-      {ldJson && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ldJson }} />}
+      {hasStructuredData && <JsonLd data={structuredData} />}
       <table
         ref={ref}
         data-comparison-table=""

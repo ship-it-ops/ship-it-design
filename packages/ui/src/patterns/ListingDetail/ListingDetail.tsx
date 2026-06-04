@@ -9,9 +9,11 @@ import { Badge } from '../../components/Badge';
 import { Button } from '../../components/Button';
 import { Rating } from '../../components/Rating';
 import { cn } from '../../utils/cn';
+import { JsonLd } from '../../utils/JsonLd';
 import { Carousel } from '../Carousel';
 import { Lightbox } from '../Lightbox';
 import type { ListingCardCta, ListingCardFlag, ListingCardSpec } from '../ListingCard';
+import { buildListingSchema } from '../ListingCard/listingSchema';
 
 /**
  * ListingDetail — full marketplace listing popup. Photos on the left
@@ -149,6 +151,38 @@ export interface ListingDetailProps {
   /** Hide the photo counter overlay in `spec` variant. Default `false`. */
   hidePhotoCounter?: boolean;
 
+  // ── structured-data props ──────────────────────────────────────────────
+
+  /**
+   * schema.org `@type` for the JSON-LD entity. Defaults to `'Accommodation'`
+   * for the default variant and `'Product'` for the spec variant. Pass
+   * `'Place'`, `'LodgingBusiness'`, or any custom string to override.
+   */
+  schema?: 'Accommodation' | 'Product' | 'Place' | 'LodgingBusiness' | (string & {});
+  /**
+   * ISO 4217 currency code (e.g. `'USD'`). REQUIRED to emit the `offers`
+   * block — without it the offer is skipped (the rest of the entity still
+   * emits if `title` resolves to a string).
+   */
+  priceCurrency?: string;
+  /**
+   * Explicit numeric price for JSON-LD. When omitted, parsed from the
+   * visible `price` prop by stripping non-numeric characters.
+   */
+  priceAmount?: number;
+  /** Listing detail URL, also emitted as the entity `url`. */
+  url?: string;
+  /** String version of `title` for the JSON-LD `name`. Required if `title` is JSX. */
+  titleText?: string;
+  /** String version of `description` for the JSON-LD `description`. */
+  descriptionText?: string;
+  /**
+   * Opt out of emitting the JSON-LD `<script>`. The script renders as a
+   * sibling of the Radix Dialog root (outside the Portal) so it appears in
+   * the SSR'd HTML regardless of `open` state — crawlers see it always.
+   */
+  noStructuredData?: boolean;
+
   /**
    * Per-section className overrides. Each key targets a specific element
    * in the rendered tree; values are merged with the component's own
@@ -230,6 +264,13 @@ export const ListingDetail = forwardRef<HTMLDivElement, ListingDetailProps>(func
     specs,
     cta,
     hidePhotoCounter,
+    schema,
+    priceCurrency,
+    priceAmount,
+    url,
+    titleText,
+    descriptionText,
+    noStructuredData,
     classNames: cls = {},
   },
   ref,
@@ -240,8 +281,28 @@ export const ListingDetail = forwardRef<HTMLDivElement, ListingDetailProps>(func
 
   const lightboxTitle = typeof title === 'string' ? `${title} photos` : 'Listing photos';
 
+  const structuredData = !noStructuredData
+    ? buildListingSchema({
+        variant,
+        schema,
+        title,
+        titleText,
+        eyebrow,
+        descriptionText,
+        url,
+        photos,
+        price,
+        priceAmount,
+        priceCurrency,
+        rating,
+        reviewCount,
+        specs,
+      })
+    : null;
+
   return (
     <RadixDialog.Root open={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
+      {structuredData && <JsonLd data={structuredData} />}
       <RadixDialog.Portal>
         <RadixDialog.Overlay
           className={cn(
