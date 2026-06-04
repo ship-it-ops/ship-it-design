@@ -1,19 +1,68 @@
 # WizardDialog
 
-Modal multi-step flow built on `Dialog` + `Stepper` + Next/Back navigation
-driven by a `steps` array. Each step's `content` can be a node or a render
-function receiving the wizard context — useful for steps that need to
-disable Next from inside, or jump back imperatively.
+Modal multi-step flow built on `Dialog` + `Stepper` + Next/Back
+navigation driven by a `steps` array. Each step's `content` can be a
+node or a render function receiving the wizard context — useful for
+steps that need to disable Next from inside, or jump back imperatively.
+
+## The data shape
+
+```tsx
+<WizardDialog
+  open={open}
+  onOpenChange={setOpen}
+  title="Add a connector"
+  steps={[
+    { id: 'name', label: 'Name', content: <NameForm />, canAdvance: () => name.length > 0 },
+    { id: 'configure', label: 'Configure', content: ({ goBack }) => <Configure onBack={goBack} /> },
+    { id: 'review', label: 'Review', content: <Summary /> },
+  ]}
+  onComplete={() => setOpen(false)}
+/>
+```
+
+`steps` is rendered in order; the Stepper at the top tracks progress;
+the footer shows Back / Next / (last step) Done buttons.
 
 ## Default
 
 Three-step "add connector" flow. The Next button is gated per step via
-`canAdvance`; the last step's Next becomes **Done** and fires `onComplete`,
-where the consumer typically closes the dialog.
+`canAdvance`; the last step's Next becomes **Done** and fires
+`onComplete`, where the consumer typically closes the dialog.
 
 <LivePreview example="wizard-dialog/default" />
 
+## Step (`WizardStep`)
+
+- **`id: string`** (required) — stable id. Used as the React key and
+  the Stepper item id.
+- **`label: string`** (required) — visible label in the Stepper.
+- **`content: ReactNode | ((ctx: WizardContext) => ReactNode)`**
+  (required) — the step body. Pass a node for static content or a
+  function for content that needs the wizard context.
+- **`canAdvance?: (ctx: WizardContext) => boolean`** — predicate that
+  gates the Next button for this step. Default: always true.
+
+## Wizard context (`WizardContext`)
+
+Passed to render-function `content` and `canAdvance` callbacks.
+
+- **`current: number`** — current step index (0-based).
+- **`total: number`** — total step count.
+- **`goNext: () => void`** — advance to the next step. Calling on the
+  last step fires `onComplete` instead.
+- **`goBack: () => void`** — return to the previous step. No-op on
+  the first step.
+- **`goTo: (index: number) => void`** — jump to an arbitrary step
+  index. Useful for "Edit values" buttons inside a review step.
+- **`isFirst: boolean`** — convenience flag for `current === 0`.
+- **`isLast: boolean`** — convenience flag for the final step.
+
 ## Step gating
+
+Returning `false` from `canAdvance` disables the Next button without
+disabling the step itself — users can still type into the field, edit
+the form, etc.
 
 ```tsx
 const steps = [
@@ -23,33 +72,30 @@ const steps = [
     content: <Input value={name} onChange={…} />,
     canAdvance: () => name.trim().length > 0,
   },
-  // …
 ];
 ```
 
-Returning `false` from `canAdvance` disables the Next button without
-disabling the step itself — users can still type into the field, edit the
-form, etc.
-
 ## Render-function content
 
-Pass a function as `content` to access the wizard context (`goNext`,
-`goBack`, `goTo`, `isFirst`, `isLast`) from inside the step body.
+Pass a function as `content` to access the wizard context from inside
+the step body — for things like a Review step that lets the user jump
+back to a specific earlier step.
 
 ```tsx
 {
   id: 'review',
   label: 'Review',
-  content: ({ goBack }) => (
+  content: ({ goBack, goTo }) => (
     <>
       <Summary />
-      <Button variant="ghost" onClick={goBack}>Edit values</Button>
+      <Button variant="ghost" onClick={() => goTo(0)}>Edit name</Button>
+      <Button variant="ghost" onClick={goBack}>Back</Button>
     </>
   ),
 }
 ```
 
-## Props
+## Top-level props
 
 <PropsTable component="WizardDialog" />
 

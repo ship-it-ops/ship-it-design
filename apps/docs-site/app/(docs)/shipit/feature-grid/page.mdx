@@ -1,6 +1,12 @@
 # FeatureGrid
 
-Each example below is a real component instance — flip the theme toggle to see how it adapts.
+Responsive grid of feature tiles for marketing pages. Each tile shows
+a glyph, a title, and a body description. The grid columns scale to
+`columns` (2, 3, or 4) above the `md` breakpoint and stack on mobile.
+
+Per-feature titles render as configurable headings — use
+`featureTitleAs` to slot them under the right page heading hierarchy
+(default `h3`, assuming features live under a section `h2`).
 
 ## Three
 
@@ -10,7 +16,25 @@ Each example below is a real component instance — flip the theme toggle to see
 
 <LivePreview example="feature-grid/two" />
 
-## Props
+## Feature (`Feature`)
+
+Each entry in `features`.
+
+- **`glyph: ReactNode`** (required) — leading icon node, rendered
+  above the title in the accent color. Typically an `<IconGlyph>`.
+- **`title: ReactNode`** (required) — feature heading. Rendered as
+  whatever `featureTitleAs` resolves to (default `h3`).
+- **`description: ReactNode`** (required) — muted body text under the
+  title.
+
+## Heading level
+
+`featureTitleAs?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'` — controls
+the heading element rendered for each feature's title. Defaults to
+`'h3'` because features typically live under a section `h2` on a
+marketing page; bump or drop based on the surrounding page hierarchy.
+
+## Top-level props
 
 <PropsTable component="FeatureGrid" />
 

@@ -1,12 +1,49 @@
 # Footer
 
-Each example below is a real component instance — flip the theme toggle to see how it adapts.
+Site footer with brand on the left and grouped link columns on the
+right, plus a copyright line below a divider. Pass an optional
+`address` slot for org contact info — rendered inside `<address>` for
+local-SEO friendliness.
+
+Each link column renders as a proper `<ul role="list">` so search
+engines pick up the footer-nav hierarchy correctly.
 
 ## Default
 
 <LivePreview example="footer/default" />
 
-## Props
+## Column (`FooterColumn`)
+
+Each entry in `columns`.
+
+- **`heading: ReactNode`** (required) — small uppercase mono heading
+  rendered above the link list.
+- **`links: ReadonlyArray<FooterLink>`** (required) — the column's
+  links.
+
+## Link (`FooterLink`)
+
+Each entry in a column's `links`.
+
+- **`label: ReactNode`** (required) — visible link text.
+- **`href: string`** (required) — destination URL. Renders as `<a>`.
+
+## Address slot
+
+When provided, `address` is rendered inside `<address>` next to the
+brand. Use it for org contact info — phone, email, mailing address.
+Improves local-SEO extraction and gives screen readers the semantic
+"contact info for this page" hint.
+
+```tsx
+<Footer
+  brand={<Logo />}
+  address={<>1 Market St · San Francisco · hi@ship.it</>}
+  columns={[…]}
+/>
+```
+
+## Top-level props
 
 <PropsTable component="Footer" />
 

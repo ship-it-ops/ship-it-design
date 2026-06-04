@@ -1,11 +1,22 @@
 # ListingCard
 
-A consumer-marketplace card composing photos (`Carousel`), title, `Rating`,
-price, host info, and optional `verified` badge / favorite toggle. Built
-for marketplace grids — search results, related listings, a host's other stays.
+A consumer-marketplace card composing photos (`Carousel`), title,
+`Rating`, price, host info, and optional `verified` badge / favorite
+toggle. Built for marketplace grids — search results, related
+listings, a host's other stays.
 
-**Distinct from EntityCard**: EntityCard is dev-tool chrome (service /
-owner / artifact). ListingCard is the consumer card.
+Two variants share the same photo + price + title spine:
+
+- **`default`** — consumer-stay style: rating, host, distance, favorite
+  heart. Marketplace search-result row.
+- **`spec`** — product-spec style: flag pill, photo counter, spec
+  grid, inline CTA on a dark footer. Premium / spec-driven inventory.
+
+**Distinct from EntityCard**: EntityCard is dev-tool chrome
+(service / owner / artifact). `ListingCard` is the consumer card.
+
+`ListingCard` also emits schema.org JSON-LD by default — see the
+[AI / SEO surface](#ai--seo-surface) section below.
 
 ## Default
 
@@ -18,29 +29,26 @@ going on under the hood).
 
 ## On sale
 
-Pass `originalPrice` to render a strike-through using the `sale` semantic
-token.
+Pass `originalPrice` to render a strike-through using the `sale`
+semantic token.
 
 <LivePreview example="listing-card/with-sale" />
 
 ## Spec
 
-`variant="spec"` swaps the consumer-stay layout for a product-spec card:
-a flag pill top-left, photo counter top-right, a stats grid below the
-title (e.g. `sleeps` / `beds` / `baths`), and an inline CTA button on a
-dark footer strip. Built for premium or spec-driven inventory.
-
-The default rating / host / favorite slots are ignored in this variant;
-use `flag`, `category`, `meta`, `specs`, `pricePrefix`, and `cta` instead.
+`variant="spec"` swaps the consumer-stay layout for a product-spec
+card. The default rating / host / favorite slots are ignored in this
+variant; use `flag`, `category`, `meta`, `specs`, `pricePrefix`, and
+`cta` instead.
 
 <LivePreview example="listing-card/spec" />
 
 ## Click & hover
 
 Pass `onClick` to make the whole card surface clickable — an invisible
-stretched `<button>` sits below the inner actions (favorite, CTA, links)
-so those keep their own click semantics. `href` still works for plain
-navigation; if both are set, `onClick` wins.
+stretched `<button>` sits below the inner actions (favorite, CTA,
+links) so those keep their own click semantics. `href` still works for
+plain navigation; if both are set, `onClick` wins.
 
 `hoverEffect` picks the visual treatment. Defaults to `lift` when the
 card is interactive (has `onClick` or `href`), otherwise `none`.
@@ -49,22 +57,51 @@ card is interactive (has `onClick` or `href`), otherwise `none`.
 
 ## Editable sections
 
-Every text slot (`title`, `eyebrow`, `category`, `meta`, `specs[].label`,
-`specs[].value`, `price`, `priceUnit`, `pricePrefix`, `host`, `distance`,
-`cta.label`, …) accepts arbitrary `ReactNode`. Drop in `<InlineEdit>`
+Every text slot (`title`, `eyebrow`, `category`, `meta`, spec cells,
+price, host, …) accepts arbitrary `ReactNode`. Drop in `<InlineEdit>`
 to make any cell editable in place. Wrap editor cells in
 `<span className="relative z-10" onClick={(e) => e.stopPropagation()}>`
 when the card also has `onClick`, so dbl-click-to-edit doesn't open
 the detail.
 
-The spec listing-detail example below uses this pattern end-to-end —
-click the card to open the modal; double-click any title / meta / spec /
-price to edit and watch the change flow through.
+## Flag pill (`ListingCardFlag`)
+
+Used in the spec variant for the top-left badge ("Flagship", "New",
+"Editor's pick").
+
+- **`label: ReactNode`** (required) — the pill text.
+- **`icon?: GlyphName`** — optional leading glyph from the design-system
+  manifest.
+- **`tone?: 'accent' | 'purple' | 'pink' | 'ok' | 'warn'`** — color
+  palette. Default `'accent'`.
+
+## Spec cell (`ListingCardSpec`)
+
+Each cell in the spec grid (`specs[]` on `variant="spec"`).
+
+- **`label: ReactNode`** (required) — small uppercase label above the
+  value (e.g. "0-60", "Power", "Drive").
+- **`value: ReactNode`** (required) — the headline value
+  ("2.9s", "495 hp", "RWD").
+
+The grid auto-columns to `length` (2, 3, or 4-up); past 4 cells it
+wraps to a 4-column grid.
+
+## Footer CTA (`ListingCardCta`)
+
+The bottom CTA button on `variant="spec"`. When set, the whole-card
+stretched link is suppressed so the CTA wins the click.
+
+- **`label: ReactNode`** (required) — button text.
+- **`onClick?: () => void`** — click handler.
+- **`href?: string`** — when set, renders as an `<a>` for native
+  navigation.
+- **`disabled?: boolean`** — disables without removing the button.
 
 ## Styling customization
 
-Every section is independently styleable via the `classNames` slot map.
-Each key targets one internal element; values are merged with the
+Every section is independently styleable via the `classNames` slot
+map. Each key targets one internal element; values are merged with the
 component's own utilities via `cn()` — so consumers can override,
 extend, or replace any styling without forking.
 
@@ -74,15 +111,25 @@ Slots: `root`, `photos`, `flag`, `photoCounter`, `favorite`, `body`,
 
 <LivePreview example="listing-card/customized" />
 
-## Props
+## AI / SEO surface
+
+`ListingCard` emits schema.org JSON-LD by default — `Accommodation`
+for the default variant, `Product` for the spec variant. Override via
+`schema?: 'Accommodation' | 'Product' | 'Place' | 'LodgingBusiness'`
+or any custom string. Pass `priceCurrency?` to include an `offers`
+block (otherwise prices are skipped from JSON-LD), and `url?` to
+populate the entity URL. Spec cells become `additionalProperty`
+entries. Pass `noStructuredData` to suppress emission entirely.
+
+## Top-level props
 
 <PropsTable component="ListingCard" />
 
 ## Composition
 
 The card is a thin assembly over primitives — `Card` for the shell,
-`Carousel` for photos, `Rating` for the star row, `Badge` for verified, and
-`heart` icon for favorite. For unusual layouts, compose the same primitives
-yourself.
+`Carousel` for photos, `Rating` for the star row, `Badge` for
+verified, and `heart` icon for favorite. For unusual layouts, compose
+the same primitives yourself.
 
 <EditOnGithub source="apps/docs-site/app/(docs)/patterns/listing-card/page.mdx" />

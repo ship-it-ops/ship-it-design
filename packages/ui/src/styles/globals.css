@@ -191,6 +191,12 @@
     color: var(--color-text);
     background: var(--color-bg);
     font-feature-settings: 'cv11', 'ss01';
+    /* Pairs the UA scrollbar/form-control chrome to the active theme.
+     * Default is dark to match :root; the light override flips it. */
+    color-scheme: dark;
+  }
+  html[data-theme='light'] {
+    color-scheme: light;
   }
 
   body {

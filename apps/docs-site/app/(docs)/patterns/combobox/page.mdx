@@ -1,16 +1,102 @@
 # Combobox
 
-Each example below is a real component instance — flip the theme toggle to see how it adapts.
+A text input with an attached, type-to-filter listbox. Implements the
+WAI-ARIA combobox pattern — the input owns focus, the listbox is
+referenced via `aria-controls`, and the highlighted option moves via
+`aria-activedescendant` rather than focus.
+
+Selection and the visible query are **independent state**: selecting
+an option syncs the query to the option's label so the user sees what
+was picked, but subsequent typing reopens the list and re-filters
+without losing the selection until a new one is committed.
+
+## The data shape
+
+`options` is an array where each entry is either a plain string (for
+the simple case) or an object with a `value` and optional `label` /
+`description` / `disabled`.
+
+```tsx
+<Combobox
+  options={['apple', 'banana', 'cherry']}
+/>
+
+<Combobox
+  options={[
+    { value: 'us', label: 'United States', description: 'USD' },
+    { value: 'jp', label: 'Japan', description: 'JPY', disabled: true },
+  ]}
+/>
+```
+
+String entries are normalized internally to `{ value, label: value }`.
+Custom filtering operates on the `NormalizedOption` shape — see below.
 
 ## Default
 
+The default example demonstrates the simple string-array shape.
+Type to filter; arrow keys navigate the list; Enter or click commits
+the selection and syncs the input.
+
 <LivePreview example="combobox/default" />
 
-## Rich Options
+## Rich options
+
+When you need a secondary description line, a disabled state, or a
+JSX label, pass option objects. The dropdown renders the label in
+the row's primary line and the description (if present) in a muted
+secondary line.
 
 <LivePreview example="combobox/rich-options" />
 
-## Props
+## Option (`ComboboxOption`)
+
+A union of two shapes — strings get a sane default; objects unlock
+descriptions and disabled state.
+
+- **`string`** — shorthand for `{ value: string, label: string }`.
+  The string is used as both the committed value and the visible
+  label.
+- **`{ value: string, label?: ReactNode, description?: ReactNode, disabled?: boolean }`** —
+  the rich shape:
+  - **`value`** (required) — the string committed to `onValueChange`
+    and stored as `value`.
+  - **`label`** — visible primary line. Defaults to `value` when
+    omitted. Accepts JSX for icons / formatting.
+  - **`description`** — small muted secondary line under the label.
+  - **`disabled`** — keeps the row in the list but un-selectable
+    (skipped by keyboard navigation, no click handler).
+
+## Custom filter (`NormalizedOption`)
+
+Pass `filter={(option, query) => …}` to replace the default
+case-insensitive substring match. The first argument is the
+**normalized** option — the union has been collapsed and a
+`searchText` field has been precomputed so you don't have to lowercase
+or interpolate label/description on every keystroke.
+
+- **`value`** — the option's commit value.
+- **`label`** — the option's visible label (ReactNode).
+- **`description`** — the option's description (ReactNode, if any).
+- **`searchText`** — lowercase `label + " " + description`, pre-joined
+  for substring matching.
+- **`disabled`** — whether the option should be skipped.
+
+## Selection vs query state
+
+The two are independent and each can be controlled or uncontrolled:
+
+- **Selection** — `value` + `onValueChange` (controlled), or
+  `defaultValue` (uncontrolled). Fires when a row is clicked or Enter
+  commits the highlighted row.
+- **Query** — `query` + `onQueryChange` (controlled), or
+  `defaultQuery` (uncontrolled). Fires on every keystroke.
+
+When a selection is committed, the query is synced to the selected
+option's label so the input reflects the choice; the user can then
+type to change it without immediately losing the prior selection.
+
+## Component props
 
 <PropsTable component="Combobox" />
 
