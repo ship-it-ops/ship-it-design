@@ -5,6 +5,7 @@ import { Fragment, isValidElement, type ReactNode, type Ref } from 'react';
 
 import { cn } from '../../utils/cn';
 import { JsonLd } from '../../utils/JsonLd';
+import { nodeToString } from '../../utils/structuredData';
 
 /**
  * ComparisonTable — option-vs-option matrix. Rows are features, columns are
@@ -152,18 +153,12 @@ function renderOptionIcon(icon: ComparisonOption['icon'], size: number): ReactNo
   return icon as ReactNode;
 }
 
-function reactNodeToString(node: ReactNode): string | null {
-  if (typeof node === 'string') return node;
-  if (typeof node === 'number') return String(node);
-  return null;
-}
-
 function cellToSchemaString(cell: ComparisonCellValue | undefined): string | null {
   if (cell === undefined || cell === null) return null;
   if (typeof cell === 'boolean') return cell ? 'Yes' : 'No';
   if (typeof cell === 'string' || typeof cell === 'number') return String(cell);
   // object cell: only emit a schema value if `value` is a string/number.
-  return reactNodeToString(cell.value);
+  return nodeToString(cell.value);
 }
 
 function cellDataAttrs(cell: ComparisonCellValue | undefined): {
@@ -180,7 +175,7 @@ function cellDataAttrs(cell: ComparisonCellValue | undefined): {
   if (typeof cell === 'string') {
     return { 'data-cell-type': 'text', 'data-cell-value': cell };
   }
-  const v = reactNodeToString(cell.value);
+  const v = nodeToString(cell.value);
   return v != null
     ? { 'data-cell-type': 'rich', 'data-cell-value': v }
     : { 'data-cell-type': 'rich' };
@@ -202,17 +197,17 @@ function buildStructuredData(
 ): StructuredItem[] {
   const items: StructuredItem[] = [];
   for (const option of options) {
-    const name = option.schemaName ?? reactNodeToString(option.name);
+    const name = option.schemaName ?? nodeToString(option.name);
     if (!name) continue;
     const additionalProperty: StructuredItem['additionalProperty'] = [];
     for (const row of rows) {
-      const propName = row.schemaName ?? reactNodeToString(row.feature);
+      const propName = row.schemaName ?? nodeToString(row.feature);
       if (!propName) continue;
       const value = cellToSchemaString(row.values[option.id]);
       if (value === null) continue;
       additionalProperty.push({ '@type': 'PropertyValue', name: propName, value });
     }
-    const descriptionString = reactNodeToString(option.description);
+    const descriptionString = nodeToString(option.description);
     items.push({
       '@context': 'https://schema.org',
       '@type': schema,
@@ -392,7 +387,7 @@ export function ComparisonTable(props: ComparisonTableProps & { ref?: Ref<HTMLTa
               <tr data-group-header="">
                 <th
                   colSpan={totalCols}
-                  scope="colgroup"
+                  scope="rowgroup"
                   className="bg-panel-2/50 text-text-dim border-border border-y px-3 py-2 text-left font-mono text-[10px] font-medium tracking-[1.4px] uppercase"
                 >
                   {group.name}
@@ -401,7 +396,7 @@ export function ComparisonTable(props: ComparisonTableProps & { ref?: Ref<HTMLTa
             )}
             {group.rows.map((row, rowIndex) => {
               const rowKey =
-                row.schemaName ?? reactNodeToString(row.feature) ?? `${groupIndex}-${rowIndex}`;
+                row.schemaName ?? nodeToString(row.feature) ?? `${groupIndex}-${rowIndex}`;
               return (
                 <tr key={rowKey} className="border-border border-b last:border-0">
                   <th

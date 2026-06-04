@@ -1,7 +1,15 @@
 'use client';
 
 import { DynamicIconGlyph, type ConnectorName } from '@ship-it-ui/icons';
-import { cn, formatRelative, JsonLd, StatusDot, type StatusState } from '@ship-it-ui/ui';
+import {
+  cn,
+  formatRelative,
+  JsonLd,
+  nodeToString,
+  StatusDot,
+  toIsoString,
+  type StatusState,
+} from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 /**
@@ -69,25 +77,13 @@ interface SoftwareApplicationSchema {
   dateModified?: string;
 }
 
-function reactNodeToString(node: ReactNode): string | null {
-  if (typeof node === 'string') return node;
-  if (typeof node === 'number') return String(node);
-  return null;
-}
-
-function toIsoString(value: Date | string | number | undefined): string | null {
-  if (value === undefined || value === null) return null;
-  const date = value instanceof Date ? value : new Date(value);
-  return Number.isFinite(date.getTime()) ? date.toISOString() : null;
-}
-
 function buildConnectorSchema(
   input: Pick<
     ConnectorCardProps,
     'name' | 'nameText' | 'applicationCategory' | 'url' | 'softwareVersion' | 'lastSyncedAt'
   >,
 ): SoftwareApplicationSchema | null {
-  const name = input.nameText ?? reactNodeToString(input.name);
+  const name = input.nameText ?? nodeToString(input.name);
   if (!name) return null;
   const schema: SoftwareApplicationSchema = {
     '@context': 'https://schema.org',

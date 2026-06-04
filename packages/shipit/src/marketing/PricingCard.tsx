@@ -1,6 +1,6 @@
 'use client';
 
-import { Heading, JsonLd, cn, type HeadingLevel } from '@ship-it-ui/ui';
+import { Heading, JsonLd, cn, nodeToString, type HeadingLevel } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 /**
@@ -68,17 +68,11 @@ export interface PricingCardProps extends HTMLAttributes<HTMLDivElement> {
   noStructuredData?: boolean;
 }
 
-function reactNodeToString(node: ReactNode): string | null {
-  if (typeof node === 'string') return node;
-  if (typeof node === 'number') return String(node);
-  return null;
-}
-
 function parsePrice(priceAmount: number | undefined, price: ReactNode): number | null {
   if (typeof priceAmount === 'number' && Number.isFinite(priceAmount)) {
     return priceAmount;
   }
-  const text = reactNodeToString(price);
+  const text = nodeToString(price);
   if (!text) return null;
   // Strip currency symbols / commas / whitespace; keep digits + decimal point.
   const cleaned = text.replace(/[^\d.]/g, '');
@@ -100,7 +94,7 @@ interface OfferSchema {
 
 function buildOfferSchema(props: PricingCardProps): OfferSchema | null {
   if (!props.priceCurrency) return null;
-  const name = props.tierName ?? reactNodeToString(props.tier);
+  const name = props.tierName ?? nodeToString(props.tier);
   if (!name) return null;
   const numericPrice = parsePrice(props.priceAmount, props.price);
   if (numericPrice === null) return null;
@@ -111,7 +105,7 @@ function buildOfferSchema(props: PricingCardProps): OfferSchema | null {
     price: numericPrice,
     priceCurrency: props.priceCurrency,
   };
-  const description = props.descriptionText ?? reactNodeToString(props.description);
+  const description = props.descriptionText ?? nodeToString(props.description);
   if (description) {
     schema.description = description;
   }

@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
 
+import { nodeToString } from '../../utils/structuredData';
+
 import type { ListingCardSpec, ListingCardVariant } from './ListingCard';
 
 /**
@@ -9,17 +11,11 @@ import type { ListingCardSpec, ListingCardVariant } from './ListingCard';
  * package barrel — internal API.
  */
 
-function reactNodeToString(node: ReactNode): string | null {
-  if (typeof node === 'string') return node;
-  if (typeof node === 'number') return String(node);
-  return null;
-}
-
 function parsePriceAmount(priceAmount: number | undefined, price: ReactNode): number | null {
   if (typeof priceAmount === 'number' && Number.isFinite(priceAmount)) {
     return priceAmount;
   }
-  const text = reactNodeToString(price);
+  const text = nodeToString(price);
   if (!text) return null;
   const cleaned = text.replace(/[^\d.]/g, '');
   if (!cleaned) return null;
@@ -67,7 +63,7 @@ export interface BuildListingSchemaInput {
 }
 
 export function buildListingSchema(input: BuildListingSchemaInput): ListingSchema | null {
-  const name = input.titleText ?? reactNodeToString(input.title);
+  const name = input.titleText ?? nodeToString(input.title);
   if (!name) return null;
   const defaultType = input.variant === 'spec' ? 'Product' : 'Accommodation';
   const schema: ListingSchema = {
@@ -75,7 +71,7 @@ export function buildListingSchema(input: BuildListingSchemaInput): ListingSchem
     '@type': input.schema ?? defaultType,
     name,
   };
-  const description = input.descriptionText ?? reactNodeToString(input.eyebrow);
+  const description = input.descriptionText ?? nodeToString(input.eyebrow);
   if (description) schema.description = description;
   if (input.url) schema.url = input.url;
   if (input.photos.length > 0) {
@@ -103,8 +99,8 @@ export function buildListingSchema(input: BuildListingSchemaInput): ListingSchem
   if (input.specs && input.specs.length > 0) {
     const additional: NonNullable<ListingSchema['additionalProperty']> = [];
     for (const spec of input.specs) {
-      const propName = reactNodeToString(spec.label);
-      const value = reactNodeToString(spec.value);
+      const propName = nodeToString(spec.label);
+      const value = nodeToString(spec.value);
       if (propName && value) {
         additional.push({ '@type': 'PropertyValue', name: propName, value });
       }

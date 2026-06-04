@@ -8,6 +8,7 @@ import { Badge } from '../../components/Badge';
 import { Rating } from '../../components/Rating';
 import { cn } from '../../utils/cn';
 import { JsonLd } from '../../utils/JsonLd';
+import { nodeToString, toIsoString } from '../../utils/structuredData';
 
 /**
  * ReviewCard — a single review feed item. Composes Avatar, Rating, date,
@@ -63,18 +64,6 @@ export interface ReviewCardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'c
   noStructuredData?: boolean;
 }
 
-function reactNodeToString(node: ReactNode): string | null {
-  if (typeof node === 'string') return node;
-  if (typeof node === 'number') return String(node);
-  return null;
-}
-
-function toIsoString(value: string | Date | undefined): string | null {
-  if (value === undefined || value === null) return null;
-  if (value instanceof Date) return value.toISOString();
-  return value;
-}
-
 interface ReviewSchema {
   '@context': string;
   '@type': 'Review';
@@ -86,8 +75,8 @@ interface ReviewSchema {
 }
 
 function buildReviewSchema(props: ReviewCardProps): ReviewSchema | null {
-  const authorName = props.authorName ?? reactNodeToString(props.author);
-  const bodyText = props.bodyText ?? reactNodeToString(props.body);
+  const authorName = props.authorName ?? nodeToString(props.author);
+  const bodyText = props.bodyText ?? nodeToString(props.body);
   if (!authorName || !bodyText) return null;
   const schema: ReviewSchema = {
     '@context': 'https://schema.org',

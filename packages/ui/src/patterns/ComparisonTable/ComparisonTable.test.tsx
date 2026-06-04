@@ -131,7 +131,7 @@ describe('ComparisonTable', () => {
     expect(screen.getByRole('button', { name: 'Buy' })).toBeInTheDocument();
   });
 
-  it('groups rows under a colgroup header when `group` is set', () => {
+  it('groups rows under a tbody when `group` is set, with scope="rowgroup" on the section header', () => {
     const { container } = renderBasic({
       rows: [
         { feature: 'SSR', group: 'Runtime', values: { us: true, a: false, b: true } },
@@ -145,6 +145,14 @@ describe('ComparisonTable', () => {
     expect(tbodies[1]!.getAttribute('data-group')).toBe('Billing');
     expect(screen.getByText('Runtime')).toBeInTheDocument();
     expect(screen.getByText('Billing')).toBeInTheDocument();
+
+    // The group-header `<th>` is a header for the rows in its tbody —
+    // `scope="rowgroup"` is the correct value, not `colgroup`.
+    const groupHeaders = container.querySelectorAll('tr[data-group-header] > th');
+    expect(groupHeaders.length).toBe(2);
+    for (const th of groupHeaders) {
+      expect(th).toHaveAttribute('scope', 'rowgroup');
+    }
   });
 
   it('applies sticky-header utilities only when `stickyHeader` is set', () => {

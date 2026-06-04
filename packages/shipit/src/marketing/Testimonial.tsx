@@ -1,6 +1,6 @@
 'use client';
 
-import { Avatar, JsonLd, cn } from '@ship-it-ui/ui';
+import { Avatar, JsonLd, cn, nodeToString } from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 /**
@@ -42,12 +42,6 @@ export interface TestimonialProps extends Omit<HTMLAttributes<HTMLElement>, 'cit
   noStructuredData?: boolean;
 }
 
-function reactNodeToString(node: ReactNode): string | null {
-  if (typeof node === 'string') return node;
-  if (typeof node === 'number') return String(node);
-  return null;
-}
-
 interface ReviewSchema {
   '@context': string;
   '@type': 'Review';
@@ -58,8 +52,8 @@ interface ReviewSchema {
 }
 
 function buildTestimonialSchema(props: TestimonialProps): ReviewSchema | null {
-  const authorName = props.authorName ?? reactNodeToString(props.author);
-  const reviewBody = props.quoteText ?? reactNodeToString(props.quote);
+  const authorName = props.authorName ?? nodeToString(props.author);
+  const reviewBody = props.quoteText ?? nodeToString(props.quote);
   if (!authorName || !reviewBody) return null;
   const schema: ReviewSchema = {
     '@context': 'https://schema.org',
@@ -67,7 +61,7 @@ function buildTestimonialSchema(props: TestimonialProps): ReviewSchema | null {
     author: { '@type': 'Person', name: authorName },
     reviewBody,
   };
-  const jobTitle = props.authorJobTitle ?? reactNodeToString(props.role);
+  const jobTitle = props.authorJobTitle ?? nodeToString(props.role);
   if (jobTitle) {
     schema.author.jobTitle = jobTitle;
   }

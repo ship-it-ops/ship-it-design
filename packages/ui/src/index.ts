@@ -9,6 +9,7 @@
 export { cn } from './utils/cn';
 export type { ClassValue } from './utils/cn';
 export { JsonLd, type JsonLdProps } from './utils/JsonLd';
+export { nodeToString, toIsoString } from './utils/structuredData';
 export { Heading, type HeadingLevel, type HeadingProps } from './utils/Heading';
 export { DateTime, type DateTimeProps } from './utils/DateTime';
 

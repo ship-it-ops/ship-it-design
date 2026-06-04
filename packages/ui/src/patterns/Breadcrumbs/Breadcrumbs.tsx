@@ -12,6 +12,7 @@ import {
 
 import { cn } from '../../utils/cn';
 import { JsonLd } from '../../utils/JsonLd';
+import { nodeToString } from '../../utils/structuredData';
 
 /**
  * Breadcrumbs — composed of `<Crumb>` children. The last crumb is treated as
@@ -41,18 +42,12 @@ interface BreadcrumbListItem {
   item?: string;
 }
 
-function reactNodeToString(node: ReactNode): string | null {
-  if (typeof node === 'string') return node;
-  if (typeof node === 'number') return String(node);
-  return null;
-}
-
 function buildBreadcrumbList(
   crumbs: ReactElement<CrumbProps>[],
 ): { '@context': string; '@type': 'BreadcrumbList'; itemListElement: BreadcrumbListItem[] } | null {
   const itemListElement: BreadcrumbListItem[] = [];
   crumbs.forEach((crumb, index) => {
-    const name = reactNodeToString(crumb.props.children);
+    const name = nodeToString(crumb.props.children);
     if (!name) return;
     const item: BreadcrumbListItem = {
       '@type': 'ListItem',
