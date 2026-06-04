@@ -59,7 +59,7 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>(function Pagi
         disabled={page <= 1}
         onClick={() => onPageChange(Math.max(1, page - 1))}
       />
-      <ol role="list" className="m-0 flex list-none items-center gap-1 p-0">
+      <ol className="m-0 flex list-none items-center gap-1 p-0">
         {items.map((item, i) => {
           if (item === 'start-ellipsis' || item === 'end-ellipsis') {
             return (

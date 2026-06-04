@@ -152,10 +152,6 @@ function renderOptionIcon(icon: ComparisonOption['icon'], size: number): ReactNo
   return icon as ReactNode;
 }
 
-function isCellObject(cell: ComparisonCellValue): cell is { value: ReactNode; note?: ReactNode } {
-  return typeof cell === 'object' && cell !== null;
-}
-
 function reactNodeToString(node: ReactNode): string | null {
   if (typeof node === 'string') return node;
   if (typeof node === 'number') return String(node);

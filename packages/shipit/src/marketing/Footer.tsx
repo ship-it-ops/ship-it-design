@@ -7,11 +7,11 @@ import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
  * Footer — site footer with brand on the left and grouped link columns on
  * the right, plus a copyright line below a divider.
  *
- * Each link column is rendered as a proper `<ul role="list">` so search
- * engines pick up the footer-nav hierarchy correctly. Pass `address` for
- * a contact block that renders inside `<address>` (the semantic element for
- * organization contact info — improves local SEO and structured-data
- * extraction).
+ * Each link column is rendered as a proper `<ul>` of `<li>` link rows so
+ * search engines pick up the footer-nav hierarchy correctly. Pass
+ * `address` for a contact block that renders inside `<address>` (the
+ * semantic element for organization contact info — improves local SEO and
+ * structured-data extraction).
  */
 
 export interface FooterLink {
@@ -60,7 +60,7 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(function Footer(
               <div className="text-text-dim font-mono text-[10px] tracking-[1.2px] uppercase">
                 {col.heading}
               </div>
-              <ul role="list" className="m-0 flex list-none flex-col gap-[6px] p-0">
+              <ul className="m-0 flex list-none flex-col gap-[6px] p-0">
                 {col.links.map((link, j) => (
                   <li key={j}>
                     <a href={link.href} className="text-text-muted hover:text-text no-underline">

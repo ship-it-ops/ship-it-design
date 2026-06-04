@@ -11,6 +11,7 @@ import { Rating } from '../../components/Rating';
 import { cn } from '../../utils/cn';
 import { JsonLd } from '../../utils/JsonLd';
 import { Carousel } from '../Carousel';
+
 import { buildListingSchema } from './listingSchema';
 
 /**

@@ -85,9 +85,9 @@ describe('ComparisonTable', () => {
     const ssrRow = screen.getByRole('rowheader', { name: /^SSR/ }).closest('tr')!;
     const cells = within(ssrRow).getAllByRole('cell');
     // us=true → "Yes"
-    expect(within(cells[0]).getByText('Yes')).toHaveClass('sr-only');
+    expect(within(cells[0]!).getByText('Yes')).toHaveClass('sr-only');
     // a=false → "No"
-    expect(within(cells[1]).getByText('No')).toHaveClass('sr-only');
+    expect(within(cells[1]!).getByText('No')).toHaveClass('sr-only');
 
     expect(cells[0]).toHaveAttribute('data-cell-type', 'boolean');
     expect(cells[0]).toHaveAttribute('data-cell-value', 'true');
@@ -141,8 +141,8 @@ describe('ComparisonTable', () => {
     });
     const tbodies = container.querySelectorAll('tbody[data-group]');
     expect(tbodies.length).toBe(2);
-    expect(tbodies[0].getAttribute('data-group')).toBe('Runtime');
-    expect(tbodies[1].getAttribute('data-group')).toBe('Billing');
+    expect(tbodies[0]!.getAttribute('data-group')).toBe('Runtime');
+    expect(tbodies[1]!.getAttribute('data-group')).toBe('Billing');
     expect(screen.getByText('Runtime')).toBeInTheDocument();
     expect(screen.getByText('Billing')).toBeInTheDocument();
   });
@@ -159,7 +159,7 @@ describe('ComparisonTable', () => {
     const scripts = container.querySelectorAll('script[type="application/ld+json"]');
     expect(scripts.length).toBe(1);
 
-    const parsed = JSON.parse(scripts[0].textContent ?? '[]') as Array<{
+    const parsed = JSON.parse(scripts[0]!.textContent ?? '[]') as Array<{
       '@context': string;
       '@type': string;
       name: string;
@@ -176,13 +176,13 @@ describe('ComparisonTable', () => {
       description: 'The platform.',
       url: 'https://ship.it',
     });
-    expect(parsed[0].additionalProperty).toEqual([
+    expect(parsed[0]!.additionalProperty).toEqual([
       { '@type': 'PropertyValue', name: 'SSR', value: 'Yes' },
       { '@type': 'PropertyValue', name: 'Price', value: '$29' },
       { '@type': 'PropertyValue', name: 'Seats', value: '10' },
     ]);
     // Cell with `false` should serialize to "No" — not be dropped.
-    expect(parsed[1].additionalProperty[0]).toEqual({
+    expect(parsed[1]!.additionalProperty[0]).toEqual({
       '@type': 'PropertyValue',
       name: 'SSR',
       value: 'No',
@@ -338,7 +338,7 @@ describe('ComparisonTable', () => {
     expect(optionHeader.className).toMatch(/text-center/);
     const optionCell = within(
       screen.getByRole('rowheader', { name: /^SSR/ }).closest('tr')!,
-    ).getAllByRole('cell')[0];
+    ).getAllByRole('cell')[0]!;
     expect(optionCell.className).toMatch(/text-center/);
     const rowHeader = screen.getByRole('rowheader', { name: /^SSR/ });
     expect(rowHeader.className).toMatch(/text-left/);

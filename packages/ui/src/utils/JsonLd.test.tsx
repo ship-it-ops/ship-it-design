@@ -9,7 +9,7 @@ describe('JsonLd', () => {
     const { container } = render(<JsonLd data={data} />);
     const scripts = container.querySelectorAll('script[type="application/ld+json"]');
     expect(scripts.length).toBe(1);
-    expect(JSON.parse(scripts[0].textContent ?? '')).toEqual(data);
+    expect(JSON.parse(scripts[0]!.textContent ?? '')).toEqual(data);
   });
 
   it('renders nothing when data is null or undefined', () => {
