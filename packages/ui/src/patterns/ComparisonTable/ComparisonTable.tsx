@@ -58,9 +58,29 @@ export interface ComparisonOption {
    * custom imagery (brand logos, avatars).
    */
   icon?: GlyphName | ReactNode;
-  /** Highlight as the recommended option — accent-tinted column + auto badge. */
+  /**
+   * Highlight as the recommended option — accent-tinted column header + data
+   * cells, and (when `badge` is unset and table-level `showFeaturedBadge` isn't
+   * `false`) an auto pill labelled "recommended" beside the name. The visual
+   * tint stays even when the badge is suppressed.
+   *
+   * Note: the default "recommended" label can read as self-promotional in
+   * own-brand comparisons — pass `badge` to reword (e.g. `"our pick"`), or
+   * suppress the pill with `badge: null` per-column or `showFeaturedBadge=
+   * {false}` at the table level.
+   */
   featured?: boolean;
-  /** Override the auto "recommended" badge. Set to `null` to suppress entirely. */
+  /**
+   * Per-column badge override.
+   *
+   * Precedence (highest → lowest):
+   *  1. `badge: <node>` on this option → render that node (overrides the
+   *     table-level `showFeaturedBadge` toggle).
+   *  2. `badge: null` on this option → no pill, even if `featured: true`.
+   *  3. `featured: true` + table `showFeaturedBadge !== false` → auto
+   *     "recommended" pill.
+   *  4. otherwise → no pill.
+   */
   badge?: ReactNode;
   /** Optional CTA rendered in a `<tfoot>` row when any option provides one. */
   action?: ReactNode;
@@ -114,6 +134,15 @@ export interface ComparisonTableProps {
    * comparison.
    */
   prominentFeatured?: boolean;
+  /**
+   * Whether the auto "recommended" pill on `featured` columns is rendered.
+   * Default `true`. Set `false` to keep the featured column's accent tint and
+   * border but suppress the pill globally — useful when the featured column is
+   * your own brand and "recommended" reads self-promotional. Per-column
+   * `ComparisonOption.badge` still wins over this toggle: pass `badge: <node>`
+   * to render a different label, or `badge: null` to suppress just that column.
+   */
+  showFeaturedBadge?: boolean;
   className?: string;
 }
 
@@ -283,6 +312,7 @@ export function ComparisonTable(props: ComparisonTableProps & { ref?: Ref<HTMLTa
     headerSize = 'md',
     headerAlign = 'left',
     prominentFeatured,
+    showFeaturedBadge = true,
     className,
     ref,
   } = props;
@@ -307,8 +337,10 @@ export function ComparisonTable(props: ComparisonTableProps & { ref?: Ref<HTMLTa
           <tr>
             <th scope="col" className="border-border border-b px-3 py-3" aria-hidden />
             {options.map((option) => {
-              const showAutoBadge = option.featured && option.badge === undefined;
-              const explicitBadge = option.badge !== undefined ? option.badge : null;
+              const explicitlySetBadge = option.badge !== undefined;
+              const showAutoBadge =
+                option.featured === true && !explicitlySetBadge && showFeaturedBadge;
+              const explicitBadge = explicitlySetBadge ? option.badge : null;
               const iconNode = renderOptionIcon(option.icon, iconSizePx[headerSize]);
               const isProminent = !!(option.featured && prominentFeatured);
               return (

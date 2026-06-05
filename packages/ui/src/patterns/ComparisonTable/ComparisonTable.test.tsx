@@ -59,6 +59,40 @@ describe('ComparisonTable', () => {
     expect(featuredCells.length).toBe(rows.length);
   });
 
+  it('suppresses the auto "recommended" pill globally with showFeaturedBadge={false} while keeping the featured tint + border', () => {
+    const { container } = renderBasic({ showFeaturedBadge: false });
+
+    // No auto pill anywhere.
+    expect(screen.queryByText('recommended')).not.toBeInTheDocument();
+
+    // Featured column still carries data-featured and keeps the accent tint on
+    // the header + data cells — visual prominence is preserved.
+    const featuredHeader = screen.getByRole('columnheader', { name: /ShipIt/ });
+    expect(featuredHeader).toHaveAttribute('data-featured', 'true');
+    expect(featuredHeader.className).toMatch(/bg-accent-dim/);
+    expect(featuredHeader.className).toMatch(/border-accent/);
+
+    const featuredCells = container.querySelectorAll('tbody td[data-featured="true"]');
+    expect(featuredCells.length).toBe(rows.length);
+    for (const td of featuredCells) {
+      expect((td as HTMLElement).className).toMatch(/bg-accent-dim/);
+    }
+  });
+
+  it('still renders an explicit per-column badge when showFeaturedBadge={false}', () => {
+    render(
+      <ComparisonTable
+        caption="t"
+        showFeaturedBadge={false}
+        options={[{ id: 'us', name: 'ShipIt', featured: true, badge: 'OUR PICK' }]}
+        rows={[{ feature: 'x', values: { us: true } }]}
+      />,
+    );
+    // Per-column badge wins over the table-level toggle.
+    expect(screen.getByText('OUR PICK')).toBeInTheDocument();
+    expect(screen.queryByText('recommended')).not.toBeInTheDocument();
+  });
+
   it('lets an explicit `badge` override the auto "recommended" pill, and `badge: null` suppresses it', () => {
     const { rerender } = render(
       <ComparisonTable
