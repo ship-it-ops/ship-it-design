@@ -1,6 +1,15 @@
 # EntityTable
 
-Each example below is a real component instance — flip the theme toggle to see how it adapts.
+`DataTable` preset for entity-typed rows. Wraps `<DataTable>` and adds
+two ShipIt-aware column helpers — `entityColumn(…)` for the name +
+glyph cell, and `entityTypeColumn(…)` for a standalone type column.
+Everything else (sort, selection, sticky header, ARIA) comes straight
+from [`DataTable`](/patterns/data-table) — see that page for the full
+column / sort / selection model.
+
+The required row shape is `{ id, type, name }` (plus any of your own
+fields). `rowKey` defaults to `(row) => row.id` so most consumers can
+skip it.
 
 ## Sortable
 
@@ -10,7 +19,46 @@ Each example below is a real component instance — flip the theme toggle to see
 
 <LivePreview example="entity-table/selectable" />
 
-## Props
+## Pre-built columns
+
+### `entityColumn<T>(options?)`
+
+Returns a `DataTableColumn<T>` that renders the type glyph (in the
+type's tone) followed by the name in mono. Sorts on `name`. Options:
+
+- **`key?: string`** — column key. Default `'name'`.
+- **`header?: string`** — column header text. Default `'Name'`.
+
+### `entityTypeColumn<T>(options?)`
+
+Returns a `DataTableColumn<T>` that renders the canonical
+`<EntityBadge>` for the row's type. Sorts on `type`. Options:
+
+- **`key?: string`** — column key. Default `'type'`.
+- **`header?: string`** — column header text. Default `'Type'`.
+
+Compose with your own columns for the rest of the row:
+
+```tsx
+import { EntityTable, entityColumn, entityTypeColumn } from '@ship-it-ui/shipit';
+
+const columns: DataTableColumn<Row>[] = [
+  entityColumn(),
+  entityTypeColumn(),
+  { key: 'owner', header: 'Owner', accessor: (r) => r.owner },
+];
+
+<EntityTable data={rows} columns={columns} />;
+```
+
+## Column definition
+
+The column shape is the same as `DataTable<T>`'s `DataTableColumn<T>`
+— `key` / `header` / `cell` / `accessor` / `align` / `width`. See
+[DataTable → Column definition](/patterns/data-table#column-definition-datatablecolumnt)
+for the field reference.
+
+## Top-level props
 
 <PropsTable component="EntityTable" />
 

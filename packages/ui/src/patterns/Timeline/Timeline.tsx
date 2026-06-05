@@ -3,6 +3,7 @@
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 import { cn } from '../../utils/cn';
+import { DateTime } from '../../utils/DateTime';
 
 /**
  * Timeline — vertical event list with a connecting rule between markers.
@@ -17,6 +18,12 @@ export interface TimelineEvent {
   description?: ReactNode;
   /** Time label rendered in mono. */
   time?: ReactNode;
+  /**
+   * Machine-readable ISO 8601 string or `Date` for the event. When set, the
+   * visible `time` is wrapped in `<time dateTime="…">` so crawlers and AI
+   * agents get a timestamp without parsing the label.
+   */
+  dateTime?: string | Date;
   /** Marker color tone. Defaults to `accent`. */
   tone?: TimelineEventTone;
 }
@@ -50,7 +57,13 @@ export const Timeline = forwardRef<HTMLOListElement, TimelineProps>(function Tim
     >
       {events
         ? events.map((e, i) => (
-            <TimelineItem key={i} tone={e.tone} time={e.time} description={e.description}>
+            <TimelineItem
+              key={i}
+              tone={e.tone}
+              time={e.time}
+              dateTime={e.dateTime}
+              description={e.description}
+            >
               {e.title}
             </TimelineItem>
           ))
@@ -65,10 +78,15 @@ export interface TimelineItemProps extends HTMLAttributes<HTMLLIElement> {
   tone?: TimelineEventTone;
   description?: ReactNode;
   time?: ReactNode;
+  /**
+   * Machine-readable ISO 8601 string or `Date`. When set, the visible `time`
+   * is wrapped in `<time dateTime="…">`.
+   */
+  dateTime?: string | Date;
 }
 
 export const TimelineItem = forwardRef<HTMLLIElement, TimelineItemProps>(function TimelineItem(
-  { tone = 'accent', description, time, className, children, ...props },
+  { tone = 'accent', description, time, dateTime, className, children, ...props },
   ref,
 ) {
   return (
@@ -82,7 +100,14 @@ export const TimelineItem = forwardRef<HTMLLIElement, TimelineItemProps>(functio
       />
       <div className="text-[13px] font-medium">{children}</div>
       {description && <div className="text-text-muted text-[12px]">{description}</div>}
-      {time && <div className="text-text-dim mt-[2px] font-mono text-[10px]">{time}</div>}
+      {time &&
+        (dateTime !== undefined ? (
+          <DateTime iso={dateTime} className="text-text-dim mt-[2px] block font-mono text-[10px]">
+            {time}
+          </DateTime>
+        ) : (
+          <div className="text-text-dim mt-[2px] font-mono text-[10px]">{time}</div>
+        ))}
     </li>
   );
 });

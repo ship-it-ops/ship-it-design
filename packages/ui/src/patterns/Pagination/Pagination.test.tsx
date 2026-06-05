@@ -41,6 +41,19 @@ describe('Pagination', () => {
     );
   });
 
+  it('renders page buttons inside an <ol> of <li> rows', () => {
+    const { container } = render(<Pagination page={3} total={5} onPageChange={() => {}} />);
+    const ol = container.querySelector('nav > ol');
+    expect(ol).not.toBeNull();
+    // Five pages → five <li>; each carries either a page button or an ellipsis span.
+    const items = ol!.querySelectorAll(':scope > li');
+    expect(items.length).toBeGreaterThanOrEqual(3);
+    // Numeric page buttons live inside <li>, not as raw <nav> siblings.
+    for (const btn of container.querySelectorAll('button[aria-label^="Go to page"]')) {
+      expect(btn.parentElement?.tagName).toBe('LI');
+    }
+  });
+
   it('has no a11y violations', async () => {
     const { container } = render(<Pagination page={3} total={10} onPageChange={() => {}} />);
     expect(await axe(container)).toHaveNoViolations();

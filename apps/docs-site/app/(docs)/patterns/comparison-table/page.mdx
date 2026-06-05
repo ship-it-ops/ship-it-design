@@ -1,0 +1,175 @@
+# ComparisonTable
+
+A row-headed matrix for option-vs-option comparisons — product against
+competitor, plan tier against plan tier, spec sheet against spec sheet.
+Rows are features. Columns are options. Cells are values.
+
+The component is designed to be **read by AI agents and search crawlers**
+as well as humans. Every instance ships a schema.org JSON-LD entity per
+column, semantic `<th scope="col">` / `<th scope="row">` markup, and a
+layer of `data-*` attributes that crawlers without JavaScript can still
+parse. See [AI / SEO surface](#ai--seo-surface) for the full story.
+
+## The data shape
+
+You pass three things: an `options` array (the columns), a `rows` array
+(the features being compared), and a `caption` (the screen-reader label,
+also reused as the JSON-LD comparison name).
+
+```tsx
+<ComparisonTable
+  caption="Plans compared"
+  options={[
+    { id: 'free', name: 'Free' },
+    { id: 'pro', name: 'Pro', featured: true },
+  ]}
+  rows={[
+    { feature: 'SSO', values: { free: false, pro: true } },
+    { feature: 'Price', values: { free: '$0', pro: '$29' } },
+  ]}
+/>
+```
+
+Each row's `values` object is **keyed by `option.id`** — that's how the
+table matches a cell to a column. Cells accept booleans (rendered as a
+green check or red cross with a screen-reader "Yes"/"No"), strings,
+numbers, or a `{ value, note }` object when you want a value with a
+small footnote below it. A missing key renders as an em-dash.
+
+## Basic
+
+The minimum viable comparison — three options, four boolean features,
+zero ceremony. The `schema="SoftwareApplication"` prop tells the
+JSON-LD emitter to mark each option as a `SoftwareApplication` rather
+than the default `Product`.
+
+<LivePreview example="comparison-table/basic" />
+
+## Featured tier
+
+Pricing-page shape. One option carries `featured: true` to get the
+accent-tinted column and the auto **recommended** badge in the header,
+and the table is pushed into PricingCard territory with three
+table-level options:
+
+- `prominentFeatured` lifts the featured column with a raised-tab
+  header, top-and-side accent borders, more padding, and a soft glow.
+- `headerSize="lg"` scales the option name to 18px (the small icons
+  scale to 20px to match).
+- `headerAlign="center"` centers both the option headers and the data
+  cells beneath them. The row-header column stays left-aligned.
+
+Each option also uses the per-column expressiveness — `tagline` for the
+small uppercase eyebrow above the name (`STARTER`, `MOST POPULAR`),
+`icon` for the inline glyph before the name, `description` for the
+muted explainer line under the name, and `action` for the CTA button
+that drops into the `<tfoot>` row. Cell values mix all three types:
+booleans for feature presence, strings for plain values, and a
+`{ value, note }` object on the Pro tier's price.
+
+<LivePreview example="comparison-table/featured" />
+
+## Grouped specs
+
+Spec-sheet shape. Rows carry a `group` string, and the table
+automatically clusters consecutive rows with the same group under a
+small uppercase section header. The featured option overrides the auto
+"recommended" pill with a custom `badge: 'NEW'`, and `density="compact"`
+tightens the row padding for long spec lists. Row-level `description`
+on the CPU row adds a small footnote under the feature name.
+
+<LivePreview example="comparison-table/grouped" />
+
+## Per-column options (`ComparisonOption`)
+
+Everything you can put on each column. `id` and `name` are required;
+the rest are optional.
+
+- **`id: string`** — stable key. Must match the keys you use in each
+  row's `values` record. Doubles as the React key for the column.
+- **`name: ReactNode`** — visible column header. Pass a string for the
+  simple case or JSX to mix in icons / spans.
+- **`schemaName?: string`** — fallback for the JSON-LD `name` field
+  when `name` is JSX. Without it, JSX-named columns are silently
+  excluded from JSON-LD rather than rendering JSX into JSON.
+- **`description?: ReactNode`** — short muted line rendered under the
+  name in the header, **and** threaded into JSON-LD as the entity's
+  `description` (when the value is a string).
+- **`url?: string`** — JSON-LD `url`. Useful when the comparison feeds
+  Google's Rich Results.
+- **`tagline?: ReactNode`** — uppercase-mono eyebrow above the name.
+  For labels like `STARTER`, `MOST POPULAR`, `CUSTOM`.
+- **`icon?: GlyphName | ReactNode`** — inline mark before the name.
+  A string is looked up in the design-system glyph manifest
+  (compile-time checked); JSX is rendered as-is for brand logos or
+  custom avatars.
+- **`featured?: boolean`** — accent-tinted column. When set, the
+  header gets an auto "recommended" pill (suppress or replace with
+  `badge`) and the column data carries `data-featured="true"`.
+- **`badge?: ReactNode`** — overrides the auto "recommended" pill on
+  a featured column. Pass any node, or `null` to remove the pill
+  entirely.
+- **`action?: ReactNode`** — CTA button. When at least one column
+  provides an action, the table renders a `<tfoot>` row and each
+  column's `action` lands in its column. Columns without an action
+  contribute an empty cell.
+
+## Per-row options (`ComparisonRow`)
+
+Everything you can put on each row.
+
+- **`feature: ReactNode`** (required) — visible row header. Rendered
+  as `<th scope="row">`.
+- **`schemaName?: string`** — fallback for the JSON-LD
+  `PropertyValue.name` when `feature` is JSX. Rows whose feature
+  isn't string-resolvable are skipped from JSON-LD.
+- **`description?: ReactNode`** — small muted line under the feature
+  name (visual only — not in JSON-LD).
+- **`group?: string`** — clusters consecutive rows with the same
+  group under a section header in its own `<tbody>`. Switching
+  group strings starts a new section automatically.
+- **`values: Record<optionId, ComparisonCellValue | undefined>`**
+  (required) — the actual cell data. Keys are column `id`s.
+
+## Cell values (`ComparisonCellValue`)
+
+A cell can be any of:
+
+- **`true`** — green check icon with sr-only "Yes". `data-cell-type="boolean"`, `data-cell-value="true"`.
+- **`false`** — red cross icon with sr-only "No". `data-cell-type="boolean"`, `data-cell-value="false"`.
+- **`string`** — rendered as text. `data-cell-type="text"`, `data-cell-value=<the string>`.
+- **`number`** — rendered as text. `data-cell-type="number"`.
+- **`{ value: ReactNode; note?: ReactNode }`** — primary value with a
+  small muted footnote below. Use for things like `$29` / `per user / month`,
+  or `120 Hz` / `ProMotion`. `data-cell-type="rich"`; `data-cell-value` is
+  set when `value` is a string or number.
+- **`undefined`** (or key absent) — em-dash placeholder.
+  `data-cell-type="empty"`.
+
+## AI / SEO surface
+
+Whatever else you configure, every `ComparisonTable` exposes the same
+machine-readable layer:
+
+- A single `<script type="application/ld+json">` is rendered as a
+  sibling of the table, carrying an array of schema.org entities — one
+  per option. Each row contributes a `PropertyValue` under
+  `additionalProperty` on every option. The `</` characters are escaped
+  to `<` so user-supplied strings can't break out of the script
+  tag. Override the `@type` with `schema` (`'Product'` default,
+  `'Service'`, `'SoftwareApplication'`, or any custom string). Opt out
+  per-instance with `noStructuredData`.
+- The rendered HTML uses `<caption>` (sr-only), `<th scope="col">` per
+  option header, and `<th scope="row">` per feature — exactly what
+  Google and AI agents expect for a row-headed comparison.
+- Featured columns and every data cell carry `data-featured`,
+  `data-cell-type`, and `data-cell-value` attributes so crawlers that
+  don't execute JS still get a structured read of the comparison.
+
+## Table-level props
+
+Everything in `ComparisonTableProps`.
+
+<PropsTable component="ComparisonTable" />
+
+<EditOnGithub source="apps/docs-site/app/(docs)/patterns/comparison-table/page.mdx" />

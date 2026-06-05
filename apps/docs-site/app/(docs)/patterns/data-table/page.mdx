@@ -1,16 +1,90 @@
 # DataTable
 
-Each example below is a real component instance — flip the theme toggle to see how it adapts.
+A generic, sortable, selectable table. You bring the data and a set of
+column definitions; the component handles sort state, selection (with
+the indeterminate "select-all"), sticky header positioning, and the
+ARIA scaffolding (`<th scope="col">`, `aria-sort`, `aria-label` on
+checkboxes, a sr-only `<caption>`).
+
+`DataTable` is generic over the row type — the column `cell` and
+`accessor` callbacks are fully typed against the row shape you pass in.
+
+## The data shape
+
+You pass two things: an array of `columns` (the column definitions)
+and the `data` to render under them, plus a `rowKey` that returns a
+stable id for each row.
+
+```tsx
+const columns: DataTableColumn<Service>[] = [
+  { key: 'name', header: 'Name', accessor: (r) => r.name },
+  { key: 'status', header: 'Status', cell: (r) => <StatusDot state={r.status} /> },
+];
+
+<DataTable data={services} columns={columns} rowKey={(r) => r.id} />;
+```
+
+`accessor` and `cell` are separate by design: `accessor` returns the
+sort key (a string or number), `cell` returns the rendered JSX. A
+column with only `cell` and no `accessor` renders but isn't sortable.
 
 ## Sortable
+
+Click a column header with an `accessor` to toggle the sort direction
+through `asc → desc → none`. Strings sort via `localeCompare`,
+numbers via subtraction, and the sorted column carries `aria-sort` for
+screen readers. Pass `defaultSort` for the uncontrolled-with-initial
+case, or `sort` + `onSortChange` to drive sort state from a parent.
 
 <LivePreview example="data-table/sortable" />
 
 ## Selectable
 
+Pass `selectable` to render a leading checkbox column. The header
+checkbox shows three states — empty, indeterminate (some rows
+selected), and checked (all rows). Selection is a `ReadonlySet<string>`
+of row ids, controlled via `selected`+`onSelectionChange` or
+uncontrolled via `defaultSelected`.
+
 <LivePreview example="data-table/selectable" />
 
-## Props
+## Column definition (`DataTableColumn<T>`)
+
+Each column is an object describing one column of the table.
+
+- **`key: string`** (required) — stable id for the column. Used as
+  the React key and as the value matched against `sort.key`.
+- **`header: ReactNode`** (required) — header cell content.
+- **`cell?: (row: T) => ReactNode`** — custom cell renderer. Defaults
+  to the accessor's stringified return value.
+- **`accessor?: (row: T) => string | number`** — returns the sort key
+  for `row`. When omitted, the column is not sortable.
+- **`align?: 'left' | 'right' | 'center'`** — horizontal alignment for
+  both header and data cells in the column.
+- **`width?: number | string`** — explicit width; numbers are treated
+  as pixels.
+
+## Sort state (`DataTableSort`)
+
+The sort prop is `{ key: string; direction: 'asc' | 'desc' } | null`.
+`null` means unsorted; the table renders rows in their original order.
+The `key` must match a column whose `accessor` is defined — sorts
+pointing at non-sortable columns are silently ignored.
+
+## Selection model
+
+`selected` is a `ReadonlySet<string>` of row ids matching whatever
+`rowKey(row)` returns. The empty default is a shared frozen singleton
+so `.has(id)` lookups stay cheap across renders. When passing your
+own selection, prefer constructing a single `new Set([...])` outside
+the render rather than recreating it on every render.
+
+`onSelectionChange` is called with the next set whenever a row or the
+select-all checkbox toggles. The header checkbox's `indeterminate`
+state is set imperatively in an effect since React doesn't expose it
+as a prop on `<input>`.
+
+## Table-level props
 
 <PropsTable component="DataTable" />
 

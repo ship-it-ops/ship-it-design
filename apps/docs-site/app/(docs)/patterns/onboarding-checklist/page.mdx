@@ -1,22 +1,64 @@
 # OnboardingChecklist
 
-Getting-started task list keyed to remote progress. Each item has a `status`
-(`pending` / `in-progress` / `done`) that decides the dot tone, label
-treatment (the `done` row is struck through), and pulse behavior. An
-optional `action` slot — typically a `Button` — sits on the right.
+Getting-started task list keyed to remote progress. Each item has a
+`status` (`pending` / `in-progress` / `done`) that decides the dot
+tone, label treatment (the `done` row is struck through), and pulse
+behavior. An optional `action` slot — typically a `Button` — sits on
+the right.
 
 The header shows aggregate progress as a token-styled bar; pass
 `progressLabel` to override the default _N of M complete_ text or
 `hideProgress` to drop the bar entirely.
 
+## The data shape
+
+```tsx
+<OnboardingChecklist
+  items={[
+    { id: 'a', label: 'Install the CLI', status: 'done' },
+    { id: 'b', label: 'Connect a repo', status: 'in-progress', action: <Button>Connect</Button> },
+    { id: 'c', label: 'Invite teammates', status: 'pending' },
+  ]}
+  onItemClick={(id) => router.push(`/setup/${id}`)}
+/>
+```
+
 ## Default
 
-Four-step setup. Click handlers (`onItemClick`) make the whole row clickable
-when supplied — useful for jumping to the relevant settings page.
+Four-step setup. Click handlers (`onItemClick`) make the whole row
+clickable when supplied — useful for jumping to the relevant settings
+page.
 
 <LivePreview example="onboarding-checklist/default" />
 
-## Props
+## Item (`OnboardingItem`)
+
+- **`id: string`** (required) — stable id. Passed to `onItemClick`
+  when the row is clicked.
+- **`label: ReactNode`** (required) — primary task line.
+- **`description?: ReactNode`** — secondary muted line under the
+  label.
+- **`status: OnboardingItemStatus`** (required) — one of
+  `'pending'` / `'in-progress'` / `'done'`. See below.
+- **`action?: ReactNode`** — trailing call-to-action, typically a
+  `Button`. Renders on the right of the row, suppressing the
+  whole-row click target so the button gets the click.
+
+## Status (`OnboardingItemStatus`)
+
+Drives the dot tone and the label treatment for the row.
+
+- **`'pending'`** — dot is `off` (dim outline); label uses the normal
+  text color. The "you haven't started" state.
+- **`'in-progress'`** — dot is `sync` (pulsing accent); label uses
+  the normal text color. The "this is happening now" state.
+- **`'done'`** — dot is `ok` (green); label is dim and struck through.
+  The completed state.
+
+The header counts the `done` items and shows `{done} of {total}
+complete` next to the progress bar.
+
+## Top-level props
 
 <PropsTable component="OnboardingChecklist" />
 

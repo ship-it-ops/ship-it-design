@@ -1,6 +1,6 @@
 # Agent Context
 
-Last updated: 2026-06-02 | Total notes: 39
+Last updated: 2026-06-04 | Total notes: 43
 
 <!--
   This file is the index for `docs/agent/`. Agents read it at session start.
@@ -38,6 +38,8 @@ _None._
 - [separate-renderer-packages](decisions/separate-renderer-packages.md) | decision | active | standard | 2026-05-21 | Cytoscape, react-flow, MapLibre as optional packages
 - [next-16-react-19-baseline](decisions/next-16-react-19-baseline.md) | decision | active | core | 2026-05-27 | Next 16 + React 19.2 baseline; React Compiler opt-in
 - [internal-dep-cascade-on-publish](decisions/internal-dep-cascade-on-publish.md) | decision | active | standard | 2026-06-02 | Keep ui-dependent cascade on publish until 1.0
+- [comparison-table-jsonld-strategy](decisions/comparison-table-jsonld-strategy.md) | decision | active | standard | 2026-06-04 | JSON-LD (not microdata) for design-system structured data
+- [heading-level-configurability](decisions/heading-level-configurability.md) | decision | active | standard | 2026-06-04 | titleAs is the convention for configurable heading levels
 
 ## Plans
 
@@ -59,6 +61,8 @@ _None._
 - [derive-during-render-stale-clear](patterns/derive-during-render-stale-clear.md) | pattern | active | standard | 2026-06-01 | Clear stale id state during render, not in an effect
 - [goto-in-progress-suppression](patterns/goto-in-progress-suppression.md) | pattern | active | standard | 2026-06-02 | Suppress onScroll setActive during in-flight goTo smooth scroll
 - [selection-ring-on-rendered-child](patterns/selection-ring-on-rendered-child.md) | pattern | active | standard | 2026-06-02 | Apply selection ring to child so it follows consumer shape
+- [structured-data-injection-pattern](patterns/structured-data-injection-pattern.md) | pattern | active | standard | 2026-06-04 | <JsonLd> + schema?/noStructuredData? recipe for components
+- [datetime-wrapper-pattern](patterns/datetime-wrapper-pattern.md) | pattern | active | standard | 2026-06-04 | <time dateTime> opt-in via dateTime? prop alongside visible label
 
 ## Open Questions
 

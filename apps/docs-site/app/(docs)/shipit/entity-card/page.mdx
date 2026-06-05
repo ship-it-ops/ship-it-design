@@ -1,6 +1,11 @@
 # EntityCard
 
-Each example below is a real component instance — flip the theme toggle to see how it adapts.
+Display card for a graph entity (service, person, datasource, …). A
+tinted icon plate, type badge, title, optional subtitle and
+description, and an optional stats grid running across the bottom.
+
+The card glyph and tone are derived from the entity `type` via
+`getEntityTypeMeta`. Pass `glyph` to override the default icon.
 
 ## Service
 
@@ -10,7 +15,21 @@ Each example below is a real component instance — flip the theme toggle to see
 
 <LivePreview example="entity-card/incident" />
 
-## Props
+## Stat tile (`EntityStat`)
+
+Each entry in `stats`. Stats render as evenly-spaced cells in a
+divided grid below the card body — up to 6 fit comfortably across
+one row.
+
+- **`label: ReactNode`** (required) — small uppercase label above the
+  value (e.g. "Uptime", "Last deploy", "MTBF").
+- **`value: ReactNode`** (required) — the headline value
+  (`"99.95%"`, `"2h ago"`, `"412 days"`).
+- **`tone?: 'accent' | 'ok' | 'warn' | 'err' | 'muted'`** — tone for
+  the value text. Default is the plain `text-text` color; use the
+  tones to surface anomalies at a glance.
+
+## Top-level props
 
 <PropsTable component="EntityCard" />
 

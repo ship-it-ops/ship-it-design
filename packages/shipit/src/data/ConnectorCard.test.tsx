@@ -95,4 +95,73 @@ describe('ConnectorCard', () => {
     );
     expect(await axe(container)).toHaveNoViolations();
   });
+
+  it('emits a SoftwareApplication JSON-LD with name, dateModified, and consumer-supplied extras', () => {
+    const { container } = render(
+      <ConnectorCard
+        connector="github"
+        name="GitHub"
+        status="connected"
+        lastSyncedAt={new Date('2026-05-10T08:00:00Z')}
+        relativeNow={NOW}
+        applicationCategory="DeveloperApplication"
+        url="https://ship.it/connectors/github"
+        softwareVersion="2.1.0"
+      />,
+    );
+    const parsed = JSON.parse(
+      container.querySelector('script[type="application/ld+json"]')?.textContent ?? '{}',
+    );
+    expect(parsed).toMatchObject({
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: 'GitHub',
+      applicationCategory: 'DeveloperApplication',
+      url: 'https://ship.it/connectors/github',
+      softwareVersion: '2.1.0',
+      dateModified: '2026-05-10T08:00:00.000Z',
+    });
+  });
+
+  it('skips JSON-LD when name is JSX without nameText fallback', () => {
+    const { container } = render(
+      <ConnectorCard connector="github" name={<span>GitHub</span>} status="connected" />,
+    );
+    expect(container.querySelector('script[type="application/ld+json"]')).toBeNull();
+  });
+
+  it('uses nameText fallback when name is JSX', () => {
+    const { container } = render(
+      <ConnectorCard
+        connector="github"
+        name={<span>GitHub</span>}
+        nameText="GitHub"
+        status="connected"
+      />,
+    );
+    const parsed = JSON.parse(
+      container.querySelector('script[type="application/ld+json"]')?.textContent ?? '{}',
+    );
+    expect(parsed.name).toBe('GitHub');
+  });
+
+  it('omits the JSON-LD script when noStructuredData is set', () => {
+    const { container } = render(
+      <ConnectorCard connector="github" name="GitHub" status="connected" noStructuredData />,
+    );
+    expect(container.querySelector('script[type="application/ld+json"]')).toBeNull();
+  });
+
+  it('escapes </script> in name', () => {
+    const { container } = render(
+      <ConnectorCard
+        connector="github"
+        name={'</script><img onerror=alert(1)>'}
+        status="connected"
+      />,
+    );
+    const script = container.querySelector('script[type="application/ld+json"]')!;
+    expect(script.innerHTML).not.toMatch(/<\/script>/i);
+    expect(script.innerHTML).toContain('\\u003c/script>');
+  });
 });

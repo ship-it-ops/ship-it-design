@@ -1,23 +1,70 @@
 # ActivityTimeline
 
-Typed-event variant of `Timeline`. Each event carries an optional `icon`, an
-`actor` (name + avatar slot), a `title`, an `at` timestamp formatted
-relative to `relativeNow` via the exported `formatRelative` helper, and an
-optional collapsed `payload` preview. Tones drive the marker color and
-match the shared `TimelineEventTone` palette.
+Typed-event variant of `Timeline`. Each event carries an optional
+`icon`, an `actor` (name + avatar slot), a `title`, an `at` timestamp
+formatted relative to `relativeNow` via the exported `formatRelative`
+helper, and an optional collapsed `payload` preview. Tones drive the
+marker color and match the shared `TimelineEventTone` palette.
+
+The `at` field is rendered as `<time dateTime="…">` automatically — no
+opt-in required — so the feed stays machine-readable for crawlers and
+AI agents without any extra work on the consumer side.
+
+## The data shape
+
+```tsx
+<ActivityTimeline
+  events={[
+    {
+      id: '1',
+      icon: <IconGlyph name="deploy" />,
+      actor: { name: 'Priya', avatar: <Avatar name="PK" /> },
+      title: 'Deployed v0.42 to production',
+      at: '2026-05-10T09:42:00Z',
+      tone: 'ok',
+    },
+  ]}
+  relativeNow={new Date('2026-05-10T12:00:00Z')}
+/>
+```
 
 ## Default
 
 A typical activity feed with deploy, incident, and doc events. Pass
-`relativeNow` for deterministic rendering — useful for SSR snapshots and
-tests where `new Date()` would drift.
+`relativeNow` for deterministic rendering — useful for SSR snapshots
+and tests where `new Date()` would drift.
 
 <LivePreview example="activity-timeline/default" />
 
-## formatRelative
+## Event (`ActivityEvent`)
 
-The same helper used by ActivityTimeline is exported for any surface that
-prints typed timestamps:
+- **`id: string`** (required) — stable id. Used as the React key.
+- **`title: ReactNode`** (required) — primary event line.
+- **`at: Date | string | number`** (required) — event time. Anything
+  accepted by `new Date(…)`. Rendered as a relative label (via
+  `formatRelative`) **and** as a machine-readable `dateTime` attribute
+  on the `<time>` element.
+- **`icon?: ReactNode`** — leading icon, often an `<IconGlyph>`.
+- **`actor?: ActivityActor`** — the actor who performed the event. See
+  below.
+- **`payload?: ReactNode`** — optional inline preview rendered in a
+  framed mono panel under the event line (diff snippet, payload
+  summary, log excerpt).
+- **`tone?: TimelineEventTone`** — marker color. `'accent'` /
+  `'ok'` / `'warn'` / `'err'` / `'muted'`. Default `'accent'`. Same
+  palette as `<Timeline>` — see
+  [Timeline → Marker tones](/patterns/timeline#marker-tones).
+
+## Actor (`ActivityActor`)
+
+- **`name: ReactNode`** (required) — actor display name.
+- **`avatar?: ReactNode`** — typically an `<Avatar>` or `<IconGlyph>`;
+  rendered before the name on the actor line.
+
+## `formatRelative`
+
+The same helper used by `ActivityTimeline` is exported for any
+surface that prints typed timestamps:
 
 ```ts
 import { formatRelative } from '@ship-it-ui/ui';
@@ -26,7 +73,11 @@ formatRelative(new Date('2026-05-09T12:00:00Z'), new Date('2026-05-10T12:00:00Z'
 // => "1d ago"
 ```
 
-## Props
+The output bucket is chosen by the gap between the two dates: seconds,
+minutes, hours, days, weeks, months, years. Anything more than a year
+falls back to an absolute date.
+
+## Top-level props
 
 <PropsTable component="ActivityTimeline" />
 

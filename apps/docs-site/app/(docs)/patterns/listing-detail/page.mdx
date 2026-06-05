@@ -6,9 +6,20 @@ feature chips, description, primary/secondary CTAs. Stacks on narrow
 viewports. Built on Radix Dialog so focus trap, Escape, and ARIA
 descriptions come for free.
 
-Pair with `ListingCard`: the card is the grid affordance; `ListingDetail`
-is the modal a user sees after clicking it. Saves consumers from
-hand-assembling Dialog + Carousel + Lightbox + a marketplace info layout.
+Pair with `ListingCard`: the card is the grid affordance;
+`ListingDetail` is the modal a user sees after clicking it. Saves
+consumers from hand-assembling Dialog + Carousel + Lightbox + a
+marketplace info layout.
+
+The two variants mirror `ListingCard`:
+
+- **`default`** — rating, host, features, primary / secondary CTAs.
+- **`spec`** — flag pill, photo counter, spec grid, dark CTA bar with
+  a single primary action.
+
+`ListingDetail` also emits schema.org JSON-LD by default — the script
+is rendered as a sibling of the Radix Dialog root so crawlers see it
+regardless of `open` state.
 
 ## Default
 
@@ -23,36 +34,86 @@ mechanics.
 
 ## Spec
 
-`variant="spec"` mirrors `ListingCard`'s spec variant at modal scale: a
-flag pill on the photo, photo counter, a larger stats grid in the info
-column, and a dark CTA bar at the bottom with the price + a single
-primary action. Use it as the natural detail view for spec-driven
-cards — clicking the spec card's CTA promotes into this popup.
+`variant="spec"` mirrors `ListingCard`'s spec variant at modal scale:
+a flag pill on the photo, photo counter, a larger stats grid in the
+info column, and a dark CTA bar at the bottom with the price + a
+single primary action.
 
 <LivePreview example="listing-detail/spec" />
 
-## Props
+## Host (`ListingDetailHost`)
 
-<PropsTable component="ListingDetail" />
+The host card rendered in the info column (default variant).
+
+- **`name: ReactNode`** (required) — host display name.
+- **`avatarUrl?: string`** — host avatar URL.
+- **`verified?: boolean`** — when true, renders a small `verified`
+  badge next to the name.
+- **`meta?: ReactNode`** — free-text line under the name
+  (e.g. "Host since 2022 · 312 trips").
+
+## Feature chip (`ListingDetailFeature`)
+
+Each chip in the feature row (default variant) — typically things like
+"4 seats", "Auto", "Bluetooth".
+
+- **`icon: GlyphName`** (required) — glyph from the design-system
+  manifest.
+- **`label: ReactNode`** (required) — chip text.
+
+## Action (`ListingDetailAction`)
+
+Primary or secondary CTA in the default variant. The same shape is
+used for both `primaryAction` and `secondaryAction`.
+
+- **`label: ReactNode`** (required) — button text.
+- **`onClick?: () => void`** — click handler.
+- **`href?: string`** — when set, renders the button as an `<a>` for
+  native navigation.
+- **`disabled?: boolean`** — disables without removing focusability,
+  so tooltips on the disabled state still work.
+
+## Spec variant slots
+
+`variant="spec"` shares its `flag` / `category` / `meta` / `specs`
+shapes with `ListingCard`. See
+[ListingCard → Flag pill](/patterns/listing-card#flag-pill-listingcardflag),
+[Spec cell](/patterns/listing-card#spec-cell-listingcardspec), and
+[Footer CTA](/patterns/listing-card#footer-cta-listingcardcta) for
+each shape's fields.
+
+## AI / SEO surface
+
+Same shape as `ListingCard`. Default `@type` is `Accommodation` for
+the default variant, `Product` for the spec variant. Override via
+`schema?`. Pass `priceCurrency?` to include an `offers` block, `url?`
+for the entity URL, `titleText?` and `descriptionText?` for the JSON-LD
+`name`/`description` fallbacks when those props are JSX.
+`noStructuredData` opts out entirely.
 
 ## Accessibility
 
 - `role="dialog"` with focus trap, Escape closes, Tab cycles controls.
-- The hidden `<DialogTitle>` defaults to the string form of `title`. When
-  `title` is a React node, pass `ariaLabel` explicitly so screen readers
-  still get a real name for the dialog.
-- The gallery is a single `<button>` with `aria-label="Open photo viewer"`
-  — clicking promotes the active photo into a fullscreen `Lightbox`.
+- The hidden `<DialogTitle>` defaults to the string form of `title`.
+  When `title` is a React node, pass `ariaLabel` explicitly so screen
+  readers still get a real name for the dialog.
+- The gallery is a single `<button>` with
+  `aria-label="Open photo viewer"` — clicking promotes the active
+  photo into a fullscreen `Lightbox`.
 - The `Rating` row uses a visually-hidden `<Rating readOnly />` so the
   star count and total reviews are announced.
-- Close button is always reachable in the top-right corner — same Radix
-  `Close` plumbing as `Dialog`.
+- Close button is always reachable in the top-right corner.
+
+## Top-level props
+
+<PropsTable component="ListingDetail" />
 
 ## Composition
 
-`ListingDetail` is an opinionated assembly over `Carousel`, `Lightbox`,
-`Rating`, `Avatar`, `Badge`, and `Button`. If you need an unusual layout
-(e.g. a sticky booking panel, embedded map, host reviews list), drop
-down to those primitives — the source file is a fair reference.
+`ListingDetail` is an opinionated assembly over `Carousel`,
+`Lightbox`, `Rating`, `Avatar`, `Badge`, and `Button`. If you need an
+unusual layout (e.g. a sticky booking panel, embedded map, host
+reviews list), drop down to those primitives — the source file is a
+fair reference.
 
 <EditOnGithub source="apps/docs-site/app/(docs)/patterns/listing-detail/page.mdx" />

@@ -1,7 +1,12 @@
 # PriceBreakdown
 
-Labelled line items with optional `subLabel`, `originalAmount` strike-through,
-and a totals row. For booking summaries, checkout sheets, trip receipts.
+Labelled line items with optional `subLabel`, `originalAmount`
+strike-through, and a totals row. For booking summaries, checkout
+sheets, trip receipts.
+
+You can either pass an `items` array for the simple case or compose
+with `<PriceBreakdown.Line>` children when you need custom rows
+interleaved with the data ones.
 
 ## Default
 
@@ -9,20 +14,26 @@ and a totals row. For booking summaries, checkout sheets, trip receipts.
 
 ## Promo / discount
 
-`originalAmount` renders a strike-through in the `sale` semantic token.
-Setting `discount` on the amount paints it in `saleText`.
+`originalAmount` renders a strike-through in the `sale` semantic
+token. Setting `discount` on the amount paints it in `saleText`.
 
 <LivePreview example="price-breakdown/promo" />
 
-## Props
+## Line item (`PriceBreakdownItem`)
 
-### PriceBreakdown
+Each entry in `items` (or the props on `<PriceBreakdown.Line>`).
 
-<PropsTable component="PriceBreakdown" />
-
-### PriceBreakdown.Line
-
-<PropsTable component="PriceBreakdownLine" />
+- **`label: ReactNode`** (required) — primary label on the left.
+- **`subLabel?: ReactNode`** — small muted secondary line under the
+  label (e.g. "$89 × 3 nights" under "Trip price").
+- **`amount: ReactNode`** (required) — right-aligned amount column.
+  Pre-formatted (`"$267"`, `"−$25"`).
+- **`originalAmount?: ReactNode`** — strike-through original price
+  shown next to the amount in the `sale` color. Use for promos that
+  reveal "was X, now Y".
+- **`discount?: boolean`** — when true, the amount renders in the
+  `saleText` color (the design system's discount color). Use for the
+  discount line itself (typically a negative amount).
 
 ## Composition
 
@@ -33,5 +44,15 @@ Setting `discount` on the amount paints it in `saleText`.
   <PriceBreakdown.Line label="Service fee" amount="$32" />
 </PriceBreakdown>
 ```
+
+## Props
+
+### PriceBreakdown
+
+<PropsTable component="PriceBreakdown" />
+
+### PriceBreakdown.Line
+
+<PropsTable component="PriceBreakdownLine" />
 
 <EditOnGithub source="apps/docs-site/app/(docs)/patterns/price-breakdown/page.mdx" />

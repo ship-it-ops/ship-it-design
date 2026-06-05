@@ -1,12 +1,90 @@
 # Tree
 
-Each example below is a real component instance — flip the theme toggle to see how it adapts.
+A recursive expandable list implementing the WAI-ARIA tree pattern.
+Pass a nested `items` tree; the component handles expand/collapse,
+selection state, and the standard keyboard model
+(Up/Down/Left/Right/Home/End/Enter/Space) on top of roving tabindex.
+
+Both expansion and selection can be uncontrolled (`defaultExpanded` /
+`defaultValue`) or controlled (`expanded` / `value` + change callbacks)
+— the same pattern as Radix primitives.
+
+## The data shape
+
+`items` is an array of `TreeItem`, and each item can recursively
+nest `children` of the same shape.
+
+```tsx
+const items: TreeItem[] = [
+  {
+    id: 'svc',
+    label: 'Services',
+    icon: <IconGlyph name="service" />,
+    children: [
+      { id: 'svc-1', label: 'payment-webhook', trailing: <Badge>3</Badge> },
+      { id: 'svc-2', label: 'ledger-core' },
+    ],
+  },
+];
+
+<Tree items={items} defaultExpanded={['svc']} />;
+```
 
 ## Default
 
+The basic example renders a two-level tree with the first branch
+expanded by default. Click a row to select it; click the disclosure
+caret (or press Right/Left) to expand or collapse.
+
 <LivePreview example="tree/default" />
 
-## Props
+## Tree item (`TreeItem`)
+
+Each node is an object describing one row in the tree.
+
+- **`id: string`** (required) — stable id. Used as the React key, as
+  the value in `expanded`/`value`, and passed to `onValueChange`.
+- **`label: ReactNode`** (required) — visible row content.
+- **`icon?: ReactNode`** — leading glyph or icon node, rendered before
+  the label.
+- **`trailing?: ReactNode`** — trailing badge or hint, right-aligned
+  in the row (counts, status dots, kbd shortcuts).
+- **`children?: ReadonlyArray<TreeItem>`** — nested rows. When
+  defined, the row renders a disclosure caret and toggles between
+  expanded and collapsed states.
+
+## Expansion model
+
+`expanded` is a `ReadonlySet<string>` of node ids currently expanded.
+Pass `defaultExpanded={['a', 'b']}` for the simple uncontrolled
+case, or `expanded={set}` + `onExpandedChange={(next) => …}` to drive
+from a parent. The set is updated on every disclosure toggle, every
+keyboard Right/Left, and every Enter on a node with children.
+
+## Selection model
+
+A single id, not a set. `defaultValue="…"` for uncontrolled,
+`value="…"` + `onValueChange={(id) => …}` for controlled. Selection
+fires on click and Enter; arrow keys move focus (and update
+`aria-activedescendant`) without changing the selection.
+
+## Keyboard model
+
+The component implements the WAI-ARIA tree pattern:
+
+- **Up / Down** — move focus to the previous / next visible row.
+- **Right** — expand the focused row, or move to the first child if
+  already expanded.
+- **Left** — collapse the focused row, or move to the parent if
+  already collapsed (or a leaf).
+- **Home / End** — jump to the first or last visible row.
+- **Enter / Space** — select the focused row.
+
+Roving tabindex keeps a single row in the document tab order so
+Tab/Shift-Tab enters and leaves the tree without traversing every
+node.
+
+## Table-level props
 
 <PropsTable component="Tree" />
 

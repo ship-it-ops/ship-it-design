@@ -1,12 +1,13 @@
 # TabBar
 
-Mobile bottom navigation. Renders an evenly-spaced row of 4–5 items at the
-bottom of a screen. One slot can be marked `elevated` to render as a focal
-pill (the center "Ask" action in the ShipIt mobile design). Each slot meets
-the 44pt minimum touch target.
+Mobile bottom navigation. Renders an evenly-spaced row of 4–5 items at
+the bottom of a screen. One slot can be marked `elevated` to render as
+a focal pill (the center "Ask" action in the ShipIt mobile design).
+Each slot meets the 44pt minimum touch target.
 
-Pair with `pb-[env(safe-area-inset-bottom)]` on the surrounding scroll area to
-respect the iOS home indicator. The bar already inherits that inset.
+Pair with `pb-[env(safe-area-inset-bottom)]` on the surrounding scroll
+area to respect the iOS home indicator. The bar already inherits that
+inset.
 
 ## Default
 
@@ -14,10 +15,28 @@ A 5-slot ShipIt bar with a center Ask action and a badge on Graph.
 
 <LivePreview example="tab-bar/default" />
 
+## Item (`TabBarItem`)
+
+Each entry in `items`.
+
+- **`id: string`** (required) — stable identifier. What `value` /
+  `onValueChange` reference.
+- **`label: ReactNode`** (required) — short label rendered under the
+  icon. Keep it to one word — the slots are narrow.
+- **`icon: ReactNode`** (required) — icon node. Pass an `<IconGlyph>`,
+  inline SVG, or string emoji.
+- **`badge?: ReactNode`** — unread / count badge rendered top-right
+  of the icon (small dot, number, or "new").
+- **`elevated?: boolean`** — when true, the slot renders as a raised
+  pill — the focal "Ask" treatment. Only one item per bar should set
+  this. The active-color treatment is suppressed on the elevated slot
+  since it's always the focal action.
+- **`disabled?: boolean`** — renders the slot but skips activation.
+
 ## Controlled vs uncontrolled
 
-Active state can be controlled (`value` + `onValueChange`) or uncontrolled
-(`defaultValue`). The shape mirrors `NavBar`.
+Active state can be controlled (`value` + `onValueChange`) or
+uncontrolled (`defaultValue`). The shape mirrors `NavBar`.
 
 ```tsx
 // Controlled
@@ -30,11 +49,11 @@ const [active, setActive] = useState('home');
 
 ## Elevated center action
 
-Set `elevated: true` on the center item to render it as a 52×52 pill that
-lifts above the bar with a shadow — the focal action treatment used for "Ask"
-in the Mobile Library. Only one item should set this.
+Set `elevated: true` on the center item to render it as a 52×52 pill
+that lifts above the bar with a shadow — the focal action treatment
+used for "Ask" in the Mobile Library. Only one item should set this.
 
-## Props
+## Top-level props
 
 <PropsTable component="TabBar" />
 

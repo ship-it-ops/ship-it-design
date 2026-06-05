@@ -84,7 +84,18 @@ export const ActivityTimeline = forwardRef<HTMLOListElement, ActivityTimelinePro
                 )}
                 <div className="text-[13px] font-medium">{event.title}</div>
                 {time && (
-                  <time className="text-text-dim ml-auto font-mono text-[10px]">{time}</time>
+                  <time
+                    className="text-text-dim ml-auto font-mono text-[10px]"
+                    dateTime={
+                      event.at instanceof Date
+                        ? event.at.toISOString()
+                        : typeof event.at === 'string'
+                          ? event.at
+                          : new Date(event.at).toISOString()
+                    }
+                  >
+                    {time}
+                  </time>
                 )}
               </div>
               {event.actor && (

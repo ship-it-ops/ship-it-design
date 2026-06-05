@@ -1,12 +1,87 @@
 # Timeline
 
-Each example below is a real component instance — flip the theme toggle to see how it adapts.
+A vertical event list with a connecting rule between markers. Pass
+`events` for the simple shape, or compose `<TimelineItem>` children
+when you need a custom per-row layout.
+
+Pair this with `<DateTime iso>` (or pass the row's `dateTime?: string
+| Date` directly) when the event has a machine-readable timestamp —
+the visible label stays as you wrote it, but the row also emits
+`<time dateTime="…">` so crawlers and AI agents pick up the date
+without parsing the label.
+
+## The data shape
+
+The simplest path is to pass an array of `TimelineEvent` to `events`:
+
+```tsx
+<Timeline
+  events={[
+    { title: 'Created', time: '3 May', dateTime: '2026-05-03', tone: 'accent' },
+    { title: 'Deployed', time: '2 hours later', tone: 'ok' },
+  ]}
+/>
+```
+
+For richer per-row content, drop `events` and compose children
+directly:
+
+```tsx
+<Timeline>
+  <TimelineItem time="3 May" dateTime="2026-05-03">
+    Created
+  </TimelineItem>
+  <TimelineItem tone="ok" time="2h later">
+    Deployed
+  </TimelineItem>
+</Timeline>
+```
 
 ## Default
 
+The default example uses the `events` shorthand. Each row shows the
+marker (color comes from `tone`), the title, an optional description,
+and the muted time label below.
+
 <LivePreview example="timeline/default" />
 
-## Props
+## Event shape (`TimelineEvent`)
+
+- **`title: ReactNode`** (required) — primary row content.
+- **`description?: ReactNode`** — muted line under the title.
+- **`time?: ReactNode`** — visible time label, rendered in mono. Pass
+  anything you want the user to see — relative ("2 hours ago"), absolute
+  ("May 3, 2026"), or JSX.
+- **`dateTime?: string | Date`** — machine-readable ISO 8601 string
+  (or `Date`). When set, the visible `time` is wrapped in
+  `<time dateTime="…">` so the row is crawlable.
+- **`tone?: TimelineEventTone`** — marker color. One of `'accent'` (the
+  default), `'ok'`, `'warn'`, `'err'`, or `'muted'`. Drives the marker
+  ring color.
+
+## Per-row composition (`<TimelineItem>`)
+
+When you compose children instead of using `events`, each child is a
+`<TimelineItem>` and gets the same props plus arbitrary body content
+through `children`.
+
+<PropsTable component="TimelineItem" />
+
+## Marker tones
+
+Each row's marker is a 14×14 ring. The `tone` prop drives the ring
+color:
+
+- **`accent`** (default) — the design system's `--color-accent`.
+- **`ok`** — green; for completion / success events.
+- **`warn`** — amber; for caution-worthy events.
+- **`err`** — red; for failures / incidents.
+- **`muted`** — dim border; for inactive or future events.
+
+The marker uses 2px borders with a transparent fill so the
+connecting rule shows through the open ring.
+
+## Top-level props
 
 <PropsTable component="Timeline" />
 

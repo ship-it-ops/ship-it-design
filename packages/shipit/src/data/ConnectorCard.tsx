@@ -1,7 +1,15 @@
 'use client';
 
 import { DynamicIconGlyph, type ConnectorName } from '@ship-it-ui/icons';
-import { cn, formatRelative, StatusDot, type StatusState } from '@ship-it-ui/ui';
+import {
+  cn,
+  formatRelative,
+  JsonLd,
+  nodeToString,
+  StatusDot,
+  toIsoString,
+  type StatusState,
+} from '@ship-it-ui/ui';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 /**
@@ -12,6 +20,11 @@ import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
  *
  * When `onClick` is provided the whole card becomes a button; otherwise it
  * renders as a plain `<div>`.
+ *
+ * Emits a schema.org `SoftwareApplication` JSON-LD entity by default with
+ * `name`, `dateModified` (from `lastSyncedAt`), and consumer-supplied
+ * `applicationCategory` / `url` / `softwareVersion`. Skipped when `name` is
+ * JSX without a string fallback. Pass `noStructuredData` to suppress.
  */
 
 export type ConnectorStatus = 'connected' | 'syncing' | 'error' | 'disconnected';
@@ -42,6 +55,47 @@ export interface ConnectorCardProps extends Omit<
    * `button-name`). Optional otherwise.
    */
   accessibleName?: string;
+  /** String version of `name` for the JSON-LD `name` field. */
+  nameText?: string;
+  /** schema.org `applicationCategory` (e.g. `'CRM'`, `'DataConnector'`). */
+  applicationCategory?: string;
+  /** Connector detail URL — emitted as the entity `url`. */
+  url?: string;
+  /** Optional `softwareVersion` string. */
+  softwareVersion?: string;
+  /** Opt out of emitting the `SoftwareApplication` JSON-LD script. */
+  noStructuredData?: boolean;
+}
+
+interface SoftwareApplicationSchema {
+  '@context': string;
+  '@type': 'SoftwareApplication';
+  name: string;
+  applicationCategory?: string;
+  url?: string;
+  softwareVersion?: string;
+  dateModified?: string;
+}
+
+function buildConnectorSchema(
+  input: Pick<
+    ConnectorCardProps,
+    'name' | 'nameText' | 'applicationCategory' | 'url' | 'softwareVersion' | 'lastSyncedAt'
+  >,
+): SoftwareApplicationSchema | null {
+  const name = input.nameText ?? nodeToString(input.name);
+  if (!name) return null;
+  const schema: SoftwareApplicationSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name,
+  };
+  if (input.applicationCategory) schema.applicationCategory = input.applicationCategory;
+  if (input.url) schema.url = input.url;
+  if (input.softwareVersion) schema.softwareVersion = input.softwareVersion;
+  const dateModified = toIsoString(input.lastSyncedAt);
+  if (dateModified) schema.dateModified = dateModified;
+  return schema;
 }
 
 const statusDot: Record<ConnectorStatus, StatusState> = {
@@ -69,6 +123,11 @@ export const ConnectorCard = forwardRef<HTMLDivElement, ConnectorCardProps>(func
     actions,
     onClick,
     accessibleName,
+    nameText,
+    applicationCategory,
+    url,
+    softwareVersion,
+    noStructuredData,
     className,
     ...props
   },
@@ -76,6 +135,16 @@ export const ConnectorCard = forwardRef<HTMLDivElement, ConnectorCardProps>(func
 ) {
   const interactive = typeof onClick === 'function';
   const time = lastSyncedAt ? formatRelative(lastSyncedAt, relativeNow ?? new Date()) : '';
+  const structuredData = !noStructuredData
+    ? buildConnectorSchema({
+        name,
+        nameText,
+        applicationCategory,
+        url,
+        softwareVersion,
+        lastSyncedAt,
+      })
+    : null;
 
   // The clickable label region (logo + name + status + sync time) is rendered
   // as a button when interactive; the `actions` slot sits beside it as a
@@ -145,6 +214,7 @@ export const ConnectorCard = forwardRef<HTMLDivElement, ConnectorCardProps>(func
       )}
       {...props}
     >
+      {structuredData && <JsonLd data={structuredData} />}
       {labelRegion}
       {actions && <div className="shrink-0 self-center pr-1">{actions}</div>}
     </div>

@@ -1,12 +1,95 @@
 # CommandPalette
 
-Each example below is a real component instance — flip the theme toggle to see how it adapts.
+A keyboard-driven command launcher built on Radix Dialog. Focus trap,
+Esc-to-close, and scroll-lock come from Radix for free; the component
+adds a controlled query input, grouped results, arrow-key navigation
+via `useKeyboardList`, and the `aria-activedescendant` wiring.
+
+The palette is **presentation-only over its results** — the consumer
+owns the query state and is responsible for filtering. Pass
+already-matched groups via `groups`. For the substring-match case,
+`filterCommandItems(query, allItems)` is exported as a one-liner.
+
+## The data shape
+
+You pass `groups`, where each group has an optional `label` and an
+array of `items` matching what you'd render under that heading right
+now (post-filter).
+
+```tsx
+const allItems: CommandPaletteItem[] = [
+  { id: 'new-svc', label: 'New service', glyph: <IconGlyph name="add" /> },
+  { id: 'goto-svc', label: 'Go to service…', trailing: <Kbd>⌘K</Kbd> },
+];
+
+<CommandPalette
+  open={open}
+  onOpenChange={setOpen}
+  query={query}
+  onQueryChange={setQuery}
+  groups={[{ label: 'Actions', items: filterCommandItems(query, allItems) }]}
+  onSelect={(id) => console.log(id)}
+/>;
+```
 
 ## Default
 
+The default example shows the standard layout: search input on top,
+grouped results below, kbd-hint footer. Arrow keys move the highlight;
+Enter (or click) commits.
+
 <LivePreview example="command-palette/default" />
 
-## Props
+## Item shape (`CommandPaletteItem`)
+
+- **`id: string`** (required) — stable id. Passed to `onSelect` when
+  the user picks the row.
+- **`label: ReactNode`** (required) — primary line. Accepts JSX for
+  inline highlighting (e.g., bolding the matched substring).
+- **`description?: ReactNode`** — secondary muted line under the label.
+- **`glyph?: ReactNode`** — leading icon or glyph, rendered in the
+  row's icon slot.
+- **`trailing?: ReactNode`** — trailing hint, usually a `<Kbd>`
+  shortcut chip.
+- **`searchText?: string`** — lowercase haystack used by
+  `filterCommandItems`. Defaults to `label + description` joined and
+  lowercased. Override when you want to match on synonyms (e.g.,
+  `searchText: 'create new service add'` so "add" matches the item).
+
+## Group shape (`CommandPaletteGroup`)
+
+- **`label?: ReactNode`** — group heading rendered above the items.
+  Omit for an ungrouped top-level batch.
+- **`items: ReadonlyArray<CommandPaletteItem>`** (required) — the
+  rows in this group, already filtered to the matching set.
+
+## Filtering helper
+
+For the common substring-match case, import `filterCommandItems` from
+`@ship-it-ui/ui`:
+
+```tsx
+import { filterCommandItems } from '@ship-it-ui/ui';
+
+const matched = filterCommandItems(query, allItems);
+```
+
+The helper lowercases the query, then keeps every item whose
+`searchText` contains it (falling back to `label + description` when
+`searchText` is unset). Use it inside a memo so filtering re-runs only
+when the query or source list changes.
+
+## Keyboard model
+
+- **Up / Down** — move the highlight up/down within and across groups.
+- **Enter** — fire `onSelect` with the highlighted item's `id`.
+- **Esc** — close the palette (handled by Radix Dialog).
+- **Tab** — focus stays trapped inside the dialog.
+
+The highlight resets to the first item whenever the query or the
+groups array changes, so users always land on a sensible default.
+
+## Top-level props
 
 <PropsTable component="CommandPalette" />
 

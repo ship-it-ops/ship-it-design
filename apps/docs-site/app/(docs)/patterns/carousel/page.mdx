@@ -1,8 +1,27 @@
 # Carousel
 
-Horizontal scroll-snap container with prev/next controls and dot indicators.
-Native CSS scroll behavior — no library required. Use for listing photo
-galleries, marketing hero rotators, or feature walkthroughs.
+Horizontal scroll-snap container with prev/next controls and dot
+indicators. Native CSS scroll behavior — no library required. Use for
+listing photo galleries, marketing hero rotators, or feature
+walkthroughs.
+
+`Carousel` is **generic over the slide type** — you pass `items: T[]`
+and a `renderItem: (item, index) => ReactNode` so cell rendering stays
+type-safe against your data.
+
+## The data shape
+
+```tsx
+<Carousel
+  items={photos}
+  renderItem={(src, i) => <img src={src} alt={`Photo ${i + 1}`} />}
+  loop
+  showDots
+/>
+```
+
+For a thumbnail strip below the main viewport, pass `renderThumbnail`
+with the same `(item, index) => ReactNode` signature.
 
 ## Default
 
@@ -10,7 +29,9 @@ galleries, marketing hero rotators, or feature walkthroughs.
 
 ## With thumbnails
 
-Listing detail pages typically pair the main viewport with a thumbnail strip.
+Listing detail pages typically pair the main viewport with a thumbnail
+strip. Each thumbnail is rendered by `renderThumbnail` and clicking
+one jumps the main viewport to that index.
 
 <LivePreview example="carousel/with-thumbnails" />
 
@@ -18,35 +39,52 @@ Listing detail pages typically pair the main viewport with a thumbnail strip.
 
 Set `loop` to make arrows, dots, and native swipe wrap continuously —
 "next" on the last slide goes to the first, and vice versa. Under the
-hood, hidden clones of the first / last slide bracket the real items so
-the swipe-past-the-edge feels seamless; `onIndexChange` still only
+hood, hidden clones of the first / last slide bracket the real items
+so the swipe-past-the-edge feels seamless; `onIndexChange` still only
 emits real indices in `0..items.length - 1`. The marketplace patterns
 (`ListingCard`, `ListingDetail`) opt in by default.
 
 `loop` accepts two variants — pass `true` to get the default
-(`"circular"`), or pass `"sweep"` for the alternate motion. Native swipe
+(`"circular"`), or `"sweep"` for the alternate motion. Native swipe
 past the edge looks the same in both; the variants only differ on the
 prev/next-arrow wrap step.
 
-### Circular (default)
+### Loop modes (`loop: boolean | 'circular' | 'sweep'`)
 
-Boundary arrow clicks smooth-scroll a single slide width through the
-hidden clone, then invisibly snap to the real twin. Feels like an
-endless reel — the motion is always one slide forward / back, regardless
-of strip length.
+- **`false`** (default) — stop at the boundary. The prev/next arrow
+  on the first/last slide is disabled.
+- **`true` or `'circular'`** — boundary arrow clicks smooth-scroll a
+  single slide width through the hidden clone of the opposite end,
+  then invisibly snap to the real twin. Feels like an endless reel —
+  the motion is always one slide forward / back, regardless of strip
+  length.
+- **`'sweep'`** — boundary arrow clicks smooth-scroll the full
+  distance across the strip back to the real first / last slide. The
+  transition reads as a wide arc across every item between — useful
+  when you want the user to re-perceive the intermediate slides on
+  each wrap.
+
+### Circular (default)
 
 <LivePreview example="carousel/loop" />
 
 ### Sweep
 
-Boundary arrow clicks smooth-scroll the full distance across the strip
-back to the real first / last slide. The transition reads as a wide arc
-across every item between — useful when you want the user to
-re-perceive the intermediate slides on each wrap.
-
 <LivePreview example="carousel/loop-sweep" />
 
-## Props
+## Active index
+
+The active slide is either **controlled** via `index` + `onIndexChange`
+or **uncontrolled** via `defaultIndex` (default `0`). Controlled mode
+lets you sync the carousel with parent state (e.g. drive it from a
+keyboard shortcut elsewhere, or persist position to a URL).
+
+`onIndexChange` always fires with a real index in
+`0..items.length - 1` — never the clone indices used internally for
+the loop machinery. Use this for analytics or for syncing a sibling
+component like `ListingDetail`'s gallery↔lightbox shared index.
+
+## Top-level props
 
 <PropsTable component="Carousel" />
 
@@ -56,9 +94,10 @@ re-perceive the intermediate slides on each wrap.
 - Each slide is a `role="group"` with `aria-label="N of M"`.
 - Dot indicators are a `role="tablist"` so screen readers announce
   "selected" / "not selected".
-- Keyboard: focus the viewport and use Arrow Left / Right to advance. The
-  prev/next buttons are focusable as well.
-- Honor `prefers-reduced-motion`: the scroll uses `behavior: smooth` which
-  collapses to instant under reduced motion via the global CSS rule.
+- Keyboard: focus the viewport and use Arrow Left / Right to advance.
+  The prev/next buttons are focusable as well.
+- Honor `prefers-reduced-motion`: the scroll uses `behavior: smooth`
+  which collapses to instant under reduced motion via the global CSS
+  rule.
 
 <EditOnGithub source="apps/docs-site/app/(docs)/patterns/carousel/page.mdx" />
