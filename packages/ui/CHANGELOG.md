@@ -1,5 +1,90 @@
 # @ship-it-ui/ui
 
+## 0.0.15
+
+### Patch Changes
+
+- 61b814b: Add `ComparisonTable` pattern — row-headed option-vs-option matrix for
+  product, plan, and spec comparisons. Booleans render as check / cross with
+  sr-only "Yes" / "No"; strings, numbers, and `{ value, note }` objects are
+  also supported. One column can be marked `featured` for an accent-tinted
+  column with an auto "recommended" badge; options with an `action` collapse
+  into a `<tfoot>` CTA row; rows can be clustered with `group`.
+
+  The component is built for AI/SEO consumption. It emits a
+  `<script type="application/ld+json">` next to the table by default — one
+  schema.org entity per option (`@type` defaults to `Product`; also supports
+  `Service`, `SoftwareApplication`, or any custom type), with each row
+  contributing a `PropertyValue` under `additionalProperty`. The escape recipe
+  prevents `</script>` injection from user-supplied feature names. Pass
+  `noStructuredData` to suppress the script. The rendered HTML mirrors the
+  same goal: `<caption>`, `<th scope="col">` on options, `<th scope="row">`
+  on features, plus `data-featured` / `data-cell-type` / `data-cell-value`
+  attributes for crawlers that don't execute JS.
+
+- 61b814b: Add shared structured-data + Next.js metadata infrastructure to unblock
+  SEO/AI-readability work across the design system.
+  - `@ship-it-ui/ui` now exports a `<JsonLd>` component that wraps the
+    `JSON.stringify(...).replace(/</g, '\\u003c')` + `dangerouslySetInnerHTML`
+    recipe used by `ComparisonTable`. Refactored `ComparisonTable` to use it
+    (output is byte-identical). Future components emitting schema.org JSON-LD
+    should use `<JsonLd data={…} />` instead of re-implementing the escape.
+  - `@ship-it-ui/next` now exports a `buildMetadata({ title, description, url,
+ogImage, twitterHandle, siteName, locale, noIndex })` helper that returns
+    a Next.js `Metadata` object with title/description/openGraph/twitter/
+    alternates.canonical/robots populated. Drop-in for `page.tsx` / `layout.tsx`.
+
+- 61b814b: Emit schema.org JSON-LD from 7 high-value components — consumers get
+  crawlable / AI-readable structured data for free, with a consistent opt-out
+  and security posture across the system.
+
+  Each component grows a `noStructuredData?` prop (suppress emission entirely)
+  plus type-specific fields. JSON-LD is skipped automatically when a required
+  string field is JSX without a string fallback (rather than rendering JSX into
+  JSON). All emitters route through `<JsonLd>` so `</script>` escape is
+  load-bearing and unified.
+  - **Breadcrumbs** → `BreadcrumbList` (auto-derived from `Crumb` `href` + label).
+  - **ReviewCard** → `Review` with author `Person`, rating, body, and optional
+    `dateTime` / `itemReviewedName` / `url`. Also renders `<time dateTime>` when
+    `dateTime` is supplied.
+  - **Testimonial** → `Review` with author `Person`, jobTitle, optional `rating`
+    - `itemReviewedName` + `url`.
+  - **PricingCard** → `Offer`. Requires `priceCurrency`; parses `priceAmount`
+    from the visible `price` string or accepts an explicit number. Cards where
+    the price isn't machine-readable (e.g. `"Talk to us"`) skip emission
+    unless `priceAmount` is supplied.
+  - **ListingCard** / **ListingDetail** → `Accommodation` (default variant) or
+    `Product` (spec variant), with `image[]`, `aggregateRating`, optional
+    `offers`, and `additionalProperty` from `specs`. Override via `schema?`.
+  - **ConnectorCard** → `SoftwareApplication` with `name`, optional
+    `applicationCategory` / `url` / `softwareVersion`, and `dateModified` from
+    `lastSyncedAt`.
+
+- 61b814b: Semantic-HTML hygiene pass to recover SEO value from components whose
+  heading levels, dates, and list structures were hard-coded.
+  - New `<Heading as>` helper in `@ship-it-ui/ui` renders the configured
+    `h1`–`h6`. Applied as `titleAs?` to **Hero** (default `h1`), **LargeTitle**
+    (`h1`), **CTAStrip** (`h2`), **EmptyState** (`h3`), **FeatureGrid**
+    (`featureTitleAs`, `h3`), **PricingCard** (`tierAs`, `h3`), and **Topbar**
+    (`h1` touch / `h2` desktop). Defaults match the prior visual shape so no
+    consumer breaks.
+  - New `<DateTime iso>` helper in `@ship-it-ui/ui` wraps a label in
+    `<time dateTime="…">`. Applied as `dateTime?: string | Date` to **Timeline**
+    events, **TimelineItem**, and **NotifRow**. **ActivityTimeline** auto-emits
+    `<time dateTime>` from its existing `at` prop. **ReviewCard** already
+    threads `dateTime` from the JSON-LD work in this release.
+  - **Footer** column links now render as `<ul role="list"><li>` (was sibling
+    divs). New optional `address?` slot renders inside `<address>` for org
+    contact info.
+  - **Pagination** page buttons now render inside `<ol role="list"><li>` (was
+    button siblings). Outer `<nav aria-label="Pagination">` and per-button
+    `aria-current="page"` unchanged.
+
+- 61b814b: Set `color-scheme: dark` on `<html>` (with a `[data-theme='light']` override) in
+  the package globals so the browser's native scrollbar, form-control chrome, and
+  other UA surfaces follow the active theme. Previously the UA defaulted to the
+  light scrollbar even when the app was rendering in dark mode.
+
 ## 0.0.14
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @ship-it-ui/graph-editor
 
+## 0.0.10
+
+### Patch Changes
+
+- Updated dependencies [61b814b]
+- Updated dependencies [61b814b]
+- Updated dependencies [61b814b]
+- Updated dependencies [61b814b]
+- Updated dependencies [61b814b]
+  - @ship-it-ui/ui@0.0.15
+  - @ship-it-ui/shipit@0.0.16
+
 ## 0.0.9
 
 ### Patch Changes
