@@ -1,5 +1,62 @@
 # @ship-it-ui/shipit
 
+## 0.0.16
+
+### Patch Changes
+
+- 61b814b: Emit schema.org JSON-LD from 7 high-value components — consumers get
+  crawlable / AI-readable structured data for free, with a consistent opt-out
+  and security posture across the system.
+
+  Each component grows a `noStructuredData?` prop (suppress emission entirely)
+  plus type-specific fields. JSON-LD is skipped automatically when a required
+  string field is JSX without a string fallback (rather than rendering JSX into
+  JSON). All emitters route through `<JsonLd>` so `</script>` escape is
+  load-bearing and unified.
+  - **Breadcrumbs** → `BreadcrumbList` (auto-derived from `Crumb` `href` + label).
+  - **ReviewCard** → `Review` with author `Person`, rating, body, and optional
+    `dateTime` / `itemReviewedName` / `url`. Also renders `<time dateTime>` when
+    `dateTime` is supplied.
+  - **Testimonial** → `Review` with author `Person`, jobTitle, optional `rating`
+    - `itemReviewedName` + `url`.
+  - **PricingCard** → `Offer`. Requires `priceCurrency`; parses `priceAmount`
+    from the visible `price` string or accepts an explicit number. Cards where
+    the price isn't machine-readable (e.g. `"Talk to us"`) skip emission
+    unless `priceAmount` is supplied.
+  - **ListingCard** / **ListingDetail** → `Accommodation` (default variant) or
+    `Product` (spec variant), with `image[]`, `aggregateRating`, optional
+    `offers`, and `additionalProperty` from `specs`. Override via `schema?`.
+  - **ConnectorCard** → `SoftwareApplication` with `name`, optional
+    `applicationCategory` / `url` / `softwareVersion`, and `dateModified` from
+    `lastSyncedAt`.
+
+- 61b814b: Semantic-HTML hygiene pass to recover SEO value from components whose
+  heading levels, dates, and list structures were hard-coded.
+  - New `<Heading as>` helper in `@ship-it-ui/ui` renders the configured
+    `h1`–`h6`. Applied as `titleAs?` to **Hero** (default `h1`), **LargeTitle**
+    (`h1`), **CTAStrip** (`h2`), **EmptyState** (`h3`), **FeatureGrid**
+    (`featureTitleAs`, `h3`), **PricingCard** (`tierAs`, `h3`), and **Topbar**
+    (`h1` touch / `h2` desktop). Defaults match the prior visual shape so no
+    consumer breaks.
+  - New `<DateTime iso>` helper in `@ship-it-ui/ui` wraps a label in
+    `<time dateTime="…">`. Applied as `dateTime?: string | Date` to **Timeline**
+    events, **TimelineItem**, and **NotifRow**. **ActivityTimeline** auto-emits
+    `<time dateTime>` from its existing `at` prop. **ReviewCard** already
+    threads `dateTime` from the JSON-LD work in this release.
+  - **Footer** column links now render as `<ul role="list"><li>` (was sibling
+    divs). New optional `address?` slot renders inside `<address>` for org
+    contact info.
+  - **Pagination** page buttons now render inside `<ol role="list"><li>` (was
+    button siblings). Outer `<nav aria-label="Pagination">` and per-button
+    `aria-current="page"` unchanged.
+
+- Updated dependencies [61b814b]
+- Updated dependencies [61b814b]
+- Updated dependencies [61b814b]
+- Updated dependencies [61b814b]
+- Updated dependencies [61b814b]
+  - @ship-it-ui/ui@0.0.15
+
 ## 0.0.15
 
 ### Patch Changes
