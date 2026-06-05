@@ -1,5 +1,12 @@
 # @ship-it-ui/map
 
+## 0.0.10
+
+### Patch Changes
+
+- Updated dependencies [9c8a7e8]
+  - @ship-it-ui/ui@0.0.16
+
 ## 0.0.9
 
 ### Patch Changes
