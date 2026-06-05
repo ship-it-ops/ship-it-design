@@ -103,12 +103,16 @@ the rest are optional.
   A string is looked up in the design-system glyph manifest
   (compile-time checked); JSX is rendered as-is for brand logos or
   custom avatars.
-- **`featured?: boolean`** — accent-tinted column. When set, the
-  header gets an auto "recommended" pill (suppress or replace with
-  `badge`) and the column data carries `data-featured="true"`.
+- **`featured?: boolean`** — accent-tinted column. The header gets an
+  auto "recommended" pill (suppress with `badge: null` or table-level
+  `showFeaturedBadge={false}`; reword with `badge`) and the column data
+  carries `data-featured="true"`. The default "recommended" label can
+  read self-promotional on own-brand comparisons — reach for `badge` or
+  `showFeaturedBadge` when that's a concern.
 - **`badge?: ReactNode`** — overrides the auto "recommended" pill on
   a featured column. Pass any node, or `null` to remove the pill
-  entirely.
+  entirely. Precedence is highest → lowest: explicit `badge` node →
+  `badge: null` → table-level `showFeaturedBadge` toggle → auto pill.
 - **`action?: ReactNode`** — CTA button. When at least one column
   provides an action, the table renders a `<tfoot>` row and each
   column's `action` lands in its column. Columns without an action
