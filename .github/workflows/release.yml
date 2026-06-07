@@ -34,7 +34,7 @@ jobs:
       !startsWith(github.event.head_commit.message, 'chore') ||
       startsWith(github.event.head_commit.message, 'chore(release)')
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
       - uses: ./.github/actions/setup
 
       - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
@@ -64,7 +64,7 @@ jobs:
     needs: validate
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0
 
@@ -81,7 +81,7 @@ jobs:
 
       - name: Create release PR or publish
         id: changesets
-        uses: changesets/action@63a615b9cd06ba9a3e6d13796c7fbcb080a60a0b # v1
+        uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1
         with:
           # When there are pending changesets on `main`, opens / updates the
           # version PR. When the version PR is merged, runs `pnpm release`,
