@@ -63,7 +63,7 @@
     "@ship-it-ui/ui": "workspace:*",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",
-    "@types/react": "^19.2.16",
+    "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.0",
     "axe-core": "^4.10.2",
     "esbuild-plugin-preserve-directives": "^0.0.11",
