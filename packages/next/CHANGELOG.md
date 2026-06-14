@@ -1,5 +1,11 @@
 # @ship-it-ui/next
 
+## 0.0.15
+
+### Patch Changes
+
+- @ship-it-ui/ui@0.0.17
+
 ## 0.0.14
 
 ### Patch Changes

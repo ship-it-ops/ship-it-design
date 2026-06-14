@@ -1,6 +1,6 @@
 {
   "name": "@ship-it-ui/map",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Map primitive for the Ship-It design system. Thin React wrapper over MapLibre GL JS with styled markers that consume design-system tokens.",
   "license": "MIT",
   "homepage": "https://ship-it-ops.github.io/ship-it-design/",
