@@ -731,6 +731,73 @@ export const connectorManifest = {
   apacheKafka: ['simple-icons', 'apachekafka'],
   rabbitmq: ['simple-icons', 'rabbitmq'],
   graphql: ['simple-icons', 'graphql'],
+
+  // — Car manufacturers (every brand available in simple-icons) —
+  // Japanese
+  toyota: ['simple-icons', 'toyota'],
+  acura: ['simple-icons', 'acura'],
+  honda: ['simple-icons', 'honda'],
+  nissan: ['simple-icons', 'nissan'],
+  infiniti: ['simple-icons', 'infiniti'],
+  mazda: ['simple-icons', 'mazda'],
+  mitsubishi: ['simple-icons', 'mitsubishi'],
+  subaru: ['simple-icons', 'subaru'],
+  suzuki: ['simple-icons', 'suzuki'],
+
+  // Korean
+  hyundai: ['simple-icons', 'hyundai'],
+  kia: ['simple-icons', 'kia'],
+
+  // American
+  ford: ['simple-icons', 'ford'],
+  chevrolet: ['simple-icons', 'chevrolet'],
+  cadillac: ['simple-icons', 'cadillac'],
+  chrysler: ['simple-icons', 'chrysler'],
+  jeep: ['simple-icons', 'jeep'],
+  ram: ['simple-icons', 'ram'],
+  tesla: ['simple-icons', 'tesla'],
+  lucidMotors: ['simple-icons', 'lucid'],
+
+  // German
+  volkswagen: ['simple-icons', 'volkswagen'],
+  audi: ['simple-icons', 'audi'],
+  porsche: ['simple-icons', 'porsche'],
+  bmw: ['simple-icons', 'bmw'],
+  mini: ['simple-icons', 'mini'],
+  mercedes: ['simple-icons', 'mercedes'],
+  smart: ['simple-icons', 'smart'],
+  opel: ['simple-icons', 'opel'],
+
+  // Other European
+  vauxhall: ['simple-icons', 'vauxhall'],
+  skoda: ['simple-icons', 'skoda'],
+  seatCar: ['simple-icons', 'seat'],
+  renault: ['simple-icons', 'renault'],
+  dacia: ['simple-icons', 'dacia'],
+  peugeot: ['simple-icons', 'peugeot'],
+  citroen: ['simple-icons', 'citroen'],
+  dsAutomobiles: ['simple-icons', 'dsautomobiles'],
+  fiat: ['simple-icons', 'fiat'],
+  alfaRomeo: ['simple-icons', 'alfaromeo'],
+  maserati: ['simple-icons', 'maserati'],
+  ferrari: ['simple-icons', 'ferrari'],
+  lamborghini: ['simple-icons', 'lamborghini'],
+  bugatti: ['simple-icons', 'bugatti'],
+  bentley: ['simple-icons', 'bentley'],
+  rollsRoyce: ['simple-icons', 'rollsroyce'],
+  astonMartin: ['simple-icons', 'astonmartin'],
+  jaguar: ['simple-icons', 'jaguar'],
+  landRover: ['simple-icons', 'landrover'],
+  mclaren: ['simple-icons', 'mclaren'],
+  volvo: ['simple-icons', 'volvo'],
+  polestar: ['simple-icons', 'polestar'],
+  koenigsegg: ['simple-icons', 'koenigsegg'],
+
+  // Other
+  mg: ['simple-icons', 'mg'],
+  tata: ['simple-icons', 'tata'],
+  mahindra: ['simple-icons', 'mahindra'],
+  proton: ['simple-icons', 'proton'],
 } as const satisfies Record<string, IconRef>;
 
 /** Statically-typed semantic icon names — adds compile-time checking to `<IconGlyph name=…>`. */

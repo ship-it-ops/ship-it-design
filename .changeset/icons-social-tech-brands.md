@@ -22,6 +22,15 @@ via `<IconGlyph kind="connector" name="…" />`:
   `rollup`, `jest`, `vitestRunner`, `cypress`, `playwright`, `storybook`,
   `eslint`, `prettier`, `git`.
 - **Messaging & infra:** `nginx`, `apacheKafka`, `rabbitmq`, `graphql`.
+- **Car manufacturers (every brand in simple-icons):** `toyota`, `acura`,
+  `honda`, `nissan`, `infiniti`, `mazda`, `mitsubishi`, `subaru`, `suzuki`,
+  `hyundai`, `kia`, `ford`, `chevrolet`, `cadillac`, `chrysler`, `jeep`, `ram`,
+  `tesla`, `lucidMotors`, `volkswagen`, `audi`, `porsche`, `bmw`, `mini`,
+  `mercedes`, `smart`, `opel`, `vauxhall`, `skoda`, `seatCar`, `renault`,
+  `dacia`, `peugeot`, `citroen`, `dsAutomobiles`, `fiat`, `alfaRomeo`,
+  `maserati`, `ferrari`, `lamborghini`, `bugatti`, `bentley`, `rollsRoyce`,
+  `astonMartin`, `jaguar`, `landRover`, `mclaren`, `volvo`, `polestar`,
+  `koenigsegg`, `mg`, `tata`, `mahindra`, `proton`.
 
 `src/icon-data.ts` is regenerated accordingly. Also rewrites the package README
 to lead with the Iconify manifest (the canonical path) and document the SVGR
