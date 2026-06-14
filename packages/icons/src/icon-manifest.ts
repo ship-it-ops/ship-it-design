@@ -642,6 +642,162 @@ export const connectorManifest = {
   // Mobility / rideshare brands
   uber: ['simple-icons', 'uber'],
   lyft: ['simple-icons', 'lyft'],
+
+  // Social media & content platforms
+  instagram: ['simple-icons', 'instagram'],
+  facebook: ['simple-icons', 'facebook'],
+  // `x` is the current brand mark; `twitter` keeps the legacy bird for consumers
+  // who still reference it.
+  x: ['simple-icons', 'x'],
+  twitter: ['simple-icons', 'twitter'],
+  youtube: ['simple-icons', 'youtube'],
+  tiktok: ['simple-icons', 'tiktok'],
+  linkedin: ['simple-icons', 'linkedin'],
+  reddit: ['simple-icons', 'reddit'],
+  pinterest: ['simple-icons', 'pinterest'],
+  snapchat: ['simple-icons', 'snapchat'],
+  whatsapp: ['simple-icons', 'whatsapp'],
+  messenger: ['simple-icons', 'messenger'],
+  signal: ['simple-icons', 'signal'],
+  wechat: ['simple-icons', 'wechat'],
+  line: ['simple-icons', 'line'],
+  threads: ['simple-icons', 'threads'],
+  mastodon: ['simple-icons', 'mastodon'],
+  bluesky: ['simple-icons', 'bluesky'],
+  twitch: ['simple-icons', 'twitch'],
+  tumblr: ['simple-icons', 'tumblr'],
+  vimeo: ['simple-icons', 'vimeo'],
+  medium: ['simple-icons', 'medium'],
+  substack: ['simple-icons', 'substack'],
+  spotify: ['simple-icons', 'spotify'],
+  soundcloud: ['simple-icons', 'soundcloud'],
+  patreon: ['simple-icons', 'patreon'],
+  behance: ['simple-icons', 'behance'],
+  dribbble: ['simple-icons', 'dribbble'],
+
+  // Big tech platforms & operating systems
+  apple: ['simple-icons', 'apple'],
+  google: ['simple-icons', 'google'],
+  microsoft: ['simple-icons', 'microsoft'],
+  amazon: ['simple-icons', 'amazon'],
+  meta: ['simple-icons', 'meta'],
+  android: ['simple-icons', 'android'],
+  linux: ['simple-icons', 'linux'],
+  ubuntu: ['simple-icons', 'ubuntu'],
+
+  // Languages (extensions)
+  kotlin: ['simple-icons', 'kotlin'],
+  swift: ['simple-icons', 'swift'],
+  php: ['simple-icons', 'php'],
+  ruby: ['simple-icons', 'ruby'],
+  rubyOnRails: ['simple-icons', 'rubyonrails'],
+  cSharp: ['simple-icons', 'csharp'],
+  dotNet: ['simple-icons', 'dotnet'],
+  cPlusPlus: ['simple-icons', 'cplusplus'],
+  c: ['simple-icons', 'c'],
+  scala: ['simple-icons', 'scala'],
+  elixir: ['simple-icons', 'elixir'],
+  dart: ['simple-icons', 'dart'],
+
+  // Frameworks & runtimes (extensions)
+  angular: ['simple-icons', 'angular'],
+  solid: ['simple-icons', 'solid'],
+  astro: ['simple-icons', 'astro'],
+  remix: ['simple-icons', 'remix'],
+  nuxt: ['simple-icons', 'nuxtdotjs'],
+  flutter: ['simple-icons', 'flutter'],
+  tailwind: ['simple-icons', 'tailwindcss'],
+  bun: ['simple-icons', 'bun'],
+  deno: ['simple-icons', 'deno'],
+
+  // Package managers & build / test tooling
+  npm: ['simple-icons', 'npm'],
+  pnpm: ['simple-icons', 'pnpm'],
+  yarn: ['simple-icons', 'yarn'],
+  webpack: ['simple-icons', 'webpack'],
+  esbuild: ['simple-icons', 'esbuild'],
+  rollup: ['simple-icons', 'rollupdotjs'],
+  jest: ['simple-icons', 'jest'],
+  vitestRunner: ['simple-icons', 'vitest'],
+  cypress: ['simple-icons', 'cypress'],
+  playwright: ['simple-icons', 'playwright'],
+  storybook: ['simple-icons', 'storybook'],
+  eslint: ['simple-icons', 'eslint'],
+  prettier: ['simple-icons', 'prettier'],
+  git: ['simple-icons', 'git'],
+
+  // Messaging & infra (extensions)
+  nginx: ['simple-icons', 'nginx'],
+  apacheKafka: ['simple-icons', 'apachekafka'],
+  rabbitmq: ['simple-icons', 'rabbitmq'],
+  graphql: ['simple-icons', 'graphql'],
+
+  // — Car manufacturers (every brand available in simple-icons) —
+  // Japanese
+  toyota: ['simple-icons', 'toyota'],
+  acura: ['simple-icons', 'acura'],
+  honda: ['simple-icons', 'honda'],
+  nissan: ['simple-icons', 'nissan'],
+  infiniti: ['simple-icons', 'infiniti'],
+  mazda: ['simple-icons', 'mazda'],
+  mitsubishi: ['simple-icons', 'mitsubishi'],
+  subaru: ['simple-icons', 'subaru'],
+  suzuki: ['simple-icons', 'suzuki'],
+
+  // Korean
+  hyundai: ['simple-icons', 'hyundai'],
+  kia: ['simple-icons', 'kia'],
+
+  // American
+  ford: ['simple-icons', 'ford'],
+  chevrolet: ['simple-icons', 'chevrolet'],
+  cadillac: ['simple-icons', 'cadillac'],
+  chrysler: ['simple-icons', 'chrysler'],
+  jeep: ['simple-icons', 'jeep'],
+  ram: ['simple-icons', 'ram'],
+  tesla: ['simple-icons', 'tesla'],
+  lucidMotors: ['simple-icons', 'lucid'],
+
+  // German
+  volkswagen: ['simple-icons', 'volkswagen'],
+  audi: ['simple-icons', 'audi'],
+  porsche: ['simple-icons', 'porsche'],
+  bmw: ['simple-icons', 'bmw'],
+  mini: ['simple-icons', 'mini'],
+  mercedes: ['simple-icons', 'mercedes'],
+  smart: ['simple-icons', 'smart'],
+  opel: ['simple-icons', 'opel'],
+
+  // Other European
+  vauxhall: ['simple-icons', 'vauxhall'],
+  skoda: ['simple-icons', 'skoda'],
+  seatCar: ['simple-icons', 'seat'],
+  renault: ['simple-icons', 'renault'],
+  dacia: ['simple-icons', 'dacia'],
+  peugeot: ['simple-icons', 'peugeot'],
+  citroen: ['simple-icons', 'citroen'],
+  dsAutomobiles: ['simple-icons', 'dsautomobiles'],
+  fiat: ['simple-icons', 'fiat'],
+  alfaRomeo: ['simple-icons', 'alfaromeo'],
+  maserati: ['simple-icons', 'maserati'],
+  ferrari: ['simple-icons', 'ferrari'],
+  lamborghini: ['simple-icons', 'lamborghini'],
+  bugatti: ['simple-icons', 'bugatti'],
+  bentley: ['simple-icons', 'bentley'],
+  rollsRoyce: ['simple-icons', 'rollsroyce'],
+  astonMartin: ['simple-icons', 'astonmartin'],
+  jaguar: ['simple-icons', 'jaguar'],
+  landRover: ['simple-icons', 'landrover'],
+  mclaren: ['simple-icons', 'mclaren'],
+  volvo: ['simple-icons', 'volvo'],
+  polestar: ['simple-icons', 'polestar'],
+  koenigsegg: ['simple-icons', 'koenigsegg'],
+
+  // Other
+  mg: ['simple-icons', 'mg'],
+  tata: ['simple-icons', 'tata'],
+  mahindra: ['simple-icons', 'mahindra'],
+  proton: ['simple-icons', 'proton'],
 } as const satisfies Record<string, IconRef>;
 
 /** Statically-typed semantic icon names — adds compile-time checking to `<IconGlyph name=…>`. */
