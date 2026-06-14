@@ -642,6 +642,95 @@ export const connectorManifest = {
   // Mobility / rideshare brands
   uber: ['simple-icons', 'uber'],
   lyft: ['simple-icons', 'lyft'],
+
+  // Social media & content platforms
+  instagram: ['simple-icons', 'instagram'],
+  facebook: ['simple-icons', 'facebook'],
+  // `x` is the current brand mark; `twitter` keeps the legacy bird for consumers
+  // who still reference it.
+  x: ['simple-icons', 'x'],
+  twitter: ['simple-icons', 'twitter'],
+  youtube: ['simple-icons', 'youtube'],
+  tiktok: ['simple-icons', 'tiktok'],
+  linkedin: ['simple-icons', 'linkedin'],
+  reddit: ['simple-icons', 'reddit'],
+  pinterest: ['simple-icons', 'pinterest'],
+  snapchat: ['simple-icons', 'snapchat'],
+  whatsapp: ['simple-icons', 'whatsapp'],
+  messenger: ['simple-icons', 'messenger'],
+  signal: ['simple-icons', 'signal'],
+  wechat: ['simple-icons', 'wechat'],
+  line: ['simple-icons', 'line'],
+  threads: ['simple-icons', 'threads'],
+  mastodon: ['simple-icons', 'mastodon'],
+  bluesky: ['simple-icons', 'bluesky'],
+  twitch: ['simple-icons', 'twitch'],
+  tumblr: ['simple-icons', 'tumblr'],
+  vimeo: ['simple-icons', 'vimeo'],
+  medium: ['simple-icons', 'medium'],
+  substack: ['simple-icons', 'substack'],
+  spotify: ['simple-icons', 'spotify'],
+  soundcloud: ['simple-icons', 'soundcloud'],
+  patreon: ['simple-icons', 'patreon'],
+  behance: ['simple-icons', 'behance'],
+  dribbble: ['simple-icons', 'dribbble'],
+
+  // Big tech platforms & operating systems
+  apple: ['simple-icons', 'apple'],
+  google: ['simple-icons', 'google'],
+  microsoft: ['simple-icons', 'microsoft'],
+  amazon: ['simple-icons', 'amazon'],
+  meta: ['simple-icons', 'meta'],
+  android: ['simple-icons', 'android'],
+  linux: ['simple-icons', 'linux'],
+  ubuntu: ['simple-icons', 'ubuntu'],
+
+  // Languages (extensions)
+  kotlin: ['simple-icons', 'kotlin'],
+  swift: ['simple-icons', 'swift'],
+  php: ['simple-icons', 'php'],
+  ruby: ['simple-icons', 'ruby'],
+  rubyOnRails: ['simple-icons', 'rubyonrails'],
+  cSharp: ['simple-icons', 'csharp'],
+  dotNet: ['simple-icons', 'dotnet'],
+  cPlusPlus: ['simple-icons', 'cplusplus'],
+  c: ['simple-icons', 'c'],
+  scala: ['simple-icons', 'scala'],
+  elixir: ['simple-icons', 'elixir'],
+  dart: ['simple-icons', 'dart'],
+
+  // Frameworks & runtimes (extensions)
+  angular: ['simple-icons', 'angular'],
+  solid: ['simple-icons', 'solid'],
+  astro: ['simple-icons', 'astro'],
+  remix: ['simple-icons', 'remix'],
+  nuxt: ['simple-icons', 'nuxtdotjs'],
+  flutter: ['simple-icons', 'flutter'],
+  tailwind: ['simple-icons', 'tailwindcss'],
+  bun: ['simple-icons', 'bun'],
+  deno: ['simple-icons', 'deno'],
+
+  // Package managers & build / test tooling
+  npm: ['simple-icons', 'npm'],
+  pnpm: ['simple-icons', 'pnpm'],
+  yarn: ['simple-icons', 'yarn'],
+  webpack: ['simple-icons', 'webpack'],
+  esbuild: ['simple-icons', 'esbuild'],
+  rollup: ['simple-icons', 'rollupdotjs'],
+  jest: ['simple-icons', 'jest'],
+  vitestRunner: ['simple-icons', 'vitest'],
+  cypress: ['simple-icons', 'cypress'],
+  playwright: ['simple-icons', 'playwright'],
+  storybook: ['simple-icons', 'storybook'],
+  eslint: ['simple-icons', 'eslint'],
+  prettier: ['simple-icons', 'prettier'],
+  git: ['simple-icons', 'git'],
+
+  // Messaging & infra (extensions)
+  nginx: ['simple-icons', 'nginx'],
+  apacheKafka: ['simple-icons', 'apachekafka'],
+  rabbitmq: ['simple-icons', 'rabbitmq'],
+  graphql: ['simple-icons', 'graphql'],
 } as const satisfies Record<string, IconRef>;
 
 /** Statically-typed semantic icon names — adds compile-time checking to `<IconGlyph name=…>`. */
