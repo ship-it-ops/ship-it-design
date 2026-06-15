@@ -75,6 +75,14 @@ if (typeof Element !== 'undefined' && !Element.prototype.scrollIntoView) {
   Element.prototype.scrollIntoView = vi.fn();
 }
 
+// Carousel repositions its viewport with `node.scrollTo({ left, behavior })`
+// (horizontal-only, so it never moves the window). jsdom doesn't implement
+// Element.prototype.scrollTo, so renders that trigger a reposition would
+// throw without this stub.
+if (typeof Element !== 'undefined' && !Element.prototype.scrollTo) {
+  Element.prototype.scrollTo = vi.fn();
+}
+
 // Radix Slider uses pointer-capture APIs jsdom doesn't define.
 if (typeof HTMLElement !== 'undefined' && !HTMLElement.prototype.hasPointerCapture) {
   HTMLElement.prototype.hasPointerCapture = vi.fn();
