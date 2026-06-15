@@ -24,6 +24,30 @@ import { cn } from '../../utils/cn';
  * `loop` to make arrows / dots / native swipe wrap continuously.
  */
 
+/**
+ * Reposition the viewport to a DOM slide index on the HORIZONTAL axis
+ * only, without disturbing the window's vertical scroll.
+ *
+ * Every looping reposition used `child.scrollIntoView({ block: 'nearest',
+ * inline: 'start' })`. `inline: 'start'` is the intent (align the slide
+ * at the horizontal snap point), but `scrollIntoView` acts on BOTH axes —
+ * `block: 'nearest'` scrolls the nearest scrollable ancestor (the
+ * document) vertically whenever the slide is outside the vertical
+ * viewport. On a cold load a below-the-fold carousel is off-screen, so
+ * seeding the initial real slide dragged the whole window down to the
+ * carousel. `scrollTo` on the viewport element only moves its own scroll
+ * box and never touches the window.
+ *
+ * `behavior: 'instant'` overrides the viewport's `scroll-smooth` CSS — a
+ * bare `node.scrollLeft = X` setter translates to `behavior: 'auto'`,
+ * which inherits `scroll-smooth` and animates the supposedly-instant jump.
+ * `'smooth'` keeps user-initiated nav animated. Each slide is full
+ * viewport width, so slide `domIdx` sits at `domIdx * clientWidth`.
+ */
+function scrollViewportToDom(node: HTMLElement, domIdx: number, behavior: ScrollBehavior) {
+  node.scrollTo({ left: domIdx * node.clientWidth, behavior });
+}
+
 export interface CarouselProps<T = unknown> extends Omit<
   HTMLAttributes<HTMLDivElement>,
   'children'
@@ -97,7 +121,7 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
     onChange: onIndexChange,
   });
   const viewportRef = useRef<HTMLDivElement | null>(null);
-  // Set true immediately before any internal scrollIntoView call so the
+  // Set true immediately before any internal `scrollTo` call so the
   // controlled-sync effect below doesn't fight an animation that just
   // started — goTo's smooth scroll and the clone-jump's instant scroll
   // both claim ownership of the next scroll with this ref.
@@ -132,8 +156,8 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
   // the next goTo when it consumes the rebase.
   const wrapInFlightRef = useRef<number | null>(null);
   // DOM index of a deliberate clone-position jump that goTo just made via
-  // `scrollIntoView({behavior:'instant'})` to consolidate consecutive wrap
-  // clicks. While set, onScroll suppresses its edge branch at that
+  // an instant `scrollTo` to consolidate consecutive wrap clicks. While
+  // set, onScroll suppresses its edge branch at that
   // domIdx — otherwise the synthetic scroll event from the rebase (and
   // the first few frames of the new smooth scroll moving away from it,
   // which still round to the rebase DOM index) get misread as the tail
@@ -165,31 +189,25 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
         // across the entire strip to reach a mid-strip target.
         // (User-visible symptom: double-clicking next at the last slide
         // circles to slide 1, then sweeps backward to slide 2 instead
-        // of continuing forward.) Uses `scrollIntoView({instant})`,
-        // not `node.scrollLeft = X`, because the viewport's
-        // `scroll-smooth` CSS turns the latter into another animated
-        // scroll. Direction comes from wrapInFlightRef rather than
-        // scrollLeft so the rebase fires even on an ultra-fast
-        // double-click that beats the first animation frame.
+        // of continuing forward.) Uses an instant `scrollTo`, not
+        // `node.scrollLeft = X`, because the viewport's `scroll-smooth`
+        // CSS turns the latter into another animated scroll — and not
+        // `scrollIntoView`, which would also drag the window vertically.
+        // Direction comes from wrapInFlightRef rather than scrollLeft so
+        // the rebase fires even on an ultra-fast double-click that beats
+        // the first animation frame.
         if (isLooping && wrapInFlightRef.current !== null && width > 0) {
           const rebaseTarget =
             wrapInFlightRef.current === N + 1 ? 0 : wrapInFlightRef.current === 0 ? N + 1 : null;
           if (rebaseTarget !== null) {
-            const rebaseSlide = node.children[rebaseTarget] as HTMLElement | undefined;
-            if (rebaseSlide) {
-              internalScrollRef.current = true;
-              // Arm the onScroll-side rebase-consume guard BEFORE the
-              // instant scroll fires, so the scroll event it generates
-              // (and the first few frames of the smooth scroll below
-              // moving away from this domIdx) don't trip the edge
-              // branch's wrap-end snap.
-              rebaseConsumeRef.current = rebaseTarget;
-              rebaseSlide.scrollIntoView({
-                behavior: 'instant',
-                block: 'nearest',
-                inline: 'start',
-              });
-            }
+            internalScrollRef.current = true;
+            // Arm the onScroll-side rebase-consume guard BEFORE the
+            // instant scroll fires, so the scroll event it generates
+            // (and the first few frames of the smooth scroll below
+            // moving away from this domIdx) don't trip the edge
+            // branch's wrap-end snap.
+            rebaseConsumeRef.current = rebaseTarget;
+            scrollViewportToDom(node, rebaseTarget, 'instant');
           }
           wrapInFlightRef.current = null;
         }
@@ -205,13 +223,12 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
         const isNextWrap = loopMode === 'circular' && activeIdx === N - 1 && i === activeIdx + 1;
         const isPrevWrap = loopMode === 'circular' && activeIdx === 0 && i === activeIdx - 1;
         const targetDom = isNextWrap ? N + 1 : isPrevWrap ? 0 : domIndexFor(next);
-        const slide = node.children[targetDom] as HTMLElement | undefined;
-        if (slide) {
+        if (node.children[targetDom]) {
           internalScrollRef.current = true;
           goToInProgressRef.current = true;
           if (isNextWrap) wrapInFlightRef.current = N + 1;
           else if (isPrevWrap) wrapInFlightRef.current = 0;
-          slide.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+          scrollViewportToDom(node, targetDom, 'smooth');
         }
       }
     },
@@ -267,11 +284,8 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
       }
       if (domIdx === 0) {
         if (goToInProgressRef.current && node.scrollLeft > 1) return;
-        const realTwin = node.children[N] as HTMLElement | undefined;
-        if (realTwin) {
-          internalScrollRef.current = true;
-          realTwin.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'start' });
-        }
+        internalScrollRef.current = true;
+        scrollViewportToDom(node, N, 'instant');
         if (activeIdx !== N - 1) setActive(N - 1);
         goToInProgressRef.current = false;
         wrapInFlightRef.current = null;
@@ -279,11 +293,8 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
       }
       if (domIdx === N + 1) {
         if (goToInProgressRef.current && node.scrollLeft < (N + 1) * width - 1) return;
-        const realTwin = node.children[1] as HTMLElement | undefined;
-        if (realTwin) {
-          internalScrollRef.current = true;
-          realTwin.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'start' });
-        }
+        internalScrollRef.current = true;
+        scrollViewportToDom(node, 1, 'instant');
         if (activeIdx !== 0) setActive(0);
         goToInProgressRef.current = false;
         wrapInFlightRef.current = null;
@@ -343,23 +354,22 @@ export const Carousel = forwardRef<HTMLDivElement, CarouselProps<unknown>>(funct
     const targetDom = domIndexFor(activeIdx);
     const currentDom = Math.round(node.scrollLeft / width);
     if (currentDom === targetDom) return;
-    const slide = node.children[targetDom] as HTMLElement | undefined;
-    slide?.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'start' });
+    scrollViewportToDom(node, targetDom, 'instant');
   }, [activeIdx, domIndexFor]);
 
   // On mount with loop, scroll past the leading clone so the user starts
   // on the real `activeIdx`, not the clone-of-last. Layout effect (not
   // useEffect) so the user never sees the wrong frame before paint.
-  // `behavior: 'instant'` is required because `'auto'` would inherit
-  // the viewport's `scroll-smooth` CSS and animate the mount position.
+  // Uses an instant horizontal `scrollTo` (not `scrollIntoView`): this is
+  // the primary cold-load culprit — `scrollIntoView({block:'nearest'})`
+  // would drag the whole window down to an off-screen carousel. The
+  // viewport's own scroll box is all we move.
   useLayoutEffect(() => {
     if (!isLooping) return;
     const node = viewportRef.current;
     if (!node) return;
-    const slide = node.children[domIndexFor(activeIdx)] as HTMLElement | undefined;
-    if (!slide) return;
     internalScrollRef.current = true;
-    slide.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'start' });
+    scrollViewportToDom(node, domIndexFor(activeIdx), 'instant');
     // Mount-only; the controlled-sync effect above handles activeIdx
     // changes after mount.
     // eslint-disable-next-line react-hooks/exhaustive-deps

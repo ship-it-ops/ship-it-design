@@ -116,14 +116,16 @@ describe('ListingDetail', () => {
     // the gallery showing the old slide. With the controlled-sync effect
     // the viewport now scrolls (behavior: 'instant') whenever the controlled
     // `index` prop changes from outside.
-    const scrollSpy = vi.spyOn(Element.prototype, 'scrollIntoView').mockImplementation(() => {});
+    const scrollSpy = vi.spyOn(Element.prototype, 'scrollTo').mockImplementation(() => {});
     const fivePhotos = ['/p1.jpg', '/p2.jpg', '/p3.jpg', '/p4.jpg', '/p5.jpg'];
     render(<ListingDetail open photos={fivePhotos} title="Tesla" price="$89" />);
 
     // jsdom reports clientWidth: 0; force a real value so the sync effect
-    // doesn't bail on the early-return.
+    // doesn't bail on the early-return — and so the scroll target left is
+    // determinate.
+    const width = 300;
     const viewport = document.querySelector('[aria-live="polite"]') as HTMLElement;
-    Object.defineProperty(viewport, 'clientWidth', { value: 300, configurable: true });
+    Object.defineProperty(viewport, 'clientWidth', { value: width, configurable: true });
 
     await userEvent.click(screen.getByRole('button', { name: 'Open photo viewer' }));
     const lightbox = screen.getByRole('dialog', { name: /Tesla photos/ });
@@ -134,17 +136,21 @@ describe('ListingDetail', () => {
 
     // Two →: lightbox is on real photo index 2. With ListingDetail's
     // default `loop=true`, the gallery's DOM child for real idx 2 lives
-    // at viewport.children[3] (a clone of last sits at index 0).
+    // at viewport.children[3] (a clone of last sits at index 0). The
+    // controlled-sync effect repositions the viewport horizontally with
+    // `scrollTo({ left, behavior: 'instant' })` — left 3 * width — rather
+    // than scrollIntoView, which would drag the window vertically.
     const autoCallIndexes: number[] = [];
     scrollSpy.mock.calls.forEach((call, i) => {
       const [opts] = call;
-      if ((opts as ScrollIntoViewOptions | undefined)?.behavior === 'instant') {
+      if ((opts as ScrollToOptions | undefined)?.behavior === 'instant') {
         autoCallIndexes.push(i);
       }
     });
     expect(autoCallIndexes.length).toBeGreaterThan(0);
     const lastAutoCallIndex = autoCallIndexes[autoCallIndexes.length - 1]!;
-    expect(scrollSpy.mock.instances[lastAutoCallIndex]).toBe(viewport.children[3]);
+    expect(scrollSpy.mock.instances[lastAutoCallIndex]).toBe(viewport);
+    expect((scrollSpy.mock.calls[lastAutoCallIndex]![0] as ScrollToOptions).left).toBe(3 * width);
   });
 
   it('passes mode="gallery" to renderPhoto inline and mode="lightbox" when fullscreen opens', async () => {

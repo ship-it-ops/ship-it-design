@@ -1,6 +1,6 @@
 # Agent Context
 
-Last updated: 2026-06-04 | Total notes: 43
+Last updated: 2026-06-14 | Total notes: 44
 
 <!--
   This file is the index for `docs/agent/`. Agents read it at session start.
@@ -25,7 +25,7 @@ Last updated: 2026-06-04 | Total notes: 43
 
 <!-- always-read at session start. Move to archive/ on completion. -->
 
-_None._
+- [carousel-loop-window-scroll](status/carousel-loop-window-scroll.md) | status | active | standard | 2026-06-14 | Fix done on fix-scroll; awaiting review/merge
 
 ## Decisions
 
@@ -88,3 +88,4 @@ _None._
 - [math-round-midpoint-fires-onscroll-edge-mid-animation](scars/math-round-midpoint-fires-onscroll-edge-mid-animation.md) | scar | active | standard | 2026-06-02 | Math.round flips at midpoint and fires edge work mid-flight
 - [docs-site-stale-ui-dist](scars/docs-site-stale-ui-dist.md) | scar | active | standard | 2026-06-02 | docs-site bundles @ship-it-ui/ui from dist, not src
 - [rebase-instant-scroll-fires-edge-snap](scars/rebase-instant-scroll-fires-edge-snap.md) | scar | active | standard | 2026-06-02 | scrollIntoView(instant) fires a scroll event you can't distinguish from natural landings
+- [scrollintoview-block-nearest-drags-window](scars/scrollintoview-block-nearest-drags-window.md) | scar | active | standard | 2026-06-14 | scrollIntoView({inline:start}) also scrolls vertical axis; drags window on cold load
