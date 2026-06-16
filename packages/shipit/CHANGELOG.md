@@ -1,5 +1,12 @@
 # @ship-it-ui/shipit
 
+## 0.0.19
+
+### Patch Changes
+
+- Updated dependencies [bae6568]
+  - @ship-it-ui/ui@0.0.18
+
 ## 0.0.18
 
 ### Patch Changes
