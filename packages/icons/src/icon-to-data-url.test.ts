@@ -27,11 +27,19 @@ describe('iconToSvgDataUrl', () => {
     expect(decoded).toContain("style='color:#5b9cff'");
   });
 
-  it('resolves connector names via the `connector:` namespace', () => {
-    const url = iconToSvgDataUrl('connector:github');
+  it('resolves logo names via the `logo:` namespace', () => {
+    const url = iconToSvgDataUrl('logo:github');
     const decoded = decodeURIComponent(url.slice('data:image/svg+xml;utf8,'.length));
     expect(decoded).toMatch(/<path/);
     expect(decoded).not.toContain('<text');
+  });
+
+  it('still resolves the deprecated `connector:` namespace to the same icon as `logo:`', () => {
+    const strip = (url: string) => decodeURIComponent(url.slice('data:image/svg+xml;utf8,'.length));
+    const logo = strip(iconToSvgDataUrl('logo:github'));
+    const legacy = strip(iconToSvgDataUrl('connector:github'));
+    expect(legacy).not.toContain('<text');
+    expect(legacy).toBe(logo);
   });
 
   it('falls back to centered <text> for unregistered names (e.g. raw unicode glyph)', () => {

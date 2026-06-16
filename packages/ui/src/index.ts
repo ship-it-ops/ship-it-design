@@ -28,6 +28,7 @@ export * from './components/Radio';
 export * from './components/SegmentedControl';
 export * from './components/Select';
 export * from './components/Slider';
+export * from './components/SwatchGroup';
 export * from './components/Switch';
 export * from './components/Textarea';
 
@@ -43,6 +44,7 @@ export * from './components/ScrollArea';
 export * from './components/Skeleton';
 export * from './components/StatusDot';
 export * from './components/Tag';
+export * from './components/VisuallyHidden';
 
 // Components — overlays
 export * from './components/ContextMenu';

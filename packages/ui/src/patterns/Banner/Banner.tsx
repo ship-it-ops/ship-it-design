@@ -18,10 +18,10 @@ const bannerStyles = cva(
   {
     variants: {
       tone: {
-        accent: 'bg-[color-mix(in_oklab,var(--color-accent),transparent_82%)] text-accent',
-        ok: 'bg-[color-mix(in_oklab,var(--color-ok),transparent_82%)] text-ok',
-        warn: 'bg-[color-mix(in_oklab,var(--color-warn),transparent_82%)] text-warn',
-        err: 'bg-[color-mix(in_oklab,var(--color-err),transparent_82%)] text-err',
+        accent: 'bg-[color-mix(in_oklab,var(--color-accent),transparent_82%)] text-accent-text',
+        ok: 'bg-[color-mix(in_oklab,var(--color-ok),transparent_82%)] text-ok-text',
+        warn: 'bg-[color-mix(in_oklab,var(--color-warn),transparent_82%)] text-warn-text',
+        err: 'bg-[color-mix(in_oklab,var(--color-err),transparent_82%)] text-err-text',
       },
       sticky: {
         true: 'sticky top-0 z-sticky',
@@ -66,7 +66,10 @@ export const Banner = forwardRef<HTMLDivElement, BannerProps>(function Banner(
     <div
       ref={ref}
       role={live === 'assertive' ? 'alert' : 'status'}
-      aria-live={live === 'off' ? undefined : live}
+      // `role="status"` carries an implicit `aria-live="polite"`, so to truly
+      // suppress announcements we must set an explicit `aria-live="off"` —
+      // omitting the attribute would leave the polite live region active.
+      aria-live={live === 'off' ? 'off' : live}
       className={cn(bannerStyles({ tone, sticky }), className)}
       {...props}
     >

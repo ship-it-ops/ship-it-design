@@ -50,6 +50,82 @@ describe('Footer', () => {
     expect(address?.textContent).toContain('1 Market St');
   });
 
+  it('passes target and defaults rel to noopener noreferrer for target="_blank" links', () => {
+    render(
+      <Footer
+        columns={[
+          {
+            heading: 'Social',
+            links: [
+              { label: 'Twitter', href: 'https://x.com', target: '_blank' },
+              {
+                label: 'Maps',
+                href: 'https://maps.example',
+                target: '_blank',
+                rel: 'me external',
+              },
+              { label: 'About', href: '/about' },
+            ],
+          },
+        ]}
+        copyright="©"
+      />,
+    );
+    const external = screen.getByRole('link', { name: 'Twitter' });
+    expect(external).toHaveAttribute('target', '_blank');
+    expect(external).toHaveAttribute('rel', 'noopener noreferrer');
+
+    const explicitRel = screen.getByRole('link', { name: 'Maps' });
+    expect(explicitRel).toHaveAttribute('target', '_blank');
+    expect(explicitRel).toHaveAttribute('rel', 'me external');
+
+    const internal = screen.getByRole('link', { name: 'About' });
+    expect(internal).not.toHaveAttribute('target');
+    expect(internal).not.toHaveAttribute('rel');
+  });
+
+  it('uses ml-auto distribution for the default/split align', () => {
+    const { container, rerender } = render(
+      <Footer brand="ShipIt" columns={columns} copyright="©" closing="made with care" />,
+    );
+    const columnsGroup = container.querySelector('footer > div:first-child > div:last-child');
+    expect(columnsGroup?.className).toContain('ml-auto');
+    expect(container.querySelector('footer .border-t span:last-child')?.className).toContain(
+      'ml-auto',
+    );
+
+    rerender(
+      <Footer
+        brand="ShipIt"
+        columns={columns}
+        copyright="©"
+        closing="made with care"
+        align="split"
+      />,
+    );
+    expect(
+      container.querySelector('footer > div:first-child > div:last-child')?.className,
+    ).toContain('ml-auto');
+  });
+
+  it('removes ml-auto from the columns group when align="center"', () => {
+    const { container } = render(
+      <Footer
+        brand="ShipIt"
+        columns={columns}
+        copyright="©"
+        closing="made with care"
+        align="center"
+      />,
+    );
+    const columnsGroup = container.querySelector('footer > div:first-child > div:last-child');
+    expect(columnsGroup?.className).not.toContain('ml-auto');
+    expect(columnsGroup?.className).toContain('mx-auto');
+    const closing = container.querySelector('footer .border-t span:last-child');
+    expect(closing?.className).not.toContain('ml-auto');
+    expect(closing?.className).toContain('mx-auto');
+  });
+
   it('has no a11y violations', async () => {
     const { container } = render(<Footer brand="ShipIt" columns={columns} copyright="©" />);
     expect(await axe(container)).toHaveNoViolations();

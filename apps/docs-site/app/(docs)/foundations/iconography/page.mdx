@@ -1,4 +1,4 @@
-import { IconGlyph, connectorManifest, glyphManifest } from '@ship-it-ui/icons';
+import { IconGlyph, logoManifest, glyphManifest } from '@ship-it-ui/icons';
 import { IconCatalog } from '@/components/docs/IconCatalog';
 
 # Iconography
@@ -22,20 +22,15 @@ export const glyphItems = Object.keys(glyphManifest)
 
 <IconCatalog items={glyphItems} pageSize={64} searchPlaceholder="Search glyphs…" />
 
-## Connector logos
+## Logos
 
-Brand marks for first-class data sources. Use `<IconGlyph kind="connector" />`.
+Brand marks for first-class data sources. Use `<IconGlyph kind="logo" />`.
 
-export const connectorItems = Object.keys(connectorManifest)
+export const logoItems = Object.keys(logoManifest)
   .sort()
-  .map((name) => ({ name, kind: 'connector' }));
+  .map((name) => ({ name, kind: 'logo' }));
 
-<IconCatalog
-  items={connectorItems}
-  pageSize={64}
-  searchPlaceholder="Search connectors…"
-  columns={5}
-/>
+<IconCatalog items={logoItems} pageSize={64} searchPlaceholder="Search logos…" columns={5} />
 
 ## Sizes
 
@@ -179,7 +174,7 @@ import { IconGlyph } from '@ship-it-ui/icons';
 
 <IconGlyph name="ask" size={14} />
 <IconGlyph name="service" size={22} />
-<IconGlyph kind="connector" name="github" size={20} />
+<IconGlyph kind="logo" name="github" size={20} />
 ```
 
 `<IconGlyph>` is the canonical surface — it handles sizing, ARIA, and

@@ -13,7 +13,8 @@ import { useMemo, useState } from 'react';
 
 export interface IconCatalogItem {
   name: string;
-  kind?: 'default' | 'connector';
+  // `connector` is the deprecated alias for `logo`; both resolve to the same icon.
+  kind?: 'default' | 'logo' | 'connector';
 }
 
 export interface IconCatalogProps {

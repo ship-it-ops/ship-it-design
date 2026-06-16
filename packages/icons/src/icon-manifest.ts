@@ -2,14 +2,14 @@
  * Source of truth for every icon name in `@ship-it-ui/icons`. Each entry maps
  * a semantic name to an Iconify `[collection, icon]` tuple — the codegen in
  * `scripts/build-icon-data.ts` materialises every entry into the committed
- * `src/icon-data.ts`. `GlyphName` and `ConnectorName` are derived from these
+ * `src/icon-data.ts`. `GlyphName` and `LogoName` are derived from these
  * maps so adding an entry here automatically expands the typed `IconGlyph`
- * `name` prop and `kind="connector"` lookups.
+ * `name` prop and `kind="logo"` lookups.
  *
  * Collections in use:
  *   - `lucide`        — stroke-based UI primitives (default)
  *   - `ph`            — Phosphor: softer variants when Lucide's hairlines feel wrong
- *   - `simple-icons`  — brand logos for connectors and infra-specific glyphs
+ *   - `simple-icons`  — brand logos and infra-specific glyphs
  */
 
 /** [collection, icon-name] tuple for an Iconify icon. */
@@ -224,6 +224,7 @@ export const glyphManifest = {
   thumbsUp: ['lucide', 'thumbs-up'],
   thumbsDown: ['lucide', 'thumbs-down'],
   award: ['lucide', 'award'],
+  gem: ['lucide', 'gem'],
 
   // Media & playback
   play: ['lucide', 'play'],
@@ -390,6 +391,9 @@ export const glyphManifest = {
   camera: ['lucide', 'camera'],
   snowflake: ['lucide', 'snowflake'],
   trafficCone: ['lucide', 'traffic-cone'],
+  brakeDisc: ['lucide', 'disc'],
+  tire: ['ph', 'tire'],
+  suspension: ['solar', 'suspension-linear'],
 
   // — Travel & transport: locations (pickup/dropoff) —
   airport: ['lucide', 'plane'],
@@ -484,9 +488,19 @@ export const glyphManifest = {
   promo: ['lucide', 'badge-percent'],
   refund: ['lucide', 'undo-2'],
   piggyBank: ['ph', 'piggy-bank'],
+
+  // — Solid / filled variants —
+  // The default set is stroke-first (Lucide has no filled weight). These are
+  // explicit solid glyph names sourced from Phosphor's `fill` weight, for the
+  // cases that read better filled: a call CTA, a rating star, a liked heart, an
+  // active notification bell. Use the plain stroke name elsewhere.
+  phoneFill: ['ph', 'phone-fill'],
+  starFill: ['ph', 'star-fill'],
+  heartFill: ['ph', 'heart-fill'],
+  bellFill: ['ph', 'bell-fill'],
 } as const satisfies Record<string, IconRef>;
 
-export const connectorManifest = {
+export const logoManifest = {
   // — Existing first-class connectors —
   github: ['simple-icons', 'github'],
   notion: ['simple-icons', 'notion'],
@@ -803,5 +817,17 @@ export const connectorManifest = {
 /** Statically-typed semantic icon names — adds compile-time checking to `<IconGlyph name=…>`. */
 export type GlyphName = keyof typeof glyphManifest;
 
-/** Statically-typed connector names — used with `<IconGlyph kind="connector" name=…>`. */
-export type ConnectorName = keyof typeof connectorManifest;
+/** Statically-typed brand-logo names — used with `<IconGlyph kind="logo" name=…>`. */
+export type LogoName = keyof typeof logoManifest;
+
+/**
+ * @deprecated Renamed to `logoManifest`. This alias keeps existing
+ * `connector`-category callers working and will be removed at 1.0.
+ */
+export const connectorManifest = logoManifest;
+
+/**
+ * @deprecated Renamed to `LogoName`. This alias keeps existing `connector`-category
+ * callers working and will be removed at 1.0.
+ */
+export type ConnectorName = LogoName;

@@ -15,7 +15,7 @@ architecture overview for how `@ship-it-ui/tokens`, `@ship-it-ui/icons`,
 ```
 src/icon-manifest.ts        scripts/build-icon-data.ts        src/icon-data.ts
 ────────────────────        ──────────────────────────        ─────────────────────
-instagram: ['simple-icons', ──► pull body/viewBox from   ──►  "connector:instagram": { body, … }
+instagram: ['simple-icons', ──► pull body/viewBox from   ──►  "logo:instagram": { body, … }
   'instagram']                  @iconify-json/<set>            (committed, drift-tested)
 github: ['lucide', 'github'] ─►                           ──►  "github": { body, … }
 ```
@@ -25,12 +25,18 @@ github: ['lucide', 'github'] ─►                           ──►  "github
 
 - **`lucide`** — stroke-based UI primitives (the default)
 - **`ph`** ([Phosphor](https://phosphoricons.com/)) — softer variants when Lucide's hairlines feel wrong
-- **`simple-icons`** — brand logos for connectors (GitHub, Slack, Instagram, …)
+- **`simple-icons`** — brand logos (GitHub, Slack, Instagram, …)
 
 It exposes two maps: `glyphManifest` (semantic UI icons → `<IconGlyph name="…" />`)
-and `connectorManifest` (brand logos → `<IconGlyph kind="connector" name="…" />`).
-The `GlyphName` / `ConnectorName` types are derived from these maps, so adding an
+and `logoManifest` (brand logos → `<IconGlyph kind="logo" name="…" />`).
+The `GlyphName` / `LogoName` types are derived from these maps, so adding an
 entry expands the typed `name` prop automatically.
+
+> **Deprecated alias:** the brand-logo map was formerly `connectorManifest` and
+> the category was `kind="connector"`. Both still work (`connectorManifest`,
+> `ConnectorName`, and `kind="connector"` resolve to the same icons) but are
+> `@deprecated` and will be removed at 1.0 — prefer `logoManifest` / `LogoName`
+> / `kind="logo"`.
 
 `scripts/build-icon-data.ts` reads the manifest, pulls each referenced icon from
 the corresponding `@iconify-json/*` devDep, and writes the **committed**
@@ -43,7 +49,7 @@ can never silently desync from the data.
 import { IconGlyph } from '@ship-it-ui/icons';
 
 <IconGlyph name="rocket" className="text-accent size-4" />
-<IconGlyph kind="connector" name="instagram" className="size-5" />
+<IconGlyph kind="logo" name="instagram" className="size-5" />
 ```
 
 For non-React surfaces (cytoscape `background-image`, canvas, Mermaid), call
@@ -53,7 +59,7 @@ For non-React surfaces (cytoscape `background-image`, canvas, Mermaid), call
 
 1. Find the icon on [icon-sets.iconify.design](https://icon-sets.iconify.design/)
    in one of the in-use collections (`lucide`, `ph`, `simple-icons`).
-2. Add an entry to `glyphManifest` (semantic UI icon) or `connectorManifest`
+2. Add an entry to `glyphManifest` (semantic UI icon) or `logoManifest`
    (brand logo) in `src/icon-manifest.ts`, e.g. `instagram: ['simple-icons', 'instagram']`.
 3. Regenerate the committed data: `pnpm --filter @ship-it-ui/icons icons:sync`
    (or the full `build`). The codegen throws if a slug doesn't exist in its

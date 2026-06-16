@@ -32,8 +32,8 @@ describe('IconGlyph', () => {
     expect(svg).toHaveAttribute('height', '20px');
   });
 
-  it('resolves connector logos when kind="connector"', () => {
-    render(<IconGlyph name="github" kind="connector" data-testid="icon" />);
+  it('resolves brand logos when kind="logo"', () => {
+    render(<IconGlyph name="github" kind="logo" data-testid="icon" />);
     const svg = screen.getByTestId('icon');
     expect(svg.tagName.toLowerCase()).toBe('svg');
     // simple-icons github should render an SVG body (not the legacy unicode fallback).
@@ -41,7 +41,40 @@ describe('IconGlyph', () => {
     // No fallback <text> element — it would mean icon-data lookup failed.
     expect(svg.querySelector('text')).toBeNull();
   });
+
+  it('still resolves the same icon for the deprecated kind="connector"', () => {
+    render(
+      <>
+        <IconGlyph name="github" kind="logo" data-testid="logo" />
+        <IconGlyph name="github" kind="connector" data-testid="connector" />
+      </>,
+    );
+    const logo = screen.getByTestId('logo');
+    const connector = screen.getByTestId('connector');
+    // The deprecated alias must paint the identical SVG body as kind="logo".
+    expect(connector.querySelector('text')).toBeNull();
+    expect(connector.innerHTML).toBe(logo.innerHTML);
+  });
 });
+
+// Compile-time regression for the kind/name discriminated union (audit finding
+// adversarial-3): `kind` must constrain the valid `name` set. Never rendered —
+// `tsc` validates the `@ts-expect-error` directives during typecheck.
+function _typeContracts() {
+  return (
+    <>
+      <IconGlyph name="ask" />
+      <IconGlyph kind="default" name="ask" />
+      <IconGlyph kind="logo" name="github" />
+      <IconGlyph kind="connector" name="github" />
+      {/* @ts-expect-error glyph-only name under kind="logo" must not typecheck */}
+      <IconGlyph kind="logo" name="ask" />
+      {/* @ts-expect-error logo-only name under default kind must not typecheck */}
+      <IconGlyph name="slack" />
+    </>
+  );
+}
+void _typeContracts;
 
 describe('DynamicIconGlyph', () => {
   it('renders SVG body for a known glyph name', () => {

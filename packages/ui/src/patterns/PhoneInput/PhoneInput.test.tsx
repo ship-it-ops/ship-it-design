@@ -3,6 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { axe } from 'vitest-axe';
 
+import { Field } from '../../components/Field';
+
 import { PhoneInput } from './PhoneInput';
 
 describe('PhoneInput', () => {
@@ -39,6 +41,31 @@ describe('PhoneInput', () => {
 
     rerender(<PhoneInput value="" />);
     expect(screen.getByLabelText('Phone number')).toHaveValue('');
+  });
+
+  it('forwards id to the inner tel input so a label can target it', () => {
+    render(
+      <>
+        <label htmlFor="phone">Phone</label>
+        <PhoneInput id="phone" />
+      </>,
+    );
+    const input = screen.getByLabelText('Phone number');
+    expect(input).toHaveAttribute('id', 'phone');
+    // The external <label htmlFor="phone"> now resolves to this input.
+    expect(screen.getByLabelText('Phone')).toBe(input);
+  });
+
+  it("threads a Field render-prop's generated id and aria wiring to the input", () => {
+    render(
+      <Field label="Mobile" error="Required">
+        {(p) => <PhoneInput {...p} />}
+      </Field>,
+    );
+    const input = screen.getByLabelText('Mobile');
+    expect(input).toHaveAttribute('id');
+    expect(input).toHaveAttribute('aria-invalid', 'true');
+    expect(input).toHaveAttribute('aria-describedby');
   });
 
   it('has no a11y violations', async () => {

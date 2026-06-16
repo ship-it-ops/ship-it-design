@@ -17,6 +17,13 @@ import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 export interface FooterLink {
   label: ReactNode;
   href: string;
+  /** Anchor `target` (e.g., `'_blank'` for external links). */
+  target?: string;
+  /**
+   * Anchor `rel`. If omitted and `target === '_blank'`, defaults to
+   * `'noopener noreferrer'` for security best practice.
+   */
+  rel?: string;
 }
 
 export interface FooterColumn {
@@ -37,12 +44,20 @@ export interface FooterProps extends HTMLAttributes<HTMLElement> {
    * brand for org contact info (phone, email, mailing address).
    */
   address?: ReactNode;
+  /**
+   * Horizontal alignment of the link columns and closing line.
+   * `'split'` (default) pushes the columns and closing to the right;
+   * `'center'` centers them. Defaults to `'split'` so existing consumers
+   * are unchanged.
+   */
+  align?: 'split' | 'center';
 }
 
 export const Footer = forwardRef<HTMLElement, FooterProps>(function Footer(
-  { brand, columns, copyright, closing, address, className, ...props },
+  { brand, columns, copyright, closing, address, align = 'split', className, ...props },
   ref,
 ) {
+  const split = align === 'split';
   return (
     <footer ref={ref} className={cn('px-7 py-7', className)} {...props}>
       <div className="mb-7 flex flex-wrap gap-8">
@@ -54,7 +69,13 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(function Footer(
             )}
           </div>
         )}
-        <div className="text-text-muted ml-auto flex flex-wrap gap-6 text-[12px]">
+        <div
+          className={
+            split
+              ? 'text-text-muted ml-auto flex flex-wrap gap-6 text-[12px]'
+              : 'text-text-muted mx-auto flex flex-wrap justify-center gap-6 text-[12px]'
+          }
+        >
           {columns.map((col, i) => (
             <div key={i} className="flex flex-col gap-[6px]">
               <div className="text-text-dim font-mono text-[10px] tracking-[1.2px] uppercase">
@@ -63,7 +84,14 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(function Footer(
               <ul className="m-0 flex list-none flex-col gap-[6px] p-0">
                 {col.links.map((link, j) => (
                   <li key={j}>
-                    <a href={link.href} className="text-text-muted hover:text-text no-underline">
+                    <a
+                      href={link.href}
+                      target={link.target}
+                      rel={
+                        link.rel ?? (link.target === '_blank' ? 'noopener noreferrer' : undefined)
+                      }
+                      className="text-text-muted hover:text-text no-underline"
+                    >
                       {link.label}
                     </a>
                   </li>
@@ -75,7 +103,7 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(function Footer(
       </div>
       <div className="border-border text-text-dim flex border-t pt-4 font-mono text-[11px]">
         {copyright && <span>{copyright}</span>}
-        {closing && <span className="ml-auto">{closing}</span>}
+        {closing && <span className={split ? 'ml-auto' : 'mx-auto'}>{closing}</span>}
       </div>
     </footer>
   );

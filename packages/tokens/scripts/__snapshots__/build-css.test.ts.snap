@@ -20,6 +20,8 @@ exports[`build-css > matches the generated tokens.css snapshot 1`] = `
   --color-accent-text: oklch(0.9 0.1 var(--accent-h));
   --color-accent-dim: oklch(0.82 0.12 var(--accent-h) / 0.12);
   --color-accent-glow: oklch(0.82 0.12 var(--accent-h) / 0.4);
+  --color-accent-soft: oklch(0.82 0.12 var(--accent-h) / 0.16);
+  --color-accent-soft-text: oklch(0.9 0.1 var(--accent-h));
   --color-ok: oklch(0.82 0.17 150);
   --color-warn: oklch(0.82 0.16 75);
   --color-err: oklch(0.72 0.19 25);
@@ -49,6 +51,9 @@ exports[`build-css > matches the generated tokens.css snapshot 1`] = `
   /* Typography — families */
   --font-family-sans: "Geist Variable", "Geist", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-family-mono: "Geist Mono Variable", "Geist Mono", "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-family-display-tech: "Space Grotesk Variable", "Space Grotesk", system-ui, sans-serif;
+  --font-family-display-bold: "Archivo Variable", "Archivo", system-ui, sans-serif;
+  --font-family-display-serif: "Fraunces Variable", "Fraunces", Georgia, "Times New Roman", serif;
 
   /* Typography — sizes */
   --font-size-eyebrow: 10px;
@@ -91,6 +96,7 @@ exports[`build-css > matches the generated tokens.css snapshot 1`] = `
   --space-5: 22px;
   --space-6: 28px;
   --space-8: 40px;
+  --space-px: 1px;
 
   /* Radius */
   --radius-xs: 4px;
@@ -172,6 +178,8 @@ exports[`build-css > matches the generated tokens.css snapshot 1`] = `
   --color-accent-text: oklch(0.38 0.13 var(--accent-h));
   --color-accent-dim: oklch(0.72 0.13 var(--accent-h) / 0.10);
   --color-accent-glow: oklch(0.72 0.13 var(--accent-h) / 0.25);
+  --color-accent-soft: oklch(0.72 0.13 var(--accent-h) / 0.14);
+  --color-accent-soft-text: oklch(0.38 0.13 var(--accent-h));
   --color-ok: oklch(0.55 0.17 150);
   --color-warn: oklch(0.55 0.17 75);
   --color-err: oklch(0.5 0.19 25);

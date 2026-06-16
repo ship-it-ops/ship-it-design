@@ -89,6 +89,58 @@ describe('Button', () => {
     expect(link).not.toHaveAttribute('type');
   });
 
+  it('composes an icon into the asChild child without dropping its content', () => {
+    render(
+      <Button asChild icon={<svg data-testid="i" />}>
+        <a href="/go">Go</a>
+      </Button>,
+    );
+    const link = screen.getByRole('link', { name: 'Go' });
+    expect(link).toHaveAttribute('href', '/go');
+    // The icon is cloned INTO the single anchor child, not dropped.
+    const icon = screen.getByTestId('i');
+    expect(link).toContainElement(icon);
+  });
+
+  it('composes a trailing node into the asChild child', () => {
+    render(
+      <Button asChild trailing={<span data-testid="t">→</span>}>
+        <a href="/next">Next</a>
+      </Button>,
+    );
+    const link = screen.getByRole('link', { name: /Next/ });
+    expect(link).toContainElement(screen.getByTestId('t'));
+  });
+
+  it('swaps in a spinner inside the asChild child when loading', () => {
+    render(
+      <Button asChild loading>
+        <a href="/wait">Wait</a>
+      </Button>,
+    );
+    const link = screen.getByRole('link');
+    expect(link).toHaveAttribute('aria-busy', 'true');
+    // Spinner is composed into the anchor — the anchor still renders its label.
+    expect(link).toHaveTextContent('Wait');
+  });
+
+  it('renders just the anchor for asChild without icon/trailing/loading (unchanged)', () => {
+    render(
+      <Button asChild>
+        <a href="/plain">Plain</a>
+      </Button>,
+    );
+    const link = screen.getByRole('link', { name: 'Plain' });
+    expect(link).toHaveTextContent('Plain');
+    expect(link.querySelector('span')).toBeNull();
+  });
+
+  it('renders an icon in the normal (non-asChild) path', () => {
+    render(<Button icon={<svg data-testid="ni" />}>Labeled</Button>);
+    const button = screen.getByRole('button', { name: 'Labeled' });
+    expect(button).toContainElement(screen.getByTestId('ni'));
+  });
+
   it('applies touch-density classes when density="touch"', () => {
     render(
       <Button size="md" density="touch">

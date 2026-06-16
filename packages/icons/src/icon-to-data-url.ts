@@ -12,9 +12,11 @@ import { iconData } from './icon-data';
  * `viewBox`-only `<svg>` as 0×0 intrinsic dimensions and paints nothing).
  *
  * @param name   Icon name (`'service'`, `'github'`, …) or a literal glyph
- *               character (`'◇'`) to render as text. Connector logos are
- *               addressed as `connector:<name>` (e.g. `'connector:github'`)
- *               since they share a namespace with semantic glyphs.
+ *               character (`'◇'`) to render as text. Brand logos are
+ *               addressed as `logo:<name>` (e.g. `'logo:github'`) since they
+ *               share a namespace with semantic glyphs. The legacy
+ *               `connector:<name>` prefix is still accepted as a deprecated
+ *               alias and resolves to the same icon.
  * @param options.color  CSS color for stroke/fill. Defaults to `#000`. Note
  *               that `currentColor` does not resolve inside an `<img>` — pass
  *               the resolved sRGB value when calling from a stylesheet.
@@ -31,8 +33,30 @@ export function iconToSvgDataUrl(
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
 
+const LEGACY_LOGO_PREFIX = 'connector:';
+
+/**
+ * Resolve a name against the icon data. Resolution order (first hit wins):
+ *   1. a direct key — a semantic glyph (`'service'`) or an explicit
+ *      `logo:<name>` key (`'logo:github'`);
+ *   2. the deprecated `connector:<name>` prefix (normalised to `logo:<name>`);
+ *   3. a bare-name fallback to `logo:<name>`.
+ *
+ * Because the direct-key step runs first, a bare name that ALSO exists as a
+ * semantic glyph resolves to the glyph, NOT the brand logo — five names collide
+ * (`box`, `github`, `pagerduty`, `signal`, `snowflake`). To address a brand logo
+ * unambiguously, always pass the explicit `logo:<name>` prefix; the bare-name
+ * fallback is a convenience for logo-only names, not a guaranteed logo lookup.
+ */
+function lookupIconData(name: string) {
+  const legacy = name.startsWith(LEGACY_LOGO_PREFIX)
+    ? `logo:${name.slice(LEGACY_LOGO_PREFIX.length)}`
+    : undefined;
+  return iconData[name] ?? (legacy ? iconData[legacy] : undefined) ?? iconData[`logo:${name}`];
+}
+
 function renderSvg(name: string, color: string, size: number): string {
-  const data = iconData[name] ?? iconData[`connector:${name}`];
+  const data = lookupIconData(name);
   if (data) {
     // Lucide bodies use `stroke="currentColor"` (most icons) and `fill="none"`,
     // so the wrapper has to set BOTH:

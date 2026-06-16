@@ -14,6 +14,10 @@
 export const fontFamily = {
   sans: '"Geist Variable", "Geist", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif',
   mono: '"Geist Mono Variable", "Geist Mono", "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace',
+  // Sanctioned display families — self-hosted via @fontsource-variable in @ship-it-ui/ui.
+  displayTech: '"Space Grotesk Variable", "Space Grotesk", system-ui, sans-serif',
+  displayBold: '"Archivo Variable", "Archivo", system-ui, sans-serif',
+  displaySerif: '"Fraunces Variable", "Fraunces", Georgia, "Times New Roman", serif',
 } as const;
 
 export const fontSize = {

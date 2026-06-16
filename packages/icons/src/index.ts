@@ -22,11 +22,14 @@ export {
   type DynamicIconGlyphProps,
 } from './IconGlyph';
 export {
-  connectorManifest,
   glyphManifest,
-  type ConnectorName,
+  logoManifest,
   type GlyphName,
   type IconRef,
+  type LogoName,
+  // Deprecated aliases for the former `connector` category — removed at 1.0.
+  connectorManifest,
+  type ConnectorName,
 } from './icon-manifest';
 export { iconData, type IconData } from './icon-data';
 export { iconToSvgDataUrl } from './icon-to-data-url';

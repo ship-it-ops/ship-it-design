@@ -52,6 +52,10 @@ export const colorSemanticDark = {
   accentText: 'oklch(0.9 0.1 var(--accent-h))',
   accentDim: 'oklch(0.82 0.12 var(--accent-h) / 0.12)',
   accentGlow: 'oklch(0.82 0.12 var(--accent-h) / 0.4)',
+  // Soft tinted plate surface + the readable accent foreground to use ON it.
+  // `accentSoftText` intentionally aliases `accentText` so on-plate copy matches accent text.
+  accentSoft: 'oklch(0.82 0.12 var(--accent-h) / 0.16)',
+  accentSoftText: 'oklch(0.9 0.1 var(--accent-h))',
 
   ok: colorPrimitive.ok,
   warn: colorPrimitive.warn,
@@ -105,6 +109,10 @@ export const colorSemanticLight = {
   accentText: 'oklch(0.38 0.13 var(--accent-h))',
   accentDim: 'oklch(0.72 0.13 var(--accent-h) / 0.10)',
   accentGlow: 'oklch(0.72 0.13 var(--accent-h) / 0.25)',
+  // Soft tinted plate surface + the readable accent foreground to use ON it.
+  // `accentSoftText` intentionally aliases `accentText` so on-plate copy matches accent text.
+  accentSoft: 'oklch(0.72 0.13 var(--accent-h) / 0.14)',
+  accentSoftText: 'oklch(0.38 0.13 var(--accent-h))',
 
   // Companion palette tuned for light bg `#fbfbfa`. The dark-theme ramps were too
   // light to read as text in light mode (`text-err` ≈3.0:1, `text-warn` ≈1.5:1).

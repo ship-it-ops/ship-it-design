@@ -29,8 +29,17 @@ export interface PhoneInputProps {
   defaultCountry?: string;
   placeholder?: string;
   disabled?: boolean;
+  /**
+   * `id` for the national-number `<input>` so an external `<label htmlFor>`
+   * (or a `Field` render-prop's generated id) can target it.
+   */
+  id?: string;
   /** Accessible label for the national-number input. */
   'aria-label'?: string;
+  /** Forwarded to the national-number input — e.g. a `Field`'s describedby id. */
+  'aria-describedby'?: string;
+  /** Forwarded to the national-number input — e.g. a `Field`'s invalid flag. */
+  'aria-invalid'?: boolean;
 }
 
 interface ParsedPhone {
@@ -63,7 +72,10 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(function
     defaultCountry = 'US',
     placeholder = 'Phone number',
     disabled,
+    id,
     'aria-label': ariaLabel = 'Phone number',
+    'aria-describedby': ariaDescribedBy,
+    'aria-invalid': ariaInvalid,
   },
   ref,
 ) {
@@ -145,10 +157,13 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(function
       />
       <input
         ref={ref}
+        id={id}
         type="tel"
         inputMode="tel"
         autoComplete="tel-national"
         aria-label={ariaLabel}
+        aria-describedby={ariaDescribedBy}
+        aria-invalid={ariaInvalid}
         value={national}
         onChange={(e) => handleNational(e.target.value)}
         placeholder={placeholder}
