@@ -1,5 +1,77 @@
 # @ship-it-ui/ui
 
+## 0.0.19
+
+### Patch Changes
+
+- 52af924: Add three additive, non-breaking token sets:
+  - **Soft-accent surface pair** — new `accentSoft` (a soft tinted plate
+    surface) and `accentSoftText` (the readable accent foreground to use on
+    that plate, aliasing `accentText`) semantic colors in both themes,
+    wired through `@theme inline` so `bg-accent-soft` and
+    `text-accent-soft-text` utilities resolve.
+  - **1px hairline spacing token** — new `px: '1px'` step at the bottom of
+    the spacing scale for decorative rules/borders, exposed as the
+    `--spacing-px` Tailwind spacing utility.
+  - **Sanctioned display font families** — new `displayTech`
+    (Space Grotesk), `displayBold` (Archivo), and `displaySerif`
+    (Fraunces) families, self-hosted in `@ship-it-ui/ui` via
+    `@fontsource-variable/*` runtime dependencies and wired through
+    `@theme inline` so `font-display-tech`, `font-display-bold`, and
+    `font-display-serif` utilities resolve.
+
+  All three are purely additive — no existing token names, values, or
+  utilities change.
+
+- 52af924: Four additive, non-breaking accessibility and ergonomics fixes.
+  - **Banner contrast** — the `tone` variants now use the contrast-safe `*-text`
+    color tokens (`text-accent-text`, `text-ok-text`, `text-warn-text`,
+    `text-err-text`) instead of the raw ramp tokens, which were barely legible on
+    the tinted light-mode backgrounds. Backgrounds are unchanged.
+  - **Dialog title/description + VisuallyHidden** — re-export Radix's `Title` and
+    `Description` as `DialogTitle` / `DialogDescription`, and add a new local
+    `VisuallyHidden` primitive (a `<span>` using the standard sr-only clip
+    pattern, no new dependency). Together these let consumers give a titleless
+    dialog an accessible name without showing it on screen.
+  - **PhoneInput `id` forwarding** — `PhoneInput` now accepts `id` (plus
+    `aria-describedby` / `aria-invalid`) and forwards them to the inner
+    `<input type="tel">`, so an external `<label htmlFor>` — or a `Field`
+    render-prop's generated id/aria wiring — correctly targets the input.
+  - **Button `asChild` icon/trailing/loading** — `asChild` previously dropped the
+    `icon`, `trailing`, and loading spinner. They are now composed into the single
+    Slot child via `cloneElement`, mirroring the spans the normal `<button>`
+    branch renders. When there is nothing to inject, the original
+    `<Slot>{children}</Slot>` behavior is preserved unchanged.
+
+- 52af924: Fix DS components rendering unstyled for npm consumers.
+
+  The published `globals.css` carried `@source` directives with monorepo-relative
+  paths (`../../../shipit/src/**`, `../../../../apps/docs-site/**`) that don't
+  exist in an installed package, so Tailwind v4 never scanned the compiled
+  component class names — every DS component rendered unstyled (a silent failure).
+
+  The stylesheet is now split into three: a shared `globals.base.css` (fonts,
+  tokens, Tailwind, `@theme`); the consumer entry `globals.css`, which adds a
+  `@source` at this package's own `dist` so `@ship-it-ui/ui`'s classes compile out
+  of the box; and `globals.workspace.css` for apps inside this repo (scans the live
+  workspace `src`). The README documents the extra `@source` lines consumers add
+  for `@ship-it-ui/shipit` and their own code. No API change; existing
+  `@ship-it-ui/ui/styles/globals.css` imports keep working.
+
+- 52af924: Add `SwatchGroup` — an accessible, curated color-picker component. Renders a
+  selectable grid of color tiles as a WAI-ARIA `radiogroup`: each tile is a
+  `role="radio"` with `aria-checked`, roving tabIndex, and arrow-key navigation
+  (Left/Up previous, Right/Down next with wrap; Home/End jump to ends). Supports
+  controlled / uncontrolled `value` via `useControllableState`, `sm`/`md`/`lg`
+  size variants, a token-based selection ring, and a contrast-aware check mark
+  (luminance-derived from the swatch color) so the mark stays visible on both
+  light and dark tiles.
+- Updated dependencies [52af924]
+- Updated dependencies [52af924]
+- Updated dependencies [52af924]
+  - @ship-it-ui/icons@0.0.14
+  - @ship-it-ui/tokens@0.0.8
+
 ## 0.0.18
 
 ### Patch Changes
