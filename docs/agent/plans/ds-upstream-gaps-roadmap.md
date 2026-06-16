@@ -290,9 +290,13 @@ Baseline: `pnpm --filter <pkg> typecheck && lint && test`. Plus:
 
 ## Status
 
-Plan written + audited (26 confirmed findings folded in) + all 5 open questions
-resolved. Not started. Only remaining prerequisite: land `ds-fixes` (the
-`connector→logo` rename) before any icons PR. Ready to execute.
+EXECUTED on branch `ds-fixes` (2026-06-16). All waves built as commit batches on
+the single branch (rename prerequisite already present). 11 commits, 8 `patch`
+changesets; full workspace build + typecheck + test green; docs-site builds with
+DS utilities emitted; 618 ui tests pass. Final 3-reviewer pass: one real fix
+applied (Banner `aria-live="off"`), one false positive suppressed (SwatchGroup
+`role="radio"` matches the established `Rating` pattern + axe-clean), no breaking
+changes. #16 (vehicle logos) closed won't-fix per OQ-3. Awaiting PR review/merge.
 
 ## Related
 
