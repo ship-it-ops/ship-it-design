@@ -1,6 +1,6 @@
 # Agent Context
 
-Last updated: 2026-06-14 | Total notes: 45
+Last updated: 2026-06-16 | Total notes: 51
 
 <!--
   This file is the index for `docs/agent/`. Agents read it at session start.
@@ -26,6 +26,7 @@ Last updated: 2026-06-14 | Total notes: 45
 <!-- always-read at session start. Move to archive/ on completion. -->
 
 - [carousel-loop-window-scroll](status/carousel-loop-window-scroll.md) | status | active | standard | 2026-06-14 | Fix done on fix-scroll; awaiting review/merge
+- [rename-connector-icons-to-logos](status/rename-connector-icons-to-logos.md) | status | active | standard | 2026-06-16 | connector→logo icon rename done on ds-fixes; must land before icons PRs
 
 ## Instructions
 
@@ -49,7 +50,7 @@ Last updated: 2026-06-14 | Total notes: 45
 
 ## Plans
 
-_None._
+- [ds-upstream-gaps-roadmap](plans/ds-upstream-gaps-roadmap.md) | plan | active | core | 2026-06-16 | Audited wave roadmap fixing 18 JP-Euro-reported DS gaps
 
 ## Investigations
 
@@ -74,6 +75,9 @@ _None._
 
 - [variant-tone-callback-vocabulary-consolidation](open-questions/variant-tone-callback-vocabulary-consolidation.md) | open-question | active | standard | 2026-05-21 | Pick one vocabulary across variant/tone/callback APIs before 1.0
 - [1-0-stability-promise](open-questions/1-0-stability-promise.md) | open-question | active | standard | 2026-05-21 | When and how to cut 1.0 with stability commitment
+- [ds-css-publishing-approach](open-questions/ds-css-publishing-approach.md) | open-question | answered | standard | 2026-06-16 | #2 CSS: chose Option C (documented @source, consumer-safe)
+- [ds-display-font-choice](open-questions/ds-display-font-choice.md) | open-question | answered | standard | 2026-06-16 | #1 chose Space Grotesk / Archivo / Fraunces display set
+- [ds-vehicle-logo-licensing](open-questions/ds-vehicle-logo-licensing.md) | open-question | answered | standard | 2026-06-16 | #16 closed won't-fix; keep text fallback (cbi is NonCommercial)
 
 ## Scars
 
@@ -95,3 +99,4 @@ _None._
 - [docs-site-stale-ui-dist](scars/docs-site-stale-ui-dist.md) | scar | active | standard | 2026-06-02 | docs-site bundles @ship-it-ui/ui from dist, not src
 - [rebase-instant-scroll-fires-edge-snap](scars/rebase-instant-scroll-fires-edge-snap.md) | scar | active | standard | 2026-06-02 | scrollIntoView(instant) fires a scroll event you can't distinguish from natural landings
 - [scrollintoview-block-nearest-drags-window](scars/scrollintoview-block-nearest-drags-window.md) | scar | active | standard | 2026-06-14 | scrollIntoView({inline:start}) also scrolls vertical axis; drags window on cold load
+- [cbi-noncommercial-license](scars/cbi-noncommercial-license.md) | scar | active | standard | 2026-06-16 | cbi (Custom Brand Icons) Iconify set is CC BY-NC-SA NonCommercial; don't use in DS
