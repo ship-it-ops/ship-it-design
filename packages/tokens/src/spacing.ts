@@ -6,6 +6,8 @@
  */
 
 export const spacing = {
+  // 1px hairline for decorative rules / borders — below the 4px base step.
+  px: '1px',
   1: '4px',
   2: '8px',
   3: '12px',

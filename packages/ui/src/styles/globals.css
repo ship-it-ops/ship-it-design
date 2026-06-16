@@ -16,6 +16,11 @@
 @import '@fontsource-variable/geist';
 @import '@fontsource-variable/geist-mono';
 
+/* Self-hosted sanctioned display families via @fontsource-variable. */
+@import '@fontsource-variable/space-grotesk';
+@import '@fontsource-variable/archivo';
+@import '@fontsource-variable/fraunces';
+
 @import 'tailwindcss';
 @import '@ship-it-ui/tokens/styles/tokens.css';
 @import './animations.css';
@@ -55,6 +60,8 @@
   --color-accent-text: var(--color-accent-text);
   --color-accent-dim: var(--color-accent-dim);
   --color-accent-glow: var(--color-accent-glow);
+  --color-accent-soft: var(--color-accent-soft);
+  --color-accent-soft-text: var(--color-accent-soft-text);
   --color-ok: var(--color-ok);
   --color-warn: var(--color-warn);
   --color-err: var(--color-err);
@@ -94,6 +101,9 @@
   /* Typography — families. */
   --font-sans: var(--font-family-sans);
   --font-mono: var(--font-family-mono);
+  --font-display-tech: var(--font-family-display-tech);
+  --font-display-bold: var(--font-family-display-bold);
+  --font-display-serif: var(--font-family-display-serif);
 
   /* Typography — sizes (named, not numeric, so utilities stay semantic). */
   --text-eyebrow: var(--font-size-eyebrow);
@@ -123,6 +133,7 @@
   --tracking-xwide: var(--tracking-xwide);
 
   /* Spacing (4pt scale, irregular ramp — handoff skips 7). */
+  --spacing-px: var(--space-px);
   --spacing-1: var(--space-1);
   --spacing-2: var(--space-2);
   --spacing-3: var(--space-3);
