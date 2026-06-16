@@ -224,6 +224,7 @@ export const glyphManifest = {
   thumbsUp: ['lucide', 'thumbs-up'],
   thumbsDown: ['lucide', 'thumbs-down'],
   award: ['lucide', 'award'],
+  gem: ['lucide', 'gem'],
 
   // Media & playback
   play: ['lucide', 'play'],
@@ -390,6 +391,9 @@ export const glyphManifest = {
   camera: ['lucide', 'camera'],
   snowflake: ['lucide', 'snowflake'],
   trafficCone: ['lucide', 'traffic-cone'],
+  brakeDisc: ['lucide', 'disc'],
+  tire: ['ph', 'tire'],
+  suspension: ['solar', 'suspension-linear'],
 
   // — Travel & transport: locations (pickup/dropoff) —
   airport: ['lucide', 'plane'],
@@ -484,6 +488,16 @@ export const glyphManifest = {
   promo: ['lucide', 'badge-percent'],
   refund: ['lucide', 'undo-2'],
   piggyBank: ['ph', 'piggy-bank'],
+
+  // — Solid / filled variants —
+  // The default set is stroke-first (Lucide has no filled weight). These are
+  // explicit solid glyph names sourced from Phosphor's `fill` weight, for the
+  // cases that read better filled: a call CTA, a rating star, a liked heart, an
+  // active notification bell. Use the plain stroke name elsewhere.
+  phoneFill: ['ph', 'phone-fill'],
+  starFill: ['ph', 'star-fill'],
+  heartFill: ['ph', 'heart-fill'],
+  bellFill: ['ph', 'bell-fill'],
 } as const satisfies Record<string, IconRef>;
 
 export const logoManifest = {

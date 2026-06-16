@@ -36,10 +36,17 @@ export function iconToSvgDataUrl(
 const LEGACY_LOGO_PREFIX = 'connector:';
 
 /**
- * Resolve a name against the icon data, accepting three spellings:
- *   - a direct key (`'service'`, `'logo:github'`),
- *   - a bare logo name (`'github'` → `logo:github`),
- *   - the deprecated `connector:<name>` prefix (→ `logo:<name>`).
+ * Resolve a name against the icon data. Resolution order (first hit wins):
+ *   1. a direct key — a semantic glyph (`'service'`) or an explicit
+ *      `logo:<name>` key (`'logo:github'`);
+ *   2. the deprecated `connector:<name>` prefix (normalised to `logo:<name>`);
+ *   3. a bare-name fallback to `logo:<name>`.
+ *
+ * Because the direct-key step runs first, a bare name that ALSO exists as a
+ * semantic glyph resolves to the glyph, NOT the brand logo — five names collide
+ * (`box`, `github`, `pagerduty`, `signal`, `snowflake`). To address a brand logo
+ * unambiguously, always pass the explicit `logo:<name>` prefix; the bare-name
+ * fallback is a convenience for logo-only names, not a guaranteed logo lookup.
  */
 function lookupIconData(name: string) {
   const legacy = name.startsWith(LEGACY_LOGO_PREFIX)

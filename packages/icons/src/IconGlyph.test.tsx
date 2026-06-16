@@ -57,6 +57,25 @@ describe('IconGlyph', () => {
   });
 });
 
+// Compile-time regression for the kind/name discriminated union (audit finding
+// adversarial-3): `kind` must constrain the valid `name` set. Never rendered —
+// `tsc` validates the `@ts-expect-error` directives during typecheck.
+function _typeContracts() {
+  return (
+    <>
+      <IconGlyph name="ask" />
+      <IconGlyph kind="default" name="ask" />
+      <IconGlyph kind="logo" name="github" />
+      <IconGlyph kind="connector" name="github" />
+      {/* @ts-expect-error glyph-only name under kind="logo" must not typecheck */}
+      <IconGlyph kind="logo" name="ask" />
+      {/* @ts-expect-error logo-only name under default kind must not typecheck */}
+      <IconGlyph name="slack" />
+    </>
+  );
+}
+void _typeContracts;
+
 describe('DynamicIconGlyph', () => {
   it('renders SVG body for a known glyph name', () => {
     render(<DynamicIconGlyph name="ask" data-testid="icon" />);

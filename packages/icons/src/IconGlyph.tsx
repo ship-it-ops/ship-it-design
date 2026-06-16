@@ -25,16 +25,17 @@ interface IconGlyphBaseProps extends Omit<SVGAttributes<SVGSVGElement>, 'childre
   kind?: 'default' | 'logo' | 'connector';
 }
 
-export interface IconGlyphProps extends IconGlyphBaseProps {
-  /**
-   * Semantic glyph name (`ask`, `service`, `incident`, …) or a logo name
-   * when `kind="logo"`. Names are statically checked against the manifest
-   * in `icon-manifest.ts` — typos surface at compile time. For dynamic name
-   * strings (server payloads, plugin-registered keys), use
-   * `<DynamicIconGlyph>` instead.
-   */
-  name: GlyphName | LogoName;
-}
+/**
+ * `kind` discriminates the valid `name` set so a name is checked against the
+ * RIGHT manifest at compile time: `kind="default"` (or omitted) requires a
+ * `GlyphName`; `kind="logo"` (or the deprecated `kind="connector"`) requires a
+ * `LogoName`. This rejects mismatches like `<IconGlyph kind="logo" name="ask" />`
+ * (a glyph-only name under a logo kind) that would otherwise typecheck and then
+ * render the empty text-fallback at runtime. For dynamic name strings (server
+ * payloads, plugin-registered keys), use `<DynamicIconGlyph>` instead.
+ */
+export type IconGlyphProps = IconGlyphBaseProps &
+  ({ kind?: 'default'; name: GlyphName } | { kind: 'logo' | 'connector'; name: LogoName });
 
 export interface DynamicIconGlyphProps extends IconGlyphBaseProps {
   /**
