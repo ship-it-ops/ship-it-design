@@ -1,6 +1,6 @@
 # Agent Context
 
-Last updated: 2026-06-14 | Total notes: 44
+Last updated: 2026-06-14 | Total notes: 45
 
 <!--
   This file is the index for `docs/agent/`. Agents read it at session start.
@@ -26,6 +26,12 @@ Last updated: 2026-06-14 | Total notes: 44
 <!-- always-read at session start. Move to archive/ on completion. -->
 
 - [carousel-loop-window-scroll](status/carousel-loop-window-scroll.md) | status | active | standard | 2026-06-14 | Fix done on fix-scroll; awaiting review/merge
+
+## Instructions
+
+<!-- standing user instructions — always-read at session start -->
+
+- [no-signature-in-commits](instructions/no-signature-in-commits.md) | instruction | active | core | 2026-06-14 | Never add Co-Authored-By/Claude signature trailer to commit messages
 
 ## Decisions
 
