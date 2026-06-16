@@ -66,7 +66,10 @@ export const Banner = forwardRef<HTMLDivElement, BannerProps>(function Banner(
     <div
       ref={ref}
       role={live === 'assertive' ? 'alert' : 'status'}
-      aria-live={live === 'off' ? undefined : live}
+      // `role="status"` carries an implicit `aria-live="polite"`, so to truly
+      // suppress announcements we must set an explicit `aria-live="off"` —
+      // omitting the attribute would leave the polite live region active.
+      aria-live={live === 'off' ? 'off' : live}
       className={cn(bannerStyles({ tone, sticky }), className)}
       {...props}
     >

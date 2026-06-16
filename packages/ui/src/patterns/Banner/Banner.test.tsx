@@ -28,14 +28,16 @@ describe('Banner', () => {
     expect(banner).toHaveAttribute('aria-live', 'assertive');
   });
 
-  it('omits aria-live entirely when live="off"', () => {
+  it('sets aria-live="off" when live="off" to override role="status"\'s implicit polite region', () => {
     render(
       <Banner tone="accent" live="off">
         Quiet
       </Banner>,
     );
     const banner = screen.getByRole('status');
-    expect(banner).not.toHaveAttribute('aria-live');
+    // role="status" implies aria-live="polite"; an explicit "off" is required
+    // to actually suppress announcements (omitting the attribute would not).
+    expect(banner).toHaveAttribute('aria-live', 'off');
   });
 
   it('renders trailing action', () => {
