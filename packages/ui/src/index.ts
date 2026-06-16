@@ -43,6 +43,7 @@ export * from './components/ScrollArea';
 export * from './components/Skeleton';
 export * from './components/StatusDot';
 export * from './components/Tag';
+export * from './components/VisuallyHidden';
 
 // Components — overlays
 export * from './components/ContextMenu';

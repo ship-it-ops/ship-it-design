@@ -43,6 +43,12 @@ describe('Banner', () => {
     expect(screen.getByRole('link', { name: 'Upgrade' })).toBeInTheDocument();
   });
 
+  it('uses the contrast-safe accent-text token for the accent tone', () => {
+    render(<Banner tone="accent">News</Banner>);
+    const banner = screen.getByRole('status');
+    expect(banner).toHaveClass('text-accent-text');
+  });
+
   it('has no a11y violations', async () => {
     const { container } = render(<Banner tone="accent">News</Banner>);
     expect(await axe(container)).toHaveNoViolations();

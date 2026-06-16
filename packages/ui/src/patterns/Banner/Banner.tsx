@@ -18,10 +18,10 @@ const bannerStyles = cva(
   {
     variants: {
       tone: {
-        accent: 'bg-[color-mix(in_oklab,var(--color-accent),transparent_82%)] text-accent',
-        ok: 'bg-[color-mix(in_oklab,var(--color-ok),transparent_82%)] text-ok',
-        warn: 'bg-[color-mix(in_oklab,var(--color-warn),transparent_82%)] text-warn',
-        err: 'bg-[color-mix(in_oklab,var(--color-err),transparent_82%)] text-err',
+        accent: 'bg-[color-mix(in_oklab,var(--color-accent),transparent_82%)] text-accent-text',
+        ok: 'bg-[color-mix(in_oklab,var(--color-ok),transparent_82%)] text-ok-text',
+        warn: 'bg-[color-mix(in_oklab,var(--color-warn),transparent_82%)] text-warn-text',
+        err: 'bg-[color-mix(in_oklab,var(--color-err),transparent_82%)] text-err-text',
       },
       sticky: {
         true: 'sticky top-0 z-sticky',

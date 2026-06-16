@@ -2,7 +2,16 @@
 
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { forwardRef, type ButtonHTMLAttributes, type ReactNode, type Ref } from 'react';
+import {
+  Children,
+  cloneElement,
+  forwardRef,
+  isValidElement,
+  type ButtonHTMLAttributes,
+  type ReactElement,
+  type ReactNode,
+  type Ref,
+} from 'react';
 
 import { cn } from '../../utils/cn';
 
@@ -119,10 +128,32 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   const iconPx = iconSize[density ?? 'comfortable'][size ?? 'md'];
   const composedClassName = cn(buttonStyles({ variant, size, density, fullWidth }), className);
 
-  // asChild defers all rendering to the consumer's element. We just decorate it
-  // with Button styles — Slot requires exactly one child, so icon/trailing/loading
-  // slots are intentionally not supported on asChild buttons.
+  // asChild defers rendering to the consumer's element. We decorate it with
+  // Button styles. Slot requires exactly one child, so when there's an icon,
+  // trailing, or spinner to show, we compose them INTO that single child by
+  // cloning it and reusing the consumer's own children — mirroring the spans
+  // the normal <button> branch renders.
   if (asChild) {
+    const leading = loading ? (
+      <Spinner size={iconPx} />
+    ) : icon ? (
+      <span className="inline-flex">{icon}</span>
+    ) : null;
+    const trailingNode = trailing ? (
+      <span className="inline-flex opacity-60">{trailing}</span>
+    ) : null;
+
+    const composed =
+      (leading || trailingNode) && isValidElement(children)
+        ? cloneElement(
+            Children.only(children) as ReactElement<{ children?: ReactNode }>,
+            undefined,
+            leading,
+            (Children.only(children) as ReactElement<{ children?: ReactNode }>).props.children,
+            trailingNode,
+          )
+        : children;
+
     return (
       <Slot
         // Radix Slot widens the rendered element to whatever the consumer passes
@@ -136,7 +167,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
         className={composedClassName}
         {...props}
       >
-        {children}
+        {composed}
       </Slot>
     );
   }
