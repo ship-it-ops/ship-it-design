@@ -32,7 +32,9 @@
       "require": "./dist/index.cjs"
     },
     "./styles/globals.css": "./src/styles/globals.css",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./styles/globals.base.css": "./src/styles/globals.base.css",
+    "./styles/globals.workspace.css": "./src/styles/globals.workspace.css"
   },
   "files": [
     "dist",

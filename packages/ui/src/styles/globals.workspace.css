@@ -1,0 +1,18 @@
+/**
+ * In-repo entry for @ship-it-ui/ui — used by apps inside this monorepo
+ * (e.g. apps/docs-site) that live alongside the package SOURCE. It scans the
+ * live `src/` of @ship-it-ui/ui + @ship-it-ui/shipit and the docs-site app, so
+ * class-name changes show up without a `dist` rebuild. Published consumers must
+ * use `globals.css` (which scans the shipped `dist`) instead.
+ *
+ * Paths are resolved relative to this CSS file:
+ *   ../**                          = packages/ui/src/**
+ *   ../../../shipit/src/**         = packages/shipit/src/**
+ *   ../../../../apps/docs-site/**  = apps/docs-site/**
+ */
+
+@import './globals.base.css';
+
+@source '../**/*.{ts,tsx,mdx}';
+@source '../../../shipit/src/**/*.{ts,tsx,mdx}';
+@source '../../../../apps/docs-site/**/*.{ts,tsx,mdx}';

@@ -24,12 +24,53 @@ src/
 ├── utils/
 │   └── cn.ts            clsx + tailwind-merge
 ├── styles/
-│   ├── globals.css      Tailwind v4 entrypoint + token CSS-var bridge
-│   └── animations.css   Keyframes (spin, pulse, indeterminate, dialogIn, …)
+│   ├── globals.css           Consumer entry — base + @source at this pkg's dist
+│   ├── globals.base.css      Shared base (fonts, tokens, Tailwind, @theme)
+│   ├── globals.workspace.css In-repo entry — base + @source at workspace src
+│   └── animations.css        Keyframes (spin, pulse, indeterminate, dialogIn, …)
 ├── test/
 │   └── setup.ts         Vitest global setup (jsdom polyfills + vitest-axe)
 └── index.ts             Public API barrel — only re-exports
 ```
+
+## Consuming the styles (Tailwind v4)
+
+Import the stylesheet once at your app entry:
+
+```css
+/* your app's globals.css */
+@import '@ship-it-ui/ui/styles/globals.css';
+```
+
+This sets up the fonts, design tokens, the `@theme` token→utility bridge, and —
+critically — a `@source` directive pointing at this package's **compiled output**
+(`dist`). Tailwind v4 only generates the utility classes it can find in scanned
+files, so without that, the DS components would render **unstyled** (a silent
+failure — nothing throws). The published `globals.css` handles `@ship-it-ui/ui`'s
+own classes for you.
+
+You must add `@source` lines yourself for anything Tailwind can't see from this
+file:
+
+```css
+@import '@ship-it-ui/ui/styles/globals.css';
+
+/* if you also use @ship-it-ui/shipit */
+@source '../node_modules/@ship-it-ui/shipit/dist/**/*.js';
+
+/* your own components that use DS/Tailwind classes */
+@source './src/**/*.{ts,tsx}';
+```
+
+`@source` paths are relative to the CSS file that contains them.
+
+> **Migration note (from earlier 0.0.x):** previous versions shipped a
+> `globals.css` whose `@source` lines pointed at monorepo-relative paths that
+> don't exist in a published install, so DS components rendered unstyled for npm
+> consumers. The entry is now self-contained for `@ship-it-ui/ui`'s own classes;
+> add the `@source` lines above for shipit and your own code. Apps **inside this
+> monorepo** import `@ship-it-ui/ui/styles/globals.workspace.css` instead (it
+> scans the live workspace `src`).
 
 ## Component anatomy
 

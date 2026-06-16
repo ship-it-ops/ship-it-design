@@ -1,14 +1,15 @@
 /**
  * Global stylesheet for the docs site.
  *
- * Re-exports `@ship-it-ui/ui`'s globals (which itself sets up Geist, tokens,
- * Tailwind v4, animations, and `@source` directives that scan workspace
- * package source). The `@source` for `apps/docs-site/**` lives in
- * `packages/ui/src/styles/globals.css` so utility classes used here get
- * compiled.
+ * Uses @ship-it-ui/ui's IN-REPO entry (`globals.workspace.css`), which sets up
+ * Geist, tokens, Tailwind v4, animations, and the `@source` directives that
+ * scan the live workspace SOURCE of @ship-it-ui/ui + @ship-it-ui/shipit and
+ * this app — so class-name changes surface without a `dist` rebuild. Published
+ * consumers use `@ship-it-ui/ui/styles/globals.css` (which scans the shipped
+ * `dist`) instead.
  */
 
-@import '@ship-it-ui/ui/styles/globals.css';
+@import '@ship-it-ui/ui/styles/globals.workspace.css';
 
 /* Docs-only chrome rules. */
 
