@@ -1,7 +1,7 @@
 import { forwardRef, type CSSProperties, type Ref, type SVGAttributes } from 'react';
 
 import { iconData, type IconData } from './icon-data';
-import type { ConnectorName, GlyphName } from './icon-manifest';
+import type { GlyphName, LogoName } from './icon-manifest';
 
 interface IconGlyphBaseProps extends Omit<SVGAttributes<SVGSVGElement>, 'children'> {
   /**
@@ -18,20 +18,22 @@ interface IconGlyphBaseProps extends Omit<SVGAttributes<SVGSVGElement>, 'childre
    */
   label?: string;
   /**
-   * `default` (semantic glyph) or `connector` (connector-specific brand logos).
+   * `default` (semantic glyph) or `logo` (brand-mark logos). `connector` is a
+   * `@deprecated` alias for `logo` — it still resolves but new code should use
+   * `kind="logo"`.
    */
-  kind?: 'default' | 'connector';
+  kind?: 'default' | 'logo' | 'connector';
 }
 
 export interface IconGlyphProps extends IconGlyphBaseProps {
   /**
-   * Semantic glyph name (`ask`, `service`, `incident`, …) or a connector name
-   * when `kind="connector"`. Names are statically checked against the manifest
+   * Semantic glyph name (`ask`, `service`, `incident`, …) or a logo name
+   * when `kind="logo"`. Names are statically checked against the manifest
    * in `icon-manifest.ts` — typos surface at compile time. For dynamic name
    * strings (server payloads, plugin-registered keys), use
    * `<DynamicIconGlyph>` instead.
    */
-  name: GlyphName | ConnectorName;
+  name: GlyphName | LogoName;
 }
 
 export interface DynamicIconGlyphProps extends IconGlyphBaseProps {
@@ -46,8 +48,10 @@ export interface DynamicIconGlyphProps extends IconGlyphBaseProps {
 
 const FALLBACK_VIEWBOX = '0 0 24 24';
 
-function lookupIcon(name: string, kind: 'default' | 'connector'): IconData | null {
-  const key = kind === 'connector' ? `connector:${name}` : name;
+function lookupIcon(name: string, kind: 'default' | 'logo' | 'connector'): IconData | null {
+  // `connector` is a deprecated alias for `logo` — both resolve to the `logo:`
+  // data key so legacy callers keep working off the renamed data file.
+  const key = kind === 'default' ? name : `logo:${name}`;
   return iconData[key] ?? null;
 }
 
@@ -131,7 +135,7 @@ function renderGlyph(
  * Usage:
  *   <IconGlyph name="ask" size={14} />                       // decorative
  *   <IconGlyph name="incident" size={20} label="Incident" /> // labelled for screen readers
- *   <IconGlyph name="github" kind="connector" />             // connector glyph
+ *   <IconGlyph name="github" kind="logo" />                  // brand-logo glyph
  *
  * For runtime-dynamic names use `<DynamicIconGlyph>`, which accepts any string
  * and falls back to a centered `<text>` glyph for unregistered names.

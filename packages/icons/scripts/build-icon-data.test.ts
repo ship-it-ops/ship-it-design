@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 import { describe, expect, it } from 'vitest';
 
-import { connectorManifest, glyphManifest } from '../src/icon-manifest';
+import { glyphManifest, logoManifest } from '../src/icon-manifest';
 import { buildIconData, formatIconData, resolveIcon } from './build-icon-data';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -30,8 +30,8 @@ describe('build-icon-data', () => {
     }
   });
 
-  it('every connector manifest entry resolves to a non-empty SVG body', () => {
-    for (const [name, ref] of Object.entries(connectorManifest)) {
+  it('every logo manifest entry resolves to a non-empty SVG body', () => {
+    for (const [name, ref] of Object.entries(logoManifest)) {
       const data = resolveIcon(ref);
       expect(data.body, `${name} → ${ref[0]}:${ref[1]}`).toMatch(/<\w/);
       expect(data.viewBox).toMatch(/^\d+ \d+ \d+ \d+$/);

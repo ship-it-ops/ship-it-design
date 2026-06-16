@@ -22,7 +22,7 @@ import { fileURLToPath } from 'node:url';
 import { getIconData, iconToSVG } from '@iconify/utils';
 import { format as prettierFormat, resolveConfig as prettierResolveConfig } from 'prettier';
 
-import { connectorManifest, glyphManifest, type IconRef } from '../src/icon-manifest';
+import { glyphManifest, logoManifest, type IconRef } from '../src/icon-manifest';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ICON_DATA_FILE = resolve(__dirname, '../src/icon-data.ts');
@@ -83,11 +83,11 @@ export function buildIconData(): Record<string, IconBody> {
       errors.push(`glyph "${name}" → ${(err as Error).message}`);
     }
   }
-  for (const [name, ref] of Object.entries(connectorManifest)) {
+  for (const [name, ref] of Object.entries(logoManifest)) {
     try {
-      out[`connector:${name}`] = resolveIcon(ref);
+      out[`logo:${name}`] = resolveIcon(ref);
     } catch (err) {
-      errors.push(`connector "${name}" → ${(err as Error).message}`);
+      errors.push(`logo "${name}" → ${(err as Error).message}`);
     }
   }
   if (errors.length > 0) {
