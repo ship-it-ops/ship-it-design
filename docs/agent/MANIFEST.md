@@ -1,6 +1,6 @@
 # Agent Context
 
-Last updated: 2026-06-16 | Total notes: 51
+Last updated: 2026-06-18 | Total notes: 52
 
 <!--
   This file is the index for `docs/agent/`. Agents read it at session start.
@@ -27,6 +27,7 @@ Last updated: 2026-06-16 | Total notes: 51
 
 - [carousel-loop-window-scroll](status/carousel-loop-window-scroll.md) | status | active | standard | 2026-06-14 | Fix done on fix-scroll; awaiting review/merge
 - [rename-connector-icons-to-logos](status/rename-connector-icons-to-logos.md) | status | active | standard | 2026-06-16 | connector→logo icon rename done on ds-fixes; must land before icons PRs
+- [on-accent-theme-aware-and-gutter-rename](status/on-accent-theme-aware-and-gutter-rename.md) | status | active | standard | 2026-06-18 | on-accent theme-aware + screen→gutter spacing rename; awaiting review
 
 ## Instructions
 

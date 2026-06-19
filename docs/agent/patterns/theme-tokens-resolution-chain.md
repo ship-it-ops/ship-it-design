@@ -42,8 +42,11 @@ no extra Tailwind config required in the consumer.
 ## Gotchas
 
 **The most important gotcha — and the #1 false-positive in code review:**
-Some tokens (e.g. `--color-on-accent`) are defined **only** in
-`globals.css`'s `@theme inline` block and never appear in `tokens.css`.
+a token may be defined in `tokens.css`, in `globals.css`'s `@theme inline`
+block, or both — and which file owns it can change over time (e.g.
+`--color-on-accent` was a globals-only literal until 2026-06-18, when it was
+promoted to a theme-aware `tokens.css` token; as of then every `@theme inline`
+entry is a `var()` bridge, but new derivations may still appear globals-only).
 Before flagging "token X doesn't exist," grep **both** files:
 
 ```bash
