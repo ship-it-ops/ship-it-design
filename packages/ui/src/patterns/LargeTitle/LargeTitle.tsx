@@ -36,7 +36,7 @@ export const LargeTitle = forwardRef<HTMLElement, LargeTitleProps>(function Larg
   return (
     <header
       ref={ref}
-      className={cn('px-screen flex items-end justify-between gap-3 py-3 pb-4', className)}
+      className={cn('px-gutter flex items-end justify-between gap-3 py-3 pb-4', className)}
       {...props}
     >
       <div className="min-w-0 flex-1">

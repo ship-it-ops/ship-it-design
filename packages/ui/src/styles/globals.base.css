@@ -48,8 +48,9 @@
   --color-pink: var(--color-pink);
 
   /* Foreground for components that sit on top of an accent surface
-   * (primary buttons, solid badges). Always near-black, regardless of theme. */
-  --color-on-accent: #0a0a0b;
+   * (primary buttons, solid badges). Theme-aware: near-black in dark, white in
+   * light (light-theme accent is dark, so near-black would fail contrast). */
+  --color-on-accent: var(--color-on-accent);
 
   /* Foregrounds for components on solid `bg-ok`/`bg-warn`/`bg-err` surfaces
    * (success/destructive Buttons, status badges). Theme-aware. */
@@ -149,15 +150,18 @@
   --z-tooltip: var(--z-tooltip);
 
   /* Mobile — touch & layout dimensions bridge into Tailwind's spacing scale
-   * so `h-row`, `h-tabbar`, `min-h-touch`, `p-screen` etc. resolve cleanly. */
+   * so `h-row`, `h-tabbar`, `min-h-touch`, `p-gutter` etc. resolve cleanly.
+   * NB: the screen-edge padding key is `gutter`, NOT `screen` — a `screen`
+   * spacing key would mint `h-screen`/`w-screen` and shadow Tailwind's reserved
+   * viewport utilities (100vh/100vw). */
   --spacing-touch: var(--touch-min);
   --spacing-touch-comfortable: var(--touch-comfortable);
   --spacing-row: var(--row-h);
   --spacing-row-lg: var(--row-h-lg);
   --spacing-tabbar: var(--tabbar-h);
   --spacing-navbar: var(--navbar-h);
-  --spacing-screen: var(--screen-pad);
-  --spacing-screen-lg: var(--screen-pad-lg);
+  --spacing-gutter: var(--screen-pad);
+  --spacing-gutter-lg: var(--screen-pad-lg);
 
   /* Mobile — bumped type scale. Use as `text-m-body`, `text-m-h1`, etc. */
   --text-m-eyebrow: var(--font-size-m-eyebrow);

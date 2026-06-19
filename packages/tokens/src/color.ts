@@ -57,6 +57,10 @@ export const colorSemanticDark = {
   accentSoft: 'oklch(0.82 0.12 var(--accent-h) / 0.16)',
   accentSoftText: 'oklch(0.9 0.1 var(--accent-h))',
 
+  // Foreground for components on an accent surface (primary buttons, solid
+  // badges). Dark theme accent is bright → near-black reads best.
+  onAccent: '#0a0a0b',
+
   ok: colorPrimitive.ok,
   warn: colorPrimitive.warn,
   err: colorPrimitive.err,
@@ -113,6 +117,9 @@ export const colorSemanticLight = {
   // `accentSoftText` intentionally aliases `accentText` so on-plate copy matches accent text.
   accentSoft: 'oklch(0.72 0.13 var(--accent-h) / 0.14)',
   accentSoftText: 'oklch(0.38 0.13 var(--accent-h))',
+
+  // Light theme accent is dark → white reads best.
+  onAccent: '#ffffff',
 
   // Companion palette tuned for light bg `#fbfbfa`. The dark-theme ramps were too
   // light to read as text in light mode (`text-err` ≈3.0:1, `text-warn` ≈1.5:1).

@@ -26,6 +26,15 @@ as Tailwind utilities, not as part of the canonical token export.
 `tokens.css` is what `@ship-it-ui/tokens` _publishes_; `globals.css` is
 what `@ship-it-ui/ui` layers on top.
 
+**Update (2026-06-18):** `--color-on-accent` — the canonical example above —
+was promoted into `tokens.css` as a theme-aware token (`#0a0a0b` dark /
+`#ffffff` light) because the old hardcoded near-black failed contrast on the
+light theme's dark accent. As of that change every `@theme inline` entry in
+`globals.css` is a `var()` bridge (no more globals-only literals). The tripwire
+below is unchanged and still load-bearing: ownership of a token name can move
+between the two files, so grep BOTH before declaring one missing — don't trust
+a stale "it's only in globals" memory.
+
 ## Tripwire
 
 **Before flagging "token X does not exist," grep both files:**
