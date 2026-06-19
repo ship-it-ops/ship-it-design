@@ -1,5 +1,43 @@
 # @ship-it-ui/ui
 
+## 0.0.20
+
+### Patch Changes
+
+- 2f70665: Make `--color-on-accent` theme-aware (near-black in dark, white in light) so
+  `text-on-accent` is legible on the light theme's dark accent.
+
+  `on-accent` is the foreground for components on an accent surface (primary /
+  destructive / success Buttons, solid Badges, Switch, Checkbox, active
+  Sidebar / NavBar / Calendar / Stepper / TabBar states, MapMarker,
+  CopilotMessage). It was previously a hardcoded near-black literal in
+  `globals.css`, which is correct on the dark theme's bright accent but failed
+  contrast on the light theme's dark accent (near-black text on a dark teal
+  surface). It is now a theme-aware semantic token — `#0a0a0b` in dark,
+  `#ffffff` in light — emitted into `tokens.css` like every other semantic
+  color and bridged through `@theme inline`. No component changes are needed;
+  all consumers pick up the theme-aware value through the `text-on-accent` /
+  `bg-on-accent` utilities.
+
+- 2f70665: Rename the `screen` spacing key to `gutter` (`p-screen` → `p-gutter`) so it no
+  longer shadows Tailwind's reserved `h-screen` / `w-screen` viewport utilities.
+
+  In Tailwind v4 a `--spacing-<key>` entry mints the full sizing family for that
+  key, so the `--spacing-screen` bridge also generated `h-screen` /
+  `min-h-screen` / `max-h-screen` / `w-screen` and silently redefined Tailwind's
+  built-in `100vh` / `100vw` utilities to the 16px screen-pad value — collapsing
+  any consumer's full-height app shell to 16px. Renaming the bridge key to
+  `gutter` restores native `h-screen` / `w-screen` and keeps the screen-edge
+  padding utility as `p-gutter` / `px-gutter` (and the `-lg` variants). The
+  underlying `--screen-pad` token is unchanged.
+
+  Note: this is a pre-1.0 utility rename — `p-screen` → `p-gutter`. The only DS
+  consumer (`LargeTitle`) is updated; external consumers using `p-screen` /
+  `px-screen` must rename to `p-gutter` / `px-gutter`.
+
+- Updated dependencies [2f70665]
+  - @ship-it-ui/tokens@0.0.9
+
 ## 0.0.19
 
 ### Patch Changes
