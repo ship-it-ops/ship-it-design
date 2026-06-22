@@ -1,6 +1,6 @@
 # Agent Context
 
-Last updated: 2026-06-18 | Total notes: 52
+Last updated: 2026-06-20 | Total notes: 55
 
 <!--
   This file is the index for `docs/agent/`. Agents read it at session start.
@@ -28,6 +28,7 @@ Last updated: 2026-06-18 | Total notes: 52
 - [carousel-loop-window-scroll](status/carousel-loop-window-scroll.md) | status | active | standard | 2026-06-14 | Fix done on fix-scroll; awaiting review/merge
 - [rename-connector-icons-to-logos](status/rename-connector-icons-to-logos.md) | status | active | standard | 2026-06-16 | connector→logo icon rename done on ds-fixes; must land before icons PRs
 - [on-accent-theme-aware-and-gutter-rename](status/on-accent-theme-aware-and-gutter-rename.md) | status | active | standard | 2026-06-18 | on-accent theme-aware + screen→gutter spacing rename; awaiting review
+- [dependabot-batch-next-release](status/dependabot-batch-next-release.md) | status | active | standard | 2026-06-20 | All remaining dependabot PRs + security alerts cleared on next-release
 
 ## Instructions
 
@@ -76,6 +77,7 @@ Last updated: 2026-06-18 | Total notes: 52
 
 - [variant-tone-callback-vocabulary-consolidation](open-questions/variant-tone-callback-vocabulary-consolidation.md) | open-question | active | standard | 2026-05-21 | Pick one vocabulary across variant/tone/callback APIs before 1.0
 - [1-0-stability-promise](open-questions/1-0-stability-promise.md) | open-question | active | standard | 2026-05-21 | When and how to cut 1.0 with stability commitment
+- [eslint-plugin-storybook-dead-weight](open-questions/eslint-plugin-storybook-dead-weight.md) | open-question | active | standard | 2026-06-20 | Remove dead eslint-plugin-storybook (Storybook gone); drops @vitest overrides
 - [ds-css-publishing-approach](open-questions/ds-css-publishing-approach.md) | open-question | answered | standard | 2026-06-16 | #2 CSS: chose Option C (documented @source, consumer-safe)
 - [ds-display-font-choice](open-questions/ds-display-font-choice.md) | open-question | answered | standard | 2026-06-16 | #1 chose Space Grotesk / Archivo / Fraunces display set
 - [ds-vehicle-logo-licensing](open-questions/ds-vehicle-logo-licensing.md) | open-question | answered | standard | 2026-06-16 | #16 closed won't-fix; keep text fallback (cbi is NonCommercial)
@@ -101,3 +103,4 @@ Last updated: 2026-06-18 | Total notes: 52
 - [rebase-instant-scroll-fires-edge-snap](scars/rebase-instant-scroll-fires-edge-snap.md) | scar | active | standard | 2026-06-02 | scrollIntoView(instant) fires a scroll event you can't distinguish from natural landings
 - [scrollintoview-block-nearest-drags-window](scars/scrollintoview-block-nearest-drags-window.md) | scar | active | standard | 2026-06-14 | scrollIntoView({inline:start}) also scrolls vertical axis; drags window on cold load
 - [cbi-noncommercial-license](scars/cbi-noncommercial-license.md) | scar | active | standard | 2026-06-16 | cbi (Custom Brand Icons) Iconify set is CC BY-NC-SA NonCommercial; don't use in DS
+- [hoisted-linker-stale-nested-node-modules](scars/hoisted-linker-stale-nested-node-modules.md) | scar | active | standard | 2026-06-20 | Reused pnpm install leaves stale nested node_modules under hoisted linker; clean-reinstall after major bumps
