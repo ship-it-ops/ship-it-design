@@ -55,9 +55,9 @@
     "react": "^19.0.0"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.111",
+    "@iconify-json/lucide": "^1.2.114",
     "@iconify-json/ph": "^1.2.0",
-    "@iconify-json/simple-icons": "^1.2.85",
+    "@iconify-json/simple-icons": "^1.2.87",
     "@iconify-json/solar": "^1.2.5",
     "@iconify/utils": "^3.1.3",
     "@ship-it-ui/eslint-config": "workspace:*",
@@ -68,7 +68,7 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",
     "@types/node": "^24",
-    "@types/react": "^19.2.16",
+    "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.0",
     "@vitest/coverage-v8": "^2.1.3",
     "jsdom": "^29.1.1",
