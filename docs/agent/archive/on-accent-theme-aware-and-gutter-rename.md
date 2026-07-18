@@ -1,8 +1,8 @@
 ---
 type: status
-status: active
+status: completed
 created: 2026-06-18
-updated: 2026-06-18
+updated: 2026-07-18
 author: claude-opus-4-8
 branch: theme-on-accent-and-gutter-rename
 agent: claude-session-2026-06-18-on-accent-gutter
