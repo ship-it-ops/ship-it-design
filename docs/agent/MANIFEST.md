@@ -1,6 +1,6 @@
 # Agent Context
 
-Last updated: 2026-07-18 | Total notes: 52
+Last updated: 2026-07-18 | Total notes: 53
 
 <!--
   This file is the index for `docs/agent/`. Agents read it at session start.
@@ -101,3 +101,4 @@ Last updated: 2026-07-18 | Total notes: 52
 - [scrollintoview-block-nearest-drags-window](scars/scrollintoview-block-nearest-drags-window.md) | scar | active | standard | 2026-06-14 | scrollIntoView({inline:start}) also scrolls vertical axis; drags window on cold load
 - [cbi-noncommercial-license](scars/cbi-noncommercial-license.md) | scar | active | standard | 2026-06-16 | cbi (Custom Brand Icons) Iconify set is CC BY-NC-SA NonCommercial; don't use in DS
 - [hoisted-linker-stale-nested-node-modules](scars/hoisted-linker-stale-nested-node-modules.md) | scar | active | standard | 2026-06-20 | Reused pnpm install leaves stale nested node_modules under hoisted linker; clean-reinstall after major bumps
+- [blanket-override-crosses-major-breaks-consumers](scars/blanket-override-crosses-major-breaks-consumers.md) | scar | active | standard | 2026-07-18 | Override range spanning majors forced js-yaml 4 on v3 consumer; broke changesets
