@@ -498,6 +498,39 @@ export const glyphManifest = {
   starFill: ['ph', 'star-fill'],
   heartFill: ['ph', 'heart-fill'],
   bellFill: ['ph', 'bell-fill'],
+
+  // — Rockets —
+  // Every rocket silhouette across the installed collections, for brand /
+  // deployment illustration variety. `rocket` is the canonical Lucide stroke
+  // (same glyph `brand` and `deployment` alias). Phosphor contributes two
+  // silhouettes (upright `rocket`, diagonal `rocketLaunch`) in five extra
+  // weights; Solar contributes two more (`rocket`, tilted `rocket2`) where
+  // "Solid" maps to Solar's filled `bold` style.
+  rocket: ['lucide', 'rocket'],
+  rocketAlt: ['ph', 'rocket'],
+  rocketThin: ['ph', 'rocket-thin'],
+  rocketLight: ['ph', 'rocket-light'],
+  rocketBold: ['ph', 'rocket-bold'],
+  rocketFill: ['ph', 'rocket-fill'],
+  rocketDuotone: ['ph', 'rocket-duotone'],
+  rocketLaunch: ['ph', 'rocket-launch'],
+  rocketLaunchThin: ['ph', 'rocket-launch-thin'],
+  rocketLaunchLight: ['ph', 'rocket-launch-light'],
+  rocketLaunchBold: ['ph', 'rocket-launch-bold'],
+  rocketLaunchFill: ['ph', 'rocket-launch-fill'],
+  rocketLaunchDuotone: ['ph', 'rocket-launch-duotone'],
+  rocketLinear: ['solar', 'rocket-linear'],
+  rocketOutline: ['solar', 'rocket-outline'],
+  rocketBroken: ['solar', 'rocket-broken'],
+  rocketSolid: ['solar', 'rocket-bold'],
+  rocketSolidDuotone: ['solar', 'rocket-bold-duotone'],
+  rocketLineDuotone: ['solar', 'rocket-line-duotone'],
+  rocket2Linear: ['solar', 'rocket-2-linear'],
+  rocket2Outline: ['solar', 'rocket-2-outline'],
+  rocket2Broken: ['solar', 'rocket-2-broken'],
+  rocket2Solid: ['solar', 'rocket-2-bold'],
+  rocket2SolidDuotone: ['solar', 'rocket-2-bold-duotone'],
+  rocket2LineDuotone: ['solar', 'rocket-2-line-duotone'],
 } as const satisfies Record<string, IconRef>;
 
 export const logoManifest = {
@@ -723,6 +756,9 @@ export const logoManifest = {
   tailwind: ['simple-icons', 'tailwindcss'],
   bun: ['simple-icons', 'bun'],
   deno: ['simple-icons', 'deno'],
+  // Rocket the Rust web framework (rocket.rs) — a brand mark, not the
+  // semantic rocket glyph family in `glyphManifest`.
+  rocket: ['simple-icons', 'rocket'],
 
   // Package managers & build / test tooling
   npm: ['simple-icons', 'npm'],
