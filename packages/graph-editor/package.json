@@ -55,7 +55,7 @@
   },
   "dependencies": {
     "@ship-it-ui/graph-tokens": "workspace:*",
-    "@xyflow/react": "^12.11.0"
+    "@xyflow/react": "^12.11.2"
   },
   "peerDependencies": {
     "@ship-it-ui/icons": "workspace:*",
