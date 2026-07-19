@@ -1,5 +1,16 @@
 # @ship-it-ui/next
 
+## 0.0.19
+
+### Patch Changes
+
+- 035d1c5: Dependency refresh from the June/July dependabot batches: runtime bumps
+  (@radix-ui/\* incl. slider 1.4.1, @xyflow/react 12.11.0) plus security
+  overrides (undici, vite, esbuild, @babel/core, js-yaml) and tooling
+  updates (vitest 3.2.6, shiki 4.2.0). No API changes.
+- Updated dependencies [035d1c5]
+  - @ship-it-ui/ui@0.0.21
+
 ## 0.0.18
 
 ### Patch Changes
