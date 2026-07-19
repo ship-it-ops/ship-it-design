@@ -211,7 +211,7 @@ jobs:
 
       - name: Run Claude Code Review
         if: steps.workflow_check.outputs.changed != 'true'
-        uses: anthropics/claude-code-action@a92e7c70a4da9793dc164451d829089dc057a464 # v1
+        uses: anthropics/claude-code-action@af0559ee4f514d1ef21826982bed13f7edc3c35e # v1
         env:
           # The ship-reviewed-prs skill auto-detects CI mode from CI=true
           # (set by GitHub Actions) and submits the review via `gh`. Give
