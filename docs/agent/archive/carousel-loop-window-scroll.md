@@ -1,8 +1,8 @@
 ---
 type: status
-status: active
+status: completed
 created: 2026-06-14
-updated: 2026-06-14
+updated: 2026-07-18
 author: claude-opus-4-8
 branch: fix-scroll
 agent: claude-session-2026-06-14-carousel-scroll
